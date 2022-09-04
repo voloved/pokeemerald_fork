@@ -40,6 +40,8 @@
 #include "pokemon_icon.h"
 #include "constants/flags.h"
 #include "clock.h"
+#include "roamer.h"
+#include "rumble.h"
 
 /*
  * Main menu state machine
@@ -947,22 +949,7 @@ static void Task_HighlightSelectedMainMenuItem(u8 taskId)
 
 static bool8 HandleMainMenuInput(u8 taskId)
 {
-    s16 *data = gTasks[taskId].data;
-
-    if (!gShowDebugMenu){
-        if (ARRAY_COUNT(sDebugCode) <= sCurrDebugCodeEntered){
-            PlaySE(SE_SUCCESS);
-            gShowDebugMenu = TRUE;
-        }
-        else if (JOY_NEW(sDebugCode[sCurrDebugCodeEntered])){
-            sCurrDebugCodeEntered++;
-            if(JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
-                return FALSE;
-        }
-        else if (gMain.newKeys != 0){
-            sCurrDebugCodeEntered = 0;
-        }
-    }
+    s16* data = gTasks[taskId].data;
 
     if (JOY_NEW(A_BUTTON))
     {
@@ -981,7 +968,7 @@ static bool8 HandleMainMenuInput(u8 taskId)
     }
     else if ((JOY_NEW(DPAD_UP)) && tCurrItem > 0)
     {
-        if (tMenuType == HAS_MYSTERY_EVENTS && tIsScrolled == TRUE && tCurrItem == 1)
+        if (tIsScrolled == TRUE && tCurrItem == 1)
         {
             ChangeBgY(0, 0x2000, BG_COORD_SUB);
             ChangeBgY(1, 0x2000, BG_COORD_SUB);
@@ -993,7 +980,14 @@ static bool8 HandleMainMenuInput(u8 taskId)
     }
     else if ((JOY_NEW(DPAD_DOWN)) && tCurrItem < tItemCount - 1)
     {
-        if (tMenuType == HAS_MYSTERY_EVENTS && tCurrItem == 3 && tIsScrolled == FALSE)
+        if (tIsScrolled == FALSE && tCurrItem == 3 && (tMenuType == HAS_MYSTERY_GIFT || tMenuType == HAS_MYSTERY_EVENTS))
+        {
+            ChangeBgY(0, 0x2000, BG_COORD_ADD);
+            ChangeBgY(1, 0x2000, BG_COORD_ADD);
+            gTasks[tScrollArrowTaskId].tArrowTaskIsScrolled = 2;
+            tIsScrolled = TRUE;
+        }
+        else if (tIsScrolled == FALSE && tCurrItem == 3)
         {
             ChangeBgY(0, 0x2000, BG_COORD_ADD);
             ChangeBgY(1, 0x2000, BG_COORD_ADD);
