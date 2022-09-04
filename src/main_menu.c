@@ -41,7 +41,6 @@
 #include "constants/flags.h"
 #include "clock.h"
 #include "roamer.h"
-#include "rumble.h"
 
 /*
  * Main menu state machine
