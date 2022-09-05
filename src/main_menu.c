@@ -674,8 +674,11 @@ static void Task_MainMenuCheckSaveFile(u8 taskId)
         SetGpuReg(REG_OFFSET_BLDALPHA, 0);
         SetGpuReg(REG_OFFSET_BLDY, 7);
 
-        if (IsWirelessAdapterConnected())
-            tWirelessAdapterConnected = TRUE;
+        if (gGameBoyPlayerDetected)
+            FlagSet(FLAG_USED_GAME_BOY_PLAYER);
+
+        //if (IsWirelessAdapterConnected())
+        //    tWirelessAdapterConnected = TRUE;
         switch (gSaveFileStatus)
         {
             case SAVE_STATUS_OK:
