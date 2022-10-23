@@ -39,6 +39,7 @@
 #include "constants/rgb.h"
 #include "menu.h"
 #include "pokemon_summary_screen.h"
+#include "rumble.h"
 
 static void PlayerHandleGetMonData(void);
 static void PlayerHandleSetMonData(void);
@@ -1296,10 +1297,12 @@ static void CompleteOnHealthbarDone(void)
 
     if (hpValue != -1)
     {
+        rumble_set_state(rumble_start);
         UpdateHpTextInHealthbox(gHealthboxSpriteIds[gActiveBattler], hpValue, HP_CURRENT);
     }
     else
     {
+        rumble_set_state(rumble_stop);
         HandleLowHpMusicChange(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
         PlayerBufferExecCompleted();
     }
