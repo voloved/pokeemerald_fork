@@ -577,7 +577,7 @@ void PlayBGM(u16 songNum)
 
 void PlaySE(u16 songNum)
 {
-    rumble_set_state(rumble_start);
+    SetRumbleState(RUMBLE_ON);
     m4aSongNumStart(songNum);
 }
 
