@@ -7,7 +7,6 @@
 #include "pokemon.h"
 #include "constants/songs.h"
 #include "task.h"
-#include "rumble.h"
 
 struct Fanfare
 {
@@ -577,7 +576,6 @@ void PlayBGM(u16 songNum)
 
 void PlaySE(u16 songNum)
 {
-    SetRumbleState(RUMBLE_ON);
     m4aSongNumStart(songNum);
 }
 
