@@ -717,8 +717,10 @@ static void Task_MainMenuCheckBattery(u8 taskId)
         }
         else
         {
-            CreateMainMenuErrorWindow(gText_BatteryRunDry);
-            gTasks[taskId].func = Task_WaitForBatteryDryErrorWindow;
+            //DV 20221201 Removing RTC complaint.
+            //CreateMainMenuErrorWindow(gText_BatteryRunDry);
+            //gTasks[taskId].func = Task_WaitForBatteryDryErrorWindow;
+            gTasks[taskId].func = Task_DisplayMainMenu;
         }
     }
 }
