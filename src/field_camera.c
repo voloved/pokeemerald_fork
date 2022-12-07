@@ -13,6 +13,7 @@
 #include "text.h"
 
 EWRAM_DATA bool8 gUnusedBikeCameraAheadPanback = FALSE;
+EWRAM_DATA bool8 gRunToggleBtnSet = FALSE;
 
 struct FieldCameraOffset
 {

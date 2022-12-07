@@ -65,6 +65,7 @@ enum
 
 // Exported RAM declarations
 extern bool8 gUnusedBikeCameraAheadPanback;
+extern bool8 gRunToggleBtnSet;
 
 // Exported ROM declarations
 void MovePlayerOnBike(u8 direction, u16 newKeys, u16 heldKeys);
