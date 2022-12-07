@@ -882,6 +882,11 @@ static void Task_ViewClock_HandleInput(u8 taskId)
     InitClockWithRtc(taskId);
     if (JOY_NEW(A_BUTTON | B_BUTTON))
         gTasks[taskId].func = Task_ViewClock_FadeOut;
+    else if (JOY_NEW(R_BUTTON))
+    // DV 20221201: Made changing the clock anytime its viewed possible.
+    // TODO: Add image to show A is to set, andB is to cencel (sprite images only have A and B)
+    // TODO: Allow cancelling for setting the time.
+        gTasks[taskId].func = Task_SetClock_WaitFadeIn;
 }
 
 static void Task_ViewClock_FadeOut(u8 taskId)
