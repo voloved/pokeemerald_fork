@@ -605,7 +605,7 @@ static void PlayerNotOnBikeTurningInPlace(u8 direction, u16 heldKeys)
 static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
 {
     u8 collision = CheckForPlayerAvatarCollision(direction);
-
+    
     if (collision)
     {
         if (collision == COLLISION_LEDGE_JUMP)
@@ -634,15 +634,23 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
         return;
     }
 
-    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && (heldKeys & B_BUTTON) && FlagGet(FLAG_SYS_B_DASH)
+    // DV 20211201: Modified running controls so that B toggles them
+    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && (gRunToggleBtnSet || FlagGet(FLAG_RUNNING_SHOES_TOGGLE)) && FlagGet(FLAG_SYS_B_DASH)
      && IsRunningDisallowed(gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior) == 0)
     {
         PlayerRun(direction);
         gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_DASH;
+        if (gRunToggleBtnSet)
+        {
+            FlagGet(FLAG_RUNNING_SHOES_TOGGLE) == FALSE ? FlagSet(FLAG_RUNNING_SHOES_TOGGLE) : FlagClear(FLAG_RUNNING_SHOES_TOGGLE);  // Toggles shoes
+            gRunToggleBtnSet = FALSE;
+        }
         return;
     }
     else
     {
+        FlagClear(FLAG_RUNNING_SHOES_TOGGLE);
+        gRunToggleBtnSet = FALSE;
         PlayerWalkNormal(direction);
     }
 }
