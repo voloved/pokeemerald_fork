@@ -712,6 +712,7 @@ Common_EventScript_SetAbnormalWeather::
 Common_EventScript_PlayGymBadgeFanfare::
 	playfanfare MUS_OBTAIN_BADGE
 	waitfanfare
+	special HealPlayerParty
 	return
 
 Common_EventScript_OutOfCenterPartyHeal::
