@@ -644,7 +644,6 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
         {
             FlagGet(FLAG_RUNNING_SHOES_TOGGLE) == FALSE ? FlagSet(FLAG_RUNNING_SHOES_TOGGLE) : FlagClear(FLAG_RUNNING_SHOES_TOGGLE);  // Toggles shoes
         }
-        FlagClear(FLAG_PREV_RUN_BTN_STATE);
         return;
     }
     else
@@ -652,6 +651,7 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
         FlagClear(FLAG_RUNNING_SHOES_TOGGLE);
         PlayerWalkNormal(direction);
     }
+    FlagClear(FLAG_PREV_RUN_BTN_STATE);
 }
 
 static u8 CheckForPlayerAvatarCollision(u8 direction)
