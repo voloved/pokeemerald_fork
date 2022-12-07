@@ -49,3 +49,8 @@ gText_ThankYouForWaiting::
 
 gText_WeHopeToSeeYouAgain2::
 	.string "We hope to see you again!$"
+
+gText_WeHopeToSeeYouAgain3::
+	.string "Your POKéMON are healed.\n"
+	.string "We hope to see you again!$"
+
