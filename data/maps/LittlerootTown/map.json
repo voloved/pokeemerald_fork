@@ -263,6 +263,13 @@
       "elevation": 3,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "LittlerootTown_EventScript_BrendansHouseSign"
+    },
+    {
+      "type": "secret_base",
+      "x": 7,
+      "y": 8,
+      "elevation": 0,
+      "secret_base_id": "SECRET_BASE_RED_CAVE1_1"
     }
   ]
 }
