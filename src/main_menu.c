@@ -2108,7 +2108,7 @@ static void NewGameBirchSpeech_SetDefaultPlayerName(u8 nameId)
     u8 i;
 
     if (gSaveBlock2Ptr->playerGender == MALE)
-        name = sMalePresetNames[nameId];
+        name = gText_DefaultNameNick;
     else
         name = sFemalePresetNames[nameId];
     for (i = 0; i < PLAYER_NAME_LENGTH; i++)
