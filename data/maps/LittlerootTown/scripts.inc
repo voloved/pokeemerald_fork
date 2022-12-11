@@ -424,6 +424,10 @@ LittlerootTown_EventScript_MaysHouseSign::
 	releaseall
 	end
 
+LittlerootTown_EventScript_Basketball::
+	msgbox LittlerootTown_Text_BasketballSign, MSGBOX_SIGN
+	end
+
 LittlerootTown_EventScript_BirchsHouseSignMale::
 	msgbox LittlerootTown_Text_ProfBirchsHouse, MSGBOX_DEFAULT
 	return
@@ -1007,6 +1011,10 @@ LittlerootTown_Text_PlayersHouse:
 
 LittlerootTown_Text_ProfBirchsHouse:
 	.string "PROF. BIRCH'S HOUSE$"
+
+LittlerootTown_Text_BasketballSign:
+	.string "This is your basketball hoop.\n"
+	.string "(I couldn't find a better sprite.)$"
 
 LittlerootTown_Text_BirchSomethingToShowYouAtLab:
 	.string "PROF. BIRCH: Well, well, {PLAYER}{KUN}!\n"
