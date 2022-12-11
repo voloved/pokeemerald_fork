@@ -927,7 +927,7 @@ LittlerootTown_Text_OurNewHomeLetsGoInside:
 
 LittlerootTown_Text_WaitPlayer:
 	.string "MOM: Wait, {PLAYER}!\n"
-	.string "Get over here before I break a femur.$"
+	.string "Get over here before I break a femur!$"
 
 LittlerootTown_Text_WearTheseRunningShoes:
 	.string "MOM: {PLAYER}! {PLAYER}! Did you\n"
