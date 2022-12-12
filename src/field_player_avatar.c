@@ -638,18 +638,30 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
     if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && (gRunToggleBtnSet || FlagGet(FLAG_RUNNING_SHOES_TOGGLE)) && FlagGet(FLAG_SYS_B_DASH)
      && IsRunningDisallowed(gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior) == 0)
     {
-        PlayerRun(direction);
-        gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_DASH;
         if (gRunToggleBtnSet)
         {
-            FlagGet(FLAG_RUNNING_SHOES_TOGGLE) == FALSE ? FlagSet(FLAG_RUNNING_SHOES_TOGGLE) : FlagClear(FLAG_RUNNING_SHOES_TOGGLE);  // Toggles shoes
             gRunToggleBtnSet = FALSE;
+            if (FlagGet(FLAG_RUNNING_SHOES_TOGGLE) == FALSE)
+            {
+                FlagSet(FLAG_RUNNING_SHOES_TOGGLE);
+                PlayerRun(direction);
+                gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_DASH;
+                return;
+            }
+            else
+            {
+                FlagClear(FLAG_RUNNING_SHOES_TOGGLE);
+                gRunToggleBtnSet = FALSE;
+                PlayerWalkNormal(direction);
+                return;
+            } 
         }
+        PlayerRun(direction);
+        gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_DASH;
         return;
     }
     else
     {
-        FlagClear(FLAG_RUNNING_SHOES_TOGGLE);
         gRunToggleBtnSet = FALSE;
         PlayerWalkNormal(direction);
     }
