@@ -649,7 +649,6 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
     }
     else
     {
-        FlagClear(FLAG_RUNNING_SHOES_TOGGLE);
         gRunToggleBtnSet = FALSE;
         PlayerWalkNormal(direction);
     }
