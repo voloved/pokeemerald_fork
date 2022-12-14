@@ -33,7 +33,7 @@ To set up the repository, see [INSTALL.md](INSTALL.md).
 - [Prompt for reusing Repels](https://github.com/pret/pokeemerald/wiki/Prompt-for-reusing-Repels)
 - [Simplistic Battle Intro](https://www.pokecommunity.com/showpost.php?p=10473117)
 - Added type color that shows battle effectiveness 
-  - Used [this]((https://www.pokecommunity.com/showpost.php?p=10167016&postcount=83), but the vanilla code needed modification for it to work well.
+  - Used [this](https://www.pokecommunity.com/showpost.php?p=10167016&postcount=83), but the vanilla code needed modification for it to work well.
 - Added [debug menu]((https://www.pokecommunity.com/showpost.php?p=10220970&postcount=175)) (turned off by default)
 - [Faster HP Drain](https://github.com/pret/pokeemerald/wiki/Faster-HP-Drain)
 - [Wrong Save File Error Message](https://www.pokecommunity.com/showpost.php?p=10449518)
