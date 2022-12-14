@@ -3,6 +3,7 @@
 #include "battle_message.h"
 #include "battle_anim.h"
 #include "battle_ai_script_commands.h"
+#include "battle_tower.h"
 #include "battle_scripts.h"
 #include "item.h"
 #include "util.h"
@@ -24,6 +25,7 @@
 #include "pokemon_icon.h"
 #include "m4a.h"
 #include "mail.h"
+#include "match_call.h"
 #include "event_data.h"
 #include "pokemon_storage_system.h"
 #include "task.h"
@@ -601,6 +603,9 @@ static const struct StatFractions sAccuracyStageRatios[] =
     {133,  50}, // +5
     {  3,   1}, // +6
 };
+
+static const u16 sWhiteOutBadgeMoney[9] = {8, 16, 24, 36, 48, 64, 80, 100, 120};
+// sWhiteOutBadgeMoney[badgeCount] + highest level in party = Money lost in battle.
 
 // The chance is 1/N for each stage.
 static const u16 sCriticalHitChance[] = {16, 8, 4, 3, 2};
@@ -5604,13 +5609,20 @@ static u32 GetTrainerMoneyToGive(u16 trainerId)
 
 static void Cmd_getmoneyreward(void)
 {
-    u32 moneyReward = GetTrainerMoneyToGive(gTrainerBattleOpponent_A);
-    if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
-        moneyReward += GetTrainerMoneyToGive(gTrainerBattleOpponent_B);
-
-    AddMoney(&gSaveBlock1Ptr->money, moneyReward);
-    PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff1, 5, moneyReward);
-
+    u32 money;
+    if (gBattleOutcome == B_OUTCOME_WON)
+    {
+        money = GetTrainerMoneyToGive(gTrainerBattleOpponent_A);
+        if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
+            money += GetTrainerMoneyToGive(gTrainerBattleOpponent_B);
+        AddMoney(&gSaveBlock1Ptr->money, money);
+    }
+    else
+    {
+        money = sWhiteOutBadgeMoney[GetNumOwnedBadges()] * GetHighestLevelInPlayerParty();
+        RemoveMoney(&gSaveBlock1Ptr->money, money);
+    }
+    PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff1, 5, money);
     gBattlescriptCurrInstr++;
 }
 
