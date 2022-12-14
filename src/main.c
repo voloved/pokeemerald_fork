@@ -284,14 +284,7 @@ static void ReadKeys(void)
         if (JOY_HELD(L_BUTTON))
         {
             gMain.heldKeys |= A_BUTTON;
-            if (gMain.newKeys & A_BUTTON)
-            {
-                gMain.newKeys &= ~A_BUTTON;
-            } 
-            else
-            {
-                gMain.newKeys |= A_BUTTON;
-            }
+            gMain.newKeys ^= A_BUTTON;
         }
     }
 
