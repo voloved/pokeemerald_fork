@@ -87,7 +87,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .tilemapLeft = 24,
         .tilemapTop = 16,
         .width = 6,
-        .height = 2,
+        .height = 4,
         .paletteNum = 12,
         .baseBlock = 560
     },
@@ -717,7 +717,7 @@ void CB2_StartWallClock(void)
 
     WallClockInit();
 
-    AddTextPrinterParameterized(1, FONT_NORMAL, gText_Confirm3, 0, 1, 0, NULL);
+    AddTextPrinterParameterized(1, FONT_NORMAL, gText_Confirm3, 0, 0, 0, NULL);
     PutWindowTilemap(1);
     ScheduleBgCopyTilemapToVram(2);
 }
@@ -765,7 +765,8 @@ void CB2_ViewWallClock(void)
 
     WallClockInit();
 
-    AddTextPrinterParameterized(1, FONT_NORMAL, gText_Cancel4, 0, 1, 0, NULL);
+    AddTextPrinterParameterized(1, FONT_NORMAL, gText_Cancel4, 0, 0, 0, NULL);
+    AddTextPrinterParameterized(1, FONT_NORMAL, gText_Reset1, 0, 16, 0, NULL);
     PutWindowTilemap(1);
     ScheduleBgCopyTilemapToVram(2);
 }
@@ -885,7 +886,9 @@ static void Task_ViewClock_HandleInput(u8 taskId)
     if (JOY_NEW(R_BUTTON)){
         PlaySE(SE_SELECT);
         LZ77UnCompVram(gWallClockStart_Tilemap, (u16 *)BG_SCREEN_ADDR(7));
-        AddTextPrinterParameterized(1, FONT_NORMAL, gText_Confirm3, 0, 1, 0, NULL);
+        ClearStdWindowAndFrameToTransparent(1, FALSE);
+        ClearWindowTilemap(1);
+        AddTextPrinterParameterized(1, FONT_NORMAL, gText_Confirm3, 0, 0, 0, NULL);
         PutWindowTilemap(1);
         ScheduleBgCopyTilemapToVram(2);
         gTasks[taskId].func = Task_SetClock_HandleInput;
