@@ -10,6 +10,7 @@
 #include "battle_tv.h"
 #include "bg.h"
 #include "data.h"
+#include "event_data.h"
 #include "item.h"
 #include "item_menu.h"
 #include "link.h"
@@ -1504,7 +1505,7 @@ u8 TypeEffectiveness(u8 targetId)
     u8 moveFlags;
     u16 move;
     struct ChooseMoveStruct *moveInfo;
-    if (!typeEffectivenessBattleShow){
+    if (FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW) == FALSE){
         return 10;
     }
     moveInfo = (struct ChooseMoveStruct *)(&gBattleBufferA[gActiveBattler][4]);
