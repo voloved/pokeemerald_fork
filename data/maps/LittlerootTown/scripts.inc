@@ -1058,7 +1058,7 @@ LittlerootTown_Text_BasketballShotSignMade:
 
 LittlerootTown_Text_BackOfHoop:
 	.string "{PLAYER}, we both know you can't make\n"
-	.string "this shot.$"
+	.string "a shot behind the hoop.$"
 
 LittlerootTown_Text_BirchSomethingToShowYouAtLab:
 	.string "PROF. BIRCH: Well, well, {PLAYER}{KUN}!\n"
