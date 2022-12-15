@@ -425,7 +425,10 @@ LittlerootTown_EventScript_MaysHouseSign::
 	end
 
 LittlerootTown_EventScript_Basketball::
-	msgbox LittlerootTown_Text_BasketballSign, MSGBOX_SIGN
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	goto_if_eq VAR_RESULT, DIR_WEST, LittlerootTown_EventScript_BackOfHoop
+	goto LittlerootTown_EventScript_BasketballShot
+LittlerootTown_EventScript_BasketballEnd::
 	end
 
 LittlerootTown_EventScript_BasketballShot::
@@ -454,7 +457,8 @@ LittlerootTown_EventScript_BasketballShotSignMade::
 
 LittlerootTown_EventScript_BackOfHoop::
 	msgbox LittlerootTown_Text_BackOfHoop, MSGBOX_DEFAULT
-	end
+	closemessage
+	goto LittlerootTown_EventScript_BasketballEnd
 
 LittlerootTown_EventScript_BirchsHouseSignMale::
 	msgbox LittlerootTown_Text_ProfBirchsHouse, MSGBOX_DEFAULT
@@ -1053,7 +1057,8 @@ LittlerootTown_Text_BasketballShotSignMade:
 	.string "Shot was made!$"
 
 LittlerootTown_Text_BackOfHoop:
-	.string "{PLAYER}, we both know you can't make this shot.$"
+	.string "{PLAYER}, we both know you can't make\n"
+	.string "this shot.$"
 
 LittlerootTown_Text_BirchSomethingToShowYouAtLab:
 	.string "PROF. BIRCH: Well, well, {PLAYER}{KUN}!\n"
