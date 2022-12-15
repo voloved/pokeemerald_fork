@@ -429,18 +429,31 @@ LittlerootTown_EventScript_Basketball::
 	end
 
 LittlerootTown_EventScript_BasketballShot::
+	msgbox LittlerootTown_Text_BasketballShotSignAttempt, MSGBOX_DEFAULT
+	delay 10
+	closemessage
 	random 10
-	copyvar VAR_0x800A, VAR_RESULT
-	goto_if_lt VAR_RESULT, 3, LittlerootTown_EventScript_BasketballShotSignMade
-	goto LittlerootTown_EventScript_BasketballShotMiss
-	end
+	compare VAR_RESULT, 3
+	goto_if_lt LittlerootTown_EventScript_BasketballShotSignMade
+    playse SE_FAILURE
+	waitse
+	msgbox LittlerootTown_Text_BasketballShotSignMiss, MSGBOX_DEFAULT
+LittlerootTown_EventScript_BasketballShotEnd:
+	closemessage
+	return
 
-LittlerootTown_EventScript_BasketballShotMiss::
-	msgbox LittlerootTown_Text_BasketballShotSignMiss, MSGBOX_SIGN
+LittlerootTown_EventScript_BasketballShotAttempt::
+	msgbox LittlerootTown_Text_BasketballShotSignAttempt, MSGBOX_DEFAULT
 	return
 
 LittlerootTown_EventScript_BasketballShotSignMade::
-	msgbox LittlerootTown_Text_BasketballShotSignMade, MSGBOX_SIGN
+	playse SE_SUCCESS
+	waitse
+	msgbox LittlerootTown_Text_BasketballShotSignMade, MSGBOX_DEFAULT
+	goto LittlerootTown_EventScript_BasketballShotEnd
+
+LittlerootTown_EventScript_BackOfHoop::
+	msgbox LittlerootTown_Text_BackOfHoop, MSGBOX_DEFAULT
 	end
 
 LittlerootTown_EventScript_BirchsHouseSignMale::
@@ -1030,13 +1043,17 @@ LittlerootTown_Text_ProfBirchsHouse:
 LittlerootTown_Text_BasketballSign:
 	.string "This is your basketball hoop.$"
 
+LittlerootTown_Text_BasketballShotSignAttempt:
+	.string "Attempting LeBron-James-I-am-not shot.$"
+
 LittlerootTown_Text_BasketballShotSignMiss:
-	.string "Attempting LeBron-James-I-am-not shot.\p"
 	.string "Shot missed.$"
 
 LittlerootTown_Text_BasketballShotSignMade:
-	.string "Attempting LeBron-James-I-am-not shot.\p"
 	.string "Shot was made!$"
+
+LittlerootTown_Text_BackOfHoop:
+	.string "{PLAYER}, we both know you can't make this shot.$"
 
 LittlerootTown_Text_BirchSomethingToShowYouAtLab:
 	.string "PROF. BIRCH: Well, well, {PLAYER}{KUN}!\n"
