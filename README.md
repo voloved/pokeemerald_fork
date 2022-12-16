@@ -8,7 +8,7 @@ To set up the repository, see [INSTALL.md](INSTALL.md).
 - Added graphics for Nick's front, back, intro scene, and overworld sprites
 - Changed character's house to match Nick's
 - Added secret base as garage (Secret Power TM is in PC and 2 straight boards are added as decorations when a new game is made)
-- Added a basetball hoop
+- Added a basketball hoop
 - Changed hometown name
 - Added message on copyright screen
 - Made 'Nick' be the default name to use if no name is set for a new character
