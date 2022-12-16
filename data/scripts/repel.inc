@@ -19,7 +19,7 @@ EventScript_RepelWoreOff_ChooseNo:
 	goto EventScript_RepelWoreOff_End
 EventScript_RepelWoreOff_NoMoreRepels:
 	msgbox Text_RepelWoreOff, MSGBOX_SIGN
-	EventScript_RepelWoreOff_End:
+EventScript_RepelWoreOff_End:
 	releaseall
 	end
 
