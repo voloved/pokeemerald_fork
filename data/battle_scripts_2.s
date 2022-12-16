@@ -79,11 +79,14 @@ BattleScript_TryNicknameCaughtMon::
 	givecaughtmon
 	printfromtable gCaughtMonStringIds
 	waitmessage B_WAIT_TIME_LONG
+	jumpifhalfword CMP_EQUAL, gLastUsedItem, ITEM_MASTER_BALL, BattleScript_SuccessThiefBallThrowEnd
 	goto BattleScript_SuccessBallThrowEnd
 BattleScript_GiveCaughtMonEnd::
 	givecaughtmon
 BattleScript_SuccessBallThrowEnd::
 	setbyte gBattleOutcome, B_OUTCOME_CAUGHT
+	finishturn
+BattleScript_SuccessThiefBallThrowEnd::
 	finishturn
 
 BattleScript_WallyBallThrow::

@@ -9823,7 +9823,7 @@ static void Cmd_handleballthrow(void)
     gActiveBattler = gBattlerAttacker;
     gBattlerTarget = BATTLE_OPPOSITE(gBattlerAttacker);
 
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gLastUsedItem != ITEM_MASTER_BALL) && FALSE)
     {
         BtlController_EmitBallThrowAnim(BUFFER_A, BALL_TRAINER_BLOCK);
         MarkBattlerForControllerExec(gActiveBattler);
