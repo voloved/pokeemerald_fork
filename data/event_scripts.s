@@ -715,6 +715,7 @@ Common_EventScript_PlayGymBadgeFanfare::
 	playfanfare MUS_OBTAIN_BADGE
 	waitfanfare
 	special HealPlayerParty
+	msgbox Common_Text_PokemonHealAfterGym, MSGBOX_DEFAULT
 	return
 
 Common_EventScript_OutOfCenterPartyHeal::
