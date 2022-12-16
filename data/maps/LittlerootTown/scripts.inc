@@ -439,8 +439,8 @@ LittlerootTown_EventScript_BasketballShot:
 	compare VAR_RESULT, 3
 	goto_if_lt LittlerootTown_EventScript_BasketballShotSignMade
     playse SE_FAILURE
-	waitse
 	msgbox LittlerootTown_Text_BasketballShotSignMiss, MSGBOX_DEFAULT
+	waitse
 LittlerootTown_EventScript_BasketballShotEnd::
 	closemessage
 	return
@@ -451,8 +451,8 @@ LittlerootTown_EventScript_BasketballShotAttempt:
 
 LittlerootTown_EventScript_BasketballShotSignMade:
 	playse SE_SUCCESS
-	waitse
 	msgbox LittlerootTown_Text_BasketballShotSignMade, MSGBOX_DEFAULT
+	waitse
 	goto LittlerootTown_EventScript_BasketballShotEnd
 
 LittlerootTown_EventScript_BackOfHoop:
