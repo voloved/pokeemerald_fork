@@ -431,7 +431,7 @@ LittlerootTown_EventScript_Basketball::
 LittlerootTown_EventScript_BasketballEnd::
 	end
 
-LittlerootTown_EventScript_BasketballShot::
+LittlerootTown_EventScript_BasketballShot:
 	msgbox LittlerootTown_Text_BasketballShotSignAttempt, MSGBOX_DEFAULT
 	delay 10
 	closemessage
@@ -445,17 +445,17 @@ LittlerootTown_EventScript_BasketballShotEnd::
 	closemessage
 	return
 
-LittlerootTown_EventScript_BasketballShotAttempt::
+LittlerootTown_EventScript_BasketballShotAttempt:
 	msgbox LittlerootTown_Text_BasketballShotSignAttempt, MSGBOX_DEFAULT
 	return
 
-LittlerootTown_EventScript_BasketballShotSignMade::
+LittlerootTown_EventScript_BasketballShotSignMade:
 	playse SE_SUCCESS
 	waitse
 	msgbox LittlerootTown_Text_BasketballShotSignMade, MSGBOX_DEFAULT
 	goto LittlerootTown_EventScript_BasketballShotEnd
 
-LittlerootTown_EventScript_BackOfHoop::
+LittlerootTown_EventScript_BackOfHoop:
 	msgbox LittlerootTown_Text_BackOfHoop, MSGBOX_DEFAULT
 	closemessage
 	goto LittlerootTown_EventScript_BasketballEnd

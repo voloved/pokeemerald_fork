@@ -24,13 +24,13 @@ To set up the repository, see [INSTALL.md](INSTALL.md).
 - [Removing Badge Checks for HMs](https://www.pokecommunity.com/showpost.php?p=10036664)
 - [White Out money calculation to match future gens and displays money lost amount](https://github.com/pret/pokeemerald/wiki/Better-White-Out-Money-Calculation)
 - [Remove the extra save confirmation](https://github.com/pret/pokeemerald/wiki/Remove-the-extra-save-confirmation)
-- [Increase Text Speed Beyond Fast](Increase Text Speed Beyond Fashttps://www.pokecommunity.com/showpost.php?p=10400198)
+- [Increase Text Speed Beyond Fast](https://www.pokecommunity.com/showpost.php?p=10400198)
 - [Return and Frustration show power in summary screen](https://www.pokecommunity.com/showpost.php?p=10575976&postcount=420)
 - [Pushing R when looking at the clock allows for the time to be changed](https://www.pokecommunity.com/showpost.php?p=10481737)
   - Tilemap for clock now includes mention of R to reset
-- Faster Pokemon Center healing
+- Faster Pokémon Center healing
   - Created before finding [this](https://github.com/pret/pokeemerald/wiki/Speedy-Nurse-Joy), but same idea
-- Party now gets healed after winning a gym badge (and when receiving your Pokedex completion diploma at the Lilycove Motel)
+- Party now gets healed after winning a gym badge (and when receiving your Pokédex completion diploma at the Lilycove Motel)
 - [Set L=A and fast scroll text as the default](https://www.pokecommunity.com/showpost.php?p=9967853&postcount=5)
 - [Prompt for reusing Repels](https://github.com/pret/pokeemerald/wiki/Prompt-for-reusing-Repels)
 - [Simplistic Battle Intro](https://www.pokecommunity.com/showpost.php?p=10473117)
@@ -41,6 +41,7 @@ To set up the repository, see [INSTALL.md](INSTALL.md).
 - [Wrong Save File Error Message](https://www.pokecommunity.com/showpost.php?p=10449518)
 - [Surfing Dismount Ground Effects](https://github.com/pret/pokeemerald/wiki/Surfing-Dismount-Ground-Effects)
 - [Improving the WaitForVBlank function](https://github.com/pret/pokeemerald/wiki/Improving-the-WaitForVBlank-function)
+- [Lower case after first input in the naming screen](https://www.pokecommunity.com/showpost.php?p=10199896&postcount=139)
 - [Let a Pokémon forget any move they know](https://www.pokecommunity.com/showpost.php?p=10182839&postcount=119)
 - Default Options are now fast text speed and L=A by default
   - Made before finding [this](https://www.pokecommunity.com/showpost.php?p=9967853&postcount=5), but same idea
