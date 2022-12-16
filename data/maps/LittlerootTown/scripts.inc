@@ -441,7 +441,7 @@ LittlerootTown_EventScript_BasketballShot::
     playse SE_FAILURE
 	waitse
 	msgbox LittlerootTown_Text_BasketballShotSignMiss, MSGBOX_DEFAULT
-LittlerootTown_EventScript_BasketballShotEnd:
+LittlerootTown_EventScript_BasketballShotEnd::
 	closemessage
 	return
 
