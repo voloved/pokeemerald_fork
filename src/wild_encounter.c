@@ -21,8 +21,6 @@
 #include "constants/items.h"
 #include "constants/layouts.h"
 #include "constants/weather.h"
-#include "item.h"
-#include "constants/hold_effects.h"
 
 extern const u8 EventScript_RepelWoreOff[];
 
@@ -54,7 +52,6 @@ static void FeebasSeedRng(u16 seed);
 static bool8 IsWildLevelAllowedByRepel(u8 level);
 static void ApplyFluteEncounterRateMod(u32 *encRate);
 static void ApplyCleanseTagEncounterRateMod(u32 *encRate);
-static void ApplyRepelAllEncounterRateMod(u32 *encRate);
 static bool8 TryGetAbilityInfluencedWildMonIndex(const struct WildPokemon *wildMon, u8 type, u8 ability, u8 *monIndex);
 static bool8 IsAbilityAllowingEncounter(u8 level);
 
@@ -500,7 +497,6 @@ static bool8 WildEncounterCheck(u32 encounterRate, bool8 ignoreAbility)
         encounterRate = encounterRate * 80 / 100;
     ApplyFluteEncounterRateMod(&encounterRate);
     ApplyCleanseTagEncounterRateMod(&encounterRate);
-    ApplyRepelAllEncounterRateMod(&encounterRate);
     if (!ignoreAbility && !GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG))
     {
         u32 ability = GetMonAbility(&gPlayerParty[0]);
@@ -950,15 +946,9 @@ static void ApplyFluteEncounterRateMod(u32 *encRate)
 
 static void ApplyCleanseTagEncounterRateMod(u32 *encRate)
 {
-    if (GetMonData(&gPlayerParty[0], MON_DATA_HELD_ITEM) == ITEM_CLEANSE_TAG)
-        *encRate = *encRate * 2 / 3;
-}
-
-static void ApplyRepelAllEncounterRateMod(u32 *encRate)
-{
     int i;
     for (i = 0; i < PARTY_SIZE; i++){
-        if (ItemId_GetHoldEffect(GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM)) == HOLD_EFFECT_REPEL_ALL){
+        if (GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM) == ITEM_CLEANSE_TAG){
             *encRate = 0;
             break;
         }

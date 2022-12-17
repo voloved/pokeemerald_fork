@@ -333,8 +333,8 @@ static const u8 sXSpecialDesc[] = _(
     "battle.");
 
 static const u8 sPokeDollDesc[] = _(
-    "Hold to avoid wild\n"
-    "battles. Use to flee\n"
+    "Use to flee from\n"
+    "any battle with\n"
     "a wild POKéMON.");
 
 static const u8 sFluffyTailDesc[] = _(
