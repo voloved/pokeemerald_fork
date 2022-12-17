@@ -1,6 +1,6 @@
 # Pokémon Emerald Gift
 
-This is a fork of the decompilation of [Pokémon Emerald](https://github.com/pret/pokeemerald).  
+This is a fork of the [decompilation of Pokémon Emerald](https://github.com/pret/pokeemerald).  
 Made as a 2022 Christmas gift for a friend, where the character sprites are made to look like him.  
 To set up the repository, see [INSTALL.md](INSTALL.md).
 
@@ -36,7 +36,7 @@ To set up the repository, see [INSTALL.md](INSTALL.md).
 - [Simplistic Battle Intro](https://www.pokecommunity.com/showpost.php?p=10473117)
 - [Added type color that shows battle effectiveness and added ability to toggle this feature in the option menu.](https://github.com/pret/pokeemerald/wiki/Show-Type-Effectiveness-In-Battle-Using-Pre-Existing--Function-and-Disable-in-Option-Menu)
   - Used [this](https://www.pokecommunity.com/showpost.php?p=10167016&postcount=83), but the vanilla code needed modification for it to work well.
-- Added [debug menu]((https://www.pokecommunity.com/showpost.php?p=10220970&postcount=175)) (turned off by default)
+- [Added debug menu](https://www.pokecommunity.com/showpost.php?p=10220970&postcount=175) (turned off by default)
 - [Faster HP Drain](https://github.com/pret/pokeemerald/wiki/Faster-HP-Drain)
 - [Wrong Save File Error Message](https://www.pokecommunity.com/showpost.php?p=10449518)
 - [Surfing Dismount Ground Effects](https://github.com/pret/pokeemerald/wiki/Surfing-Dismount-Ground-Effects)
@@ -46,4 +46,8 @@ To set up the repository, see [INSTALL.md](INSTALL.md).
 - Default Options are now fast text speed and L=A by default
   - Made before finding [this](https://www.pokecommunity.com/showpost.php?p=9967853&postcount=5), but same idea
 - Turned off getting match calls from trainers who are not looking to battle.
+- Intro now shows the biking trainer as the gender of the save file (defualts to male)
+- Made Cleanse Tag turn the off all wild encounters and made it's held ability work if held by any Pokémon in the party
+- Made Poké Doll cause [no trainers to see you](https://github.com/pret/pokeemerald/wiki/Toggle-Trainer-Sight). You can still go up and talk with them.
+- Added Beldom in Meteor Falls and Mareep in Route 110
 - Removed small bugs with *#define BUGFIX* in *config.h*
