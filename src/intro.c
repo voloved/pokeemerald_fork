@@ -1163,7 +1163,8 @@ void CB2_InitCopyrightScreenAfterTitleScreen(void)
 static void Task_Scene1_Load(u8 taskId)
 {
     SetVBlankCallback(NULL);
-    sIntroCharacterGender = Random() & 1;
+    sIntroCharacterGender = gSaveBlock2Ptr->playerGender;
+    // Loads the gender in the save file to show in into. If no save file, defaults to male
     IntroResetGpuRegs();
     SetGpuReg(REG_OFFSET_BG3VOFS, 0);
     SetGpuReg(REG_OFFSET_BG2VOFS, 80);
