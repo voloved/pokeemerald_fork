@@ -48,6 +48,6 @@ To set up the repository, see [INSTALL.md](INSTALL.md).
 - Turned off getting match calls from trainers who are not looking to battle.
 - Intro now shows the biking trainer as the gender of the save file (defualts to male)
 - Made Cleanse Tag turn the off all wild encounters and made it's held ability work if held by any Pokémon in the party
-- Made Poké Doll cause no trainers to see you. You can still go up and talk with them.
+- Made Poké Doll cause [no trainers to see you](https://github.com/pret/pokeemerald/wiki/Toggle-Trainer-Sight). You can still go up and talk with them.
 - Added Beldom in Meteor Falls and Mareep in Route 110
 - Removed small bugs with *#define BUGFIX* in *config.h*
