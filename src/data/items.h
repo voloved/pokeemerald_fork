@@ -1010,6 +1010,7 @@ const struct Item gItems[] =
         .name = _("POKé DOLL"),
         .itemId = ITEM_POKE_DOLL,
         .price = 1000,
+        .holdEffect = HOLD_EFFECT_REPEL_ALL,
         .description = sPokeDollDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
