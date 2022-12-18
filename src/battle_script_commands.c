@@ -9950,6 +9950,15 @@ static void Cmd_handleballthrow(void)
                     gBattleCommunication[MULTISTRING_CHOOSER] = 0;
                 else
                     gBattleCommunication[MULTISTRING_CHOOSER] = 1;
+                if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gLastUsedItem != ITEM_MASTER_BALL)){
+                    if (gMain.inBattle && gBattleOutcome == 0) {
+                        PlayBattleBGM(); // If battle is still ongoing, replay battle music
+                    }
+                    else{
+                        Overworld_PlaySpecialMapMusic();
+                    }
+                    ReshowBattleScreenAfterMenu();
+                }
             }
             else // not caught
             {

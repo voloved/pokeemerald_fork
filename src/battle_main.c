@@ -1951,9 +1951,6 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
     s32 i, j;
     u8 monsCount;
 
-    u32 fixedOTID;
-    u8 otGender;
-
     if (trainerNum == TRAINER_SECRET_BASE)
         return 0;
 
@@ -1976,21 +1973,16 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             monsCount = gTrainers[trainerNum].partySize;
         }
 
-        fixedOTID = Random32();
-
         for (i = 0; i < monsCount; i++)
         {
 
             if (gTrainers[trainerNum].doubleBattle == TRUE){
                 personalityValue = 0x80;
-                otGender = gSaveBlock2Ptr->playerGender;
             }
             else if (gTrainers[trainerNum].encounterMusic_gender & F_TRAINER_FEMALE){
-                otGender = FEMALE;
                 personalityValue = 0x78; // Use personality more likely to result in a female Pokémon
             }
             else{
-                otGender = MALE;
                 personalityValue = 0x88; // Use personality more likely to result in a male Pokémon}
             }
             for (j = 0; gTrainers[trainerNum].trainerName[j] != EOS; j++)
