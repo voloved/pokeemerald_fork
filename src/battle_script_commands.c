@@ -9987,6 +9987,12 @@ static void Cmd_givecaughtmon(void)
     GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_NICKNAME, gBattleResults.caughtMonNick);
     gBattleResults.caughtMonBall = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_POKEBALL, NULL);
 
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gLastUsedItem != ITEM_MASTER_BALL))
+    {
+        gBattleMons[gBattlerTarget].hp = 0;
+        SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_HP, &gBattleMons[gBattlerTarget].hp);
+    }
+
     gBattlescriptCurrInstr++;
 }
 
