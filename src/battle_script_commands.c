@@ -327,6 +327,8 @@ static void Cmd_removeattackerstatus1(void);
 static void Cmd_finishaction(void);
 static void Cmd_finishturn(void);
 static void Cmd_trainerslideout(void);
+static void Cmd_thiefballend(void);
+static void Cmd_prntState(void);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
 {
@@ -578,7 +580,9 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_removeattackerstatus1,                   //0xF5
     Cmd_finishaction,                            //0xF6
     Cmd_finishturn,                              //0xF7
-    Cmd_trainerslideout                          //0xF8
+    Cmd_trainerslideout,                         //0xF8
+    Cmd_thiefballend,                             //0xF9   
+    Cmd_prntState                    
 };
 
 struct StatFractions
@@ -9816,13 +9820,17 @@ static void Cmd_removelightscreenreflect(void)
 static void Cmd_handleballthrow(void)
 {
     u8 ballMultiplier = 0;
+    bool8 catchTrainersPokemon = FALSE;
 
     if (gBattleControllerExecFlags)
         return;
 
     gActiveBattler = gBattlerAttacker;
     gBattlerTarget = BATTLE_OPPOSITE(gBattlerAttacker);
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gLastUsedItem != ITEM_MASTER_BALL))
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gLastUsedItem == ITEM_MASTER_BALL)){
+        catchTrainersPokemon = TRUE;
+    }
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !catchTrainersPokemon)
     {
         BtlController_EmitBallThrowAnim(BUFFER_A, BALL_TRAINER_BLOCK);
         MarkBattlerForControllerExec(gActiveBattler);
@@ -9943,6 +9951,9 @@ static void Cmd_handleballthrow(void)
 
             if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
             {
+                if (catchTrainersPokemon){
+                    gBattleTerrainBackup = gBattleTerrain; // Store the battle terrain to be reloaded later
+                }
                 gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
                 SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
 
@@ -9950,15 +9961,6 @@ static void Cmd_handleballthrow(void)
                     gBattleCommunication[MULTISTRING_CHOOSER] = 0;
                 else
                     gBattleCommunication[MULTISTRING_CHOOSER] = 1;
-                if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gLastUsedItem != ITEM_MASTER_BALL)){
-                    if (gMain.inBattle && gBattleOutcome == 0) {
-                        PlayBattleBGM(); // If battle is still ongoing, replay battle music
-                    }
-                    else{
-                        Overworld_PlaySpecialMapMusic();
-                    }
-                    ReshowBattleScreenAfterMenu();
-                }
             }
             else // not caught
             {
@@ -9996,7 +9998,7 @@ static void Cmd_givecaughtmon(void)
     GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_NICKNAME, gBattleResults.caughtMonNick);
     gBattleResults.caughtMonBall = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_POKEBALL, NULL);
 
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gLastUsedItem != ITEM_MASTER_BALL))
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gLastUsedItem == ITEM_MASTER_BALL))
     {
         gBattleMons[gBattlerTarget].hp = 0;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_HP, &gBattleMons[gBattlerTarget].hp);
@@ -10176,11 +10178,15 @@ static void Cmd_trygivecaughtmonnick(void)
             }
             else
             {
+                FreeAllWindowBuffers();
+                SetMainCallback2(BattleMainCB2);
                 gBattleCommunication[MULTIUSE_STATE] = 4;
             }
         }
         else if (JOY_NEW(B_BUTTON))
         {
+            FreeAllWindowBuffers();
+            SetMainCallback2(BattleMainCB2);
             PlaySE(SE_SELECT);
             gBattleCommunication[MULTIUSE_STATE] = 4;
         }
@@ -10208,11 +10214,18 @@ static void Cmd_trygivecaughtmonnick(void)
         }
         break;
     case 4:
-        if (CalculatePlayerPartyCount() == PARTY_SIZE)
-            gBattlescriptCurrInstr += 5;
-        else
-            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
-        break;
+    DebugPrintf("%s", "Got to case 4 in the nickname");
+        if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active){
+            if (CalculatePlayerPartyCount() == PARTY_SIZE){
+                DebugPrintf("%s", "gBattlescriptCurrInstr += 5");
+                gBattlescriptCurrInstr += 5;
+                }
+            else{
+                DebugPrintf("%s", "gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1)");
+                gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
+            }
+            break;
+        }
     }
 }
 
@@ -10246,4 +10259,37 @@ static void Cmd_trainerslideout(void)
     MarkBattlerForControllerExec(gActiveBattler);
 
     gBattlescriptCurrInstr += 2;
+}
+
+static void Cmd_thiefballend(void)
+{
+    DebugPrintf("%s", "Cmd_thiefballend");
+    switch (gBattleCommunication[0])
+    {
+    case 0:
+        DebugPrintf("%s", "1");
+        gBattleTerrain = gBattleTerrainBackup; 
+        SetMainCallback2(ReshowBattleScreenAfterMenu);
+        gBattleCommunication[0]++;
+        break; 
+    case 1:
+        DebugPrintf("%s", "2");
+        if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active){
+            DebugPrintf("%s", "3");
+            if (gMain.inBattle && gBattleOutcome == 0){
+                PlayBattleBGM(); // If battle is still ongoing, replay battle music
+            }
+            else{
+                Overworld_PlaySpecialMapMusic();
+            }
+            gBattlescriptCurrInstr++;
+            break;
+        }
+    }
+}
+
+static void Cmd_prntState(void)
+{
+    DebugPrintf("%s", "Got to print");
+    gBattlescriptCurrInstr++;
 }
