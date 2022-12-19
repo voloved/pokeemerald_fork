@@ -3240,11 +3240,16 @@ static void Cmd_getexp(void)
 
     gBattlerFainted = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
     sentIn = gSentPokesToOpponent[(gBattlerFainted & 2) >> 1];
-
+    
     switch (gBattleScripting.getexpState)
     {
     case 0: // check if should receive exp at all
-        if (GetBattlerSide(gBattlerFainted) != B_SIDE_OPPONENT || (gBattleTypeFlags &
+        if (gUsingThiefBall == 2){
+            gUsingThiefBall = 0;
+            //MarkBattlerForControllerExec(gActiveBattler);
+            gBattleScripting.getexpState = 6; // goto last case
+        }
+        else if (GetBattlerSide(gBattlerFainted) != B_SIDE_OPPONENT || (gBattleTypeFlags &
              (BATTLE_TYPE_LINK
               | BATTLE_TYPE_RECORDED_LINK
               | BATTLE_TYPE_TRAINER_HILL
@@ -9821,20 +9826,19 @@ static void Cmd_removelightscreenreflect(void)
 static void Cmd_handleballthrow(void)
 {
     u8 ballMultiplier = 0;
-    bool8 catchTrainersPokemon = FALSE;
 
     if (gBattleControllerExecFlags)
         return;
 
     gActiveBattler = gBattlerAttacker;
     gBattlerTarget = BATTLE_OPPOSITE(gBattlerAttacker);
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gLastUsedItem == ITEM_MASTER_BALL)
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && ((gLastUsedItem == ITEM_PREMIER_BALL) || (gLastUsedItem == ITEM_MASTER_BALL))
     && !(gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_SAFARI | 
     BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | 
     BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK))){
-        catchTrainersPokemon = TRUE;
+        gUsingThiefBall = 1;
     }
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !catchTrainersPokemon)
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !gUsingThiefBall)
     {
         BtlController_EmitBallThrowAnim(BUFFER_A, BALL_TRAINER_BLOCK);
         MarkBattlerForControllerExec(gActiveBattler);
@@ -9896,8 +9900,10 @@ static void Cmd_handleballthrow(void)
                     ballMultiplier = 40;
                 break;
             case ITEM_LUXURY_BALL:
-            case ITEM_PREMIER_BALL:
                 ballMultiplier = 10;
+                break;
+            case ITEM_PREMIER_BALL:
+                ballMultiplier = 30;
                 break;
             }
         }
@@ -9955,7 +9961,8 @@ static void Cmd_handleballthrow(void)
 
             if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
             {
-                if (catchTrainersPokemon){
+                if (gUsingThiefBall == 1){
+                    gUsingThiefBall = 2;
                     gBattleTerrainBackup = gBattleTerrain; // Store the battle terrain to be reloaded later
                 }
                 gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
@@ -9968,6 +9975,7 @@ static void Cmd_handleballthrow(void)
             }
             else // not caught
             {
+                gUsingThiefBall = 0;
                 gBattleCommunication[MULTISTRING_CHOOSER] = shakes;
                 gBattlescriptCurrInstr = BattleScript_ShakeBallThrow;
             }
@@ -10030,7 +10038,6 @@ static void Cmd_trysetcaughtmondexflags(void)
 static void Cmd_displaydexinfo(void)
 {
     u16 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_SPECIES, NULL);
-
     switch (gBattleCommunication[0])
     {
     case 0:
@@ -10214,7 +10221,6 @@ static void Cmd_trygivecaughtmonnick(void)
         }
         break;
     case 4:
-        FreeAllWindowBuffers();
         if (CalculatePlayerPartyCount() == PARTY_SIZE)
             gBattlescriptCurrInstr += 5;
         else
@@ -10260,6 +10266,7 @@ static void Cmd_thiefballend(void)
     switch (gBattleCommunication[0])
     {
     case 0:
+        FreeAllWindowBuffers();
         gBattleTerrain = gBattleTerrainBackup; 
         SetMainCallback2(ReshowBattleScreenAfterMenu);
         gBattleCommunication[0]++;
