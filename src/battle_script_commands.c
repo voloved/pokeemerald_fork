@@ -328,6 +328,7 @@ static void Cmd_finishaction(void);
 static void Cmd_finishturn(void);
 static void Cmd_trainerslideout(void);
 static void Cmd_thiefballend(void);
+static bool32 OppMonsFainted(void);
 static void Cmd_prntState(void);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
@@ -10025,7 +10026,7 @@ static void Cmd_trysetcaughtmondexflags(void)
 
 static void Cmd_displaydexinfo(void)
 {
-    u16 species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL);
+    u16 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_SPECIES, NULL);
 
     switch (gBattleCommunication[0])
     {
@@ -10178,15 +10179,11 @@ static void Cmd_trygivecaughtmonnick(void)
             }
             else
             {
-                FreeAllWindowBuffers();
-                SetMainCallback2(BattleMainCB2);
                 gBattleCommunication[MULTIUSE_STATE] = 4;
             }
         }
         else if (JOY_NEW(B_BUTTON))
         {
-            FreeAllWindowBuffers();
-            SetMainCallback2(BattleMainCB2);
             PlaySE(SE_SELECT);
             gBattleCommunication[MULTIUSE_STATE] = 4;
         }
@@ -10214,18 +10211,12 @@ static void Cmd_trygivecaughtmonnick(void)
         }
         break;
     case 4:
-    DebugPrintf("%s", "Got to case 4 in the nickname");
-        if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active){
-            if (CalculatePlayerPartyCount() == PARTY_SIZE){
-                DebugPrintf("%s", "gBattlescriptCurrInstr += 5");
-                gBattlescriptCurrInstr += 5;
-                }
-            else{
-                DebugPrintf("%s", "gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1)");
-                gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
-            }
-            break;
-        }
+        FreeAllWindowBuffers();
+        if (CalculatePlayerPartyCount() == PARTY_SIZE)
+            gBattlescriptCurrInstr += 5;
+        else
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
+        break;
     }
 }
 
@@ -10263,29 +10254,38 @@ static void Cmd_trainerslideout(void)
 
 static void Cmd_thiefballend(void)
 {
-    DebugPrintf("%s", "Cmd_thiefballend");
     switch (gBattleCommunication[0])
     {
     case 0:
-        DebugPrintf("%s", "1");
         gBattleTerrain = gBattleTerrainBackup; 
         SetMainCallback2(ReshowBattleScreenAfterMenu);
         gBattleCommunication[0]++;
         break; 
     case 1:
-        DebugPrintf("%s", "2");
         if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active){
-            DebugPrintf("%s", "3");
-            if (gMain.inBattle && gBattleOutcome == 0){
+            if(!OppMonsFainted()){  //TODO: Change to when non-fainted pokemon of opponent is zero
                 PlayBattleBGM(); // If battle is still ongoing, replay battle music
-            }
-            else{
-                Overworld_PlaySpecialMapMusic();
             }
             gBattlescriptCurrInstr++;
             break;
         }
     }
+}
+
+static bool32 OppMonsFainted(void)
+{
+    int i;
+    struct Pokemon *pokemon = gEnemyParty;
+    u16 species;
+    for (i = 0; i < PARTY_SIZE; i++, pokemon++)
+    {
+        u16 species = GetMonData(pokemon, MON_DATA_SPECIES2);
+        if (species == SPECIES_NONE || species == SPECIES_EGG)
+            continue;
+        if (GetMonData(pokemon, MON_DATA_HP) != 0)
+            return FALSE;
+    }
+    return TRUE;
 }
 
 static void Cmd_prntState(void)
