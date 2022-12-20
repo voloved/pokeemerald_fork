@@ -670,7 +670,6 @@ extern u16 gChosenMoveByBattler[MAX_BATTLERS_COUNT];
 extern u8 gMoveResultFlags;
 extern u32 gHitMarker;
 extern u8 gTakenDmgByBattler[MAX_BATTLERS_COUNT];
-extern u8 gBattleTerrainBackup;
 extern u16 gSideStatuses[NUM_BATTLE_SIDES];
 extern struct SideTimer gSideTimers[NUM_BATTLE_SIDES];
 extern u32 gStatuses3[MAX_BATTLERS_COUNT];

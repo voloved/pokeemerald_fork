@@ -9938,7 +9938,6 @@ static void Cmd_handleballthrow(void)
             MarkBattlerForControllerExec(gActiveBattler);
             if (gUsingThiefBall == 1){
                 gUsingThiefBall = 2;
-                gBattleTerrainBackup = gBattleTerrain; // Store the battle terrain to be reloaded later
             }
             gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
             SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
@@ -9966,7 +9965,6 @@ static void Cmd_handleballthrow(void)
             {
                 if (gUsingThiefBall == 1){
                     gUsingThiefBall = 2;
-                    gBattleTerrainBackup = gBattleTerrain; // Store the battle terrain to be reloaded later
                 }
                 gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
                 SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
@@ -10270,7 +10268,6 @@ static void Cmd_thiefballend(void)
     {
     case 0:
         FreeAllWindowBuffers();
-        gBattleTerrain = gBattleTerrainBackup;  // This is likely unneeded.
         SetMainCallback2(ReshowBattleScreenAfterMenu);
         gBattleCommunication[0]++;
         break; 
