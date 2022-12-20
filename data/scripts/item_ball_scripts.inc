@@ -522,8 +522,8 @@ AquaHideout_B1F_EventScript_ItemMaxElixir::
 	finditem ITEM_MAX_ELIXIR
 	end
 
-AquaHideout_B2F_EventScript_ItemNestBall::
-	finditem ITEM_NEST_BALL
+AquaHideout_B2F_EventScript_ItemThiefBall::
+	finditem ITEM_PREMIER_BALL
 	end
 
 AquaHideout_B2F_EventScript_ItemMasterBall::
@@ -650,8 +650,8 @@ MagmaHideout_3F_2R_EventScript_ItemPPMax::
 	finditem ITEM_PP_MAX
 	end
 
-MagmaHideout_4F_EventScript_ItemMaxRevive::
-	finditem ITEM_MAX_REVIVE
+MagmaHideout_4F_EventScript_ItemThiefBall::
+	finditem ITEM_PREMIER_BALL
 	end
 
 MagmaHideout_3F_3R_EventScript_ItemEscapeRope::
