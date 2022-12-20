@@ -3244,8 +3244,8 @@ static void Cmd_getexp(void)
     switch (gBattleScripting.getexpState)
     {
     case 0: // check if should receive exp at all
-        if (gUsingThiefBall == 2){
-            gUsingThiefBall = 0;
+        if (gUsingThiefBall == THIEF_BALL_CAUGHT){
+            gUsingThiefBall = THIEF_BALL_NOT_USING;
             gBattleScripting.getexpState = 6; // goto last case
         }
         else if (GetBattlerSide(gBattlerFainted) != B_SIDE_OPPONENT || (gBattleTypeFlags &
@@ -9832,13 +9832,21 @@ static void Cmd_handleballthrow(void)
     gActiveBattler = gBattlerAttacker;
 
     gBattlerTarget = BATTLE_OPPOSITE(gBattlerAttacker);
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && gLastUsedItem == ITEM_THIEF_BALL
-    && !(gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_SAFARI | 
-    BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | 
-    BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK))){
-        gUsingThiefBall = 1;
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && gLastUsedItem == ITEM_THIEF_BALL){
+        if (gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_SAFARI | 
+        BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | 
+        BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK)){
+            gUsingThiefBall = THIEF_BALL_CANNOT_USE;
+        }
+        else{
+            gUsingThiefBall = THIEF_BALL_CATCHING;
+        }
     }
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !gUsingThiefBall)
+    else{
+        gUsingThiefBall = THIEF_BALL_NOT_USING;
+    }
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER &&
+    (gUsingThiefBall == THIEF_BALL_NOT_USING || gUsingThiefBall == THIEF_BALL_CANNOT_USE))
     {
         BtlController_EmitBallThrowAnim(BUFFER_A, BALL_TRAINER_BLOCK);
         MarkBattlerForControllerExec(gActiveBattler);
@@ -9936,8 +9944,8 @@ static void Cmd_handleballthrow(void)
         {
             BtlController_EmitBallThrowAnim(BUFFER_A, BALL_3_SHAKES_SUCCESS);
             MarkBattlerForControllerExec(gActiveBattler);
-            if (gUsingThiefBall == 1){
-                gUsingThiefBall = 2;
+            if (gUsingThiefBall == THIEF_BALL_CATCHING){
+                gUsingThiefBall = THIEF_BALL_CAUGHT;
             }
             gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
             SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
@@ -9963,8 +9971,8 @@ static void Cmd_handleballthrow(void)
             MarkBattlerForControllerExec(gActiveBattler);
             if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
             {
-                if (gUsingThiefBall == 1){
-                    gUsingThiefBall = 2;
+                if (gUsingThiefBall == THIEF_BALL_CATCHING){
+                    gUsingThiefBall = THIEF_BALL_CAUGHT;
                 }
                 gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
                 SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
@@ -9976,7 +9984,7 @@ static void Cmd_handleballthrow(void)
             }
             else // not caught
             {
-                gUsingThiefBall = 0;
+                gUsingThiefBall = THIEF_BALL_NOT_USING;
                 gBattleCommunication[MULTISTRING_CHOOSER] = shakes;
                 gBattlescriptCurrInstr = BattleScript_ShakeBallThrow;
             }
@@ -10011,7 +10019,7 @@ static void Cmd_givecaughtmon(void)
     GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_NICKNAME, gBattleResults.caughtMonNick);
     gBattleResults.caughtMonBall = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_POKEBALL, NULL);
 
-    if (gUsingThiefBall == 2)
+    if (gUsingThiefBall == THIEF_BALL_CAUGHT)
     {
         gBattleMons[gBattlerTarget].hp = 0;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_HP, &gBattleMons[gBattlerTarget].hp);
@@ -10301,6 +10309,6 @@ static bool32 OppMonsFainted(void)
 
 static void Cmd_prntState(void)
 {
-    DebugPrintf("%s", "Got to print");
+    DebugPrintf("Got to print; %d", gUsingThiefBall);
     gBattlescriptCurrInstr++;
 }

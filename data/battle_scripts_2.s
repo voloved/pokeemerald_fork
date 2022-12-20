@@ -79,11 +79,11 @@ BattleScript_TryNicknameCaughtMon::
 	givecaughtmon
 	printfromtable gCaughtMonStringIds
 	waitmessage B_WAIT_TIME_LONG
-	jumpifbyte CMP_EQUAL, gUsingThiefBall, 2, BattleScript_SuccessBallThrowEndThief
+	jumpifbyte CMP_EQUAL, gUsingThiefBall, THIEF_BALL_CAUGHT, BattleScript_SuccessBallThrowEndThief
 	goto BattleScript_SuccessBallThrowEnd
 BattleScript_GiveCaughtMonEnd::
 	givecaughtmon
-	jumpifbyte CMP_EQUAL, gUsingThiefBall, 2, BattleScript_SuccessBallThrowEndThief
+	jumpifbyte CMP_EQUAL, gUsingThiefBall, THIEF_BALL_CAUGHT, BattleScript_SuccessBallThrowEndThief
 BattleScript_SuccessBallThrowEnd::
 	setbyte gBattleOutcome, B_OUTCOME_CAUGHT
 	finishturn
@@ -114,9 +114,16 @@ BattleScript_TrainerBallBlock::
 	waitmessage B_WAIT_TIME_LONG
 	printstring STRINGID_TRAINERBLOCKEDBALL
 	waitmessage B_WAIT_TIME_LONG
+	jumpifbyte CMP_EQUAL, gUsingThiefBall, THIEF_BALL_CANNOT_USE, BattleScript_TrainerBallBlockThiefBall
 	printstring STRINGID_DONTBEATHIEF
+	goto BattleScript_TrainerBallBlockEnd
+BattleScript_TrainerBallBlockThiefBall::
+	printstring STRINGID_CANTWITHTHIEF
+	setbyte gUsingThiefBall, THIEF_BALL_NOT_USING
+BattleScript_TrainerBallBlockEnd::
 	waitmessage B_WAIT_TIME_LONG
 	finishaction
+
 
 BattleScript_PlayerUsesItem::
 	moveendcase MOVEEND_MIRROR_MOVE
