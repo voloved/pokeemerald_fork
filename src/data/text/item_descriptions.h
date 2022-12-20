@@ -770,7 +770,7 @@ static const u8 sAmuletCoinDesc[] = _(
 
 static const u8 sCleanseTagDesc[] = _(
     "A hold item that\n"
-    "helps repel wild\n"
+    "will repel wild\n"
     "POKéMON.");
 
 static const u8 sSoulDewDesc[] = _(
