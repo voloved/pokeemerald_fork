@@ -3246,7 +3246,6 @@ static void Cmd_getexp(void)
     case 0: // check if should receive exp at all
         if (gUsingThiefBall == 2){
             gUsingThiefBall = 0;
-            //MarkBattlerForControllerExec(gActiveBattler);
             gBattleScripting.getexpState = 6; // goto last case
         }
         else if (GetBattlerSide(gBattlerFainted) != B_SIDE_OPPONENT || (gBattleTypeFlags &
@@ -9831,8 +9830,9 @@ static void Cmd_handleballthrow(void)
         return;
 
     gActiveBattler = gBattlerAttacker;
+
     gBattlerTarget = BATTLE_OPPOSITE(gBattlerAttacker);
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && ((gLastUsedItem == ITEM_PREMIER_BALL) || (gLastUsedItem == ITEM_MASTER_BALL))
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gLastUsedItem == ITEM_PREMIER_BALL || gLastUsedItem == ITEM_MASTER_BALL)
     && !(gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_SAFARI | 
     BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | 
     BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK))){
@@ -9936,6 +9936,10 @@ static void Cmd_handleballthrow(void)
         {
             BtlController_EmitBallThrowAnim(BUFFER_A, BALL_3_SHAKES_SUCCESS);
             MarkBattlerForControllerExec(gActiveBattler);
+            if (gUsingThiefBall == 1){
+                gUsingThiefBall = 2;
+                gBattleTerrainBackup = gBattleTerrain; // Store the battle terrain to be reloaded later
+            }
             gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
             SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
 
@@ -9958,7 +9962,6 @@ static void Cmd_handleballthrow(void)
 
             BtlController_EmitBallThrowAnim(BUFFER_A, shakes);
             MarkBattlerForControllerExec(gActiveBattler);
-
             if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
             {
                 if (gUsingThiefBall == 1){
@@ -10010,7 +10013,7 @@ static void Cmd_givecaughtmon(void)
     GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_NICKNAME, gBattleResults.caughtMonNick);
     gBattleResults.caughtMonBall = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_POKEBALL, NULL);
 
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gLastUsedItem == ITEM_MASTER_BALL))
+    if (gUsingThiefBall == 2)
     {
         gBattleMons[gBattlerTarget].hp = 0;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_HP, &gBattleMons[gBattlerTarget].hp);
@@ -10267,14 +10270,16 @@ static void Cmd_thiefballend(void)
     {
     case 0:
         FreeAllWindowBuffers();
-        gBattleTerrain = gBattleTerrainBackup; 
+        gBattleTerrain = gBattleTerrainBackup;  // This is likely unneeded.
         SetMainCallback2(ReshowBattleScreenAfterMenu);
         gBattleCommunication[0]++;
         break; 
     case 1:
         if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active){
             if(!OppMonsFainted()){  //TODO: Change to when non-fainted pokemon of opponent is zero
-                PlayBattleBGM(); // If battle is still ongoing, replay battle music
+                //PlayBattleBGM(); // If battle is still ongoing, replay battle music
+                m4aMPlayAllStop();
+                PlayBGM(MUS_RG_VS_TRAINER);
             }
             gBattlescriptCurrInstr++;
             break;

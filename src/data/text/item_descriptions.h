@@ -58,9 +58,9 @@ static const u8 sLuxuryBallDesc[] = _(
     "more friendly.");
 
 static const u8 sPremierBallDesc[] = _(
-    "A rare BALL made\n"
-    "in commemoration\n"
-    "of some event.");
+    "A  BALL that allows\n"
+    "the stealing of\n"
+    "others' POKéMON.");
 
 // Medicine
 static const u8 sPotionDesc[] = _(

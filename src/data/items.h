@@ -158,9 +158,9 @@ const struct Item gItems[] =
 
     [ITEM_PREMIER_BALL] =
     {
-        .name = _("PREMIER BALL"),
+        .name = _("THIEF BALL"),
         .itemId = ITEM_PREMIER_BALL,
-        .price = 200,
+        .price = 2000,
         .description = sPremierBallDesc,
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_PREMIER_BALL - FIRST_BALL,
