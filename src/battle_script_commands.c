@@ -9903,7 +9903,7 @@ static void Cmd_handleballthrow(void)
                 ballMultiplier = 10;
                 break;
             case ITEM_THIEF_BALL:
-                ballMultiplier = 30;
+                ballMultiplier = 25;
                 break;
             }
         }
