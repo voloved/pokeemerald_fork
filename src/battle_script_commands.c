@@ -329,7 +329,6 @@ static void Cmd_finishturn(void);
 static void Cmd_trainerslideout(void);
 static void Cmd_thiefballend(void);
 static bool32 OppMonsFainted(void);
-static void Cmd_prntState(void);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
 {
@@ -582,8 +581,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_finishaction,                            //0xF6
     Cmd_finishturn,                              //0xF7
     Cmd_trainerslideout,                         //0xF8
-    Cmd_thiefballend,                             //0xF9   
-    Cmd_prntState                    
+    Cmd_thiefballend,                            //0xF9
 };
 
 struct StatFractions
@@ -10305,10 +10303,4 @@ static bool32 OppMonsFainted(void)
             return FALSE;
     }
     return TRUE;
-}
-
-static void Cmd_prntState(void)
-{
-    DebugPrintf("Got to print; %d", gUsingThiefBall);
-    gBattlescriptCurrInstr++;
 }
