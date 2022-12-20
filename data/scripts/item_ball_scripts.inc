@@ -523,7 +523,7 @@ AquaHideout_B1F_EventScript_ItemMaxElixir::
 	end
 
 AquaHideout_B2F_EventScript_ItemThiefBall::
-	finditem ITEM_PREMIER_BALL
+	finditem ITEM_THIEF_BALL
 	end
 
 AquaHideout_B2F_EventScript_ItemMasterBall::
@@ -651,7 +651,7 @@ MagmaHideout_3F_2R_EventScript_ItemPPMax::
 	end
 
 MagmaHideout_4F_EventScript_ItemThiefBall::
-	finditem ITEM_PREMIER_BALL
+	finditem ITEM_THIEF_BALL
 	end
 
 MagmaHideout_3F_3R_EventScript_ItemEscapeRope::

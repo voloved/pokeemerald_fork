@@ -57,7 +57,7 @@ static const u8 sLuxuryBallDesc[] = _(
     "makes POKéMON\n"
     "more friendly.");
 
-static const u8 sPremierBallDesc[] = _(
+static const u8 sThiefBallDesc[] = _(
     "A  BALL that allows\n"
     "the stealing of\n"
     "others' POKéMON.");
