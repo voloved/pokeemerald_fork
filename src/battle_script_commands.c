@@ -10274,9 +10274,8 @@ static void Cmd_thiefballend(void)
     case 1:
         if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active){
             if(!OppMonsFainted()){  //TODO: Change to when non-fainted pokemon of opponent is zero
-                //PlayBattleBGM(); // If battle is still ongoing, replay battle music
                 m4aMPlayAllStop();
-                PlayBGM(MUS_RG_VS_TRAINER);
+                PlayBGM(MUS_RG_VS_TRAINER);  //This music file was remade to be the standard battle music w/o the spiral sound at the beginning
             }
             gBattlescriptCurrInstr++;
             break;
