@@ -10274,10 +10274,17 @@ static void Cmd_thiefballend(void)
     {
     case 0:
         FreeAllWindowBuffers();
-        SetMainCallback2(ReshowBattleScreenAfterMenu);
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
         gBattleCommunication[0]++;
         break; 
     case 1:
+        if (!gPaletteFade.active)
+        {
+            SetMainCallback2(ReshowBattleScreenAfterMenu);
+            gBattleCommunication[0]++;
+            break;
+        }
+    case 2:
         if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active){
             if(!OppMonsFainted()){  //TODO: Change to when non-fainted pokemon of opponent is zero
                 m4aMPlayAllStop();
