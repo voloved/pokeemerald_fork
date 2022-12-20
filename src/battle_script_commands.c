@@ -327,6 +327,8 @@ static void Cmd_removeattackerstatus1(void);
 static void Cmd_finishaction(void);
 static void Cmd_finishturn(void);
 static void Cmd_trainerslideout(void);
+static void Cmd_thiefballend(void);
+static bool32 OppMonsFainted(void);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
 {
@@ -578,7 +580,8 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_removeattackerstatus1,                   //0xF5
     Cmd_finishaction,                            //0xF6
     Cmd_finishturn,                              //0xF7
-    Cmd_trainerslideout                          //0xF8
+    Cmd_trainerslideout,                         //0xF8
+    Cmd_thiefballend,                            //0xF9
 };
 
 struct StatFractions
@@ -3235,11 +3238,15 @@ static void Cmd_getexp(void)
 
     gBattlerFainted = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
     sentIn = gSentPokesToOpponent[(gBattlerFainted & 2) >> 1];
-
+    
     switch (gBattleScripting.getexpState)
     {
     case 0: // check if should receive exp at all
-        if (GetBattlerSide(gBattlerFainted) != B_SIDE_OPPONENT || (gBattleTypeFlags &
+        if (gUsingThiefBall == THIEF_BALL_CAUGHT){
+            gUsingThiefBall = THIEF_BALL_NOT_USING;
+            gBattleScripting.getexpState = 6; // goto last case
+        }
+        else if (GetBattlerSide(gBattlerFainted) != B_SIDE_OPPONENT || (gBattleTypeFlags &
              (BATTLE_TYPE_LINK
               | BATTLE_TYPE_RECORDED_LINK
               | BATTLE_TYPE_TRAINER_HILL
@@ -9821,9 +9828,23 @@ static void Cmd_handleballthrow(void)
         return;
 
     gActiveBattler = gBattlerAttacker;
-    gBattlerTarget = BATTLE_OPPOSITE(gBattlerAttacker);
 
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+    gBattlerTarget = BATTLE_OPPOSITE(gBattlerAttacker);
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && gLastUsedItem == ITEM_THIEF_BALL){
+        if (gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_SAFARI | 
+        BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | 
+        BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK)){
+            gUsingThiefBall = THIEF_BALL_CANNOT_USE;
+        }
+        else{
+            gUsingThiefBall = THIEF_BALL_CATCHING;
+        }
+    }
+    else{
+        gUsingThiefBall = THIEF_BALL_NOT_USING;
+    }
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER &&
+    (gUsingThiefBall == THIEF_BALL_NOT_USING || gUsingThiefBall == THIEF_BALL_CANNOT_USE))
     {
         BtlController_EmitBallThrowAnim(BUFFER_A, BALL_TRAINER_BLOCK);
         MarkBattlerForControllerExec(gActiveBattler);
@@ -9885,8 +9906,10 @@ static void Cmd_handleballthrow(void)
                     ballMultiplier = 40;
                 break;
             case ITEM_LUXURY_BALL:
-            case ITEM_PREMIER_BALL:
                 ballMultiplier = 10;
+                break;
+            case ITEM_THIEF_BALL:
+                ballMultiplier = 25;
                 break;
             }
         }
@@ -9919,6 +9942,9 @@ static void Cmd_handleballthrow(void)
         {
             BtlController_EmitBallThrowAnim(BUFFER_A, BALL_3_SHAKES_SUCCESS);
             MarkBattlerForControllerExec(gActiveBattler);
+            if (gUsingThiefBall == THIEF_BALL_CATCHING){
+                gUsingThiefBall = THIEF_BALL_CAUGHT;
+            }
             gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
             SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
 
@@ -9941,9 +9967,11 @@ static void Cmd_handleballthrow(void)
 
             BtlController_EmitBallThrowAnim(BUFFER_A, shakes);
             MarkBattlerForControllerExec(gActiveBattler);
-
             if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
             {
+                if (gUsingThiefBall == THIEF_BALL_CATCHING){
+                    gUsingThiefBall = THIEF_BALL_CAUGHT;
+                }
                 gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
                 SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
 
@@ -9954,6 +9982,7 @@ static void Cmd_handleballthrow(void)
             }
             else // not caught
             {
+                gUsingThiefBall = THIEF_BALL_NOT_USING;
                 gBattleCommunication[MULTISTRING_CHOOSER] = shakes;
                 gBattlescriptCurrInstr = BattleScript_ShakeBallThrow;
             }
@@ -9988,6 +10017,12 @@ static void Cmd_givecaughtmon(void)
     GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_NICKNAME, gBattleResults.caughtMonNick);
     gBattleResults.caughtMonBall = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_POKEBALL, NULL);
 
+    if (gUsingThiefBall == THIEF_BALL_CAUGHT)
+    {
+        gBattleMons[gBattlerTarget].hp = 0;
+        SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_HP, &gBattleMons[gBattlerTarget].hp);
+    }
+
     gBattlescriptCurrInstr++;
 }
 
@@ -10009,8 +10044,7 @@ static void Cmd_trysetcaughtmondexflags(void)
 
 static void Cmd_displaydexinfo(void)
 {
-    u16 species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL);
-
+    u16 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_SPECIES, NULL);
     switch (gBattleCommunication[0])
     {
     case 0:
@@ -10232,4 +10266,41 @@ static void Cmd_trainerslideout(void)
     MarkBattlerForControllerExec(gActiveBattler);
 
     gBattlescriptCurrInstr += 2;
+}
+
+static void Cmd_thiefballend(void)
+{
+    switch (gBattleCommunication[0])
+    {
+    case 0:
+        FreeAllWindowBuffers();
+        SetMainCallback2(ReshowBattleScreenAfterMenu);
+        gBattleCommunication[0]++;
+        break; 
+    case 1:
+        if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active){
+            if(!OppMonsFainted()){  //TODO: Change to when non-fainted pokemon of opponent is zero
+                m4aMPlayAllStop();
+                PlayBGM(MUS_RG_VS_TRAINER);  //This music file was remade to be the standard battle music w/o the spiral sound at the beginning
+            }
+            gBattlescriptCurrInstr++;
+            break;
+        }
+    }
+}
+
+static bool32 OppMonsFainted(void)
+{
+    int i;
+    struct Pokemon *pokemon = gEnemyParty;
+    u16 species;
+    for (i = 0; i < PARTY_SIZE; i++, pokemon++)
+    {
+        u16 species = GetMonData(pokemon, MON_DATA_SPECIES2);
+        if (species == SPECIES_NONE || species == SPECIES_EGG)
+            continue;
+        if (GetMonData(pokemon, MON_DATA_HP) != 0)
+            return FALSE;
+    }
+    return TRUE;
 }
