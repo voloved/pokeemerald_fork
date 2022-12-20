@@ -57,10 +57,10 @@ static const u8 sLuxuryBallDesc[] = _(
     "makes POKéMON\n"
     "more friendly.");
 
-static const u8 sPremierBallDesc[] = _(
-    "A rare BALL made\n"
-    "in commemoration\n"
-    "of some event.");
+static const u8 sThiefBallDesc[] = _(
+    "A  BALL that allows\n"
+    "the stealing of\n"
+    "others' POKéMON.");
 
 // Medicine
 static const u8 sPotionDesc[] = _(
@@ -770,7 +770,7 @@ static const u8 sAmuletCoinDesc[] = _(
 
 static const u8 sCleanseTagDesc[] = _(
     "A hold item that\n"
-    "helps repel wild\n"
+    "will repel wild\n"
     "POKéMON.");
 
 static const u8 sSoulDewDesc[] = _(
