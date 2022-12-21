@@ -10273,9 +10273,12 @@ static void Cmd_trainerslideout(void)
 
 static void Cmd_thiefballend(void)
 {
+    u16 stoleValue;
     switch (gBattleCommunication[0])
     {
     case 0:
+        stoleValue = checkStolenPokemon(gTrainers[gTrainerBattleOpponent_A].trainerClass, gBattleMons[gBattlerTarget].species);
+        VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | stoleValue);
         FreeAllWindowBuffers();
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
         gBattleCommunication[0]++;

@@ -1943,6 +1943,49 @@ static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite)
     }
 }
 
+//VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_GOLD_SHIELD);
+//VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | checkStolenPokemon(species));
+u8 checkStolenPokemon(u8 trainersClass, u16 speciesType){
+    switch (trainersClass)
+    {
+    case TRAINER_CLASS_RIVAL:
+        switch (speciesType)
+        {
+        case SPECIES_TREECKO:
+        case SPECIES_GROVYLE:
+        case SPECIES_SCEPTILE:
+        case SPECIES_TORCHIC:
+        case SPECIES_COMBUSKEN:
+        case SPECIES_BLAZIKEN:
+        case SPECIES_MUDKIP:
+        case SPECIES_MARSHTOMP:
+        case SPECIES_SWAMPERT:
+            return STOLE_STARTER;
+        case SPECIES_WINGULL:
+        case SPECIES_PELIPPER:
+            return STOLE_WINGULL;
+        case SPECIES_SLUGMA:
+        case SPECIES_MAGCARGO:
+            return STOLE_SLUGMA;
+        case SPECIES_LOTAD:
+        case SPECIES_LOMBRE:
+        case SPECIES_LUDICOLO:
+            return STOLE_LOTAD;
+        case SPECIES_TROPIUS:
+            return STOLE_TROPIUS;
+        case SPECIES_TORKOAL:
+            return STOLE_TORKOAL;
+        case SPECIES_GROUDON:
+        case SPECIES_KYOGRE:
+            return STOLE_LEGENDARY;
+        default:
+            break;
+        }    
+    default:
+        return 0;
+    }
+}
+
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer)
 {
     u32 nameHash = 0;
@@ -1951,8 +1994,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
     s32 i, j;
     u8 monsCount;
     u16 species_check;
-    u8 class_check = gTrainers[trainerNum].trainerClass;;
-
+    u8 opponentClass = gTrainers[trainerNum].trainerClass;
 
     if (trainerNum == TRAINER_SECRET_BASE)
         return 0;
@@ -1978,13 +2020,10 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
         for (i = 0; i < monsCount; i++)
         {
-            DebugPrintf("trainer: %d, species:%d", gTrainers[trainerNum].trainerClass, gTrainers[trainerNum].party.NoItemDefaultMoves[i].species);
-            DebugPrintf("check trainer: %d, species:%d", class_check, species_check);
             species_check = gTrainers[trainerNum].party.NoItemDefaultMoves[i].species;
-            if (class_check == TRAINER_CLASS_RIVAL && species_check == SPECIES_SLUGMA){
+            if (checkStolenPokemon(opponentClass, species_check) & VarGet(VAR_RIVAL_PKMN_STOLE)){
                 continue;
             }
-            DebugPrintf("i: %d", i);
             if (gTrainers[trainerNum].doubleBattle == TRUE){
                 personalityValue = 0x80;
             }
