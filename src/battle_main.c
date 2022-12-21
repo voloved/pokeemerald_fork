@@ -1950,6 +1950,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
     u8 fixedIV;
     s32 i, j;
     u8 monsCount;
+    u16 species_check;
+    u8 class_check = gTrainers[trainerNum].trainerClass;;
+
 
     if (trainerNum == TRAINER_SECRET_BASE)
         return 0;
@@ -1975,7 +1978,13 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
         for (i = 0; i < monsCount; i++)
         {
-
+            DebugPrintf("trainer: %d, species:%d", gTrainers[trainerNum].trainerClass, gTrainers[trainerNum].party.NoItemDefaultMoves[i].species);
+            DebugPrintf("check trainer: %d, species:%d", class_check, species_check);
+            species_check = gTrainers[trainerNum].party.NoItemDefaultMoves[i].species;
+            if (class_check == TRAINER_CLASS_RIVAL && species_check == SPECIES_SLUGMA){
+                continue;
+            }
+            DebugPrintf("i: %d", i);
             if (gTrainers[trainerNum].doubleBattle == TRUE){
                 personalityValue = 0x80;
             }
