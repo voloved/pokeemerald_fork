@@ -2005,7 +2005,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
     u8 fixedIV;
     s32 i, j;
     u8 monsCount;
-    u16 species_check;
+    u16 species_check;  
+    u32 fixedOTID;
+    u8 otGender;
     u8 opponentClass = gTrainers[trainerNum].trainerClass;
 
     if (trainerNum == TRAINER_SECRET_BASE)
@@ -2030,6 +2032,8 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             monsCount = gTrainers[trainerNum].partySize;
         }
 
+        fixedOTID = Random32();
+
         for (i = 0; i < monsCount; i++)
         {
             species_check = gTrainers[trainerNum].party.NoItemDefaultMoves[i].species;
@@ -2038,12 +2042,15 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             }
             if (gTrainers[trainerNum].doubleBattle == TRUE){
                 personalityValue = 0x80;
+                otGender = gSaveBlock2Ptr->playerGender;
             }
             else if (gTrainers[trainerNum].encounterMusic_gender & F_TRAINER_FEMALE){
                 personalityValue = 0x78; // Use personality more likely to result in a female Pokémon
+                otGender = FEMALE;
             }
             else{
                 personalityValue = 0x88; // Use personality more likely to result in a male Pokémon}
+                otGender = MALE;
             }
             for (j = 0; gTrainers[trainerNum].trainerName[j] != EOS; j++)
                 nameHash += gTrainers[trainerNum].trainerName[j];
@@ -2059,7 +2066,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, GetTrainerId(gSaveBlock2Ptr->playerTrainerId));
+                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
+                SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
+                SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
                 break;
             }
             case F_TRAINER_PARTY_CUSTOM_MOVESET:
@@ -2071,7 +2080,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, GetTrainerId(gSaveBlock2Ptr->playerTrainerId));
+                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
+                SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
+                SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
 
                 for (j = 0; j < MAX_MON_MOVES; j++)
                 {
@@ -2089,7 +2100,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, GetTrainerId(gSaveBlock2Ptr->playerTrainerId));
+                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
+                SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
+                SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
 
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
                 break;
@@ -2103,8 +2116,10 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, GetTrainerId(gSaveBlock2Ptr->playerTrainerId));
-
+                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
+                SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
+                SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
+                
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
 
                 for (j = 0; j < MAX_MON_MOVES; j++)
