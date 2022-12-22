@@ -93,6 +93,7 @@ static void PlayerHandleLinkStandbyMsg(void);
 static void PlayerHandleResetActionMoveSelection(void);
 static void PlayerHandleEndLinkBattle(void);
 static void PlayerCmdEnd(void);
+static void MoveSelectionDisplaySplitIcon(void);
 
 static void PlayerBufferRunCommand(void);
 static void HandleInputChooseTarget(void);
@@ -1504,12 +1505,9 @@ u8 TypeEffectiveness(u8 targetId)
 {
     u8 moveFlags;
     u16 move;
-    struct ChooseMoveStruct *moveInfo;
     if (FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW) == FALSE){
         return 10;
     }
-    moveInfo = (struct ChooseMoveStruct *)(&gBattleBufferA[gActiveBattler][4]);
-    move = moveInfo->moves[gMoveSelectionCursor[gActiveBattler]];
     move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
     moveFlags = AI_TypeCalc(move, gBattleMons[targetId].species, gBattleMons[targetId].ability);
     if (moveFlags & MOVE_RESULT_NO_EFFECT) {
@@ -1540,6 +1538,7 @@ static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId)
 
 	StringCopy(txtPtr, gTypeNames[gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type]);
 	BattlePutTextOnWindow(gDisplayedStringBattle, TypeEffectiveness(targetId));
+    MoveSelectionDisplaySplitIcon();
 }
 
 static void MoveSelectionDisplayMoveType(void)
@@ -1555,6 +1554,7 @@ static void MoveSelectionDisplayMoveType(void)
 
     StringCopy(txtPtr, gTypeNames[gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type]);
     BattlePutTextOnWindow(gDisplayedStringBattle, typeColor);
+    MoveSelectionDisplaySplitIcon();
 }
 
 static void MoveSelectionCreateCursorAt(u8 cursorPosition, u8 baseTileNum)
@@ -3194,4 +3194,35 @@ static void PlayerHandleEndLinkBattle(void)
 
 static void PlayerCmdEnd(void)
 {
+}
+
+static void MoveSelectionDisplaySplitIcon(void){
+	static const u16 sSplitIcons_Pal[] = INCBIN_U16("graphics/interface/split_icons_battle.gbapal");
+	static const u8 sSplitIcons_Gfx[] = INCBIN_U8("graphics/interface/split_icons_battle.4bpp");
+    u16 move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
+	u8 moveType;
+	int icon;
+    DebugPrintf("move: %d", move)
+    if (gBattleMoves[move].power == 0){
+        icon = 2;
+    }
+    else
+    {
+        if (gBattleStruct->dynamicMoveType == 0)
+            moveType = gBattleMoves[move].type;
+        else if (!(gBattleStruct->dynamicMoveType & F_DYNAMIC_TYPE_1))
+            moveType = gBattleStruct->dynamicMoveType & DYNAMIC_TYPE_MASK;
+        else
+            moveType = gBattleMoves[move].type;
+        if (IS_TYPE_PHYSICAL(moveType))
+            icon = 0;
+        else if (IS_TYPE_SPECIAL(moveType))
+            icon = 1;
+        else
+            icon = 3;  //Should never get here.
+    }
+	LoadPalette(sSplitIcons_Pal, 10 * 0x10, 0x20);
+	BlitBitmapToWindow(B_WIN_DUMMY, sSplitIcons_Gfx + 0x80 * icon, 0, 0, 16, 16);
+	PutWindowTilemap(B_WIN_DUMMY);
+	CopyWindowToVram(B_WIN_DUMMY, 3);
 }
