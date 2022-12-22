@@ -1945,7 +1945,7 @@ static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite)
 
 //VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_GOLD_SHIELD);
 //VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | checkStolenPokemon(species));
-u8 checkStolenPokemon(u8 trainersClass, u16 speciesType){
+u16 checkStolenPokemon(u8 trainersClass, u16 speciesType){
     switch (trainersClass)
     {
     case TRAINER_CLASS_RIVAL:
@@ -1978,6 +1978,18 @@ u8 checkStolenPokemon(u8 trainersClass, u16 speciesType){
         case SPECIES_GROUDON:
         case SPECIES_KYOGRE:
             return STOLE_LEGENDARY;
+        case SPECIES_RALTS:
+        case SPECIES_KIRLIA:
+        case SPECIES_GARDEVOIR:
+            return STOLE_RALTS;
+        case STOLE_ALTARIA:
+            return STOLE_ALTARIA;
+        case STOLE_DELCATTY:
+            return STOLE_DELCATTY;
+        case STOLE_ROSELIA:
+            return STOLE_ROSELIA;
+        case STOLE_MAGNETON:
+            return STOLE_MAGNETON;
         default:
             break;
         }    
