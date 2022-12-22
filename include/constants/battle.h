@@ -103,6 +103,7 @@
 #define THIEF_BALL_CATCHING            1
 #define THIEF_BALL_CAUGHT              2
 #define THIEF_BALL_CANNOT_USE          3
+#define THIEF_BALL_CAUGHT_FADE_BLACK   4
 
 // Non-volatile status conditions
 // These persist remain outside of battle and after switching out

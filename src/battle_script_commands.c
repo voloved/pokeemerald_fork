@@ -3242,7 +3242,7 @@ static void Cmd_getexp(void)
     switch (gBattleScripting.getexpState)
     {
     case 0: // check if should receive exp at all
-        if (gUsingThiefBall == THIEF_BALL_CAUGHT){
+        if (gUsingThiefBall == THIEF_BALL_CAUGHT || gUsingThiefBall == THIEF_BALL_CAUGHT_FADE_BLACK){
             gUsingThiefBall = THIEF_BALL_NOT_USING;
             gBattleScripting.getexpState = 6; // goto last case
         }
@@ -9910,7 +9910,7 @@ static void Cmd_handleballthrow(void)
                 break;
             case ITEM_THIEF_BALL:  // If used on trainer, it's 2.5x; if used on a wild Pokemon, it's 1x
                 if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
-                    ballMultiplier = 25;
+                    ballMultiplier = 100;
                 else
                     ballMultiplier = 10;
                 break;
@@ -10019,11 +10019,16 @@ static void Cmd_givecaughtmon(void)
     gBattleResults.caughtMonSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_SPECIES, NULL);
     GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_NICKNAME, gBattleResults.caughtMonNick);
     gBattleResults.caughtMonBall = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_POKEBALL, NULL);
-
-    if (gUsingThiefBall == THIEF_BALL_CAUGHT)
+    if (gUsingThiefBall == THIEF_BALL_CAUGHT || gUsingThiefBall == THIEF_BALL_CAUGHT_FADE_BLACK)
     {
         gBattleMons[gBattlerTarget].hp = 0;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_HP, &gBattleMons[gBattlerTarget].hp);
+        if (gUsingThiefBall == THIEF_BALL_CAUGHT){
+            SetHealthboxSpriteInvisible(gHealthboxSpriteIds[gBattlerTarget]);
+            HandleBattleWindow(YESNOBOX_X_Y, WINDOW_CLEAR);
+            FillWindowPixelBuffer(B_WIN_YESNO, PIXEL_FILL(0));
+            CopyWindowToVram(B_WIN_YESNO, COPYWIN_FULL);
+        }
     }
 
     gBattlescriptCurrInstr++;
@@ -10031,7 +10036,7 @@ static void Cmd_givecaughtmon(void)
 
 static void Cmd_trysetcaughtmondexflags(void)
 {
-    u16 species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL);
+    u16 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_SPECIES, NULL);
     u32 personality = GetMonData(&gEnemyParty[0], MON_DATA_PERSONALITY, NULL);
 
     if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
@@ -10053,6 +10058,8 @@ static void Cmd_displaydexinfo(void)
     case 0:
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
         gBattleCommunication[0]++;
+        if( gUsingThiefBall == THIEF_BALL_CAUGHT)
+            gUsingThiefBall = THIEF_BALL_CAUGHT_FADE_BLACK;
         break;
     case 1:
         if (!gPaletteFade.active)
@@ -10228,6 +10235,8 @@ static void Cmd_trygivecaughtmonnick(void)
         {
             SetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_NICKNAME, gBattleStruct->caughtMonNick);
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
+            if( gUsingThiefBall == THIEF_BALL_CAUGHT)
+                gUsingThiefBall = THIEF_BALL_CAUGHT_FADE_BLACK;
         }
         break;
     case 4:
@@ -10274,31 +10283,37 @@ static void Cmd_trainerslideout(void)
 static void Cmd_thiefballend(void)
 {
     u16 stoleValue;
-    switch (gBattleCommunication[0])
+    switch (gBattleCommunication[MULTIUSE_STATE])
     {
-    case 0:
+    case 0:  // Store the Pokemon stolen from the rival in a VAR and check if fading to black is needed (if the dex or naming screen is open)
         stoleValue = checkStolenPokemon(gTrainers[gTrainerBattleOpponent_A].trainerClass, gBattleMons[gBattlerTarget].species);
-        VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | stoleValue);
+        if (stoleValue != 0)
+            VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | stoleValue);
+        if(gUsingThiefBall != THIEF_BALL_CAUGHT_FADE_BLACK){
+            gBattleCommunication[MULTIUSE_STATE] = 2;
+            break;
+        }
         FreeAllWindowBuffers();
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
-        gBattleCommunication[0]++;
+        gBattleCommunication[MULTIUSE_STATE]++;
         break; 
-    case 1:
+    case 1:  //Finish fading to black and reload the battlefield
         if (!gPaletteFade.active)
         {
             SetMainCallback2(ReshowBattleScreenAfterMenu);
-            gBattleCommunication[0]++;
+            gBattleCommunication[MULTIUSE_STATE]++;
             break;
         }
-    case 2:
+        break;
+    case 2:  // Replay the battle music if the opponent still has more Pokemon
         if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active){
-            if(!OppMonsFainted()){  //TODO: Change to when non-fainted pokemon of opponent is zero
+            if(!OppMonsFainted()){
                 m4aMPlayAllStop();
                 PlayBGM(MUS_RG_VS_TRAINER);  //This music file was remade to be the standard battle music w/o the spiral sound at the beginning
             }
             gBattlescriptCurrInstr++;
-            break;
         }
+        break;
     }
 }
 
