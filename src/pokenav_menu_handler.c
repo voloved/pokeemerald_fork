@@ -3,7 +3,11 @@
 #include "event_data.h"
 #include "main.h"
 #include "sound.h"
+#include "task.h"
+#include "palette.h"
 #include "constants/songs.h"
+#include "constants/rgb.h"
+
 
 struct Pokenav_Menu
 {
@@ -338,6 +342,16 @@ static u32 HandleCantOpenRibbonsInput(struct Pokenav_Menu *menu)
     return POKENAV_MENU_FUNC_NONE;
 }
 
+static void Task_WaitFadeAccessPC(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        DestroyTask(taskId);
+        FlagSet(FLAG_SYS_PC_FROM_DEBUG_MENU);
+        EnterPokeStorage(2);
+    }
+}
+
 static u32 HandleConditionMenuInput(struct Pokenav_Menu *menu)
 {
     if (UpdateMenuCursorPos(menu))
@@ -354,8 +368,14 @@ static u32 HandleConditionMenuInput(struct Pokenav_Menu *menu)
             menu->callback = HandleConditionSearchMenuInput;
             return POKENAV_MENU_FUNC_OPEN_CONDITION_SEARCH;
         case POKENAV_MENUITEM_CONDITION_PARTY:
-            menu->helpBarIndex = 0;
-            SetMenuIdAndCB(menu, POKENAV_CONDITION_GRAPH_PARTY);
+            if(gMapHeader.allowRunning){
+                BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
+                CreateTask(Task_WaitFadeAccessPC, 0);  
+            }
+            else{
+                menu->helpBarIndex = 0;
+                SetMenuIdAndCB(menu, POKENAV_CONDITION_GRAPH_PARTY);
+            }
             return POKENAV_MENU_FUNC_OPEN_FEATURE;
         case POKENAV_MENUITEM_CONDITION_CANCEL:
             PlaySE(SE_SELECT);
