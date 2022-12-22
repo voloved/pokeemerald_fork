@@ -3201,26 +3201,7 @@ static void MoveSelectionDisplaySplitIcon(void){
 	static const u8 sSplitIcons_Gfx[] = INCBIN_U8("graphics/interface/split_icons_battle.4bpp");
     u16 move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
 	u8 moveType;
-	int icon;
-    DebugPrintf("move: %d", move)
-    if (gBattleMoves[move].power == 0){
-        icon = 2;
-    }
-    else
-    {
-        if (gBattleStruct->dynamicMoveType == 0)
-            moveType = gBattleMoves[move].type;
-        else if (!(gBattleStruct->dynamicMoveType & F_DYNAMIC_TYPE_1))
-            moveType = gBattleStruct->dynamicMoveType & DYNAMIC_TYPE_MASK;
-        else
-            moveType = gBattleMoves[move].type;
-        if (IS_TYPE_PHYSICAL(moveType))
-            icon = 0;
-        else if (IS_TYPE_SPECIAL(moveType))
-            icon = 1;
-        else
-            icon = 3;  //Should never get here.
-    }
+	u8 icon = moveType = gBattleMoves[move].category;
 	LoadPalette(sSplitIcons_Pal, 10 * 0x10, 0x20);
 	BlitBitmapToWindow(B_WIN_DUMMY, sSplitIcons_Gfx + 0x80 * icon, 0, 0, 16, 16);
 	PutWindowTilemap(B_WIN_DUMMY);
