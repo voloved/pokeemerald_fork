@@ -41,7 +41,7 @@ static const u8 sLastCursorPositions[] =
     [POKENAV_MENU_TYPE_DEFAULT]           = 2,
     [POKENAV_MENU_TYPE_UNLOCK_MC]         = 3,
     [POKENAV_MENU_TYPE_UNLOCK_MC_RIBBONS] = 4,
-    [POKENAV_MENU_TYPE_CONDITION]         = 2,
+    [POKENAV_MENU_TYPE_CONDITION]         = 3,
     [POKENAV_MENU_TYPE_CONDITION_SEARCH]  = 5
 };
 
@@ -70,10 +70,11 @@ static const u8 sMenuItems[][MAX_POKENAV_MENUITEMS] =
     },
     [POKENAV_MENU_TYPE_CONDITION] =
     {
+        POKENAV_MENUITEM_CONDITION_ACCESS_PC,
         POKENAV_MENUITEM_CONDITION_PARTY,
         POKENAV_MENUITEM_CONDITION_SEARCH,
         POKENAV_MENUITEM_CONDITION_CANCEL,
-        [3 ... MAX_POKENAV_MENUITEMS - 1] = POKENAV_MENUITEM_SWITCH_OFF
+        [4 ... MAX_POKENAV_MENUITEMS - 1] = POKENAV_MENUITEM_SWITCH_OFF
     },
     [POKENAV_MENU_TYPE_CONDITION_SEARCH] =
     {
@@ -90,7 +91,8 @@ static u8 GetPokenavMainMenuType(void)
 {
     u8 menuType = POKENAV_MENU_TYPE_DEFAULT;
 
-    if (FlagGet(FLAG_ADDED_MATCH_CALL_TO_POKENAV))
+    if (FlagGet(FLAG_ADDED_MATCH_CALL_TO_POKENAV)) 
+    // Reusing from debug menu to gracefully close PC when done.
     {
         menuType = POKENAV_MENU_TYPE_UNLOCK_MC;
 
@@ -150,7 +152,7 @@ bool32 PokenavCallback_Init_ConditionMenu(void)
 
     menu->menuType = POKENAV_MENU_TYPE_CONDITION;
     menu->cursorPos = 0;   //party
-    menu->currMenuItem = POKENAV_MENUITEM_CONDITION_PARTY;
+    menu->currMenuItem = POKENAV_MENUITEM_CONDITION_ACCESS_PC;
     menu->helpBarIndex = HELPBAR_NONE;
     SetMenuInputHandler(menu);
     return TRUE;
@@ -342,6 +344,25 @@ static u32 HandleCantOpenRibbonsInput(struct Pokenav_Menu *menu)
     return POKENAV_MENU_FUNC_NONE;
 }
 
+
+static u32 HandleCantAccessPCInput(struct Pokenav_Menu *menu)
+{
+    if (UpdateMenuCursorPos(menu))
+    {
+        menu->callback = HandleConditionMenuInput;
+        return POKENAV_MENU_FUNC_MOVE_CURSOR;
+    }
+
+    if (JOY_NEW(A_BUTTON | B_BUTTON))
+    {
+        menu->callback = HandleConditionMenuInput;
+        return POKENAV_MENU_FUNC_RESHOW_DESCRIPTION;
+    }
+
+    return POKENAV_MENU_FUNC_NONE;
+}
+
+
 static void Task_WaitFadeAccessPC(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -367,15 +388,19 @@ static u32 HandleConditionMenuInput(struct Pokenav_Menu *menu)
             menu->currMenuItem = sMenuItems[POKENAV_MENU_TYPE_CONDITION_SEARCH][0];
             menu->callback = HandleConditionSearchMenuInput;
             return POKENAV_MENU_FUNC_OPEN_CONDITION_SEARCH;
-        case POKENAV_MENUITEM_CONDITION_PARTY:
+        case POKENAV_MENUITEM_CONDITION_ACCESS_PC:
             if(gMapHeader.allowRunning){
                 BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
                 CreateTask(Task_WaitFadeAccessPC, 0);  
             }
             else{
-                menu->helpBarIndex = 0;
-                SetMenuIdAndCB(menu, POKENAV_CONDITION_GRAPH_PARTY);
+                menu->callback = HandleCantAccessPCInput;
+                return POKENAV_MENU_FUNC_CANNOT_ACCESS_PC;
             }
+            return POKENAV_MENU_FUNC_OPEN_FEATURE;
+        case POKENAV_MENUITEM_CONDITION_PARTY:
+            menu->helpBarIndex = 0;
+            SetMenuIdAndCB(menu, POKENAV_CONDITION_GRAPH_PARTY);
             return POKENAV_MENU_FUNC_OPEN_FEATURE;
         case POKENAV_MENUITEM_CONDITION_CANCEL:
             PlaySE(SE_SELECT);
