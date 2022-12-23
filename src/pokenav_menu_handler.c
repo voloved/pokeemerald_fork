@@ -6,7 +6,6 @@
 #include "task.h"
 #include "palette.h"
 #include "constants/songs.h"
-#include "constants/rgb.h"
 
 
 struct Pokenav_Menu
@@ -390,7 +389,7 @@ static u32 HandleConditionMenuInput(struct Pokenav_Menu *menu)
             return POKENAV_MENU_FUNC_OPEN_CONDITION_SEARCH;
         case POKENAV_MENUITEM_CONDITION_ACCESS_PC:
             if(gMapHeader.allowRunning){
-                BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
+                ShutdownPokenav();
                 CreateTask(Task_WaitFadeAccessPC, 0);  
             }
             else{

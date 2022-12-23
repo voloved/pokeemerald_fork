@@ -235,7 +235,7 @@ struct
     },
     [POKENAV_MENU_TYPE_CONDITION] =
     {
-        .yStart = 42,
+        .yStart = 49,
         .deltaY = 20,
         .gfx = {
             sOptionsLabelGfx_AccessPC,
