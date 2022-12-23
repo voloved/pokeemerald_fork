@@ -10293,16 +10293,15 @@ static void Cmd_thiefballend(void)
             gBattleCommunication[MULTIUSE_STATE] = 2;
             break;
         }
-        FreeAllWindowBuffers();
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
         gBattleCommunication[MULTIUSE_STATE]++;
         break; 
     case 1:  //Finish fading to black and reload the battlefield
-        if (!gPaletteFade.active)
-        {
+        if (!gPaletteFade.active) {
+            ResetSpriteData();
+            FreeAllWindowBuffers();
             SetMainCallback2(ReshowBattleScreenAfterMenu);
             gBattleCommunication[MULTIUSE_STATE]++;
-            break;
         }
         break;
     case 2:  // Replay the battle music if the opponent still has more Pokemon

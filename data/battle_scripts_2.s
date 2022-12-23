@@ -90,11 +90,10 @@ BattleScript_SuccessBallThrowEnd::
 	setbyte gBattleOutcome, B_OUTCOME_CAUGHT
 	finishturn
 BattleScript_SuccessBallThrowEndThief::
-	cleareffectsonfaint BS_TARGET
 	setbyte gBattleCommunication, 0
 	thiefballend
-	waitstate
-	end2
+	cleareffectsonfaint BS_TARGET
+	goto BattleScript_HandleFaintedMon
 
 BattleScript_WallyBallThrow::
 	printstring STRINGID_GOTCHAPKMNCAUGHT2
