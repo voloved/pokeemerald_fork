@@ -32,11 +32,9 @@ build/
 .idea/
 porymap.*.cfg
 prefabs.json
-.vscode/
 *.a
 .fuse_hidden*
 *.sna
 *.diff
 *.sym
 *.js
-mgba-gdb-wrapper.sh
