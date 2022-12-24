@@ -230,7 +230,7 @@
 #define FLAG_FAN_CLUB_STRENGTH_SHARED        0xD2 // Set when you rate the strength of another trainer in Lilycove's Trainer Fan Club.
 #define FLAG_DEFEATED_RIVAL_RUSTBORO         0xD3
 #define FLAG_RECEIVED_RED_OR_BLUE_ORB        0xD4
-#define FLAG_RECEIVED_PREMIER_BALL_RUSTBORO  0xD5
+#define FLAG_RECEIVED_LUXARY_BALL_RUSTBORO   0xD5
 #define FLAG_ENABLE_WALLY_MATCH_CALL         0xD6
 #define FLAG_ENABLE_SCOTT_MATCH_CALL         0xD7
 #define FLAG_ENABLE_MOM_MATCH_CALL           0xD8
@@ -1117,7 +1117,7 @@
 #define FLAG_ITEM_TRICK_HOUSE_PUZZLE_8_BEAD_MAIL                    0x42D
 #define FLAG_ITEM_JAGGED_PASS_BURN_HEAL                             0x42E
 #define FLAG_ITEM_AQUA_HIDEOUT_B1F_MAX_ELIXIR                       0x42F
-#define FLAG_ITEM_AQUA_HIDEOUT_B2F_NEST_BALL                        0x430
+#define FLAG_ITEM_AQUA_HIDEOUT_B2F_THIEF_BALL                       0x430
 #define FLAG_ITEM_MT_PYRE_EXTERIOR_MAX_POTION                       0x431
 #define FLAG_ITEM_MT_PYRE_EXTERIOR_TM48                             0x432
 #define FLAG_ITEM_NEW_MAUVILLE_ULTRA_BALL                           0x433
@@ -1213,7 +1213,7 @@
 #define FLAG_ITEM_MAGMA_HIDEOUT_2F_2R_FULL_RESTORE                  0x48D
 #define FLAG_ITEM_MAGMA_HIDEOUT_3F_1R_NUGGET                        0x48E
 #define FLAG_ITEM_MAGMA_HIDEOUT_3F_2R_PP_MAX                        0x48F
-#define FLAG_ITEM_MAGMA_HIDEOUT_4F_MAX_REVIVE                       0x490
+#define FLAG_ITEM_MAGMA_HIDEOUT_4F_THIEF_BALL                       0x490
 #define FLAG_ITEM_SAFARI_ZONE_NORTH_EAST_NUGGET                     0x491
 #define FLAG_ITEM_SAFARI_ZONE_SOUTH_EAST_BIG_PEARL                  0x492
 
