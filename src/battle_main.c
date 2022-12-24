@@ -2005,9 +2005,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
     u8 fixedIV;
     s32 i, j;
     u8 monsCount;
-    u16 species_check;  
     u32 fixedOTID;
     u8 otGender;
+    const u8 abilityIfNormansSlaking = 1;
     u8 opponentClass = gTrainers[trainerNum].trainerClass;
 
     if (trainerNum == TRAINER_SECRET_BASE)
@@ -2036,10 +2036,6 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
         for (i = 0; i < monsCount; i++)
         {
-            species_check = gTrainers[trainerNum].party.NoItemDefaultMoves[i].species;
-            if (checkStolenPokemon(opponentClass, species_check) & VarGet(VAR_RIVAL_PKMN_STOLE)){
-                continue;
-            }
             if (gTrainers[trainerNum].doubleBattle == TRUE){
                 personalityValue = 0x80;
                 otGender = gSaveBlock2Ptr->playerGender;
@@ -2060,7 +2056,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case 0:
             {
                 const struct TrainerMonNoItemDefaultMoves *partyData = gTrainers[trainerNum].party.NoItemDefaultMoves;
-
+                if (checkStolenPokemon(opponentClass, partyData[i].species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                    continue;
+                }
                 for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
                     nameHash += gSpeciesNames[partyData[i].species][j];
 
@@ -2074,6 +2072,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case F_TRAINER_PARTY_CUSTOM_MOVESET:
             {
                 const struct TrainerMonNoItemCustomMoves *partyData = gTrainers[trainerNum].party.NoItemCustomMoves;
+                if (checkStolenPokemon(opponentClass, partyData[i].species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                    continue;
+                }
 
                 for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
                     nameHash += gSpeciesNames[partyData[i].species][j];
@@ -2094,6 +2095,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case F_TRAINER_PARTY_HELD_ITEM:
             {
                 const struct TrainerMonItemDefaultMoves *partyData = gTrainers[trainerNum].party.ItemDefaultMoves;
+                if (checkStolenPokemon(opponentClass, partyData[i].species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                    continue;
+                }
 
                 for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
                     nameHash += gSpeciesNames[partyData[i].species][j];
@@ -2110,6 +2114,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case F_TRAINER_PARTY_CUSTOM_MOVESET | F_TRAINER_PARTY_HELD_ITEM:
             {
                 const struct TrainerMonItemCustomMoves *partyData = gTrainers[trainerNum].party.ItemCustomMoves;
+                if (checkStolenPokemon(opponentClass, partyData[i].species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                    continue;
+                }
 
                 for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
                     nameHash += gSpeciesNames[partyData[i].species][j];
@@ -2119,6 +2126,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
                 SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
                 SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
+                if (partyData[i].species == SPECIES_SLAKING && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN 
+                && opponentClass == TRAINER_CLASS_LEADER)  //Set Norman's Slaking to have intimidate
+                    SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfNormansSlaking);
                 
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
 

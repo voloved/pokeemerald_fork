@@ -2285,7 +2285,8 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv);
     }
 
-    if (gSpeciesInfo[species].abilities[1])
+    if (gSpeciesInfo[species].abilities[1]  && species != SPECIES_SLAKING)
+    // Ignoring Slaking b/c it's set to get intimidate with Norman.
     {
         value = personality & 1;
         SetBoxMonData(boxMon, MON_DATA_ABILITY_NUM, &value);
