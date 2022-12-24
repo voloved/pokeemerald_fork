@@ -1391,7 +1391,7 @@ static const u8 sText_GlintAppearsInEye[] = _("A glint appears in\n{B_SCR_ACTIVE
 static const u8 sText_PkmnGettingIntoPosition[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} is getting into\nposition!");
 static const u8 sText_PkmnBeganGrowlingDeeply[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} began growling deeply!");
 static const u8 sText_PkmnEagerForMore[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} is eager for more!");
-static const u8 sText_GotchaPkmnCaughtNoBgm[] = _("Gotcha!\n{B_OPPONENT_MON1_NAME} was caught!{WAIT_SE}{RESUME_MUSIC}\p");
+static const u8 sText_GotchaPkmnCaughtNoBgm[] = _("Gotcha! {B_TRAINER1_CLASS}\n{B_TRAINER1_NAME}'s {B_OPPONENT_MON1_NAME} was caught!{WAIT_SE}{RESUME_MUSIC}\p");
 
 const u16 gBattlePalaceFlavorTextTable[] =
 {
