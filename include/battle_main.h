@@ -54,6 +54,7 @@ struct MultiPartnerMenuPokemon
 #define STOLE_DELCATTY     (1 << 9)
 #define STOLE_ROSELIA      (1 << 10)
 #define STOLE_MAGNETON     (1 << 11)
+#define STOLE_SLAKING      (1 << 12)
 
 void CB2_InitBattle(void);
 void BattleMainCB2(void);
@@ -90,7 +91,7 @@ void RunBattleScriptCommands_PopCallbacksStack(void);
 void RunBattleScriptCommands(void);
 bool8 TryRunFromBattle(u8 battlerId);
 void SpecialStatusesClear(void);
-u16 checkStolenPokemon(u8 trainersClass, u16 speciesType);
+u16 checkStolenPokemon(u16 trainerNum, u16 speciesType);
 
 extern struct MultiPartnerMenuPokemon gMultiPartnerParty[MULTI_PARTY_SIZE];
 
