@@ -1,0 +1,24 @@
+{
+    "files.associations": {
+        "battle_move_effects.h": "c",
+        "battle_controllers.h": "c",
+        "global.h": "c",
+        "battle_setup.h": "c",
+        "battle.h": "c",
+        "match_call.h": "c",
+        "strings.h": "c",
+        "reshow_battle_screen.h": "c",
+        "battle_ai_script_commands.h": "c",
+        "battle_scripts.h": "c",
+        "international_string_util.h": "c",
+        "battle_anim.h": "c",
+        "pokemon_summary_screen.h": "c",
+        "palette.h": "c",
+        "trainer_hill.h": "c",
+        "event_objects.h": "c",
+        "songs.h": "c",
+        "pokemon_storage_system.h": "c",
+        "map_types.h": "c",
+        "moves.h": "c"
+    }
+}

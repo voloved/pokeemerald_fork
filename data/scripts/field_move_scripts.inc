@@ -2,9 +2,10 @@
 EventScript_CutTree::
 	lockall
 	checkpartymove MOVE_CUT
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CheckTreeCantCut
+	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CutWithoutPokemon
 	setfieldeffectargument 0, VAR_RESULT
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
+EventScript_CutTreeContinue::
 	buffermovename STR_VAR_2, MOVE_CUT
 	msgbox Text_WantToCut, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_CancelCut
@@ -13,6 +14,14 @@ EventScript_CutTree::
 	dofieldeffect FLDEFF_USE_CUT_ON_TREE
 	waitstate
 	goto EventScript_CutTreeDown
+	end
+
+EventScript_CutWithoutPokemon::
+	checkitem ITEM_HM01_CUT
+	goto_if_eq VAR_RESULT, FALSE, EventScript_CheckTreeCantCut
+	setfieldeffectargument 0, 0
+	bufferpartymonnick STR_VAR_1, 0
+	goto EventScript_CutTreeContinue
 	end
 
 @ Use cut from party menu
@@ -60,9 +69,10 @@ Text_CantCut:
 EventScript_RockSmash::
 	lockall
 	checkpartymove MOVE_ROCK_SMASH
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantSmashRock
+	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_RockSmashWithoutPokemon
 	setfieldeffectargument 0, VAR_RESULT
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
+EventScript_RockSmashContinue::
 	buffermovename STR_VAR_2, MOVE_ROCK_SMASH
 	msgbox Text_WantToSmash, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_CancelSmash
@@ -71,6 +81,14 @@ EventScript_RockSmash::
 	dofieldeffect FLDEFF_USE_ROCK_SMASH
 	waitstate
 	goto EventScript_SmashRock
+	end
+
+EventScript_RockSmashWithoutPokemon::
+	checkitem ITEM_HM06_ROCK_SMASH
+	goto_if_eq VAR_RESULT, FALSE, EventScript_CantSmashRock
+	setfieldeffectargument 0, 0
+	bufferpartymonnick STR_VAR_1, 0
+	goto EventScript_RockSmashContinue
 	end
 
 @ Use rock smash from party menu
@@ -123,14 +141,22 @@ EventScript_StrengthBoulder::
 	lockall
 	goto_if_set FLAG_SYS_USE_STRENGTH, EventScript_CheckActivatedBoulder
 	checkpartymove MOVE_STRENGTH
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantStrength
+	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_StrengthWithoutPokemon
 	setfieldeffectargument 0, VAR_RESULT
+EventScript_StrengthContinue::
 	msgbox Text_WantToStrength, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_CancelStrength
 	closemessage
 	dofieldeffect FLDEFF_USE_STRENGTH
 	waitstate
 	goto EventScript_ActivateStrength
+	end
+
+EventScript_StrengthWithoutPokemon::
+	checkitem ITEM_HM04_STRENGTH
+	goto_if_eq VAR_RESULT, FALSE, EventScript_CantStrength
+	setfieldeffectargument 0, 0
+	goto EventScript_StrengthContinue
 	end
 
 EventScript_UseStrength::
@@ -182,14 +208,24 @@ Text_StrengthActivated:
 EventScript_UseWaterfall::
 	lockall
 	checkpartymove MOVE_WATERFALL
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantWaterfall
+	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_WaterfallWithoutPokemon
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
+EventScript_WaterfallContinue::
 	msgbox Text_WantToWaterfall, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_EndWaterfall
 	msgbox Text_MonUsedWaterfall, MSGBOX_DEFAULT
 	dofieldeffect FLDEFF_USE_WATERFALL
 	goto EventScript_EndWaterfall
+
+EventScript_WaterfallWithoutPokemon::
+	checkitem ITEM_HM07_WATERFALL
+	goto_if_eq VAR_RESULT, FALSE, EventScript_CantWaterfall
+	bufferpartymonnick STR_VAR_1, 0
+	setfieldeffectargument 0, 0
+	goto EventScript_WaterfallContinue
+	end
+
 
 EventScript_CannotUseWaterfall::
 	lockall
@@ -215,15 +251,24 @@ Text_MonUsedWaterfall:
 EventScript_UseDive::
 	lockall
 	checkpartymove MOVE_DIVE
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantDive
+	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_DiveWithoutPokemon
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
+EventScript_DiveContinue::
 	setfieldeffectargument 1, 1
 	msgbox Text_WantToDive, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_EndDive
 	msgbox Text_MonUsedDive, MSGBOX_DEFAULT
 	dofieldeffect FLDEFF_USE_DIVE
 	goto EventScript_EndDive
+	end
+
+EventScript_DiveWithoutPokemon::
+	checkitem ITEM_HM08_DIVE
+	goto_if_eq VAR_RESULT, FALSE, EventScript_CantDive
+	bufferpartymonnick STR_VAR_1, 0
+	setfieldeffectargument 0, 0
+	goto EventScript_DiveContinue
 	end
 
 EventScript_CantDive::
@@ -238,9 +283,10 @@ EventScript_EndDive::
 EventScript_UseDiveUnderwater::
 	lockall
 	checkpartymove MOVE_DIVE
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantSurface
+	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_DiveUnderwaterWithoutPokemon
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
+EventScript_DiveUnderwaterContinue::
 	setfieldeffectargument 1, 1
 	msgbox Text_WantToSurface, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_EndSurface
@@ -248,6 +294,15 @@ EventScript_UseDiveUnderwater::
 	dofieldeffect FLDEFF_USE_DIVE
 	goto EventScript_EndSurface
 	end
+
+EventScript_DiveUnderwaterWithoutPokemon::
+	checkitem ITEM_HM08_DIVE
+	goto_if_eq VAR_RESULT, FALSE, EventScript_CantSurface
+	bufferpartymonnick STR_VAR_1, 0
+	setfieldeffectargument 0, 0
+	goto EventScript_DiveContinue
+	end
+
 
 EventScript_CantSurface::
 	lockall

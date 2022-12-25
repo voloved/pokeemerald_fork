@@ -64,6 +64,7 @@ BattleScript_SafariBallThrow::
 BattleScript_SuccessBallThrow::
 	jumpifhalfword CMP_EQUAL, gLastUsedItem, ITEM_SAFARI_BALL, BattleScript_PrintCaughtMonInfo
 	incrementgamestat GAME_STAT_POKEMON_CAPTURES
+	jumpifbyte CMP_EQUAL, gUsingThiefBall, THIEF_BALL_CAUGHT, BattleScript_SuccessBallThrowEndThief
 BattleScript_PrintCaughtMonInfo::
 	printstring STRINGID_GOTCHAPKMNCAUGHT
 	trysetcaughtmondexflags BattleScript_TryNicknameCaughtMon
@@ -79,20 +80,16 @@ BattleScript_TryNicknameCaughtMon::
 	givecaughtmon
 	printfromtable gCaughtMonStringIds
 	waitmessage B_WAIT_TIME_LONG
-	jumpifbyte CMP_EQUAL, gUsingThiefBall, THIEF_BALL_CAUGHT, BattleScript_SuccessBallThrowEndThief
-	goto BattleScript_SuccessBallThrowEnd
 BattleScript_GiveCaughtMonEnd::
 	givecaughtmon
-	jumpifbyte CMP_EQUAL, gUsingThiefBall, THIEF_BALL_CAUGHT, BattleScript_SuccessBallThrowEndThief
 BattleScript_SuccessBallThrowEnd::
 	setbyte gBattleOutcome, B_OUTCOME_CAUGHT
 	finishturn
 BattleScript_SuccessBallThrowEndThief::
+	printstring STRINGID_GOTCHAPKMNCAUGHTNOBGM
+	givecaughtmon
 	cleareffectsonfaint BS_TARGET
-	setbyte gBattleCommunication, 0
-	thiefballend
-	waitstate
-	end2
+	goto BattleScript_HandleFaintedMon
 
 BattleScript_WallyBallThrow::
 	printstring STRINGID_GOTCHAPKMNCAUGHT2

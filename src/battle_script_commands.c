@@ -327,7 +327,6 @@ static void Cmd_removeattackerstatus1(void);
 static void Cmd_finishaction(void);
 static void Cmd_finishturn(void);
 static void Cmd_trainerslideout(void);
-static void Cmd_thiefballend(void);
 static bool32 OppMonsFainted(void);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
@@ -581,7 +580,6 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_finishaction,                            //0xF6
     Cmd_finishturn,                              //0xF7
     Cmd_trainerslideout,                         //0xF8
-    Cmd_thiefballend,                            //0xF9
 };
 
 struct StatFractions
@@ -1161,7 +1159,7 @@ static void Cmd_accuracycheck(void)
             calc = (calc * 130) / 100; // 1.3 compound eyes boost
         if (WEATHER_HAS_EFFECT && gBattleMons[gBattlerTarget].ability == ABILITY_SAND_VEIL && gBattleWeather & B_WEATHER_SANDSTORM)
             calc = (calc * 80) / 100; // 1.2 sand veil loss
-        if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && IS_TYPE_PHYSICAL(type))
+        if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && IS_MOVE_PHYSICAL(gCurrentMove))
             calc = (calc * 80) / 100; // 1.2 hustle loss
 
         if (gBattleMons[gBattlerTarget].item == ITEM_ENIGMA_BERRY)
@@ -1925,7 +1923,7 @@ static void Cmd_datahpupdate(void)
                 if (!gSpecialStatuses[gActiveBattler].dmg && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE))
                     gSpecialStatuses[gActiveBattler].dmg = gHpDealt;
 
-                if (IS_TYPE_PHYSICAL(moveType) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE) && gCurrentMove != MOVE_PAIN_SPLIT)
+                if (IS_MOVE_PHYSICAL(gCurrentMove) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE) && gCurrentMove != MOVE_PAIN_SPLIT)
                 {
                     gProtectStructs[gActiveBattler].physicalDmg = gHpDealt;
                     gSpecialStatuses[gActiveBattler].physicalDmg = gHpDealt;
@@ -1940,7 +1938,7 @@ static void Cmd_datahpupdate(void)
                         gSpecialStatuses[gActiveBattler].physicalBattlerId = gBattlerTarget;
                     }
                 }
-                else if (!IS_TYPE_PHYSICAL(moveType) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE))
+                else if (IS_MOVE_SPECIAL(gCurrentMove) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE))
                 {
                     gProtectStructs[gActiveBattler].specialDmg = gHpDealt;
                     gSpecialStatuses[gActiveBattler].specialDmg = gHpDealt;
@@ -5447,32 +5445,24 @@ static void Cmd_yesnoboxlearnmove(void)
             else
             {
                 u16 moveId = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_MOVE1 + movePosition);
-                if (IsHMMove2(moveId))
+                gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
+
+                PREPARE_MOVE_BUFFER(gBattleTextBuff2, moveId)
+
+                RemoveMonPPBonus(&gPlayerParty[gBattleStruct->expGetterMonId], movePosition);
+                SetMonMoveSlot(&gPlayerParty[gBattleStruct->expGetterMonId], gMoveToLearn, movePosition);
+
+                if (gBattlerPartyIndexes[0] == gBattleStruct->expGetterMonId && MOVE_IS_PERMANENT(0, movePosition))
                 {
-                    PrepareStringBattle(STRINGID_HMMOVESCANTBEFORGOTTEN, gActiveBattler);
-                    gBattleScripting.learnMoveState = 6;
+                    RemoveBattleMonPPBonus(&gBattleMons[0], movePosition);
+                    SetBattleMonMoveSlot(&gBattleMons[0], gMoveToLearn, movePosition);
                 }
-                else
+                if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE
+                    && gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId
+                    && MOVE_IS_PERMANENT(2, movePosition))
                 {
-                    gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
-
-                    PREPARE_MOVE_BUFFER(gBattleTextBuff2, moveId)
-
-                    RemoveMonPPBonus(&gPlayerParty[gBattleStruct->expGetterMonId], movePosition);
-                    SetMonMoveSlot(&gPlayerParty[gBattleStruct->expGetterMonId], gMoveToLearn, movePosition);
-
-                    if (gBattlerPartyIndexes[0] == gBattleStruct->expGetterMonId && MOVE_IS_PERMANENT(0, movePosition))
-                    {
-                        RemoveBattleMonPPBonus(&gBattleMons[0], movePosition);
-                        SetBattleMonMoveSlot(&gBattleMons[0], gMoveToLearn, movePosition);
-                    }
-                    if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE
-                        && gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId
-                        && MOVE_IS_PERMANENT(2, movePosition))
-                    {
-                        RemoveBattleMonPPBonus(&gBattleMons[2], movePosition);
-                        SetBattleMonMoveSlot(&gBattleMons[2], gMoveToLearn, movePosition);
-                    }
+                    RemoveBattleMonPPBonus(&gBattleMons[2], movePosition);
+                    SetBattleMonMoveSlot(&gBattleMons[2], gMoveToLearn, movePosition);
                 }
             }
         }
@@ -9908,8 +9898,11 @@ static void Cmd_handleballthrow(void)
             case ITEM_LUXURY_BALL:
                 ballMultiplier = 10;
                 break;
-            case ITEM_THIEF_BALL:
-                ballMultiplier = 25;
+            case ITEM_THIEF_BALL:  // If used on trainer, it's 2.5x; if used on a wild Pokemon, it's 1x
+                if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+                    ballMultiplier = 25;
+                else
+                    ballMultiplier = 10;
                 break;
             }
         }
@@ -10016,11 +10009,16 @@ static void Cmd_givecaughtmon(void)
     gBattleResults.caughtMonSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_SPECIES, NULL);
     GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_NICKNAME, gBattleResults.caughtMonNick);
     gBattleResults.caughtMonBall = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_POKEBALL, NULL);
-
     if (gUsingThiefBall == THIEF_BALL_CAUGHT)
     {
+        u16 stoleValue;
+        stoleValue = checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species);
+        if (stoleValue != 0)
+            VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | stoleValue);
         gBattleMons[gBattlerTarget].hp = 0;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_HP, &gBattleMons[gBattlerTarget].hp);
+        gBattlerFainted = gBattlerTarget;
+        SetHealthboxSpriteInvisible(gHealthboxSpriteIds[gBattlerTarget]);
     }
 
     gBattlescriptCurrInstr++;
@@ -10028,7 +10026,7 @@ static void Cmd_givecaughtmon(void)
 
 static void Cmd_trysetcaughtmondexflags(void)
 {
-    u16 species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL);
+    u16 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_SPECIES, NULL);
     u32 personality = GetMonData(&gEnemyParty[0], MON_DATA_PERSONALITY, NULL);
 
     if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
@@ -10050,7 +10048,6 @@ static void Cmd_displaydexinfo(void)
     case 0:
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
         gBattleCommunication[0]++;
-        break;
     case 1:
         if (!gPaletteFade.active)
         {
@@ -10266,27 +10263,6 @@ static void Cmd_trainerslideout(void)
     MarkBattlerForControllerExec(gActiveBattler);
 
     gBattlescriptCurrInstr += 2;
-}
-
-static void Cmd_thiefballend(void)
-{
-    switch (gBattleCommunication[0])
-    {
-    case 0:
-        FreeAllWindowBuffers();
-        SetMainCallback2(ReshowBattleScreenAfterMenu);
-        gBattleCommunication[0]++;
-        break; 
-    case 1:
-        if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active){
-            if(!OppMonsFainted()){  //TODO: Change to when non-fainted pokemon of opponent is zero
-                m4aMPlayAllStop();
-                PlayBGM(MUS_RG_VS_TRAINER);  //This music file was remade to be the standard battle music w/o the spiral sound at the beginning
-            }
-            gBattlescriptCurrInstr++;
-            break;
-        }
-    }
 }
 
 static bool32 OppMonsFainted(void)
