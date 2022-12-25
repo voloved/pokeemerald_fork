@@ -441,6 +441,7 @@ LittlerootTown_EventScript_BasketballShot:
     playse SE_FAILURE
 	msgbox LittlerootTown_Text_BasketballShotSignMiss, MSGBOX_DEFAULT
 	waitse
+	clearflag FLAG_BASKETBALL_SHOT_MADE
 LittlerootTown_EventScript_BasketballShotEnd::
 	closemessage
 	return
@@ -453,6 +454,7 @@ LittlerootTown_EventScript_BasketballShotSignMade:
 	playse SE_SUCCESS
 	msgbox LittlerootTown_Text_BasketballShotSignMade, MSGBOX_DEFAULT
 	waitse
+	setflag FLAG_BASKETBALL_SHOT_MADE
 	goto LittlerootTown_EventScript_BasketballShotEnd
 
 LittlerootTown_EventScript_BackOfHoop:
