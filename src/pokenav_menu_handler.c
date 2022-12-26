@@ -7,6 +7,7 @@
 #include "palette.h"
 #include "constants/songs.h"
 #include "script.h"
+#include "overworld.h"
 #include "event_scripts.h"
 
 
@@ -390,7 +391,7 @@ static u32 HandleConditionMenuInput(struct Pokenav_Menu *menu)
             menu->callback = HandleConditionSearchMenuInput;
             return POKENAV_MENU_FUNC_OPEN_CONDITION_SEARCH;
         case POKENAV_MENUITEM_CONDITION_ACCESS_PC:
-            if(gMapHeader.allowRunning){
+            if(Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType)){
                 FlagSet(FLAG_SYS_PC_FROM_POKENAV);
                 // Reusing from debug menu to gracefully close PC when done.
                 CreateTask(Task_WaitFadeAccessPC, 0);

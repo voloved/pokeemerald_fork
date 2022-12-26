@@ -969,7 +969,6 @@ void FieldShowRegionMap(void)
 
 void DoPCTurnOnEffect(void)
 {
-    DebugPrintf("ArePlayerFieldControlsLocked: %d", ArePlayerFieldControlsLocked);
     if (FuncIsActiveTask(Task_PCTurnOnEffect) != TRUE)
     {
         u8 taskId = CreateTask(Task_PCTurnOnEffect, 8);
@@ -1055,7 +1054,6 @@ void DoPCTurnOffEffect(void)
 static void PCTurnOffEffect(void)
 {
     if(FlagGet(FLAG_SYS_PC_FROM_POKENAV)){
-        DebugPrintf("ArePlayerFieldControlsLocked: %d", ArePlayerFieldControlsLocked());
         FlagClear(FLAG_SYS_PC_FROM_POKENAV);
         return;
     }
