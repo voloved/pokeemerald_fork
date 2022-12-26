@@ -65,6 +65,7 @@
 #include "constants/weather.h"
 #include "constants/metatile_labels.h"
 #include "palette.h"
+#include "event_data.h"
 
 EWRAM_DATA bool8 gBikeCyclingChallenge = FALSE;
 EWRAM_DATA u8 gBikeCollisions = 0;
@@ -968,6 +969,7 @@ void FieldShowRegionMap(void)
 
 void DoPCTurnOnEffect(void)
 {
+    DebugPrintf("ArePlayerFieldControlsLocked: %d", ArePlayerFieldControlsLocked);
     if (FuncIsActiveTask(Task_PCTurnOnEffect) != TRUE)
     {
         u8 taskId = CreateTask(Task_PCTurnOnEffect, 8);
@@ -1022,6 +1024,8 @@ static void PCTurnOnEffect_0(struct Task *task)
 static void PCTurnOnEffect_1(s16 isPcTurnedOn, s8 dx, s8 dy)
 {
     u16 tileId = 0;
+    if(FlagGet(FLAG_SYS_PC_FROM_POKENAV))
+        return;
     if (isPcTurnedOn)
     {
         if (gSpecialVar_0x8004 == PC_LOCATION_OTHER)
@@ -1050,6 +1054,11 @@ void DoPCTurnOffEffect(void)
 
 static void PCTurnOffEffect(void)
 {
+    if(FlagGet(FLAG_SYS_PC_FROM_POKENAV)){
+        DebugPrintf("ArePlayerFieldControlsLocked: %d", ArePlayerFieldControlsLocked());
+        FlagClear(FLAG_SYS_PC_FROM_POKENAV);
+        return;
+    }
     s8 dx = 0;
     s8 dy = 0;
     u16 tileId = 0;

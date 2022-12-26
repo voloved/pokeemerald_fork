@@ -6,6 +6,8 @@
 #include "task.h"
 #include "palette.h"
 #include "constants/songs.h"
+#include "script.h"
+#include "event_scripts.h"
 
 
 struct Pokenav_Menu
@@ -33,6 +35,8 @@ static u32 HandleMainMenuInputTutorial(struct Pokenav_Menu *);
 static u32 HandleMainMenuInput(struct Pokenav_Menu *);
 static u32 (*GetMainMenuInputHandler(void))(struct Pokenav_Menu *);
 static void SetMenuInputHandler(struct Pokenav_Menu *);
+
+extern const u8 EventScript_PCMainMenu[];
 
 // Number of entries - 1 for that menu type
 static const u8 sLastCursorPositions[] =
@@ -91,7 +95,6 @@ static u8 GetPokenavMainMenuType(void)
     u8 menuType = POKENAV_MENU_TYPE_DEFAULT;
 
     if (FlagGet(FLAG_ADDED_MATCH_CALL_TO_POKENAV)) 
-    // Reusing from debug menu to gracefully close PC when done.
     {
         menuType = POKENAV_MENU_TYPE_UNLOCK_MC;
 
@@ -364,11 +367,10 @@ static u32 HandleCantAccessPCInput(struct Pokenav_Menu *menu)
 
 static void Task_WaitFadeAccessPC(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (WaitForPokenavShutdownFade())
     {
+        ScriptContext_SetupScript(EventScript_PCMainMenu);
         DestroyTask(taskId);
-        FlagSet(FLAG_SYS_PC_FROM_DEBUG_MENU);
-        EnterPokeStorage(2);
     }
 }
 
@@ -388,15 +390,16 @@ static u32 HandleConditionMenuInput(struct Pokenav_Menu *menu)
             menu->callback = HandleConditionSearchMenuInput;
             return POKENAV_MENU_FUNC_OPEN_CONDITION_SEARCH;
         case POKENAV_MENUITEM_CONDITION_ACCESS_PC:
-            if(gMapHeader.allowRunning){
-                ShutdownPokenav();
-                CreateTask(Task_WaitFadeAccessPC, 0);  
+            if(TRUE){
+                FlagSet(FLAG_SYS_PC_FROM_POKENAV);
+                // Reusing from debug menu to gracefully close PC when done.
+                CreateTask(Task_WaitFadeAccessPC, 0);
+                return POKENAV_MENU_FUNC_EXIT; 
             }
             else{
                 menu->callback = HandleCantAccessPCInput;
                 return POKENAV_MENU_FUNC_CANNOT_ACCESS_PC;
             }
-            return POKENAV_MENU_FUNC_OPEN_FEATURE;
         case POKENAV_MENUITEM_CONDITION_PARTY:
             menu->helpBarIndex = 0;
             SetMenuIdAndCB(menu, POKENAV_CONDITION_GRAPH_PARTY);
