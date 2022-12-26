@@ -390,7 +390,7 @@ static u32 HandleConditionMenuInput(struct Pokenav_Menu *menu)
             menu->callback = HandleConditionSearchMenuInput;
             return POKENAV_MENU_FUNC_OPEN_CONDITION_SEARCH;
         case POKENAV_MENUITEM_CONDITION_ACCESS_PC:
-            if(TRUE){
+            if(gMapHeader.allowRunning){
                 FlagSet(FLAG_SYS_PC_FROM_POKENAV);
                 // Reusing from debug menu to gracefully close PC when done.
                 CreateTask(Task_WaitFadeAccessPC, 0);
