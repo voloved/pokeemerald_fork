@@ -373,7 +373,8 @@ gBattleAnims_Moves::
 	.4byte Move_PSYCHO_BOOST
 	.4byte Move_ZEN_HEADBUTT
 	.4byte Move_MOONBLAST
-	.4byte Move_DEATH_MOVE,
+	.4byte Move_PLAY_ROUGH
+	.4byte Move_DEATH_MOVE
 	.4byte Move_COUNT @ cannot be reached, because last move is Psycho Boost
 
 	.align 2
@@ -1359,6 +1360,7 @@ Move_PSYCH_UP:
 	waitforvisualfinish
 	end
 
+Move_PLAY_ROUGH:
 Move_DIZZY_PUNCH:
 	loadspritegfx ANIM_TAG_DUCK
 	loadspritegfx ANIM_TAG_HANDS_AND_FEET

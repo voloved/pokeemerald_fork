@@ -357,5 +357,6 @@ const u8 gMoveNames[MOVES_COUNT][MOVE_NAME_LENGTH + 1] =
     [MOVE_PSYCHO_BOOST] = _("PSYCHO BOOST"),
     [MOVE_ZEN_HEADBUTT] = _("Zen Headbutt"),
     [MOVE_MOONBLAST] = _("Moonblast"),
+    [MOVE_PLAY_ROUGH] = _("Play Rough"),
     [MOVE_DEATH_MOVE] = _("Death Move"),
 };

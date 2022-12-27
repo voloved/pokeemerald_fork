@@ -4970,7 +4970,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .category= MOVE_CATEGORY_SPECIAL,
     },
 
-        [MOVE_ZEN_HEADBUTT] =
+    [MOVE_ZEN_HEADBUTT] =
     {
         .effect = EFFECT_FLINCH_HIT,
         .power = 80,
@@ -4998,17 +4998,31 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .category= MOVE_CATEGORY_SPECIAL,
     },
 
-        [MOVE_DEATH_MOVE] =
+    [MOVE_PLAY_ROUGH] =
     {
-        .effect = EFFECT_OHKO,
+        .effect = EFFECT_ATTACK_DOWN_HIT,
+        .power = 90,
+        .type = TYPE_FAIRY,
+        .accuracy = 90,
+        .pp = 10,
+        .secondaryEffectChance = 10,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED,
+        .category= MOVE_CATEGORY_PHYSICAL,
+    },
+
+    [MOVE_DEATH_MOVE] =
+    {
+        .effect = EFFECT_DEATH_MOVE,
         .power = 1,
         .type = TYPE_NORMAL,
         .accuracy = 255,
         .pp = 35,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_BOTH,
-        .priority = 5,
+        .priority = 7,
         .flags = 0,
-        .category= MOVE_CATEGORY_PHYSICAL,
+        .category= MOVE_CATEGORY_SPECIAL,
     },
 };

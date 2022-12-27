@@ -1425,9 +1425,13 @@ static const u8 sMoonblastDescription[] = _(
     "Attacks with the power of\n"
     "the moon. May lower Sp. Atk.");
 
+static const u8 sPlayRoughDescription[] = _(
+    "Plays rough with the foe.\n"
+    "May lower Attack.");
+
 static const u8 sDeathMoveDescription[] = _(
-    "A one-hit KO move that\n"
-    "doesn't miss often.");
+    "A one-hit KO. Always\n"
+    "goes first. Doesn't miss.");
 
 // MOVE_NONE is ignored in this table. Make sure to always subtract 1 before getting the right pointer.
 const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
@@ -1788,5 +1792,6 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_PSYCHO_BOOST - 1] = sPsychoBoostDescription,
     [MOVE_ZEN_HEADBUTT - 1] = sZenHeadbuttDescription,
     [MOVE_MOONBLAST - 1] = sMoonblastDescription,
+    [MOVE_PLAY_ROUGH - 1] = sPlayRoughDescription,
     [MOVE_DEATH_MOVE - 1] = sDeathMoveDescription,
 };
