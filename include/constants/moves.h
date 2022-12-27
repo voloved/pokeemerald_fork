@@ -359,9 +359,10 @@
 #define MOVE_ZEN_HEADBUTT 355
 #define MOVE_MOONBLAST 356
 #define MOVE_PLAY_ROUGH 357
-#define MOVE_DEATH_MOVE 358
+#define MOVE_DRAINING_KISS 358
+#define MOVE_DEATH_MOVE 359
 
-#define MOVES_COUNT 359
+#define MOVES_COUNT 360
 
 // Used for checks for moves affected by Disable, Mimic, etc.
 #define MOVE_UNAVAILABLE 0xFFFF

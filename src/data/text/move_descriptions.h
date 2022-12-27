@@ -1429,6 +1429,10 @@ static const u8 sPlayRoughDescription[] = _(
     "Plays rough with the foe.\n"
     "May lower Attack.");
 
+static const u8 sDrainingKissDescription[] = _(
+    "An attack that absorbs over\n"
+    "half the damage inflicted.");
+
 static const u8 sDeathMoveDescription[] = _(
     "A one-hit KO. Always\n"
     "goes first. Doesn't miss.");
@@ -1793,5 +1797,6 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_ZEN_HEADBUTT - 1] = sZenHeadbuttDescription,
     [MOVE_MOONBLAST - 1] = sMoonblastDescription,
     [MOVE_PLAY_ROUGH - 1] = sPlayRoughDescription,
+    [MOVE_DRAINING_KISS - 1] = sDrainingKissDescription,
     [MOVE_DEATH_MOVE - 1] = sDeathMoveDescription,
 };
