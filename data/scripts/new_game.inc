@@ -273,6 +273,7 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_SKY_PILLAR_WALLACE
 	setflag FLAG_HIDE_SKY_PILLAR_TOP_RAYQUAZA_STILL
 	setflag FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW
+	setflag FLAG_SYS_PC_LANETTE
 	
 	call EventScript_ResetAllBerries
 	end
