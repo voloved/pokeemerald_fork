@@ -1053,14 +1053,14 @@ void DoPCTurnOffEffect(void)
 
 static void PCTurnOffEffect(void)
 {
-    if(FlagGet(FLAG_SYS_PC_FROM_POKENAV)){
-        FlagClear(FLAG_SYS_PC_FROM_POKENAV);
-        return;
-    }
     s8 dx = 0;
     s8 dy = 0;
     u16 tileId = 0;
     u8 playerDirection = GetPlayerFacingDirection();
+    if(FlagGet(FLAG_SYS_PC_FROM_POKENAV)){
+        FlagClear(FLAG_SYS_PC_FROM_POKENAV);
+        return;
+    }
     switch (playerDirection)
     {
     case DIR_NORTH:
