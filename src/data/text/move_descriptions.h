@@ -1421,6 +1421,10 @@ static const u8 sZenHeadbuttDescription[] = _(
     "Hits with a strong head-\n"
     "butt. May cause flinching.");
 
+static const u8 sMoonblastDescription[] = _(
+    "Attacks with the power of\n"
+    "the moon. May lower Sp. Atk.");
+
 static const u8 sDeathMoveDescription[] = _(
     "A one-hit KO move that\n"
     "doesn't miss often.");
@@ -1783,5 +1787,6 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_DOOM_DESIRE - 1] = sDoomDesireDescription,
     [MOVE_PSYCHO_BOOST - 1] = sPsychoBoostDescription,
     [MOVE_ZEN_HEADBUTT - 1] = sZenHeadbuttDescription,
+    [MOVE_MOONBLAST - 1] = sMoonblastDescription,
     [MOVE_DEATH_MOVE - 1] = sDeathMoveDescription,
 };
