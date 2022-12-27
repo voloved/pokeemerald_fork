@@ -22,7 +22,7 @@ POKEDEXGFXDIR := graphics/pokedex
 STARTERGFXDIR := graphics/starter_choose
 NAMINGGFXDIR := graphics/naming_screen
 
-types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark
+types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark fairy
 contest_types := cool beauty cute smart tough
 
 
@@ -650,7 +650,8 @@ $(PKNAVOPTIONSGFXDIR)/options.4bpp: $(PKNAVOPTIONSGFXDIR)/hoenn_map.4bpp \
                                     $(PKNAVOPTIONSGFXDIR)/match_call.4bpp \
                                     $(PKNAVOPTIONSGFXDIR)/ribbons.4bpp \
                                     $(PKNAVOPTIONSGFXDIR)/switch_off.4bpp \
-                                    $(PKNAVOPTIONSGFXDIR)/party.4bpp \
+                                    $(PKNAVOPTIONSGFXDIR)/pc.4bpp \
+									$(PKNAVOPTIONSGFXDIR)/party.4bpp \
                                     $(PKNAVOPTIONSGFXDIR)/search.4bpp \
                                     $(PKNAVOPTIONSGFXDIR)/cool.4bpp \
                                     $(PKNAVOPTIONSGFXDIR)/beauty.4bpp \

@@ -21,6 +21,7 @@
 #include "constants/items.h"
 #include "constants/layouts.h"
 #include "constants/weather.h"
+#include "constants/flags.h"
 
 extern const u8 EventScript_RepelWoreOff[];
 
@@ -117,6 +118,12 @@ static bool8 CheckFeebas(void)
     if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ROUTE119)
      && gSaveBlock1Ptr->location.mapNum == MAP_NUM(ROUTE119))
     {
+        if(FlagGet(FLAG_BASKETBALL_SHOT_MADE)){
+            if(Random() % 100 > 49)
+                return TRUE;
+            else
+                return FALSE;
+        }
         GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
         x -= MAP_OFFSET;
         y -= MAP_OFFSET;

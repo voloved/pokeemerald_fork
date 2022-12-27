@@ -523,6 +523,7 @@ extern const u8 gText_SpDef[];
 extern const u8 gText_Speed[];
 extern const u8 gText_Dash[];
 extern const u8 gText_Plus[];
+extern const u8 gText_Nickname[];
 
 //pokedex text
 extern const u8 gText_CryOf[];
@@ -1021,7 +1022,7 @@ extern const u8 gText_NoMoreRoomForThis[];
 extern const u8 gText_ThankYouIllSendItHome[];
 extern const u8 gText_ThanksIllSendItHome[];
 extern const u8 gText_SpaceForVar1Full[];
-extern const u8 gText_ThrowInPremierBall[];
+extern const u8 gText_ThrowInThiefBall[];
 extern const u8 gText_ShopBuy[];
 extern const u8 gText_ShopSell[];
 extern const u8 gText_ShopQuit[];
@@ -2968,6 +2969,7 @@ extern const u8 gText_Cancel6[];
 extern const u8 gText_CheckMapOfHoenn[];
 extern const u8 gText_CheckPokemonInDetail[];
 extern const u8 gText_CallRegisteredTrainer[];
+extern const u8 gText_Pokenav_Acces_PC[];
 extern const u8 gText_CheckObtainedRibbons[];
 extern const u8 gText_PutAwayPokenav[];
 extern const u8 gText_CheckPartyPokemonInDetail[];
@@ -2979,6 +2981,7 @@ extern const u8 gText_FindCutePokemon[];
 extern const u8 gText_FindSmartPokemon[];
 extern const u8 gText_FindToughPokemon[];
 extern const u8 gText_ReturnToConditionMenu[];
+extern const u8 gText_Pokenav_Cannot_Acces_PC[];
 extern const u8 gText_NoRibbonWinners[];
 
 // Pokenav

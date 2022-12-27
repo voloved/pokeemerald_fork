@@ -452,8 +452,9 @@ struct BattleStruct
         typeArg = gBattleMoves[move].type;                            \
 }
 
-#define IS_TYPE_PHYSICAL(moveType)(moveType < TYPE_MYSTERY)
-#define IS_TYPE_SPECIAL(moveType)(moveType > TYPE_MYSTERY)
+#define IS_MOVE_PHYSICAL(move)(gBattleMoves[move].category == MOVE_CATEGORY_PHYSICAL)
+#define IS_MOVE_SPECIAL(move)(gBattleMoves[move].category == MOVE_CATEGORY_SPECIAL)
+#define IS_MOVE_STATUS(move)(gBattleMoves[move].category == MOVE_CATEGORY_STATUS)
 
 #define TARGET_TURN_DAMAGED ((gSpecialStatuses[gBattlerTarget].physicalDmg != 0 || gSpecialStatuses[gBattlerTarget].specialDmg != 0))
 
@@ -644,6 +645,7 @@ extern s32 gBattleMoveDamage;
 extern s32 gHpDealt;
 extern s32 gTakenDmg[MAX_BATTLERS_COUNT];
 extern u16 gLastUsedItem;
+extern u8 gUsingThiefBall;
 extern u8 gLastUsedAbility;
 extern u8 gBattlerAttacker;
 extern u8 gBattlerTarget;
@@ -669,7 +671,6 @@ extern u16 gChosenMoveByBattler[MAX_BATTLERS_COUNT];
 extern u8 gMoveResultFlags;
 extern u32 gHitMarker;
 extern u8 gTakenDmgByBattler[MAX_BATTLERS_COUNT];
-extern u8 gUnusedFirstBattleVar2;
 extern u16 gSideStatuses[NUM_BATTLE_SIDES];
 extern struct SideTimer gSideTimers[NUM_BATTLE_SIDES];
 extern u32 gStatuses3[MAX_BATTLERS_COUNT];

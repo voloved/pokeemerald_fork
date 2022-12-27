@@ -15,13 +15,13 @@
 #define ITEM_REPEAT_BALL 9
 #define ITEM_TIMER_BALL 10
 #define ITEM_LUXURY_BALL 11
-#define ITEM_PREMIER_BALL 12
+#define ITEM_THIEF_BALL 12
 
 // Note: If moving ball IDs around, updating FIRST_BALL/LAST_BALL is not sufficient
 //       Several places expect the ball IDs to be first and contiguous (e.g. gBattlescriptsForBallThrow and MON_DATA_POKEBALL)
 //       If adding new balls, it's easiest to insert them after the last ball and increment the below IDs (and removing ITEM_034 for example)
 #define FIRST_BALL ITEM_MASTER_BALL
-#define LAST_BALL  ITEM_PREMIER_BALL
+#define LAST_BALL  ITEM_THIEF_BALL
 
 // Pokemon Items
 #define ITEM_POTION 13
@@ -536,6 +536,8 @@
 #define ITEM_B_USE_OTHER    2
 
 // Check if the item is one that can be used on a Pokemon.
-#define ITEM_HAS_EFFECT(item) ((item) >= ITEM_POTION && (item) <= MAX_BERRY_INDEX)
+#define ITEM_HAS_EFFECT(item) (((item) >= ITEM_POTION && (item) <= MAX_BERRY_INDEX) \
+|| (item) == ITEM_KINGS_ROCK || (item) == ITEM_DRAGON_SCALE || (item) == ITEM_METAL_COAT \
+|| (item) == ITEM_UP_GRADE || (item) == ITEM_DEEP_SEA_TOOTH || (item) == ITEM_DEEP_SEA_SCALE)
 
 #endif  // GUARD_CONSTANTS_ITEMS_H

@@ -156,17 +156,17 @@ const struct Item gItems[] =
         .secondaryId = ITEM_LUXURY_BALL - FIRST_BALL,
     },
 
-    [ITEM_PREMIER_BALL] =
+    [ITEM_THIEF_BALL] =
     {
-        .name = _("PREMIER BALL"),
-        .itemId = ITEM_PREMIER_BALL,
-        .price = 200,
-        .description = sPremierBallDesc,
+        .name = _("THIEF BALL"),
+        .itemId = ITEM_THIEF_BALL,
+        .price = 2000,
+        .description = sThiefBallDesc,
         .pocket = POCKET_POKE_BALLS,
-        .type = ITEM_PREMIER_BALL - FIRST_BALL,
+        .type = ITEM_THIEF_BALL - FIRST_BALL,
         .battleUsage = ITEM_B_USE_OTHER,
         .battleUseFunc = ItemUseInBattle_PokeBall,
-        .secondaryId = ITEM_PREMIER_BALL - FIRST_BALL,
+        .secondaryId = ITEM_THIEF_BALL - FIRST_BALL,
     },
 
 // Medicine
@@ -2290,8 +2290,8 @@ const struct Item gItems[] =
         .holdEffectParam = 10,
         .description = sKingsRockDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
     },
 
     [ITEM_SILVER_POWDER] =
@@ -2352,8 +2352,8 @@ const struct Item gItems[] =
         .holdEffect = HOLD_EFFECT_DEEP_SEA_TOOTH,
         .description = sDeepSeaToothDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
     },
 
     [ITEM_DEEP_SEA_SCALE] =
@@ -2364,8 +2364,8 @@ const struct Item gItems[] =
         .holdEffect = HOLD_EFFECT_DEEP_SEA_SCALE,
         .description = sDeepSeaScaleDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
     },
 
     [ITEM_SMOKE_BALL] =
@@ -2438,8 +2438,8 @@ const struct Item gItems[] =
         .holdEffectParam = 10,
         .description = sMetalCoatDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
     },
 
     [ITEM_LEFTOVERS] =
@@ -2464,8 +2464,8 @@ const struct Item gItems[] =
         .holdEffectParam = 10,
         .description = sDragonScaleDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
     },
 
     [ITEM_LIGHT_BALL] =
@@ -2683,8 +2683,8 @@ const struct Item gItems[] =
         .holdEffect = HOLD_EFFECT_UP_GRADE,
         .description = sUpGradeDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
     },
 
     [ITEM_SHELL_BELL] =

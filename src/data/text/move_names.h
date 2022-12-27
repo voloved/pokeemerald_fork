@@ -355,4 +355,10 @@ const u8 gMoveNames[MOVES_COUNT][MOVE_NAME_LENGTH + 1] =
     [MOVE_WATER_PULSE] = _("WATER PULSE"),
     [MOVE_DOOM_DESIRE] = _("DOOM DESIRE"),
     [MOVE_PSYCHO_BOOST] = _("PSYCHO BOOST"),
+    [MOVE_ZEN_HEADBUTT] = _("Zen Headbutt"),
+    [MOVE_MOONBLAST] = _("Moonblast"),
+    [MOVE_PLAY_ROUGH] = _("Play Rough"),
+    [MOVE_DRAINING_KISS] = _("DrainingKiss"),
+    [MOVE_FAIRY_WIND] = _("Fairy Wind"),
+    [MOVE_DEATH_MOVE] = _("Death Move"),
 };
