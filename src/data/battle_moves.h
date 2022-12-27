@@ -4983,4 +4983,18 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .category= MOVE_CATEGORY_PHYSICAL,
     },
+
+        [MOVE_DEATH_MOVE] =
+    {
+        .effect = EFFECT_OHKO,
+        .power = 1,
+        .type = TYPE_NORMAL,
+        .accuracy = 255,
+        .pp = 35,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_BOTH,
+        .priority = 5,
+        .flags = 0,
+        .category= MOVE_CATEGORY_PHYSICAL,
+    },
 };

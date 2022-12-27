@@ -372,6 +372,7 @@ gBattleAnims_Moves::
 	.4byte Move_DOOM_DESIRE
 	.4byte Move_PSYCHO_BOOST
 	.4byte Move_ZEN_HEADBUTT
+	.4byte Move_DEATH_MOVE,
 	.4byte Move_COUNT @ cannot be reached, because last move is Psycho Boost
 
 	.align 2
@@ -425,6 +426,7 @@ gBattleAnims_Special::
 Move_NONE:
 Move_MIRROR_MOVE:
 Move_POUND:
+Move_DEATH_MOVE:
 	loadspritegfx ANIM_TAG_IMPACT
 	monbg ANIM_TARGET
 	setalpha 12, 8
