@@ -5045,8 +5045,8 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     {
         .effect = EFFECT_DEATH_MOVE,
         .power = 1,
-        .type = TYPE_NORMAL,
-        .accuracy = 255,
+        .type = TYPE_DARK,
+        .accuracy = 0,
         .pp = 35,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_BOTH,
