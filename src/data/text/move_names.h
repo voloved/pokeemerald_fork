@@ -359,5 +359,6 @@ const u8 gMoveNames[MOVES_COUNT][MOVE_NAME_LENGTH + 1] =
     [MOVE_MOONBLAST] = _("Moonblast"),
     [MOVE_PLAY_ROUGH] = _("Play Rough"),
     [MOVE_DRAINING_KISS] = _("DrainingKiss"),
+    [MOVE_FAIRY_WIND] = _("Fairy Wind"),
     [MOVE_DEATH_MOVE] = _("Death Move"),
 };

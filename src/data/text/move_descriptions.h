@@ -1433,6 +1433,10 @@ static const u8 sDrainingKissDescription[] = _(
     "An attack that absorbs over\n"
     "half the damage inflicted.");
 
+static const u8 sFairyWindDescription[] = _(
+    "Stirs up a fairy wind to\n"
+    "strike the foe.");
+
 static const u8 sDeathMoveDescription[] = _(
     "A one-hit KO. Always\n"
     "goes first. Doesn't miss.");
@@ -1798,5 +1802,6 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_MOONBLAST - 1] = sMoonblastDescription,
     [MOVE_PLAY_ROUGH - 1] = sPlayRoughDescription,
     [MOVE_DRAINING_KISS - 1] = sDrainingKissDescription,
+    [MOVE_FAIRY_WIND - 1] = sFairyWindDescription,
     [MOVE_DEATH_MOVE - 1] = sDeathMoveDescription,
 };

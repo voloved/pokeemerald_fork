@@ -375,6 +375,7 @@ gBattleAnims_Moves::
 	.4byte Move_MOONBLAST
 	.4byte Move_PLAY_ROUGH
 	.4byte Move_DRAINING_KISS
+	.4byte Move_FAIRY_WIND
 	.4byte Move_DEATH_MOVE
 	.4byte Move_COUNT @ cannot be reached, because last move is Psycho Boost
 
@@ -7529,6 +7530,7 @@ RazorWindSetUp:
 	playsewithpan SE_M_GUST2, SOUND_PAN_ATTACKER
 	goto RazorWindEnd
 
+Move_FAIRY_WIND:
 RazorWindUnleash:
 	loadspritegfx ANIM_TAG_AIR_WAVE_2
 	loadspritegfx ANIM_TAG_IMPACT
