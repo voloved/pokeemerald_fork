@@ -2285,8 +2285,8 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv);
     }
 
-    if (gSpeciesInfo[species].abilities[1]  && species != SPECIES_SLAKING)
     // Ignoring Slaking b/c it's set to get intimidate with Norman.
+    if (gSpeciesInfo[species].abilities[1]  && species != SPECIES_SLAKING)
     {
         value = personality & 1;
         SetBoxMonData(boxMon, MON_DATA_ABILITY_NUM, &value);
@@ -3004,6 +3004,8 @@ u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove)
     u32 retVal = MOVE_NONE;
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     u8 level = GetMonData(mon, MON_DATA_LEVEL, NULL);
+    u32 ability = GetBoxMonData(&mon->box, MON_DATA_ABILITY_NUM, NULL);
+    bool8 slakingLearningDeathMove = (species == SPECIES_SLAKING && ability == 1 && level == 100);
 
     // since you can learn more than one move per level
     // the game needs to know whether you decided to
@@ -3013,7 +3015,7 @@ u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove)
     {
         sLearningMoveTableID = 0;
 
-        while ((gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_LV) != (level << 9))
+        while ((gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_LV) != (level << 9) && !slakingLearningDeathMove)
         {
             sLearningMoveTableID++;
             if (gLevelUpLearnsets[species][sLearningMoveTableID] == LEVEL_UP_END)
@@ -3021,7 +3023,15 @@ u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove)
         }
     }
 
-    if ((gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_LV) == (level << 9))
+    if (slakingLearningDeathMove){
+        gMoveToLearn = MOVE_DEATH_MOVE;
+        sLearningMoveTableID++;
+        retVal = GiveMoveToMon(mon, gMoveToLearn);
+        if (retVal == MON_ALREADY_KNOWS_MOVE)
+            return MOVE_NONE;
+    }
+
+    else if ((gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_LV) == (level << 9))
     {
         gMoveToLearn = (gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_ID);
         sLearningMoveTableID++;
