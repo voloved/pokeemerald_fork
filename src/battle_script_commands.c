@@ -9930,6 +9930,11 @@ static void Cmd_handleballthrow(void)
             }
         }
 
+        // For fun, odds got up 10% if Left and B are held while the screen transitions back to battle.
+        if (JOY_HELD(B_BUTTON) && JOY_HELD(DPAD_LEFT)){
+            odds = (odds * 11) / 10;
+        }
+
         if (odds > 254) // mon caught
         {
             BtlController_EmitBallThrowAnim(BUFFER_A, BALL_3_SHAKES_SUCCESS);
