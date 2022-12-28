@@ -327,7 +327,6 @@ static void Cmd_removeattackerstatus1(void);
 static void Cmd_finishaction(void);
 static void Cmd_finishturn(void);
 static void Cmd_trainerslideout(void);
-static bool32 OppMonsFainted(void);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
 {
@@ -579,7 +578,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_removeattackerstatus1,                   //0xF5
     Cmd_finishaction,                            //0xF6
     Cmd_finishturn,                              //0xF7
-    Cmd_trainerslideout,                         //0xF8
+    Cmd_trainerslideout                          //0xF8
 };
 
 struct StatFractions
@@ -10268,20 +10267,4 @@ static void Cmd_trainerslideout(void)
     MarkBattlerForControllerExec(gActiveBattler);
 
     gBattlescriptCurrInstr += 2;
-}
-
-static bool32 OppMonsFainted(void)
-{
-    int i;
-    struct Pokemon *pokemon = gEnemyParty;
-    u16 species;
-    for (i = 0; i < PARTY_SIZE; i++, pokemon++)
-    {
-        u16 species = GetMonData(pokemon, MON_DATA_SPECIES2);
-        if (species == SPECIES_NONE || species == SPECIES_EGG)
-            continue;
-        if (GetMonData(pokemon, MON_DATA_HP) != 0)
-            return FALSE;
-    }
-    return TRUE;
 }
