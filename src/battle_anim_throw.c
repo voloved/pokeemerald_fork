@@ -763,6 +763,18 @@ u8 ItemIdToBallId(u16 ballItem)
 #define sTargetX  data[1]
 #define sTargetY  data[2]
 
+
+#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
+#define BYTE_TO_BINARY(byte)  \
+  (byte & 0x80 ? '1' : '0'), \
+  (byte & 0x40 ? '1' : '0'), \
+  (byte & 0x20 ? '1' : '0'), \
+  (byte & 0x10 ? '1' : '0'), \
+  (byte & 0x08 ? '1' : '0'), \
+  (byte & 0x04 ? '1' : '0'), \
+  (byte & 0x02 ? '1' : '0'), \
+  (byte & 0x01 ? '1' : '0') 
+
 void AnimTask_ThrowBall(u8 taskId)
 {
     u8 ballId;
@@ -1134,12 +1146,23 @@ static void SpriteCB_Ball_Wobble(struct Sprite *sprite)
 
 static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
 {
-    s8 shakes;
+    s8 shakes = SHAKES(sprite->sState) + 1;
     u16 frame;
+     if(JOY_NEW(B_BUTTON)){
+         gBallShakesBData |= 1 << (shakes + 2);
+    }
 
     switch (STATE(sprite->sState))
     {
     case BALL_ROLL_1:
+        //DebugPrintf("test: %d", shakes);
+        if(gBallShakesBData >> 6 != shakes && !JOY_HELD(B_BUTTON)){
+            gBallShakesBData |= 1 << (shakes - 1);
+        }
+        gBallShakesBData &= 0x3F;  //b0011.1111 to clear the ball count bits
+        gBallShakesBData |= shakes << 6;
+        DebugPrintf("ballShakesBData %c%c%c%c%c%c%c%c", BYTE_TO_BINARY(gBallShakesBData));
+
         // Rolling effect: every frame in the rotation, the sprite shifts 176/256 of a pixel.
         if (gBattleSpritesDataPtr->animationData->ballSubpx > 255)
         {
@@ -1232,6 +1255,7 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
     case BALL_NEXT_MOVE:
         SHAKE_INC(sprite->sState);
         shakes = SHAKES(sprite->sState);
+        //ballShakesBData |= shakes << 6;
         if (shakes == gBattleSpritesDataPtr->animationData->ballThrowCaseId)
         {
             sprite->affineAnimPaused = TRUE;

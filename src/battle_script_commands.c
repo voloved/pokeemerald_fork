@@ -9812,6 +9812,7 @@ static void Cmd_removelightscreenreflect(void)
 static void Cmd_handleballthrow(void)
 {
     u8 ballMultiplier = 0;
+    gBallShakesBData = 0 << 6;
 
     if (gBattleControllerExecFlags)
         return;
@@ -9935,7 +9936,7 @@ static void Cmd_handleballthrow(void)
             odds = (odds * 11) / 10;
         }
 
-        if (odds > 254) // mon caught
+        if (odds > 4) // mon caught
         {
             BtlController_EmitBallThrowAnim(BUFFER_A, BALL_3_SHAKES_SUCCESS);
             MarkBattlerForControllerExec(gActiveBattler);
