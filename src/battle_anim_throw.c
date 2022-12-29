@@ -1259,19 +1259,14 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         shakes = SHAKES(sprite->sState);
         gBallShakesBData.ballShakesArray &= 0x3F;  //b0011.1111 to clear the ball count bits
         gBallShakesBData.ballShakesArray |= shakes << 6;
-        // If the B button wasn't held at the beginning and a new B button was pressed when the ball was shaking, increase the odds and recalculate shakes
+        // If the B button wasn't held at the beginning and a new B button was pressed when the ball was shaking, increase the odds
         if (((gBallShakesBData.ballShakesArray >> ((shakes - 1) * 2)) & 0x03) == 0x03){
             gBallShakesBData.odds = (BALL_SHAKE_BUTTON_MULT * gBallShakesBData.odds) / 10;
-            gBallShakesBData.shakes = CalcShakesFromOdds(gBallShakesBData.odds);
-            // gBallShakesBData.shakes = gBattleSpritesDataPtr->animationData->ballThrowCaseId > gBallShakesBData.shakes ?  gBattleSpritesDataPtr->animationData->ballThrowCaseId : gBallShakesBData.shakes;  
-            /* Uncomment the above line if want to guarentee that pressing B cannot hurt your current chances.
-               Example of this: If your odds are 50 and the code runs your chance of catching as 4 successful shakes, 
-               then leaving it commented out will cause the code to redo the math,maybe get a shake count under 4 and 
-               replace a success with a failure. Uncommenting will force the shakes to never get worse.
-            */
-            gBattleSpritesDataPtr->animationData->ballThrowCaseId = gBallShakesBData.shakes;
         }
-        if (shakes >= gBattleSpritesDataPtr->animationData->ballThrowCaseId)
+        gBallShakesBData.shakes += CalcShakesFromOdds(gBallShakesBData.odds);
+        gBattleSpritesDataPtr->animationData->ballThrowCaseId = gBallShakesBData.shakes;
+        DebugPrintf("gBattleSpritesDataPtr->animationData: %d", gBattleSpritesDataPtr->animationData->ballThrowCaseId);
+        if (shakes == gBattleSpritesDataPtr->animationData->ballThrowCaseId)
         {
             sprite->affineAnimPaused = TRUE;
             sprite->callback = SpriteCB_Ball_Release;
