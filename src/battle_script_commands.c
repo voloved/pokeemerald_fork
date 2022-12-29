@@ -10234,9 +10234,6 @@ static void Cmd_trainerslideout(void)
 static void Cmd_handlechangeodds(void)
 {
     u8 shakes = gBallShakesBData.shakes;
-    if ((gBallShakesBData.ballShakesArray >> 6) != 0x03){  //It does not seem like this code executes until after the ball animation, so this may be removed.
-        return;
-    }
     if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
     {
         if (gUsingThiefBall == THIEF_BALL_CATCHING){

@@ -28,14 +28,17 @@ struct BattleOddsModifierButtonPress
     u32 odds;
     u8 shakes;
 };
-//ballShakesArray: 76543210
-//76: The amount of shakes we've done, with 3 being autoset whenever the Pokemon is either caught or releases from the ball to allow Cmd_handlechangeodds to continue
-// 5: If the B button was pressed on the 3rd shake
-// 4: If the B button was held just before the 3rd shake
-// 3: If the B button was pressed on the 2nd shake
-// 2: If the B button was held just before the 2nd shake
-// 1: If the B button was pressed on the 1st shake
-// 0: If the B button was held just before the 1st shake
+
+/*
+ballShakesArray: 76543210
+76: The amount of shakes we've done
+ 5: If the B button was pressed on the 3rd shake
+ 4: If the B button was held just before the 3rd shake
+ 3: If the B button was pressed on the 2nd shake
+ 2: If the B button was held just before the 2nd shake
+ 1: If the B button was pressed on the 1st shake
+ 0: If the B button was held just before the 1st shake
+*/
 
 
 // defines for the u8 array gTypeEffectiveness

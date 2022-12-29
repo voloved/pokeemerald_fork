@@ -1255,18 +1255,23 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         }
         break;
     case BALL_NEXT_MOVE:
-        // If the B button wasn't held at the beginning and a new B button was pressed when the ball was shaking, increase the odds and recalculate shakes
-        if (gBallShakesBData.ballShakesArray >> (shakes - 1) * 2 == 0x03){
-            gBallShakesBData.odds = (BALL_SHAKE_BUTTON_MULT * gBallShakesBData.odds) / 10;
-            gBallShakesBData.shakes = CalcShakesFromOdds(gBallShakesBData.odds);
-            gBallShakesBData.shakes = gBallShakesBData.shakes > shakes ?  gBallShakesBData.shakes : shakes;  // If the new shakes are lower than the currently executed shake we're performing, use the current to avoid an endless loop.
-            gBattleSpritesDataPtr->animationData->ballThrowCaseId = gBallShakesBData.shakes;
-        }
         SHAKE_INC(sprite->sState);
         shakes = SHAKES(sprite->sState);
         gBallShakesBData.ballShakesArray &= 0x3F;  //b0011.1111 to clear the ball count bits
-        gBallShakesBData.ballShakesArray |= (shakes - 1) << 6;
-        if (shakes == gBattleSpritesDataPtr->animationData->ballThrowCaseId)
+        gBallShakesBData.ballShakesArray |= shakes << 6;
+        // If the B button wasn't held at the beginning and a new B button was pressed when the ball was shaking, increase the odds and recalculate shakes
+        if (((gBallShakesBData.ballShakesArray >> ((shakes - 1) * 2)) & 0x03) == 0x03){
+            gBallShakesBData.odds = (BALL_SHAKE_BUTTON_MULT * gBallShakesBData.odds) / 10;
+            gBallShakesBData.shakes = CalcShakesFromOdds(gBallShakesBData.odds);
+            // gBallShakesBData.shakes = gBattleSpritesDataPtr->animationData->ballThrowCaseId > gBallShakesBData.shakes ?  gBattleSpritesDataPtr->animationData->ballThrowCaseId : gBallShakesBData.shakes;  
+            /* Uncomment the above line if want to guarentee that pressing B cannot hurt your current chances.
+               Example of this: If your odds are 50 and the code runs your chance of catching as 4 successful shakes, 
+               then leaving it commented out will cause the code to redo the math,maybe get a shake count under 4 and 
+               replace a success with a failure. Uncommenting will force the shakes to never get worse.
+            */
+            gBattleSpritesDataPtr->animationData->ballThrowCaseId = gBallShakesBData.shakes;
+        }
+        if (shakes >= gBattleSpritesDataPtr->animationData->ballThrowCaseId)
         {
             sprite->affineAnimPaused = TRUE;
             sprite->callback = SpriteCB_Ball_Release;
@@ -1314,7 +1319,6 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
 
 static void SpriteCB_Ball_Release(struct Sprite *sprite)
 {
-    gBallShakesBData.ballShakesArray |= 0x03 << 6;
     if (++sprite->sTimer == 31)
     {
         sprite->data[5] = 0;
@@ -1328,7 +1332,6 @@ static void SpriteCB_Ball_Release(struct Sprite *sprite)
 
 static void SpriteCB_Ball_Capture(struct Sprite *sprite)
 {
-    gBallShakesBData.ballShakesArray |= 0x03 << 6;
     sprite->animPaused = TRUE;
     sprite->callback = SpriteCB_Ball_Capture_Step;
     sprite->data[3] = 0;
