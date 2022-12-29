@@ -10257,7 +10257,6 @@ static void Cmd_handlechangeodds(void)
 
  u8 CalcShakesFromOdds(u32 odds)
  {
-        DebugPrintf("odds: %d", odds);
         u8 shakesNextSucceeds = 0;
         if (odds > 254 || gLastUsedItem == ITEM_MASTER_BALL) // mon caught
         {
@@ -10266,6 +10265,5 @@ static void Cmd_handlechangeodds(void)
         odds = Sqrt(Sqrt(16711680 / odds));
         odds = 1048560 / odds;
         shakesNextSucceeds = Random() < odds;
-        DebugPrintf("shakes: %d", shakesNextSucceeds);
         return shakesNextSucceeds;
  }

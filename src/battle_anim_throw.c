@@ -1265,7 +1265,6 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         }
         gBallShakesBData.shakes += CalcShakesFromOdds(gBallShakesBData.odds);
         gBattleSpritesDataPtr->animationData->ballThrowCaseId = gBallShakesBData.shakes;
-        DebugPrintf("gBattleSpritesDataPtr->animationData: %d", gBattleSpritesDataPtr->animationData->ballThrowCaseId);
         if (shakes == gBattleSpritesDataPtr->animationData->ballThrowCaseId)
         {
             sprite->affineAnimPaused = TRUE;
