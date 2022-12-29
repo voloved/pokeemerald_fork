@@ -5,7 +5,13 @@ Made as a 2022 Christmas gift for a friend, where the character sprites are made
 To set up the repository, see [INSTALL.md](INSTALL.md).
 
 Link to [Patch File is Here](https://drive.google.com/drive/folders/1GFChFDEmOJHn6WBoZAN-GRA9a2UXGeu_?usp=sharing).  
-To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokemon Emerald (those devs who made the game 20 years ago gotta eat too).
+To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokemon Emerald (those devs who made the game 20 years ago gotta eat too).  
+
+ ![Example](https://i.imgur.com/KSMvc0h.png)  
+
+## Not In Release
+- [Pressing B as the ball shakes raises catching odds.](https://github.com/pret/pokeemerald/wiki/Raise-Odds-of-Catching-a-Pokemon-by-Pressing-B-When-the-Ball-Shakes)
+- Death Move knocking out an opponent that can be permanently stolen will also remove them from the game.
 
 ## v1.1.0
 - [Added Thief Ball](https://github.com/pret/pokeemerald/wiki/Add-Thief-Ball)
