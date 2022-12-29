@@ -327,6 +327,7 @@ static void Cmd_removeattackerstatus1(void);
 static void Cmd_finishaction(void);
 static void Cmd_finishturn(void);
 static void Cmd_trainerslideout(void);
+static void Cmd_handlechangeodds(void);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
 {
@@ -578,7 +579,8 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_removeattackerstatus1,                   //0xF5
     Cmd_finishaction,                            //0xF6
     Cmd_finishturn,                              //0xF7
-    Cmd_trainerslideout                          //0xF8
+    Cmd_trainerslideout,                         //0xF8
+    Cmd_handlechangeodds                         //0xF9
 };
 
 struct StatFractions
@@ -9812,7 +9814,8 @@ static void Cmd_removelightscreenreflect(void)
 static void Cmd_handleballthrow(void)
 {
     u8 ballMultiplier = 0;
-    gBallShakesBData = 0 << 6;
+    u8 shakes;
+    gBallShakesBData.ballShakesArray = 0;
 
     if (gBattleControllerExecFlags)
         return;
@@ -9931,60 +9934,18 @@ static void Cmd_handleballthrow(void)
             }
         }
 
-        // For fun, odds got up 10% if Left and B are held while the screen transitions back to battle.
-        if (JOY_HELD(B_BUTTON) && JOY_HELD(DPAD_LEFT)){
-            odds = (odds * 11) / 10;
-        }
+        odds = 250;
+        gBallShakesBData.odds = odds;
+        shakes = CalcShakesFromOdds(gBallShakesBData.odds);  
+        DebugPrintf("shakes: %d", shakes);   
 
-        if (odds > 4) // mon caught
-        {
-            BtlController_EmitBallThrowAnim(BUFFER_A, BALL_3_SHAKES_SUCCESS);
-            MarkBattlerForControllerExec(gActiveBattler);
-            if (gUsingThiefBall == THIEF_BALL_CATCHING){
-                gUsingThiefBall = THIEF_BALL_CAUGHT;
-            }
-            gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
-            SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
+        if (gLastUsedItem == ITEM_MASTER_BALL)
+            shakes = BALL_3_SHAKES_SUCCESS; // why calculate the shakes before that check?
 
-            if (CalculatePlayerPartyCount() == PARTY_SIZE)
-                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
-            else
-                gBattleCommunication[MULTISTRING_CHOOSER] = 1;
-        }
-        else // mon may be caught, calculate shakes
-        {
-            u8 shakes;
-
-            odds = Sqrt(Sqrt(16711680 / odds));
-            odds = 1048560 / odds;
-
-            for (shakes = 0; shakes < BALL_3_SHAKES_SUCCESS && Random() < odds; shakes++);
-
-            if (gLastUsedItem == ITEM_MASTER_BALL)
-                shakes = BALL_3_SHAKES_SUCCESS; // why calculate the shakes before that check?
-
-            BtlController_EmitBallThrowAnim(BUFFER_A, shakes);
-            MarkBattlerForControllerExec(gActiveBattler);
-            if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
-            {
-                if (gUsingThiefBall == THIEF_BALL_CATCHING){
-                    gUsingThiefBall = THIEF_BALL_CAUGHT;
-                }
-                gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
-                SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
-
-                if (CalculatePlayerPartyCount() == PARTY_SIZE)
-                    gBattleCommunication[MULTISTRING_CHOOSER] = 0;
-                else
-                    gBattleCommunication[MULTISTRING_CHOOSER] = 1;
-            }
-            else // not caught
-            {
-                gUsingThiefBall = THIEF_BALL_NOT_USING;
-                gBattleCommunication[MULTISTRING_CHOOSER] = shakes;
-                gBattlescriptCurrInstr = BattleScript_ShakeBallThrow;
-            }
-        }
+        gBallShakesBData.shakes = shakes;
+        BtlController_EmitBallThrowAnim(BUFFER_A, shakes);
+        MarkBattlerForControllerExec(gActiveBattler);
+        gBattlescriptCurrInstr = BattleScript_ChangeOdds;
     }
 }
 
@@ -10274,3 +10235,53 @@ static void Cmd_trainerslideout(void)
 
     gBattlescriptCurrInstr += 2;
 }
+
+static void Cmd_handlechangeodds(void)
+{
+    u8 shakes = gBallShakesBData.shakes;
+    DebugPrintf("Cmd_handlechangeodds.ballShakesArray: %d", gBallShakesBData.ballShakesArray);
+    DebugPrintf("(gBallShakesBData.ballShakesArray >> 6): %d", (gBallShakesBData.ballShakesArray >> 6));
+    if ((gBallShakesBData.ballShakesArray >> 6) != 0x03){
+        return;
+    }
+    DebugPrintf("changeoddsShakes: %d", shakes);
+    if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
+    {
+        if (gUsingThiefBall == THIEF_BALL_CATCHING){
+            gUsingThiefBall = THIEF_BALL_CAUGHT;
+        }
+        gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
+        SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
+
+        if (CalculatePlayerPartyCount() == PARTY_SIZE)
+            gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+        else
+            gBattleCommunication[MULTISTRING_CHOOSER] = 1;
+    }
+    else // not caught
+    {
+        gUsingThiefBall = THIEF_BALL_NOT_USING;
+        gBattleCommunication[MULTISTRING_CHOOSER] = shakes;
+        gBattlescriptCurrInstr = BattleScript_ShakeBallThrow;
+    }
+    gBallShakesBData.odds = 0;
+    gBallShakesBData.ballShakesArray = 0;
+    gBallShakesBData.shakes = 0;
+}
+
+ u8 CalcShakesFromOdds(u32 odds)
+ {
+        u8 shakes;
+        DebugPrintf("odds: %d", odds);
+        if (odds > 254) // mon caught
+        {
+            return BALL_3_SHAKES_SUCCESS;
+        }
+        odds = Sqrt(Sqrt(16711680 / odds));
+        odds = 1048560 / odds;
+        DebugPrintf("Random: %d", Random());
+        for (shakes = 0; shakes < BALL_3_SHAKES_SUCCESS && Random() < odds; shakes++);
+        DebugPrintf("odds: %d", odds);
+        DebugPrintf("shakes: %d", shakes);
+        return shakes;
+ }

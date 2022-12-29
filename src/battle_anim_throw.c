@@ -1148,21 +1148,17 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
 {
     s8 shakes = SHAKES(sprite->sState) + 1;
     u16 frame;
-     if(JOY_NEW(B_BUTTON)){
-         gBallShakesBData |= 1 << (shakes + 2);
+     if(JOY_NEW(B_BUTTON) && (STATE(sprite->sState) != BALL_WAIT_NEXT_SHAKE)){
+        gBallShakesBData.ballShakesArray |= 1 << (2 * shakes) - 1;
     }
 
     switch (STATE(sprite->sState))
     {
     case BALL_ROLL_1:
-        //DebugPrintf("test: %d", shakes);
-        if(gBallShakesBData >> 6 != shakes && !JOY_HELD(B_BUTTON)){
-            gBallShakesBData |= 1 << (shakes - 1);
+        DebugPrintf("BALL_ROLL_1","");
+        if(gBallShakesBData.ballShakesArray >> 6 != shakes && !JOY_HELD(B_BUTTON)){
+            gBallShakesBData.ballShakesArray |= 1 << (shakes - 1) * 2;
         }
-        gBallShakesBData &= 0x3F;  //b0011.1111 to clear the ball count bits
-        gBallShakesBData |= shakes << 6;
-        DebugPrintf("ballShakesBData %c%c%c%c%c%c%c%c", BYTE_TO_BINARY(gBallShakesBData));
-
         // Rolling effect: every frame in the rotation, the sprite shifts 176/256 of a pixel.
         if (gBattleSpritesDataPtr->animationData->ballSubpx > 255)
         {
@@ -1183,6 +1179,7 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         }
         break;
     case BALL_PIVOT_1:
+        DebugPrintf("BALL_PIVOT_1","");
         if (++sprite->sTimer == 1)
         {
             sprite->sTimer = 0;
@@ -1198,6 +1195,7 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
             sprite->affineAnimPaused = TRUE;
         break;
     case BALL_ROLL_2:
+        DebugPrintf("BALL_ROLL_2","");
         if (gBattleSpritesDataPtr->animationData->ballSubpx > 255)
         {
             sprite->x2 += sprite->sDirection;
@@ -1217,6 +1215,7 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         }
         break;
     case BALL_PIVOT_2:
+        DebugPrintf("BALL_PIVOT_2","");
         if (sprite->sTimer++ < 0)
         {
             sprite->affineAnimPaused = TRUE;
@@ -1233,6 +1232,7 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
             ChangeSpriteAffineAnim(sprite, BALL_ROTATE_RIGHT);
         // fall through
     case BALL_ROLL_3:
+        DebugPrintf("Ball Roll 3","");
         if (gBattleSpritesDataPtr->animationData->ballSubpx > 0xFF)
         {
             sprite->x2 += sprite->sDirection;
@@ -1253,9 +1253,18 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         }
         break;
     case BALL_NEXT_MOVE:
+        DebugPrintf("%s","BALL_NEXT_MOVE 3 ");
+        if (gBallShakesBData.ballShakesArray >> (shakes - 1) * 2 == 0x03){
+            gBallShakesBData.odds = gBallShakesBData.odds * 20 / 10;
+            gBallShakesBData.shakes = CalcShakesFromOdds(gBallShakesBData.odds);
+            gBallShakesBData.shakes = gBallShakesBData.shakes > shakes ?  gBallShakesBData.shakes : shakes;
+            gBattleSpritesDataPtr->animationData->ballThrowCaseId = gBallShakesBData.shakes;
+        }
         SHAKE_INC(sprite->sState);
         shakes = SHAKES(sprite->sState);
-        //ballShakesBData |= shakes << 6;
+        gBallShakesBData.ballShakesArray &= 0x3F;  //b0011.1111 to clear the ball count bits
+        gBallShakesBData.ballShakesArray |= (shakes - 1) << 6;
+        DebugPrintf("ballShakesBData %c%c%c%c%c%c%c%c", BYTE_TO_BINARY(gBallShakesBData.ballShakesArray));
         if (shakes == gBattleSpritesDataPtr->animationData->ballThrowCaseId)
         {
             sprite->affineAnimPaused = TRUE;
@@ -1276,6 +1285,7 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         }
         break;
     case BALL_WAIT_NEXT_SHAKE:
+    DebugPrintf("BALL_WAIT_NEXT_SHAKE","");
     default:
         if (++sprite->sTimer == 31)
         {
@@ -1304,6 +1314,7 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
 
 static void SpriteCB_Ball_Release(struct Sprite *sprite)
 {
+    gBallShakesBData.ballShakesArray |= 0x03 << 6;
     if (++sprite->sTimer == 31)
     {
         sprite->data[5] = 0;
@@ -1317,6 +1328,7 @@ static void SpriteCB_Ball_Release(struct Sprite *sprite)
 
 static void SpriteCB_Ball_Capture(struct Sprite *sprite)
 {
+    gBallShakesBData.ballShakesArray |= 0x03 << 6;
     sprite->animPaused = TRUE;
     sprite->callback = SpriteCB_Ball_Capture_Step;
     sprite->data[3] = 0;

@@ -646,7 +646,7 @@ extern s32 gHpDealt;
 extern s32 gTakenDmg[MAX_BATTLERS_COUNT];
 extern u16 gLastUsedItem;
 extern u8 gUsingThiefBall;
-extern u8 gBallShakesBData;
+extern struct BattleOddsModifierButtonPress gBallShakesBData;
 extern u8 gLastUsedAbility;
 extern u8 gBattlerAttacker;
 extern u8 gBattlerTarget;
@@ -719,5 +719,7 @@ extern u8 gHealthboxSpriteIds[MAX_BATTLERS_COUNT];
 extern u8 gMultiUsePlayerCursor;
 extern u8 gNumberOfMovesToChoose;
 extern u8 gBattleControllerData[MAX_BATTLERS_COUNT];
+u8 CalcShakesFromOdds(u32 odds);
+
 
 #endif // GUARD_BATTLE_H
