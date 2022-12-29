@@ -22,6 +22,25 @@ struct MultiPartnerMenuPokemon
     /*0x1D*/ u8 language;
 };
 
+struct BattleOddsModifierButtonPress
+{
+    u8 ballShakesArray;
+    u32 odds;
+    u8 shakes;
+};
+
+/*
+ballShakesArray: 76543210
+76: The amount of shakes we've done
+ 5: If the B button was pressed on the 3rd shake
+ 4: If the B button was held just before the 3rd shake
+ 3: If the B button was pressed on the 2nd shake
+ 2: If the B button was held just before the 2nd shake
+ 1: If the B button was pressed on the 1st shake
+ 0: If the B button was held just before the 1st shake
+*/
+
+
 // defines for the u8 array gTypeEffectiveness
 #define TYPE_EFFECT_ATK_TYPE(i)((gTypeEffectiveness[i + 0]))
 #define TYPE_EFFECT_DEF_TYPE(i)((gTypeEffectiveness[i + 1]))
