@@ -435,7 +435,7 @@ static bool8 DoMassOutbreakEncounterTest(void)
 
 static bool8 EncounterOddsCheck(u16 encounterRate)
 {
-    return TRUE;
+    return TRUE;  //REMOVE aFETR DEBUG
     if (Random() % MAX_ENCOUNTER_RATE < encounterRate)
         return TRUE;
     else

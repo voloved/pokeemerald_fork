@@ -140,6 +140,9 @@ static const struct CaptureStar sCaptureStars[] =
 #define TAG_PARTICLES_LUXURYBALL  55030
 #define TAG_PARTICLES_THIEFBALL   55031
 
+#define BALL_SHAKE_BUTTON_MULT    11  // 10 * (BALL_SHAKE_BUTTON_MULT - 10)  is the amount we multiply 
+// our catch odds with each time the B button is successfully pressed
+
 static const struct CompressedSpriteSheet sBallParticleSpriteSheets[POKEBALL_COUNT] =
 {
     [BALL_POKE]    = {gBattleAnimSpriteGfx_Particles, 0x100, TAG_PARTICLES_POKEBALL},
@@ -763,8 +766,11 @@ u8 ItemIdToBallId(u16 ballItem)
 #define sTargetX  data[1]
 #define sTargetY  data[2]
 
+/*
+Example on how to Printf binary.
 
-#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
+DebugPrintf("ballShakesBData %c%c%c%c%c%c%c%c", BYTE_TO_BINARY(gBallShakesBData.ballShakesArray));
+
 #define BYTE_TO_BINARY(byte)  \
   (byte & 0x80 ? '1' : '0'), \
   (byte & 0x40 ? '1' : '0'), \
@@ -774,6 +780,7 @@ u8 ItemIdToBallId(u16 ballItem)
   (byte & 0x04 ? '1' : '0'), \
   (byte & 0x02 ? '1' : '0'), \
   (byte & 0x01 ? '1' : '0') 
+  */
 
 void AnimTask_ThrowBall(u8 taskId)
 {
@@ -1148,15 +1155,14 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
 {
     s8 shakes = SHAKES(sprite->sState) + 1;
     u16 frame;
-     if(JOY_NEW(B_BUTTON) && (STATE(sprite->sState) != BALL_WAIT_NEXT_SHAKE)){
+     if(JOY_NEW(B_BUTTON) && (STATE(sprite->sState) != BALL_WAIT_NEXT_SHAKE)){  //  IF new B button pressed when the ball is shaking
         gBallShakesBData.ballShakesArray |= 1 << (2 * shakes) - 1;
     }
 
     switch (STATE(sprite->sState))
     {
     case BALL_ROLL_1:
-        DebugPrintf("BALL_ROLL_1","");
-        if(gBallShakesBData.ballShakesArray >> 6 != shakes && !JOY_HELD(B_BUTTON)){
+        if(gBallShakesBData.ballShakesArray >> 6 != shakes && !JOY_HELD(B_BUTTON)){  // At the beginning of the shake, check to make sure B isn't being held to discourage spamming B.
             gBallShakesBData.ballShakesArray |= 1 << (shakes - 1) * 2;
         }
         // Rolling effect: every frame in the rotation, the sprite shifts 176/256 of a pixel.
@@ -1179,7 +1185,6 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         }
         break;
     case BALL_PIVOT_1:
-        DebugPrintf("BALL_PIVOT_1","");
         if (++sprite->sTimer == 1)
         {
             sprite->sTimer = 0;
@@ -1195,7 +1200,6 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
             sprite->affineAnimPaused = TRUE;
         break;
     case BALL_ROLL_2:
-        DebugPrintf("BALL_ROLL_2","");
         if (gBattleSpritesDataPtr->animationData->ballSubpx > 255)
         {
             sprite->x2 += sprite->sDirection;
@@ -1215,7 +1219,6 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         }
         break;
     case BALL_PIVOT_2:
-        DebugPrintf("BALL_PIVOT_2","");
         if (sprite->sTimer++ < 0)
         {
             sprite->affineAnimPaused = TRUE;
@@ -1232,7 +1235,6 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
             ChangeSpriteAffineAnim(sprite, BALL_ROTATE_RIGHT);
         // fall through
     case BALL_ROLL_3:
-        DebugPrintf("Ball Roll 3","");
         if (gBattleSpritesDataPtr->animationData->ballSubpx > 0xFF)
         {
             sprite->x2 += sprite->sDirection;
@@ -1253,18 +1255,17 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         }
         break;
     case BALL_NEXT_MOVE:
-        DebugPrintf("%s","BALL_NEXT_MOVE 3 ");
+        // If the B button wasn't held at the beginning and a new B button was pressed when the ball was shaking, increase the odds and recalculate shakes
         if (gBallShakesBData.ballShakesArray >> (shakes - 1) * 2 == 0x03){
-            gBallShakesBData.odds = gBallShakesBData.odds * 20 / 10;
+            gBallShakesBData.odds = (BALL_SHAKE_BUTTON_MULT * gBallShakesBData.odds) / 10;
             gBallShakesBData.shakes = CalcShakesFromOdds(gBallShakesBData.odds);
-            gBallShakesBData.shakes = gBallShakesBData.shakes > shakes ?  gBallShakesBData.shakes : shakes;
+            gBallShakesBData.shakes = gBallShakesBData.shakes > shakes ?  gBallShakesBData.shakes : shakes;  // If the new shakes are lower than the currently executed shake we're performing, use the current to avoid an endless loop.
             gBattleSpritesDataPtr->animationData->ballThrowCaseId = gBallShakesBData.shakes;
         }
         SHAKE_INC(sprite->sState);
         shakes = SHAKES(sprite->sState);
         gBallShakesBData.ballShakesArray &= 0x3F;  //b0011.1111 to clear the ball count bits
         gBallShakesBData.ballShakesArray |= (shakes - 1) << 6;
-        DebugPrintf("ballShakesBData %c%c%c%c%c%c%c%c", BYTE_TO_BINARY(gBallShakesBData.ballShakesArray));
         if (shakes == gBattleSpritesDataPtr->animationData->ballThrowCaseId)
         {
             sprite->affineAnimPaused = TRUE;
@@ -1285,7 +1286,6 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         }
         break;
     case BALL_WAIT_NEXT_SHAKE:
-    DebugPrintf("BALL_WAIT_NEXT_SHAKE","");
     default:
         if (++sprite->sTimer == 31)
         {

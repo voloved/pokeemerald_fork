@@ -9934,13 +9934,8 @@ static void Cmd_handleballthrow(void)
             }
         }
 
-        odds = 250;
         gBallShakesBData.odds = odds;
-        shakes = CalcShakesFromOdds(gBallShakesBData.odds);  
-        DebugPrintf("shakes: %d", shakes);   
-
-        if (gLastUsedItem == ITEM_MASTER_BALL)
-            shakes = BALL_3_SHAKES_SUCCESS; // why calculate the shakes before that check?
+        shakes = CalcShakesFromOdds(gBallShakesBData.odds); 
 
         gBallShakesBData.shakes = shakes;
         BtlController_EmitBallThrowAnim(BUFFER_A, shakes);
@@ -10239,12 +10234,9 @@ static void Cmd_trainerslideout(void)
 static void Cmd_handlechangeodds(void)
 {
     u8 shakes = gBallShakesBData.shakes;
-    DebugPrintf("Cmd_handlechangeodds.ballShakesArray: %d", gBallShakesBData.ballShakesArray);
-    DebugPrintf("(gBallShakesBData.ballShakesArray >> 6): %d", (gBallShakesBData.ballShakesArray >> 6));
-    if ((gBallShakesBData.ballShakesArray >> 6) != 0x03){
+    if ((gBallShakesBData.ballShakesArray >> 6) != 0x03){  //It does not seem like this code executes until after the ball animation, so this may be removed.
         return;
     }
-    DebugPrintf("changeoddsShakes: %d", shakes);
     if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
     {
         if (gUsingThiefBall == THIEF_BALL_CATCHING){
@@ -10272,16 +10264,12 @@ static void Cmd_handlechangeodds(void)
  u8 CalcShakesFromOdds(u32 odds)
  {
         u8 shakes;
-        DebugPrintf("odds: %d", odds);
-        if (odds > 254) // mon caught
+        if (odds > 254 || gLastUsedItem == ITEM_MASTER_BALL) // mon caught
         {
             return BALL_3_SHAKES_SUCCESS;
         }
         odds = Sqrt(Sqrt(16711680 / odds));
         odds = 1048560 / odds;
-        DebugPrintf("Random: %d", Random());
         for (shakes = 0; shakes < BALL_3_SHAKES_SUCCESS && Random() < odds; shakes++);
-        DebugPrintf("odds: %d", odds);
-        DebugPrintf("shakes: %d", shakes);
         return shakes;
  }
