@@ -1261,7 +1261,10 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         gBallShakesBData.ballShakesArray |= shakes << 6;
         // If the B button wasn't held at the beginning and a new B button was pressed when the ball was shaking, increase the odds
         if (((gBallShakesBData.ballShakesArray >> ((shakes - 1) * 2)) & 0x03) == 0x03){
-            gBallShakesBData.odds = (BALL_SHAKE_BUTTON_MULT * gBallShakesBData.odds) / 10;
+            gBallShakesBData.odds = (BALL_SHAKE_BUTTON_MULT * gBallShakesBData.oddsOriginal  ) / 10;
+        }
+        else{
+            gBallShakesBData.odds = gBallShakesBData.oddsOriginal;
         }
         gBallShakesBData.shakes += CalcShakesFromOdds(gBallShakesBData.odds);
         gBattleSpritesDataPtr->animationData->ballThrowCaseId = gBallShakesBData.shakes;
