@@ -26,7 +26,6 @@ struct BattleOddsModifierButtonPress
 {
     u8 ballShakesArray;
     u32 odds;
-    u32 oddsOriginal;
     u8 shakes;
 };
 

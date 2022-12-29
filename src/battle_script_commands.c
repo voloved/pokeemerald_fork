@@ -9933,7 +9933,7 @@ static void Cmd_handleballthrow(void)
             }
         }
 
-        gBallShakesBData.odds = gBallShakesBData.oddsOriginal = odds;
+        gBallShakesBData.odds = odds;
         gBallShakesBData.shakes = CalcShakesFromOdds(gBallShakesBData.odds);
         BtlController_EmitBallThrowAnim(BUFFER_A, gBallShakesBData.shakes);
         MarkBattlerForControllerExec(gActiveBattler);
