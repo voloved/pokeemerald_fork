@@ -9948,7 +9948,7 @@ static void Cmd_handleballthrow(void)
         }
 
         gBallShakesBData.odds = odds;
-        gBallShakesBData.shakes = CalcShakesFromOdds(gBallShakesBData.odds);
+        gBallShakesBData.shakes = CalcNextShakeFromOdds(gBallShakesBData.odds);
         BtlController_EmitBallThrowAnim(BUFFER_A, gBallShakesBData.shakes);
         MarkBattlerForControllerExec(gActiveBattler);
         gBattlescriptCurrInstr = BattleScript_ChangeOdds;
@@ -10269,15 +10269,12 @@ static void Cmd_handlechangeodds(void)
     gBallShakesBData.shakes = 0;
 }
 
- u8 CalcShakesFromOdds(u32 odds)
- {
-        u8 shakesNextSucceeds = 0;
-        if (odds > 254 || gLastUsedItem == ITEM_MASTER_BALL) // mon caught
-        {
-            return BALL_3_SHAKES_SUCCESS;
-        }
-        odds = Sqrt(Sqrt(16711680 / odds));
-        odds = 1048560 / odds;
-        shakesNextSucceeds = Random() < odds;
-        return shakesNextSucceeds;
- }
+bool8 CalcNextShakeFromOdds(u32 odds)
+{
+    if (odds > 254 || gLastUsedItem == ITEM_MASTER_BALL){ // mon caught
+        return TRUE;
+    }
+    odds = Sqrt(Sqrt(16711680 / odds));
+    odds = 1048560 / odds;
+    return Random() < odds;
+}
