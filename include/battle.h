@@ -719,7 +719,7 @@ extern u8 gHealthboxSpriteIds[MAX_BATTLERS_COUNT];
 extern u8 gMultiUsePlayerCursor;
 extern u8 gNumberOfMovesToChoose;
 extern u8 gBattleControllerData[MAX_BATTLERS_COUNT];
-u8 CalcShakesFromOdds(u32 odds, bool8 firstCalc);
+bool8 CalcNextShakeFromOdds(u32 odds);
 
 
 #endif // GUARD_BATTLE_H

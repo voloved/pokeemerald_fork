@@ -1153,15 +1153,6 @@ static void SpriteCB_Ball_Wobble(struct Sprite *sprite)
 
 static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
 {
-    /*
-    shake: The current shake that is being animated
-    gBattleSpritesDataPtr->animationData->ballThrowCaseId: The mimimum number of shakes to show in the animation
-    gBallShakesBData.shakes: The number of shakes to based the catch logic off.
-    The reason why there are shakes for the catch logic and for the animation is because we want a way to show the odds to the player.
-    gBattleSpritesDataPtr->animationData->ballThrowCaseId gets a calculation of taking a random() > odds 4 times in a row and adding a shake
-    each time that logic is true
-    */
-    
     s8 shakes = SHAKES(sprite->sState) + 1;
     u16 frame;
      if(JOY_NEW(B_BUTTON) && (STATE(sprite->sState) != BALL_WAIT_NEXT_SHAKE)){  //  IF new B button pressed when the ball is shaking
@@ -1171,7 +1162,6 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
     switch (STATE(sprite->sState))
     {
     case BALL_ROLL_1:
-    DebugPrintf("Doing shake #%d", shakes);
         if(gBallShakesBData.ballShakesArray >> 6 != shakes && !JOY_HELD(B_BUTTON)){  // At the beginning of the shake, check to make sure B isn't being held to discourage spamming B.
             gBallShakesBData.ballShakesArray |= (1 << ((shakes - 1) * 2));
         }
@@ -1269,25 +1259,21 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         shakes = SHAKES(sprite->sState);
         gBallShakesBData.ballShakesArray &= 0x3F;  //b0011.1111 to clear the ball count bits
         gBallShakesBData.ballShakesArray |= (shakes << 6);
-        // If the current shake is lower than the amount of wanted shakes, then we can recalculate and raise the shake count
-        if (shakes <= gBallShakesBData.shakes){
-            // If the B button wasn't held at the beginning and a new B button was pressed when the ball was shaking, increase the odds
-            if (((gBallShakesBData.ballShakesArray >> ((shakes - 1) * 2)) & 0x03) == 0x03)
-                gBallShakesBData.odds = (BALL_SHAKE_BUTTON_MULT * gBallShakesBData.odds) / 10;
-            gBallShakesBData.shakes += CalcShakesFromOdds(gBallShakesBData.odds, FALSE);
+        // If the B button wasn't held at the beginning and a new B button was pressed when the ball was shaking, increase the odds
+        if (((gBallShakesBData.ballShakesArray >> ((shakes - 1) * 2)) & 0x03) == 0x03){
+            gBallShakesBData.odds = (BALL_SHAKE_BUTTON_MULT * gBallShakesBData.odds) / 10;
         }
-        DebugPrintf("shakes wanted: %d", gBallShakesBData.shakes);
-        DebugPrintf("shakes for anim: %d", gBattleSpritesDataPtr->animationData->ballThrowCaseId);
-        // If the current shake is the same as the shakes to animate and the amount of shakes used in the logic is less than 
-        if ((shakes == gBattleSpritesDataPtr->animationData->ballThrowCaseId && shakes >= gBallShakesBData.shakes)
-        || (gBallShakesBData.shakes != BALL_3_SHAKES_SUCCESS && shakes == 3))
+        // Calculates if the next shake will work
+        gBallShakesBData.shakes += CalcNextShakeFromOdds(gBallShakesBData.odds);
+        gBattleSpritesDataPtr->animationData->ballThrowCaseId = gBallShakesBData.shakes;
+        if (shakes == gBattleSpritesDataPtr->animationData->ballThrowCaseId)
         {
             sprite->affineAnimPaused = TRUE;
             sprite->callback = SpriteCB_Ball_Release;
         }
         else
         {
-            if (gBallShakesBData.shakes == BALL_3_SHAKES_SUCCESS && shakes == 3)
+            if (gBattleSpritesDataPtr->animationData->ballThrowCaseId == BALL_3_SHAKES_SUCCESS && shakes == 3)
             {
                 sprite->callback = SpriteCB_Ball_Capture;
                 sprite->affineAnimPaused = TRUE;

@@ -9851,7 +9851,6 @@ static void Cmd_handleballthrow(void)
     else
     {
         u32 odds;
-        u8 shakes;
         u8 catchRate;
 
         if (gLastUsedItem == ITEM_SAFARI_BALL)
@@ -9934,10 +9933,9 @@ static void Cmd_handleballthrow(void)
             }
         }
 
-        gBallShakesBData.odds = gBallShakesBData.oddsOriginal = odds;
-        gBallShakesBData.shakes = 1;
-        shakes = CalcShakesFromOdds(gBallShakesBData.odds, TRUE);
-        BtlController_EmitBallThrowAnim(BUFFER_A, shakes);
+        gBallShakesBData.odds = odds;
+        gBallShakesBData.shakes = CalcNextShakeFromOdds(gBallShakesBData.odds);
+        BtlController_EmitBallThrowAnim(BUFFER_A, gBallShakesBData.shakes);
         MarkBattlerForControllerExec(gActiveBattler);
         gBattlescriptCurrInstr = BattleScript_ChangeOdds;
     }
@@ -10253,32 +10251,16 @@ static void Cmd_handlechangeodds(void)
         gBattlescriptCurrInstr = BattleScript_ShakeBallThrow;
     }
     gBallShakesBData.odds = 0;
-    gBallShakesBData.oddsOriginal = 0;
     gBallShakesBData.ballShakesArray = 0;
-    gBallShakesBData.shakes = 1;
+    gBallShakesBData.shakes = 0;
 }
 
-u8 CalcShakesFromOdds(u32 odds, bool8 firstCalc)
+bool8 CalcNextShakeFromOdds(u32 odds)
 {
-    u8 shakes = 0;
-    DebugPrintf("odds: %d", odds);
     if (odds > 254 || gLastUsedItem == ITEM_MASTER_BALL){ // mon caught
-        return firstCalc ? BALL_3_SHAKES_SUCCESS : TRUE;
+        return TRUE;
     }
-    else if (firstCalc){
-        odds = Sqrt(Sqrt(16711680 / odds));
-        odds = 1048560 / odds;
-        for (shakes = 0; shakes < BALL_3_SHAKES_SUCCESS && Random() < odds; shakes++)
-        {
-            DebugPrintf("shakes: %d", shakes);
-        }
-        ;
-    }
-    else{
-        odds = Sqrt(Sqrt(16711680 / odds));
-        odds = 1048560 / odds;
-        shakes = Random() < odds;
-    }
-    DebugPrintf("shakes: %d", shakes);
-    return shakes;
+    odds = Sqrt(Sqrt(16711680 / odds));
+    odds = 1048560 / odds;
+    return Random() < odds;
 }
