@@ -2425,16 +2425,6 @@ s32 GetGameProgressForLinkTrade(void)
     return TRADE_BOTH_PLAYERS_READY;
 }
 
-static bool32 IsDeoxysOrMewUntradable(u16 species, bool8 isEventLegal)
-{
-    if (species == SPECIES_DEOXYS || species == SPECIES_MEW)
-    {
-        if (!isEventLegal)
-            return TRUE;
-    }
-    return FALSE;
-}
-
 int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct RfuGameCompatibilityData partner, u16 playerSpecies2, u16 partnerSpecies, u8 requestedType, u16 playerSpecies, bool8 isEventLegal)
 {
     bool8 playerHasNationalDex = player.hasNationalDex;
@@ -2451,10 +2441,6 @@ int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct Rf
         else if (!partnerIsChampion)
             return UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_2;
     }
-
-    // Cannot trade illegitimate Deoxys/Mew
-    if (IsDeoxysOrMewUntradable(playerSpecies, isEventLegal))
-        return UR_TRADE_MSG_MON_CANT_BE_TRADED_2;
 
     if (partnerSpecies == SPECIES_EGG)
     {
@@ -2499,9 +2485,6 @@ int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct Rf
 int CanRegisterMonForTradingBoard(struct RfuGameCompatibilityData player, u16 species2, u16 species, bool8 isEventLegal)
 {
     bool8 hasNationalDex = player.hasNationalDex;
-
-    if (IsDeoxysOrMewUntradable(species, isEventLegal))
-        return CANT_REGISTER_MON;
 
     if (hasNationalDex)
         return CAN_REGISTER_MON;
