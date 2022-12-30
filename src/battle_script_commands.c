@@ -1094,7 +1094,7 @@ static bool8 AccuracyCalcHelper(u16 move)
     gHitMarker &= ~HITMARKER_IGNORE_UNDERWATER;
 
     if ((WEATHER_HAS_EFFECT && (gBattleWeather & B_WEATHER_RAIN) && gBattleMoves[move].effect == EFFECT_THUNDER)
-     || (gBattleMoves[move].effect == EFFECT_ALWAYS_HIT || EFFECT_DEATH_MOVE || gBattleMoves[move].effect == EFFECT_VITAL_THROW))
+     || (gBattleMoves[move].effect == EFFECT_ALWAYS_HIT || gBattleMoves[move].effect == EFFECT_DEATH_MOVE || gBattleMoves[move].effect == EFFECT_VITAL_THROW))
     {
         JumpIfMoveFailed(7, move);
         return TRUE;
@@ -2982,7 +2982,7 @@ static void Cmd_tryfaintmon(void)
          && gBattleMons[gActiveBattler].hp == 0)
         {
             u16 stoleValue = 0;
-            if(gCurrentMove == MOVE_DEATH_MOVE  && gActiveBattler==gBattlerTarget)
+            if(gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE  && gActiveBattler==gBattlerTarget)
                 stoleValue = checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species);
                 if (stoleValue != 0)
                     VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | stoleValue);
@@ -7449,6 +7449,13 @@ static void Cmd_tryKO(void)
         gSpecialStatuses[gBattlerTarget].focusBanded = 1;
     }
 
+    if (gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE){
+        gBattleMoveDamage = gBattleMons[gBattlerTarget].hp;
+        gMoveResultFlags |= MOVE_RESULT_ONE_HIT_KO;
+        gBattlescriptCurrInstr += 5;
+        return;
+    }
+        
     if (gBattleMons[gBattlerTarget].ability == ABILITY_STURDY)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
