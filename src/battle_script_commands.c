@@ -7430,6 +7430,14 @@ static void Cmd_tryKO(void)
 {
     u8 holdEffect, param;
 
+    // Death Move just hits
+    if (gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE){
+        gBattleMoveDamage = gBattleMons[gBattlerTarget].hp;
+        gMoveResultFlags |= MOVE_RESULT_ONE_HIT_KO;
+        gBattlescriptCurrInstr += 5;
+        return;
+    }
+
     if (gBattleMons[gBattlerTarget].item == ITEM_ENIGMA_BERRY)
     {
        holdEffect = gEnigmaBerries[gBattlerTarget].holdEffect;
@@ -7447,13 +7455,6 @@ static void Cmd_tryKO(void)
     {
         RecordItemEffectBattle(gBattlerTarget, HOLD_EFFECT_FOCUS_BAND);
         gSpecialStatuses[gBattlerTarget].focusBanded = 1;
-    }
-
-    if (gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE){
-        gBattleMoveDamage = gBattleMons[gBattlerTarget].hp;
-        gMoveResultFlags |= MOVE_RESULT_ONE_HIT_KO;
-        gBattlescriptCurrInstr += 5;
-        return;
     }
         
     if (gBattleMons[gBattlerTarget].ability == ABILITY_STURDY)
