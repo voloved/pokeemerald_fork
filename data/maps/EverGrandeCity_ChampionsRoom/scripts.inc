@@ -1,6 +1,7 @@
 .set LOCALID_WALLACE, 1
 .set LOCALID_RIVAL, 2
 .set LOCALID_BIRCH, 3
+.set LOCALID_STEVEN, 4
 
 EverGrandeCity_ChampionsRoom_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, EverGrandeCity_ChampionsRoom_OnTransition
@@ -44,9 +45,31 @@ EverGrandeCity_ChampionsRoom_Movement_PlayerApproachWallace:
 EverGrandeCity_ChampionsRoom_EventScript_Wallace::
 	playbgm MUS_ENCOUNTER_CHAMPION, FALSE
 	msgbox EverGrandeCity_ChampionsRoom_Text_IntroSpeech, MSGBOX_DEFAULT
+	closemessage
+	call EverGrandeCity_ChampionsRoom_EventScript_Steven_Joins
 	trainerbattle_no_intro TRAINER_WALLACE, EverGrandeCity_ChampionsRoom_Text_Defeat
 	goto EverGrandeCity_ChampionsRoom_EventScript_Defeated
 	end
+
+EverGrandeCity_ChampionsRoom_EventScript_Steven_Joins::
+	delay 40
+	msgbox EverGrandeCity_ChampionsRoom_Text_HoldOn, MSGBOX_DEFAULT
+	playse SE_PIN
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_ExclamationMark
+	waitse
+	playse SE_DOOR
+	setmetatile 6, 1, METATILE_EliteFour_OpenDoorChampion_Frame, FALSE
+	setmetatile 6, 2, METATILE_EliteFour_OpenDoorChampion_Opening, FALSE
+	addobject LOCALID_STEVEN
+	applymovement LOCALID_STEVEN, EverGrandeCity_ChampionsRoom_Movement_StevenApproachPlayer
+	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceRight
+	waitmovement 0
+	delay 40
+	msgbox EverGrandeCity_ChampionsRoom_Text_StevenJoins, MSGBOX_DEFAULT
+	return
+
+	
 
 EverGrandeCity_ChampionsRoom_EventScript_Defeated::
 	playse SE_DOOR
@@ -76,7 +99,7 @@ EverGrandeCity_ChampionsRoom_EventScript_PlayBrendanMusic::
 
 EverGrandeCity_ChampionsRoom_EventScript_MayAdvice::
 	msgbox EverGrandeCity_ChampionsRoom_Text_MayAdvice, MSGBOX_DEFAULT
-	delay 40
+	msgbox EverGrandeCity_ChampionsRoom_Text_MayItsAlreadyOver, MSGBOX_DEFAULT
 	playse SE_PIN
 	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
 	waitmovement 0
@@ -173,6 +196,17 @@ EverGrandeCity_ChampionsRoom_Movement_PlayerExit:
 	set_invisible
 	step_end
 
+EverGrandeCity_ChampionsRoom_Movement_StevenApproachPlayer:
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_right
+	walk_up
+	walk_in_place_left
+	step_end
+
 EverGrandeCity_ChampionsRoom_Movement_RivalApproachPlayer:
 	walk_up
 	walk_up
@@ -245,6 +279,13 @@ EverGrandeCity_ChampionsRoom_Text_IntroSpeech:
 	.string "Who can most elegantly dance with\n"
 	.string "their POKéMON in HOENN?\p"
 	.string "Show me right here and now!$"
+
+EverGrandeCity_ChampionsRoom_Text_HoldOn:
+	.string "HOLD ON!$"
+
+EverGrandeCity_ChampionsRoom_Text_StevenJoins:
+	.string "STEVEN: Show us right here\n"
+	.string "and now!$"
 
 EverGrandeCity_ChampionsRoom_Text_Defeat:
 	.string "I, the CHAMPION, fall in defeat…\p"
