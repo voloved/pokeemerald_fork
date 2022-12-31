@@ -4424,7 +4424,7 @@ static const struct TrainerMonItemCustomMoves sParty_Wallace[] = {
 	.lvl = 56,
 	.species = SPECIES_AGGRON,
     .heldItem = ITEM_NONE,
-    .moves = MOVE_THUNDER, MOVE_EARTHQUAKE, MOVE_SOLAR_BEAM, MOVE_DRAGON_CLAW
+    .moves = {MOVE_THUNDER, MOVE_EARTHQUAKE, MOVE_SOLAR_BEAM, MOVE_DRAGON_CLAW}
     },
     {
     .iv = 255,
@@ -4438,7 +4438,7 @@ static const struct TrainerMonItemCustomMoves sParty_Wallace[] = {
 	.lvl = 56,
 	.species = SPECIES_ARMALDO,
     .heldItem = ITEM_NONE,
-    .moves = MOVE_WATER_PULSE, MOVE_ANCIENT_POWER, MOVE_AERIAL_ACE, MOVE_SLASH
+    .moves = {MOVE_WATER_PULSE, MOVE_ANCIENT_POWER, MOVE_AERIAL_ACE, MOVE_SLASH}
     },
     {
     .iv = 255,
@@ -4449,10 +4449,10 @@ static const struct TrainerMonItemCustomMoves sParty_Wallace[] = {
     },
     {
 	.iv = 255,
-	.lvl = 58,
-	.species = SPECIES_METAGROSS,
-    .heldItem = ITEM_SITRUS_BERRY,
-    .moves = MOVE_EARTHQUAKE, MOVE_PSYCHIC, MOVE_METEOR_MASH, MOVE_HYPER_BEAM
+	.lvl = 61,
+	.species = SPECIES_DEOXYS,
+    .heldItem = ITEM_WHITE_HERB,
+    .moves = {MOVE_PSYCHO_BOOST, MOVE_THUNDERBOLT, MOVE_SUPERPOWER, MOVE_SHADOW_BALL}
     }
 };
 
