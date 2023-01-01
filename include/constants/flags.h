@@ -1219,7 +1219,7 @@
 
 #define FLAG_RUNNING_SHOES_TOGGLE                                   0x493
 #define FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW                         0x494
-#define FLAG_UNUSED_0x495                                           0x495 // Unused Flag
+#define FLAG_BASKETBALL_SHOT_MADE                                   0x495
 #define FLAG_BIRCH_THIEF_BALL                                       0x496
 #define FLAG_UNUSED_0x497                                           0x497 // Unused Flag
 #define FLAG_UNUSED_0x498                                           0x498 // Unused Flag

@@ -424,6 +424,44 @@ LittlerootTown_EventScript_MaysHouseSign::
 	releaseall
 	end
 
+LittlerootTown_EventScript_Basketball::
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	goto_if_eq VAR_RESULT, DIR_WEST, LittlerootTown_EventScript_BackOfHoop
+	goto LittlerootTown_EventScript_BasketballShot
+LittlerootTown_EventScript_BasketballEnd::
+	end
+
+LittlerootTown_EventScript_BasketballShot:
+	msgbox LittlerootTown_Text_BasketballShotSignAttempt, MSGBOX_DEFAULT
+	delay 10
+	closemessage
+	random 10
+	compare VAR_RESULT, 3
+	goto_if_lt LittlerootTown_EventScript_BasketballShotSignMade
+    playse SE_FAILURE
+	msgbox LittlerootTown_Text_BasketballShotSignMiss, MSGBOX_DEFAULT
+	waitse
+	clearflag FLAG_BASKETBALL_SHOT_MADE
+LittlerootTown_EventScript_BasketballShotEnd::
+	closemessage
+	return
+
+LittlerootTown_EventScript_BasketballShotAttempt:
+	msgbox LittlerootTown_Text_BasketballShotSignAttempt, MSGBOX_DEFAULT
+	return
+
+LittlerootTown_EventScript_BasketballShotSignMade:
+	playse SE_SUCCESS
+	msgbox LittlerootTown_Text_BasketballShotSignMade, MSGBOX_DEFAULT
+	waitse
+	setflag FLAG_BASKETBALL_SHOT_MADE
+	goto LittlerootTown_EventScript_BasketballShotEnd
+
+LittlerootTown_EventScript_BackOfHoop:
+	msgbox LittlerootTown_Text_BackOfHoop, MSGBOX_DEFAULT
+	closemessage
+	goto LittlerootTown_EventScript_BasketballEnd
+
 LittlerootTown_EventScript_BirchsHouseSignMale::
 	msgbox LittlerootTown_Text_ProfBirchsHouse, MSGBOX_DEFAULT
 	return
@@ -913,7 +951,7 @@ LittlerootTown_Text_OurNewHomeLetsGoInside:
 	.string "MOM: {PLAYER}, we're here, honey!\p"
 	.string "It must be tiring riding with our things\n"
 	.string "in the moving truck.\p"
-	.string "Well, this is LITTLEROOT TOWN.\p"
+	.string "Well, this is SOUTHFIELD\p"
 	.string "How do you like it?\n"
 	.string "This is our new home!\p"
 	.string "It has a quaint feel, but it seems to be\n"
@@ -922,7 +960,8 @@ LittlerootTown_Text_OurNewHomeLetsGoInside:
 	.string "Let's go inside.$"
 
 LittlerootTown_Text_WaitPlayer:
-	.string "MOM: Wait, {PLAYER}!$"
+	.string "MOM: Wait, {PLAYER}!\n"
+	.string "Get over here before I break a femur!$"
 
 LittlerootTown_Text_WearTheseRunningShoes:
 	.string "MOM: {PLAYER}! {PLAYER}! Did you\n"
@@ -958,9 +997,8 @@ LittlerootTown_Text_ComeHomeIfAnythingHappens:
 	.string "Go on, go get them, honey!$"
 
 LittlerootTown_Text_CanUsePCToStoreItems:
-	.string "If you use a PC, you can store items\n"
-	.string "and POKéMON.\p"
-	.string "The power of science is staggering!$"
+	.string "Hey.\n"
+	.string "  - Jaime$"
 
 LittlerootTown_Text_BirchSpendsDaysInLab:
 	.string "PROF. BIRCH spends days in his LAB\n"
@@ -996,17 +1034,33 @@ LittlerootTown_Text_GoodLuckCatchingPokemon:
 	.string "Good luck!$"
 
 LittlerootTown_Text_TownSign:
-	.string "LITTLEROOT TOWN\n"
-	.string "“A town that can't be shaded any hue.”$"
+	.string "SOUTHFIELD\n"
+	.string "“The center of it all.”$"
 
 LittlerootTown_Text_ProfBirchsLab:
 	.string "PROF. BIRCH'S POKéMON LAB$"
 
 LittlerootTown_Text_PlayersHouse:
-	.string "{PLAYER}'s HOUSE$"
+	.string "19790 Silver Spring$"
 
 LittlerootTown_Text_ProfBirchsHouse:
 	.string "PROF. BIRCH'S HOUSE$"
+
+LittlerootTown_Text_BasketballSign:
+	.string "This is your basketball hoop.$"
+
+LittlerootTown_Text_BasketballShotSignAttempt:
+	.string "Attempting LeBron-James-I-am-not shot.$"
+
+LittlerootTown_Text_BasketballShotSignMiss:
+	.string "Shot missed.$"
+
+LittlerootTown_Text_BasketballShotSignMade:
+	.string "Shot was made!$"
+
+LittlerootTown_Text_BackOfHoop:
+	.string "{PLAYER}, we both know you can't make\n"
+	.string "a shot behind the hoop.$"
 
 LittlerootTown_Text_BirchSomethingToShowYouAtLab:
 	.string "PROF. BIRCH: Well, well, {PLAYER}{KUN}!\n"

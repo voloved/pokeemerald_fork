@@ -44,6 +44,8 @@
 #include "berry_powder.h"
 #include "mystery_gift.h"
 #include "union_room_chat.h"
+#include "decoration_inventory.h"
+#include "constants/decorations.h"
 #include "constants/flags.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
@@ -91,6 +93,7 @@ static void SetDefaultOptions(void)
 {
     gSaveBlock2Ptr->optionsTextSpeed = OPTIONS_TEXT_SPEED_FAST;
     gSaveBlock2Ptr->optionsWindowFrameType = 0;
+    gSaveBlock2Ptr->optionsButtonMode = OPTIONS_BUTTON_MODE_L_EQUALS_A;
     gSaveBlock2Ptr->optionsSound = OPTIONS_SOUND_MONO;
     gSaveBlock2Ptr->optionsBattleStyle = OPTIONS_BATTLE_STYLE_SHIFT;
     gSaveBlock2Ptr->optionsBattleSceneOff = FALSE;
@@ -189,6 +192,8 @@ void NewGameInitData(void)
     NewGameInitPCItems();
     ClearPokeblocks();
     ClearDecorationInventories();
+    DecorationAdd(DECOR_SOLID_BOARD);
+    DecorationAdd(DECOR_SOLID_BOARD);
     InitEasyChatPhrases();
     SetMauvilleOldMan();
     InitDewfordTrend();
