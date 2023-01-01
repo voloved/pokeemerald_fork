@@ -74,9 +74,8 @@ EverGrandeCity_ChampionsRoom_EventScript_CheckPkmnCount::
 	goto EverGrandeCity_ChampionsRoom_EventScript_WallaceBattle
 
 EverGrandeCity_ChampionsRoom_EventScript_TalkToSteven::
-	@specialvar VAR_RESULT, GetPlayerFacingDirection
-	@goto_if_ne VAR_RESULT, DIR_WEST, end
-	faceplayer
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	goto_if_ne VAR_RESULT, DIR_EAST, end
 	special HasEnoughMonsForDoubleBattle
 	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EverGrandeCity_ChampionsRoom_EventScript_NotEnoughMonsForDoubleRematchBattleMightGiveRope
 	msgbox EverGrandeCity_ChampionsRoom_Text_StevenJoins, MSGBOX_DEFAULT
@@ -97,9 +96,8 @@ EverGrandeCity_ChampionsRoom_EventScript_NotEnoughMonsForDoubleRematchBattle::
 	end
 
 EverGrandeCity_ChampionsRoom_EventScript_EnoughPkmnInParty::
-	@specialvar VAR_RESULT, GetPlayerFacingDirection
-	@goto_if_ne VAR_RESULT, DIR_NORTH, end
-	faceplayer
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	goto_if_ne VAR_RESULT, DIR_NORTH, end
 	special HasEnoughMonsForDoubleBattle
 	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EverGrandeCity_ChampionsRoom_EventScript_NotEnoughMonsWallace
 	msgbox EverGrandeCity_ChampionsRoom_Text_IntroSpeechCont, MSGBOX_DEFAULT
