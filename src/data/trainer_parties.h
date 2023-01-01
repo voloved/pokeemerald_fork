@@ -4427,11 +4427,11 @@ static const struct TrainerMonItemCustomMoves sParty_Wallace[] = {
     .moves = {MOVE_THUNDER, MOVE_EARTHQUAKE, MOVE_SOLAR_BEAM, MOVE_DRAGON_CLAW}
     },
     {
-    .iv = 255,
-    .lvl = 56,
-    .species = SPECIES_GYARADOS,
-    .heldItem = ITEM_NONE,
-    .moves = {MOVE_DRAGON_DANCE, MOVE_EARTHQUAKE, MOVE_HYPER_BEAM, MOVE_SURF}
+	.iv = 255,
+	.lvl = 58,
+	.species = SPECIES_METAGROSS,
+    .heldItem = ITEM_SITRUS_BERRY,
+    .moves = {MOVE_EARTHQUAKE, MOVE_PSYCHIC, MOVE_METEOR_MASH, MOVE_HYPER_BEAM}
     },
     {
 	.iv = 255,
