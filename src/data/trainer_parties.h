@@ -4452,7 +4452,7 @@ static const struct TrainerMonItemCustomMoves sParty_Wallace[] = {
 	.lvl = 61,
 	.species = SPECIES_DEOXYS,
     .heldItem = ITEM_WHITE_HERB,
-    .moves = {MOVE_PSYCHO_BOOST, MOVE_THUNDERBOLT, MOVE_SUPERPOWER, MOVE_SHADOW_BALL}
+    .moves = {MOVE_PSYCHO_BOOST, MOVE_FIRE_PUNCH, MOVE_SUPERPOWER, MOVE_EXTREME_SPEED}
     }
 };
 
@@ -11618,12 +11618,12 @@ static const struct TrainerMonItemCustomMoves sParty_Steven[] = {
     .moves = {MOVE_THUNDER, MOVE_EARTHQUAKE, MOVE_SOLAR_BEAM, MOVE_DRAGON_CLAW}
     },
     {
-    .iv = 255,
-    .lvl = 76,
-    .species = SPECIES_CRADILY,
-    .heldItem = ITEM_NONE,
-    .moves = {MOVE_GIGA_DRAIN, MOVE_ANCIENT_POWER, MOVE_INGRAIN, MOVE_CONFUSE_RAY}
-    },
+	.iv = 255,
+	.lvl = 80,
+	.species = SPECIES_DEOXYS,
+    .heldItem = ITEM_WHITE_HERB,
+    .moves = {MOVE_PSYCHO_BOOST, MOVE_THUNDERBOLT, MOVE_SUPERPOWER, MOVE_SHADOW_BALL}
+    }
     {
     .iv = 255,
     .lvl = 76,
