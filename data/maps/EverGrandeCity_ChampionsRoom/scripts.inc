@@ -61,8 +61,6 @@ EverGrandeCity_ChampionsRoom_EventScript_Steven_Joins::
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_ExclamationMark
 	waitse
 	playse SE_DOOR
-	setmetatile 6, 1, METATILE_EliteFour_OpenDoorChampion_Frame, FALSE
-	setmetatile 6, 2, METATILE_EliteFour_OpenDoorChampion_Opening, FALSE
 	addobject LOCALID_STEVEN
 	applymovement LOCALID_STEVEN, EverGrandeCity_ChampionsRoom_Movement_StevenApproachPlayer
 	waitmovement 0
@@ -76,11 +74,14 @@ EverGrandeCity_ChampionsRoom_EventScript_CheckPkmnCount::
 	goto EverGrandeCity_ChampionsRoom_EventScript_WallaceBattle
 
 EverGrandeCity_ChampionsRoom_EventScript_TalkToSteven::
+	@specialvar VAR_RESULT, GetPlayerFacingDirection
+	@goto_if_ne VAR_RESULT, DIR_WEST, end
+	faceplayer
 	special HasEnoughMonsForDoubleBattle
 	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EverGrandeCity_ChampionsRoom_EventScript_NotEnoughMonsForDoubleRematchBattleMightGiveRope
 	msgbox EverGrandeCity_ChampionsRoom_Text_StevenJoins, MSGBOX_DEFAULT
 	goto EverGrandeCity_ChampionsRoom_EventScript_WallaceBattle
-	
+
 EverGrandeCity_ChampionsRoom_EventScript_NotEnoughMonsForDoubleRematchBattleMightGiveRope::
 	call EverGrandeCity_HallOfFame_EventScript_ResetEliteFour
 	checkitem ITEM_ESCAPE_ROPE
@@ -96,6 +97,9 @@ EverGrandeCity_ChampionsRoom_EventScript_NotEnoughMonsForDoubleRematchBattle::
 	end
 
 EverGrandeCity_ChampionsRoom_EventScript_EnoughPkmnInParty::
+	@specialvar VAR_RESULT, GetPlayerFacingDirection
+	@goto_if_ne VAR_RESULT, DIR_NORTH, end
+	faceplayer
 	special HasEnoughMonsForDoubleBattle
 	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EverGrandeCity_ChampionsRoom_EventScript_NotEnoughMonsWallace
 	msgbox EverGrandeCity_ChampionsRoom_Text_IntroSpeechCont, MSGBOX_DEFAULT
@@ -109,6 +113,7 @@ EverGrandeCity_ChampionsRoom_EventScript_NotEnoughMonsWallace::
 	end
 
 EverGrandeCity_ChampionsRoom_EventScript_Defeated::
+	setobjectxy OBJ_EVENT_ID_PLAYER, 6, 6
 	playse SE_DOOR
 	setmetatile 6, 1, METATILE_EliteFour_OpenDoorChampion_Frame, FALSE
 	setmetatile 6, 2, METATILE_EliteFour_OpenDoorChampion_Opening, FALSE
