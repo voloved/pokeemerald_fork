@@ -53,6 +53,8 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
+#include "constants/flags.h"
+#include "debug.h"
 
 extern const u8 *const gBattleScriptsForMoveEffects[];
 
@@ -1808,7 +1810,15 @@ static void Cmd_waitanimation(void)
 }
 
 static void Cmd_healthbarupdate(void)
-{
+{ 
+    #if TX_DEBUG_SYSTEM_ENABLE == TRUE
+    u8 side = GetBattlerSide(gBattlerTarget);
+    if (FlagGet(FLAG_SYS_NO_BATTLE_DMG) && side == B_SIDE_PLAYER)
+    {
+        gMoveResultFlags |= MOVE_RESULT_NO_EFFECT;
+    }
+    #endif
+
     if (gBattleControllerExecFlags)
         return;
 
@@ -7628,7 +7638,8 @@ static void Cmd_tryinfatuating(void)
     }
     else
     {
-        if (GetGenderFromSpeciesAndPersonality(speciesAttacker, personalityAttacker) == GetGenderFromSpeciesAndPersonality(speciesTarget, personalityTarget)
+        if ((GetGenderFromSpeciesAndPersonality(speciesAttacker, personalityAttacker) == GetGenderFromSpeciesAndPersonality(speciesTarget, personalityTarget) 
+            && Random() % 61543 > 543)  // 2019 Census: There are 543,000 married same-sex couples in the USA and 61M opposite-sex marriages
             || gBattleMons[gBattlerTarget].status2 & STATUS2_INFATUATION
             || GetGenderFromSpeciesAndPersonality(speciesAttacker, personalityAttacker) == MON_GENDERLESS
             || GetGenderFromSpeciesAndPersonality(speciesTarget, personalityTarget) == MON_GENDERLESS)
@@ -9947,7 +9958,7 @@ static void Cmd_handleballthrow(void)
         }
 
         gBallShakesBData.odds = odds;
-        gBallShakesBData.shakes = CalcShakesFromOdds(gBallShakesBData.odds);
+        gBallShakesBData.shakes = CalcNextShakeFromOdds(gBallShakesBData.odds);
         BtlController_EmitBallThrowAnim(BUFFER_A, gBallShakesBData.shakes);
         MarkBattlerForControllerExec(gActiveBattler);
         gBattlescriptCurrInstr = BattleScript_ChangeOdds;
@@ -10268,15 +10279,12 @@ static void Cmd_handlechangeodds(void)
     gBallShakesBData.shakes = 0;
 }
 
- u8 CalcShakesFromOdds(u32 odds)
- {
-        u8 shakesNextSucceeds = 0;
-        if (odds > 254 || gLastUsedItem == ITEM_MASTER_BALL) // mon caught
-        {
-            return BALL_3_SHAKES_SUCCESS;
-        }
-        odds = Sqrt(Sqrt(16711680 / odds));
-        odds = 1048560 / odds;
-        shakesNextSucceeds = Random() < odds;
-        return shakesNextSucceeds;
- }
+bool8 CalcNextShakeFromOdds(u32 odds)
+{
+    if (odds > 254 || gLastUsedItem == ITEM_MASTER_BALL){ // mon caught
+        return TRUE;
+    }
+    odds = Sqrt(Sqrt(16711680 / odds));
+    odds = 1048560 / odds;
+    return Random() < odds;
+}

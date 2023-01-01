@@ -1263,7 +1263,8 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
         if (((gBallShakesBData.ballShakesArray >> ((shakes - 1) * 2)) & 0x03) == 0x03){
             gBallShakesBData.odds = (BALL_SHAKE_BUTTON_MULT * gBallShakesBData.odds) / 10;
         }
-        gBallShakesBData.shakes += CalcShakesFromOdds(gBallShakesBData.odds);
+        // Calculates if the next shake will work
+        gBallShakesBData.shakes += CalcNextShakeFromOdds(gBallShakesBData.odds);
         gBattleSpritesDataPtr->animationData->ballThrowCaseId = gBallShakesBData.shakes;
         if (shakes == gBattleSpritesDataPtr->animationData->ballThrowCaseId)
         {
