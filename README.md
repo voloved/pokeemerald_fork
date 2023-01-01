@@ -11,6 +11,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
 ## Not In Release
 - [Pressing B as the ball shakes raises catching odds.](https://github.com/pret/pokeemerald/wiki/Raise-Odds-of-Catching-a-Pokemon-by-Pressing-B-When-the-Ball-Shakes)
+- Final Elite Four battle is now a double battle with Steven and Wallace.
 - Death Move knocking out an opponent that can be permanently stolen will also remove them from the game.
 
 ## v1.1.0
