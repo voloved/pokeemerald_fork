@@ -2991,17 +2991,15 @@ static void Cmd_tryfaintmon(void)
         if (!(gAbsentBattlerFlags & gBitTable[gActiveBattler])
          && gBattleMons[gActiveBattler].hp == 0)
         {
-            if(gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE  && gActiveBattler==gBattlerTarget){
-                u16 stoleValue = 0;
-                stoleValue = checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species);
-                if (stoleValue != 0)
-                    VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | stoleValue);
-            }
             gHitMarker |= HITMARKER_FAINTED(gActiveBattler);
             BattleScriptPush(gBattlescriptCurrInstr + 7);
             gBattlescriptCurrInstr = BS_ptr;
             if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
             {
+                if (FlagGet(FLAG_NUZLOCKE)){
+                    bool8 dead = TRUE;
+                    SetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEAD, &dead);
+                }
                 gHitMarker |= HITMARKER_PLAYER_FAINTED;
                 if (gBattleResults.playerFaintCounter < 255)
                     gBattleResults.playerFaintCounter++;
@@ -3009,6 +3007,12 @@ static void Cmd_tryfaintmon(void)
             }
             else
             {
+                if(gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE){
+                    u16 stoleValue = 0;
+                    stoleValue = checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species);
+                    if (stoleValue != 0)
+                        VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | stoleValue);
+                }
                 if (gBattleResults.opponentFaintCounter < 255)
                     gBattleResults.opponentFaintCounter++;
                 gBattleResults.lastOpponentSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPECIES, NULL);

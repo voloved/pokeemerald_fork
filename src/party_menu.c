@@ -4436,7 +4436,7 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
         if (canHeal == TRUE)
         {
             hp = GetMonData(mon, MON_DATA_HP);
-            if (hp == GetMonData(mon, MON_DATA_MAX_HP))
+            if (hp == GetMonData(mon, MON_DATA_MAX_HP) || (FlagGet(FLAG_NUZLOCKE) && GetMonData(mon, MON_DATA_DEAD)))
                 canHeal = FALSE;
         }
         cannotUse = ExecuteTableBasedItemEffect_(gPartyMenu.slotId, item, 0);

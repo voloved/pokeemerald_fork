@@ -3772,7 +3772,10 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         break;
     }
     case MON_DATA_LANGUAGE:
-        retVal = boxMon->language;
+        retVal = boxMon->language & 0x7F;
+        break;
+    case MON_DATA_DEAD:
+        retVal = boxMon->language >> 7;
         break;
     case MON_DATA_SANITY_IS_BAD_EGG:
         retVal = boxMon->isBadEgg;
@@ -4105,6 +4108,7 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
 void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
 {
     const u8 *data = dataArg;
+    u8 dataLang;
 
     struct PokemonSubstruct0 *substruct0 = NULL;
     struct PokemonSubstruct1 *substruct1 = NULL;
@@ -4146,7 +4150,12 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     }
     case MON_DATA_LANGUAGE:
-        SET8(boxMon->language);
+        dataLang = *data & 0x7F;
+        boxMon->language = dataLang;
+        break;
+    case MON_DATA_DEAD:
+        dataLang = (*data << 7) & 0x80;
+        boxMon->language = dataLang;
         break;
     case MON_DATA_SANITY_IS_BAD_EGG:
         SET8(boxMon->isBadEgg);
@@ -4989,7 +4998,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         // If Revive, update number of times revive has been used
                         if (effectFlags & (ITEM4_REVIVE >> 2))
                         {
-                            if (GetMonData(mon, MON_DATA_HP, NULL) != 0)
+                            if (GetMonData(mon, MON_DATA_HP, NULL) != 0 || (GetMonData(mon, MON_DATA_DEAD, NULL) && FlagGet(FLAG_NUZLOCKE)))
                             {
                                 itemEffectParam++;
                                 break;

@@ -43,12 +43,15 @@ Debug_CheatStart::
 	end
 
 Debug_Script_1::
+	call EverGrandeCity_HallOfFame_EventScript_ResetEliteFour
 	end
 
 Debug_Script_2::
+	setflag FLAG_NUZLOCKE
 	end
 
 Debug_Script_3::
+	clearflag FLAG_NUZLOCKE
 	end
 
 Debug_Script_4::
