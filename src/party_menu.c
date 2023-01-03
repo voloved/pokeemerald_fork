@@ -4436,7 +4436,7 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
         if (canHeal == TRUE)
         {
             hp = GetMonData(mon, MON_DATA_HP);
-            if (hp == GetMonData(mon, MON_DATA_MAX_HP) || (FlagGet(FLAG_NUZLOCKE) && GetMonData(mon, MON_DATA_DEAD)))
+            if (hp == GetMonData(mon, MON_DATA_MAX_HP))
                 canHeal = FALSE;
         }
         cannotUse = ExecuteTableBasedItemEffect_(gPartyMenu.slotId, item, 0);
@@ -4446,7 +4446,10 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
     {
         gPartyMenuUseExitCallback = FALSE;
         PlaySE(SE_SELECT);
-        DisplayPartyMenuMessage(gText_WontHaveEffect, TRUE);
+        if (canHeal && FlagGet(FLAG_NUZLOCKE) && GetMonData(mon, MON_DATA_DEAD))
+            DisplayPartyMenuMessage(gText_WontHaveEffectNuzlocke, TRUE);
+        else
+            DisplayPartyMenuMessage(gText_WontHaveEffect, TRUE);
         ScheduleBgCopyTilemapToVram(2);
         gTasks[taskId].func = task;
     }
