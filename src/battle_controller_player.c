@@ -337,7 +337,7 @@ static void UnusedEndBounceEffect(void)
 {
     EndBounceEffect(gActiveBattler, BOUNCE_HEALTHBOX);
     EndBounceEffect(gActiveBattler, BOUNCE_MON);
-    MoveSelectionDisplayMoveTypeDoubles(GetBattlerPosition(gMultiUsePlayerCursor), 5);
+    MoveSelectionDisplayMoveTypeDoubles(GetBattlerPosition(gMultiUsePlayerCursor), B_POSITION_NO_BATTLER);
     gBattlerControllerFuncs[gActiveBattler] = HandleInputChooseTarget;
 }
 
@@ -546,7 +546,7 @@ static void HandleInputChooseMove(void)
             else
                 gMultiUsePlayerCursor = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
 
-            MoveSelectionDisplayMoveTypeDoubles(GetBattlerPosition(gMultiUsePlayerCursor), 5);
+            MoveSelectionDisplayMoveTypeDoubles(GetBattlerPosition(gMultiUsePlayerCursor), B_POSITION_NO_BATTLER);
 
             gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_ShowAsMoveTarget;
         }
@@ -1532,7 +1532,7 @@ static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev)
 	struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct*)(&gBattleBufferA[gActiveBattler][4]);
 
     // Don't update the image if the current and previous targets have the same type effectiveness
-    if(TypeEffectiveness(targetId) == TypeEffectiveness(targetIdPrev) && targetIdPrev < 5)
+    if(TypeEffectiveness(targetId) == TypeEffectiveness(targetIdPrev) && targetIdPrev < B_POSITION_NO_BATTLER)
         return;
 
 	txtPtr = StringCopy(gDisplayedStringBattle, gText_MoveInterfaceType);

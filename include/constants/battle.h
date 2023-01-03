@@ -29,6 +29,7 @@
 #define B_POSITION_OPPONENT_LEFT      1
 #define B_POSITION_PLAYER_RIGHT       2
 #define B_POSITION_OPPONENT_RIGHT     3
+#define B_POSITION_NO_BATTLER         4
 
 // These macros can be used with either battler ID or positions to get the partner or the opposite mon
 #define BATTLE_OPPOSITE(id) ((id) ^ BIT_SIDE)
