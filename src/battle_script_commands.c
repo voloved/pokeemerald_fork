@@ -2991,11 +2991,12 @@ static void Cmd_tryfaintmon(void)
         if (!(gAbsentBattlerFlags & gBitTable[gActiveBattler])
          && gBattleMons[gActiveBattler].hp == 0)
         {
-            u16 stoleValue = 0;
-            if(gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE  && gActiveBattler==gBattlerTarget)
+            if(gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE  && gActiveBattler==gBattlerTarget){
+                u16 stoleValue = 0;
                 stoleValue = checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species);
                 if (stoleValue != 0)
                     VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | stoleValue);
+            }
             gHitMarker |= HITMARKER_FAINTED(gActiveBattler);
             BattleScriptPush(gBattlescriptCurrInstr + 7);
             gBattlescriptCurrInstr = BS_ptr;

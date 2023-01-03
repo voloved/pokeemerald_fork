@@ -11623,7 +11623,7 @@ static const struct TrainerMonItemCustomMoves sParty_Steven[] = {
 	.species = SPECIES_DEOXYS,
     .heldItem = ITEM_WHITE_HERB,
     .moves = {MOVE_PSYCHO_BOOST, MOVE_THUNDERBOLT, MOVE_SUPERPOWER, MOVE_SHADOW_BALL}
-    }
+    },
     {
     .iv = 255,
     .lvl = 76,
