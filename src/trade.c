@@ -1557,6 +1557,7 @@ static void ConfirmOrCancelTrade(void)
     switch (Menu_ProcessInputNoWrapClearOnChoose())
     {
     case 0: // Confirm Trade
+
         if (!CheckMonsBeforeTrade())
             sTradeMenuData->tradeMenuFunc = TRADEMENUFUNC_STANDBY;
         else
@@ -3015,11 +3016,14 @@ static void TryEnableNationalDexFromLinkPartner(void)
 static void TradeMons(u8 playerPartyIdx, u8 partnerPartyIdx)
 {
     u8 friendship;
+    bool8 dead = FALSE;  // Resets if Pokemon was considered dead through Nuzlocke
 
     struct Pokemon *playerMon = &gPlayerParty[playerPartyIdx];
+    SetMonData(playerMon, MON_DATA_DEAD, &dead);
     u16 playerMail = GetMonData(playerMon, MON_DATA_MAIL);
 
     struct Pokemon *partnerMon = &gEnemyParty[partnerPartyIdx];
+
     u16 partnerMail = GetMonData(partnerMon, MON_DATA_MAIL);
 
     if (playerMail != MAIL_NONE)
