@@ -5178,6 +5178,7 @@ static void HandleEndTurn_MonFled(void)
 
 static void HandleEndTurn_FinishBattle(void)
 {
+    gNuzlockeCannotCatch = FALSE;  // While not necissary, resetting this is nice to stay deterministic
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
         if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK

@@ -2996,7 +2996,7 @@ static void Cmd_tryfaintmon(void)
             gBattlescriptCurrInstr = BS_ptr;
             if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
             {
-                if (FlagGet(FLAG_NUZLOCKE)){
+                if (FlagGet(FLAG_NUZLOCKE) && VarGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
                     bool8 dead = TRUE;
                     SetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEAD, &dead);
                 }
@@ -9865,8 +9865,8 @@ static void Cmd_handleballthrow(void)
         gUsingThiefBall = THIEF_BALL_NOT_USING;
     }
     DebugPrintf("Nuzlocke: %d", gNuzlockeCannotCatch);
-    if (gNuzlockeCannotCatch || (gBattleTypeFlags & BATTLE_TYPE_TRAINER &&
-    (gUsingThiefBall == THIEF_BALL_NOT_USING || gUsingThiefBall == THIEF_BALL_CANNOT_USE)))
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER &&
+    (gUsingThiefBall == THIEF_BALL_NOT_USING || gUsingThiefBall == THIEF_BALL_CANNOT_USE))
     {
         BtlController_EmitBallThrowAnim(BUFFER_A, BALL_TRAINER_BLOCK);
         MarkBattlerForControllerExec(gActiveBattler);
@@ -10266,6 +10266,7 @@ static void Cmd_handlechangeodds(void)
         if (gUsingThiefBall == THIEF_BALL_CATCHING){
             gUsingThiefBall = THIEF_BALL_CAUGHT;
         }
+        HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE); // If stealing a Pokemon was caught, count it towards the Nuzlocke
         gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
 

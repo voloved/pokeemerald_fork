@@ -64,7 +64,7 @@ bool8 ShouldTryRematchBattle(void);
 bool8 IsTrainerReadyForRematch(void);
 void ShouldTryGetTrainerScript(void);
 u16 CountBattledRematchTeams(u16 trainerId);
-bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 isTrainerBattle);
+bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc);
 
 
 void DoStandardWildBattle_Debug(void);

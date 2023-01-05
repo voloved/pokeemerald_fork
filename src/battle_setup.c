@@ -420,7 +420,7 @@ static void CreateBattleStartTask_Debug(u8 transition, u16 song)
 
 void BattleSetup_StartWildBattle(void)
 {
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), FALSE);
+    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE);
     if (GetSafariZoneFlag())
         DoSafariBattle();
     else
@@ -1323,6 +1323,7 @@ void ClearTrainerFlag(u16 trainerId)
 
 void BattleSetup_StartTrainerBattle(void)
 {
+    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), FALSE);
     if (gNoOfApproachingTrainers == 2)
         gBattleTypeFlags = (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TRAINER);
     else
@@ -1953,7 +1954,7 @@ u16 CountBattledRematchTeams(u16 trainerId)
     return i;
 }
 
-bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 isTrainerBattle){
+bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
     u8 varToCheck, bitToCheck;
     u16 varValue;
     const u16 pkmnSeenVars[] = {
@@ -1963,7 +1964,7 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 isTrainerBattle){
     VAR_WILD_PKMN_ROUTE_SEEN_3,
     VAR_WILD_PKMN_ROUTE_SEEN_4,
     };
-    if (!FlagGet(FLAG_NUZLOCKE)){
+    if (!FlagGet(FLAG_NUZLOCKE) || !VarGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
         VarSet(VAR_WILD_PKMN_ROUTE_SEEN_0, 0);
         VarSet(VAR_WILD_PKMN_ROUTE_SEEN_1, 0);
         VarSet(VAR_WILD_PKMN_ROUTE_SEEN_2, 0);
@@ -2302,7 +2303,7 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 isTrainerBattle){
     if ((varValue & (1 << bitToCheck)) != 0){
         return TRUE;
     }
-    else if (!isTrainerBattle){
+    else if (setVarForThisEnc){
         VarSet(pkmnSeenVars[varToCheck], varValue | (1 << bitToCheck));
     }
     return FALSE;
