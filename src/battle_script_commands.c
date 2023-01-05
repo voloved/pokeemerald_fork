@@ -10260,12 +10260,12 @@ static void Cmd_trainerslideout(void)
 static void Cmd_handlechangeodds(void)
 {
     u8 shakes = gBallShakesBData.shakes;
+    HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE); // If stealing a Pokemon, count it towards the Nuzlocke
     if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
     {
         if (gUsingThiefBall == THIEF_BALL_CATCHING){
             gUsingThiefBall = THIEF_BALL_CAUGHT;
         }
-        HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE); // If stealing a Pokemon was caught, count it towards the Nuzlocke
         gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
 
