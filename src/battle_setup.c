@@ -1964,6 +1964,7 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
     VAR_WILD_PKMN_ROUTE_SEEN_3,
     VAR_WILD_PKMN_ROUTE_SEEN_4,
     };
+    currLocation = currLocConvertForNuzlocke(currLocation);
     if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
         VarSet(VAR_WILD_PKMN_ROUTE_SEEN_0, 0);
         VarSet(VAR_WILD_PKMN_ROUTE_SEEN_1, 0);
@@ -2012,7 +2013,6 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
         bitToCheck = 8;
         break;
     case MAPSEC_MAUVILLE_CITY:
-    case MAPSEC_NEW_MAUVILLE:
         varToCheck = 0;
         bitToCheck = 9;
         break;
@@ -2033,7 +2033,6 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
         bitToCheck = 13;
         break;
     case MAPSEC_SOOTOPOLIS_CITY:
-    case MAPSEC_UNDERWATER_SOOTOPOLIS:
         varToCheck = 0;
         bitToCheck = 14;
         break;
@@ -2059,7 +2058,6 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
         bitToCheck = 3;
         break;
     case MAPSEC_ROUTE_105:
-    case MAPSEC_UNDERWATER_105:
         varToCheck = 1;
         bitToCheck = 4;
         break;
@@ -2084,8 +2082,6 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
         bitToCheck = 9;
         break;
     case MAPSEC_ROUTE_111:
-    case MAPSEC_DESERT_RUINS:
-    case MAPSEC_MIRAGE_TOWER:
         varToCheck = 1;
         bitToCheck = 10;
         break;
@@ -2139,32 +2135,26 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
         bitToCheck = 6;
         break;
     case MAPSEC_ROUTE_124:
-    case MAPSEC_UNDERWATER_124:
         varToCheck = 2;
         bitToCheck = 7;
         break;
     case MAPSEC_ROUTE_125:
-    case MAPSEC_UNDERWATER_125:
         varToCheck = 2;
         bitToCheck = 8;
         break;
     case MAPSEC_ROUTE_126:
-    case MAPSEC_UNDERWATER_126:
         varToCheck = 2;
         bitToCheck = 9;
         break;
     case MAPSEC_ROUTE_127:
-    case MAPSEC_UNDERWATER_127:
         varToCheck = 2;
         bitToCheck = 10;
         break;
     case MAPSEC_ROUTE_128:
-    case MAPSEC_UNDERWATER_128:
         varToCheck = 2;
         bitToCheck = 11;
         break;
     case MAPSEC_ROUTE_129:
-    case MAPSEC_UNDERWATER_129:
         varToCheck = 2;
         bitToCheck = 12;
         break;
@@ -2218,7 +2208,6 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
         bitToCheck = 8;
         break;
     case MAPSEC_METEOR_FALLS:
-    case MAPSEC_METEOR_FALLS2:
         varToCheck = 3;
         bitToCheck = 9;
         break;
@@ -2235,7 +2224,6 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
         bitToCheck = 12;
         break;
     case MAPSEC_SEAFLOOR_CAVERN:
-    case MAPSEC_UNDERWATER_SEAFLOOR_CAVERN:
         varToCheck = 3;
         bitToCheck = 13;
         break;
@@ -2253,17 +2241,14 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
         bitToCheck = 0;
         break;
     case MAPSEC_FIERY_PATH:
-    case MAPSEC_FIERY_PATH2:
         varToCheck = 4;
         bitToCheck = 1;
         break;
     case MAPSEC_JAGGED_PASS:
-    case MAPSEC_JAGGED_PASS2:
         varToCheck = 4;
         bitToCheck = 2;
         break;
     case MAPSEC_SEALED_CHAMBER:
-    case MAPSEC_UNDERWATER_SEALED_CHAMBER:
         varToCheck = 4;
         bitToCheck = 3;
         break;
@@ -2305,4 +2290,58 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
         VarSet(pkmnSeenVars[varToCheck], varValue | (1 << bitToCheck));
     }
     return FALSE;
+}
+
+u8 currLocConvertForNuzlocke(u8 currLocation){
+    switch (currLocation)
+    {
+    case MAPSEC_MAUVILLE_CITY:
+    case MAPSEC_NEW_MAUVILLE:
+		return MAPSEC_MAUVILLE_CITY;
+    case MAPSEC_SOOTOPOLIS_CITY:
+    case MAPSEC_UNDERWATER_SOOTOPOLIS:
+        return MAPSEC_SOOTOPOLIS_CITY;
+    case MAPSEC_ROUTE_105:
+    case MAPSEC_UNDERWATER_105:
+		return MAPSEC_ROUTE_105;
+    case MAPSEC_ROUTE_111:
+    case MAPSEC_DESERT_RUINS:
+    case MAPSEC_MIRAGE_TOWER:
+		return MAPSEC_ROUTE_111;
+    case MAPSEC_ROUTE_124:
+    case MAPSEC_UNDERWATER_124:
+		return MAPSEC_ROUTE_124;
+    case MAPSEC_ROUTE_125:
+    case MAPSEC_UNDERWATER_125:
+        return MAPSEC_ROUTE_125;
+    case MAPSEC_ROUTE_126:
+    case MAPSEC_UNDERWATER_126:
+        return MAPSEC_ROUTE_126;
+    case MAPSEC_ROUTE_127:
+    case MAPSEC_UNDERWATER_127:
+        return MAPSEC_ROUTE_127;
+    case MAPSEC_ROUTE_128:
+    case MAPSEC_UNDERWATER_128:
+        return MAPSEC_ROUTE_128;
+    case MAPSEC_ROUTE_129:
+    case MAPSEC_UNDERWATER_129:
+        return MAPSEC_ROUTE_129;
+    case MAPSEC_METEOR_FALLS:
+    case MAPSEC_METEOR_FALLS2:
+        return MAPSEC_METEOR_FALLS;
+    case MAPSEC_SEAFLOOR_CAVERN:
+    case MAPSEC_UNDERWATER_SEAFLOOR_CAVERN:
+        return MAPSEC_SEAFLOOR_CAVERN;
+    case MAPSEC_FIERY_PATH:
+    case MAPSEC_FIERY_PATH2:
+        return MAPSEC_FIERY_PATH;
+    case MAPSEC_JAGGED_PASS:
+    case MAPSEC_JAGGED_PASS2:
+        return MAPSEC_JAGGED_PASS;
+    case MAPSEC_SEALED_CHAMBER:
+    case MAPSEC_UNDERWATER_SEALED_CHAMBER:
+        return MAPSEC_SEALED_CHAMBER;
+    default:
+        return currLocation;
+    }
 }
