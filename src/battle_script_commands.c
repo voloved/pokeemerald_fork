@@ -9864,7 +9864,6 @@ static void Cmd_handleballthrow(void)
     else{
         gUsingThiefBall = THIEF_BALL_NOT_USING;
     }
-    DebugPrintf("Nuzlocke: %d", gNuzlockeCannotCatch);
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER &&
     (gUsingThiefBall == THIEF_BALL_NOT_USING || gUsingThiefBall == THIEF_BALL_CANNOT_USE))
     {

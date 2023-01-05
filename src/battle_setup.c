@@ -2298,8 +2298,6 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
         return FALSE;
     }
     varValue = VarGet(pkmnSeenVars[varToCheck]);
-    DebugPrintf("currLocation: %d", currLocation);
-    DebugPrintf("varValue: %d", varValue);
     if ((varValue & (1 << bitToCheck)) != 0){
         return TRUE;
     }
