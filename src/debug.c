@@ -1802,7 +1802,7 @@ static void DebugAction_Util_PoisonMons(u8 taskId)
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, 0)
             && GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2) != SPECIES_NONE
             && GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2) != SPECIES_EGG
-            && !GetMonData(&gPlayerParty[i], MON_DATA_DEAD))
+            && GetMonData(&gPlayerParty[i], MON_DATA_HP) != 0)
         {
             u32 curStatus = STATUS1_POISON;
             SetMonData(&gPlayerParty[i], MON_DATA_STATUS, &curStatus);

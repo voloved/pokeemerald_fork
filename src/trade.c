@@ -3019,12 +3019,13 @@ static void TradeMons(u8 playerPartyIdx, u8 partnerPartyIdx)
     bool8 dead = FALSE;  // Resets if Pokemon was considered dead through Nuzlocke
 
     struct Pokemon *playerMon = &gPlayerParty[playerPartyIdx];
-    SetMonData(playerMon, MON_DATA_DEAD, &dead);
     u16 playerMail = GetMonData(playerMon, MON_DATA_MAIL);
 
     struct Pokemon *partnerMon = &gEnemyParty[partnerPartyIdx];
 
     u16 partnerMail = GetMonData(partnerMon, MON_DATA_MAIL);
+
+    SetMonData(playerMon, MON_DATA_DEAD, &dead);
 
     if (playerMail != MAIL_NONE)
         ClearMail(&gSaveBlock1Ptr->mail[playerMail]);
