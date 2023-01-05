@@ -1964,7 +1964,7 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
     VAR_WILD_PKMN_ROUTE_SEEN_3,
     VAR_WILD_PKMN_ROUTE_SEEN_4,
     };
-    if (!FlagGet(FLAG_NUZLOCKE) || !VarGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
+    if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
         VarSet(VAR_WILD_PKMN_ROUTE_SEEN_0, 0);
         VarSet(VAR_WILD_PKMN_ROUTE_SEEN_1, 0);
         VarSet(VAR_WILD_PKMN_ROUTE_SEEN_2, 0);

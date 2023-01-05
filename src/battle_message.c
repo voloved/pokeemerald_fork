@@ -28,8 +28,6 @@
 #include "constants/trainers.h"
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
-#include "region_map.h"
-#include "overworld.h"
 
 struct BattleWindowText
 {
@@ -397,7 +395,6 @@ static const u8 sText_LinkTrainerSentOutTwoPkmn[] = _("{B_LINK_OPPONENT1_NAME} s
 static const u8 sText_TwoLinkTrainersSentOutPkmn[] = _("{B_LINK_OPPONENT1_NAME} sent out {B_LINK_OPPONENT_MON1_NAME}!\n{B_LINK_OPPONENT2_NAME} sent out {B_LINK_OPPONENT_MON2_NAME}!");
 static const u8 sText_LinkTrainerSentOutPkmn2[] = _("{B_LINK_OPPONENT1_NAME} sent out\n{B_BUFF1}!");
 static const u8 sText_LinkTrainerMultiSentOutPkmn[] = _("{B_LINK_SCR_TRAINER_NAME} sent out\n{B_BUFF1}!");
-static const u8 sText_NuzlockeAlreadyAttemptedOnRoute[] = _("You already attempted a Pokemon\non {B_CURRENT_LOCATION}!");
 static const u8 sText_GoPkmn[] = _("Go! {B_PLAYER_MON1_NAME}!");
 static const u8 sText_GoTwoPkmn[] = _("Go! {B_PLAYER_MON1_NAME} and\n{B_PLAYER_MON2_NAME}!");
 static const u8 sText_GoPkmn2[] = _("Go! {B_BUFF1}!");
@@ -896,7 +893,6 @@ const u8 * const gBattleStringsTable[BATTLESTRINGS_COUNT - BATTLESTRINGS_TABLE_S
     [STRINGID_PLAYERPAIDPRIZEMONEY - BATTLESTRINGS_TABLE_START] = sText_PlayerPaidPrizeMoney,
     [STRINGID_CANTWITHTHIEF - BATTLESTRINGS_TABLE_START] = sText_CantWithThief,
     [STRINGID_GOTCHAPKMNCAUGHTNOBGM - BATTLESTRINGS_TABLE_START] = sText_GotchaPkmnCaughtNoBgm,
-    [STRINGID_NUZLOCKEATTEMPTEDONROUTE - BATTLESTRINGS_TABLE_START] = sText_NuzlockeAlreadyAttemptedOnRoute,
 };
 
 const u16 gMissStringIds[] =
@@ -2600,10 +2596,6 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                     toCpy = sATypeMove_Table[gBattleStruct->stringMoveType];
                 else
                     toCpy = gMoveNames[gBattleMsgDataPtr->originallyUsedMove];
-                break;
-            case B_TXT_CURRENT_LOCATION: // gets the string of the location we currently are in
-                GetMapNameHandleAquaHideout(text, GetCurrentRegionMapSectionId());
-                toCpy = text;
                 break;
             case B_TXT_LAST_ITEM: // last used item
                 if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))

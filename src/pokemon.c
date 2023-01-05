@@ -4151,10 +4151,12 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
     }
     case MON_DATA_LANGUAGE:
         dataLang = *data & 0x7F;
+        boxMon->language &= 0x80;
         boxMon->language |= dataLang;
         break;
     case MON_DATA_DEAD:
         dataLang = (*data << 7) & 0x80;
+        boxMon->language &= 0x7F;
         boxMon->language |= dataLang;
         break;
     case MON_DATA_SANITY_IS_BAD_EGG:

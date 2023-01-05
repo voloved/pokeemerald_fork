@@ -128,7 +128,7 @@ s32 DoPoisonFieldEffect(void)
             // Apply poison damage
             hp = GetMonData(pokemon, MON_DATA_HP);
             if (hp == 0 || --hp == 0){
-                bool8 dead = (FlagGet(FLAG_NUZLOCKE) && VarGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)) ? TRUE : FALSE;  //Uses to set or remove the Nuzlocke dead status in the field
+                bool8 dead = (FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)) ? TRUE : FALSE;  //Uses to set or remove the Nuzlocke dead status in the field
                 SetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEAD, &dead);
             }
 
