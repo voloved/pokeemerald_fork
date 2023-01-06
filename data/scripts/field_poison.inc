@@ -23,6 +23,7 @@ EventScript_FieldWhiteOutCont::
 
 EventScript_LostNuzlocke::
 	call_if_unset FLAG_RECEIVED_POKEDEX_FROM_BIRCH, EventScript_FieldWhiteOutCont
+	clearflag FLAG_NUZLOCKE
 	message gText_PlayerNuzlockeFailed
 	waitmessage
 	waitbuttonpress

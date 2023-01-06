@@ -49,6 +49,8 @@
 #include "constants/weather.h"
 #include "overworld.h"
 #include "constants/region_map_sections.h"
+#include "battle_anim.h"
+#include "pokedex.h"
 
 enum {
     TRANSITION_TYPE_NORMAL,
@@ -421,6 +423,7 @@ static void CreateBattleStartTask_Debug(u8 transition, u16 song)
 void BattleSetup_StartWildBattle(void)
 {
     gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE);
+    
     if (GetSafariZoneFlag())
         DoSafariBattle();
     else
@@ -1954,7 +1957,7 @@ u16 CountBattledRematchTeams(u16 trainerId)
     return i;
 }
 
-bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
+u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
     u8 varToCheck, bitToCheck;
     u16 varValue;
     const u16 pkmnSeenVars[] = {
@@ -1971,7 +1974,7 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
         VarSet(VAR_WILD_PKMN_ROUTE_SEEN_2, 0);
         VarSet(VAR_WILD_PKMN_ROUTE_SEEN_3, 0);
         VarSet(VAR_WILD_PKMN_ROUTE_SEEN_4, 0);
-        return FALSE;
+        return 0;
     }
     switch (currLocation)
     {
@@ -2280,16 +2283,20 @@ bool8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
         varToCheck = 4;
         bitToCheck = 10;
     default:
-        return FALSE;
+        return 0;
     }
     varValue = VarGet(pkmnSeenVars[varToCheck]);
     if ((varValue & (1 << bitToCheck)) != 0){
-        return TRUE;
+        return 1;
     }
     else if (setVarForThisEnc){
+        u16 species_enemy = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)]], MON_DATA_SPECIES2);
+        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species_enemy), FLAG_GET_CAUGHT)){
+            return 2;  // If it's a duplicate Pokemon
+        }
         VarSet(pkmnSeenVars[varToCheck], varValue | (1 << bitToCheck));
     }
-    return FALSE;
+    return 0;
 }
 
 u8 currLocConvertForNuzlocke(u8 currLocation){

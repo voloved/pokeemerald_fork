@@ -3676,10 +3676,16 @@ static void BattleIntroQuickRun(void)
 {
     if (gBattleControllerExecFlags == 0)
     {
-        if (JOY_HELD(DPAD_RIGHT))
+        if (JOY_HELD(DPAD_RIGHT)){
             gBattleMainFunc = HandleEndTurn_RanFromBattle;
-        else
+        }
+        else{
+            u16 species_enemy = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)]], MON_DATA_SPECIES2);
             gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
+            if (gNuzlockeCannotCatch == 2){  // If Pokemon was first in this route and was already caught
+                PrepareStringBattle(STRINGID_NUZLOCKEDUPS, 0);
+            }
+        }
     }
 }
 
@@ -3690,6 +3696,7 @@ static void BattleLostNuzlocke(void)
     {
         gBattleMainFunc = HandleEndTurn_FinishBattle;
         PrepareStringBattle(STRINGID_NUZLOCKELOST, 0);
+        FlagClear(FLAG_NUZLOCKE);
     }
 }
 
@@ -5205,7 +5212,7 @@ static void HandleEndTurn_MonFled(void)
 
 static void HandleEndTurn_FinishBattle(void)
 {
-    gNuzlockeCannotCatch = FALSE;  // While not necissary, resetting this is nice to stay deterministic
+    gNuzlockeCannotCatch = 0;  // While not necissary, resetting this is nice to stay deterministic
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
         if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK

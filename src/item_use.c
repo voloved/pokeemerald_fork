@@ -952,7 +952,7 @@ void ItemUseInBattle_PokeBall(u8 taskId)
         return;
     }
 #endif
-    if (gNuzlockeCannotCatch){
+    if (gNuzlockeCannotCatch == 1){
         GetMapNameHandleAquaHideout(gStringVar1, currLocConvertForNuzlocke(GetCurrentRegionMapSectionId()));
         DisplayItemMessage(taskId, FONT_NORMAL, gText_BallsCannotBeUsedNuz, CloseItemMessage);
         return;
