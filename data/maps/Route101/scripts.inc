@@ -218,6 +218,10 @@ Route101_EventScript_RouteSign::
 	msgbox Route101_Text_RouteSign, MSGBOX_SIGN
 	end
 
+Route101_EventScript_TrainerTipsSign::
+	msgbox Route101_Text_TrainerTipsRun, MSGBOX_SIGN
+	end
+
 Route101_EventScript_BirchsBag::
 	lock
 	faceplayer
@@ -299,4 +303,11 @@ Route101_Text_WildPokemonInTallGrass:
 Route101_Text_RouteSign:
 	.string "ROUTE 101\n"
 	.string "{UP_ARROW} OLDALE TOWN$"
+
+Route101_Text_TrainerTipsRun:
+	.string "TRAINER TIPS\p"
+	.string "Holding {RIGHT_ARROW} while clicking through\n"
+	.string "the “Wild POKéMON Appeared” message\l"
+	.string "will cause you to quickly run from\l"
+	.string "a wild encounter.$"
 
