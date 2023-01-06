@@ -12,6 +12,7 @@ EventScript_FieldWhiteOut::
 	waitmessage
 	waitbuttonpress
 	call_if_set FLAG_NUZLOCKE, EventScript_LostNuzlocke
+EventScript_FieldWhiteOutCont::
 	special Script_FadeOutMapMusic
 	waitstate
 	fadescreen FADE_TO_BLACK
@@ -21,6 +22,7 @@ EventScript_FieldWhiteOut::
 	end
 
 EventScript_LostNuzlocke::
+	call_if_unset FLAG_RECEIVED_POKEDEX_FROM_BIRCH, EventScript_FieldWhiteOutCont
 	message gText_PlayerNuzlockeFailed
 	waitmessage
 	waitbuttonpress
