@@ -287,6 +287,9 @@ static void ReadKeys(void)
             gMain.heldKeys |= A_BUTTON;
             gMain.newKeys ^= A_BUTTON;
         }
+        if(JOY_HELD(R_BUTTON) && (gMain.callback2 == BattleMainCB2 || gMain.callback2 == CB2_Overworld)){
+            gMain.newKeys ^= B_BUTTON;
+        }
     }
 
     if (JOY_NEW(gMain.watchedKeysMask))
