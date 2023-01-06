@@ -491,6 +491,8 @@ PlayersHouse_1F_EventScript_NuzlockeOver::
 	msgbox PlayersHouse_1F_Text_NuzlockeIsOver, MSGBOX_DEFAULT
 	waitfanfare
 	clearflag FLAG_NUZLOCKE
+	msgbox PlayersHouse_1F_Text_NuzlockeGiveThiefBalls
+	giveitem ITEM_THIEF_BALL, 10
 	return
 
 @ Never called.
