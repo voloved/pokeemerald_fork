@@ -3670,6 +3670,16 @@ static void BattleIntroPrintWildMonAttacked(void)
     }
 }
 
+
+static void BattleLostNuzlocke(void)
+{
+    if (gBattleControllerExecFlags == 0)
+    {
+        gBattleMainFunc = HandleEndTurn_FinishBattle;
+        PrepareStringBattle(STRINGID_NUZLOCKELOST, 0);
+    }
+}
+
 static void BattleIntroPrintOpponentSendsOut(void)
 {
     u32 position;
@@ -5127,6 +5137,11 @@ static void HandleEndTurn_BattleLost(void)
     else
     {
         gBattlescriptCurrInstr = BattleScript_LocalBattleLost;
+        DebugPrintf("FLAG_NUZLOCKE: %d", FlagGet(FLAG_NUZLOCKE));
+        if (FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
+            gBattleMainFunc = BattleLostNuzlocke;
+            return;
+        }
     }
 
     gBattleMainFunc = HandleEndTurn_FinishBattle;

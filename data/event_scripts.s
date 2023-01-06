@@ -884,6 +884,10 @@ gText_PlayerWhitedOut::
 	.string "{PLAYER} is out of usable\n"
 	.string "POKéMON!\p{PLAYER} whited out!$"
 
+gText_PlayerNuzlockeFailed::
+	.string "{PLAYER} failed the \n"
+	.string "Nuzlocke challenge.$"
+
 gText_RegisteredTrainerinPokeNav::
 	.string "Registered {STR_VAR_1} {STR_VAR_2}\n"
 	.string "in the POKéNAV.$"
