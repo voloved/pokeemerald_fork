@@ -1222,7 +1222,7 @@
 #define FLAG_BASKETBALL_SHOT_MADE                                   0x495
 #define FLAG_BIRCH_THIEF_BALL                                       0x496
 #define FLAG_NUZLOCKE                                               0x497
-#define FLAG_UNUSED_0x498                                           0x498 // Unused Flag
+#define FLAG_MISSINGNO                                              0x498
 #define FLAG_UNUSED_0x499                                           0x499 // Unused Flag
 #define FLAG_UNUSED_0x49A                                           0x49A // Unused Flag
 #define FLAG_UNUSED_0x49B                                           0x49B // Unused Flag
