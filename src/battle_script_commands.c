@@ -2996,8 +2996,10 @@ static void Cmd_tryfaintmon(void)
             gBattlescriptCurrInstr = BS_ptr;
             if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
             {
-                if (FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
-                    bool8 dead = TRUE;
+                if (FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH) || (gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE)){
+                    u8 dead = 1;
+                    if (gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE)
+                        dead = 2;
                     SetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEAD, &dead);
                 }
                 gHitMarker |= HITMARKER_PLAYER_FAINTED;

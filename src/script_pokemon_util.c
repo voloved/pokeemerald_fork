@@ -37,7 +37,11 @@ void HealPlayerParty(void)
     for(i = 0; i < gPlayerPartyCount; i++)
     {
         u16 maxHP;
-        if (GetMonData(&gPlayerParty[i], MON_DATA_DEAD)){
+        u8 deadStat = GetMonData(&gPlayerParty[i], MON_DATA_DEAD);
+        if (deadStat != 0){
+            if (deadStat == 2){
+                continue;
+            }
             if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
                 bool8 dead = FALSE;
                 SetMonData(&gPlayerParty[i], MON_DATA_DEAD, &dead);
