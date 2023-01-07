@@ -9873,7 +9873,8 @@ static void Cmd_handleballthrow(void)
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_WALLY_TUTORIAL)
     {
-        BtlController_EmitBallThrowAnim(BUFFER_A, BALL_3_SHAKES_SUCCESS);
+        gBallShakesBData.shakes = CalcNextShakeFromOdds(gBallShakesBData.odds);
+        BtlController_EmitBallThrowAnim(BUFFER_A, gBallShakesBData.shakes);
         MarkBattlerForControllerExec(gActiveBattler);
         gBattlescriptCurrInstr = BattleScript_WallyBallThrow;
     }
@@ -10287,8 +10288,8 @@ static void Cmd_handlechangeodds(void)
 
 bool8 CalcNextShakeFromOdds(u32 odds)
 {
-    if (odds > 254 || gLastUsedItem == ITEM_MASTER_BALL){ // mon caught
-        return TRUE;
+    if (odds > 254 || gLastUsedItem == ITEM_MASTER_BALL || gBattleTypeFlags & BATTLE_TYPE_WALLY_TUTORIAL){ // mon caught
+       return TRUE;
     }
     odds = Sqrt(Sqrt(16711680 / odds));
     odds = 1048560 / odds;
