@@ -4446,7 +4446,7 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
     {
         gPartyMenuUseExitCallback = FALSE;
         PlaySE(SE_SELECT);
-        if (canHeal && FlagGet(FLAG_NUZLOCKE) && GetMonData(mon, MON_DATA_DEAD) != 0)
+        if (canHeal && FlagGet(FLAG_NUZLOCKE) && GetMonData(mon, MON_DATA_DEAD))
             DisplayPartyMenuMessage(gText_WontHaveEffectNuzlocke, TRUE);
         else
             DisplayPartyMenuMessage(gText_WontHaveEffect, TRUE);

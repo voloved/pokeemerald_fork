@@ -133,14 +133,7 @@ s32 DoPoisonFieldEffect(void)
             SetMonData(pokemon, MON_DATA_HP, &hp);
             if (hp == 0){
                 u32 status = STATUS1_NONE;
-                u8 dead = GetMonData(pokemon, MON_DATA_DEAD);
-                if (dead != 2){
-                    if (FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH))
-                        dead = 1;
-                    else
-                        dead = 0;
-                }
-                //Uses to set or remove the Nuzlocke dead status in the field
+                bool8 dead = (FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)) ? TRUE : FALSE;  //Uses to set or remove the Nuzlocke dead status in the field
                 SetMonData(pokemon, MON_DATA_DEAD, &dead);
                 SetMonData(pokemon, MON_DATA_STATUS, &status);
             }

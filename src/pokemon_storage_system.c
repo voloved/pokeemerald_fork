@@ -3741,7 +3741,7 @@ static void ZeroDeadPokemonHP(void)
     u16 hpDead = 0;
     for (i = 0; i < PARTY_SIZE; i++)
     {
-        if (GetMonData(&gPlayerParty[i], MON_DATA_DEAD) != 0 && FlagGet(FLAG_NUZLOCKE))
+        if (GetMonData(&gPlayerParty[i], MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE))
             SetMonData(&gPlayerParty[i], MON_DATA_HP, &hpDead);
     }
 }
