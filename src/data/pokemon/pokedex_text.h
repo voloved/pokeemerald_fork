@@ -2319,3 +2319,8 @@ const u8 gDeoxysPokedexText[] = _(
     "extraterrestrial virus exposed to a laser\n"
     "beam. Its body is configured for superior\n"
     "agility and speed.");
+
+const u8 gMissingnoPokedexText[] = _(
+    "An unsual POKéMON with unknown origins.\n"
+    "It has been found around islands through\n"
+    "odd means.");
