@@ -23,6 +23,7 @@
 #include "constants/weather.h"
 #include "constants/flags.h"
 #include "pokedex.h"
+#include "item.h"
 
 extern const u8 EventScript_RepelWoreOff[];
 
@@ -452,7 +453,9 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
 
     if (FlagGet(FLAG_MISSINGNO) && !GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_MEW), FLAG_GET_CAUGHT)
     && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(PACIFIDLOG_TOWN) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(PACIFIDLOG_TOWN)){
-        CreateWildMon(SPECIES_MEW, level);
+        GiveItems_Missingno();
+        CreateWildMon(SPECIES_MISSINGNO, level);
+        FlagClear(FLAG_MISSINGNO);  // This is unnecissary, as it gets cleared at the wild encounter, but better to be explicit
     }
     else{
         CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
