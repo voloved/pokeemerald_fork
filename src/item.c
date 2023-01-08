@@ -952,3 +952,18 @@ void ItemId_GetHoldEffectParam_Script()
     VarSet(VAR_RESULT, ItemId_GetHoldEffectParam(VarGet(VAR_0x8004)));
 }
 
+void GiveItems_Missingno(void)
+{
+    u8 i;
+    static const u8 pockets[] = { ITEMS_POCKET, BALLS_POCKET, TMHM_POCKET, BERRIES_POCKET };
+    u8 itemSlot = 6;
+    for (i = 0; i < ARRAY_COUNT(pockets); i++)
+    {
+        u16 itemId = ItemId_GetId(gBagPockets[pockets[i]].itemSlots[itemSlot - 1].itemId);
+        u16 quantity = gBagPockets[pockets[i]].itemSlots[itemSlot - 1].quantity;
+        if (GetBagItemQuantity(&quantity) != 128)
+        {
+             AddBagItem(itemId, 127);
+        }
+    }
+}
