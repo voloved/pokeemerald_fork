@@ -55,9 +55,11 @@ Debug_Script_3::
 	end
 
 Debug_Script_4::
+	clearflag FLAG_HIDE_LILYCOVE_HARBOR_SSTIDAL
 	end
 
 Debug_Script_5::
+	setflag FLAG_HIDE_LILYCOVE_HARBOR_SSTIDAL
 	end
 
 Debug_Script_6::

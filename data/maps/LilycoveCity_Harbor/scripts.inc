@@ -4,11 +4,22 @@
 .set LOCALID_BRINEY, 5
 
 LilycoveCity_Harbor_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, LilycoveCity_Harbor_OnLoad
 	map_script MAP_SCRIPT_ON_TRANSITION, LilycoveCity_Harbor_OnTransition
 	.byte 0
 
+LilycoveCity_Harbor_OnLoad:
+	call_if_unset FLAG_HIDE_LILYCOVE_HARBOR_SSTIDAL, LilycoveCity_Harbor_DisallowSurf
+	call_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_DisallowSurf
+	end
+
 LilycoveCity_Harbor_OnTransition:
 	setescapewarp MAP_LILYCOVE_CITY, 12, 33
+	end
+
+LilycoveCity_Harbor_DisallowSurf:
+	setmetatile 7, 9, METATILE_General_CalmWater, TRUE
+	setmetatile 8, 9, METATILE_General_CalmWater, TRUE
 	end
 
 LilycoveCity_Harbor_EventScript_FerryAttendant::
@@ -541,6 +552,42 @@ LilycoveCity_Harbor_Movement_SailorBoardWithBrineyEast:
 	set_invisible
 	step_end
 
+LilycoveCity_Harbor_EventScript_Truck::
+	goto_if_set FLAG_DEFEATED_MEW, LilycoveCity_Harbor_EventScript_NoMew
+	goto_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_EventScript_NoMew
+	lock
+	faceplayer
+	setwildbattle SPECIES_MEW, 35
+	waitse
+	playmoncry SPECIES_MEW, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	dowildbattle
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, LilycoveCity_Harbor_EventScript_DefeatedMew
+	goto LilycoveCity_Harbor_EventScript_RanFromMew
+	setflag FLAG_DEFEATED_MEW
+	release
+	end
+
+LilycoveCity_Harbor_EventScript_DefeatedMew:
+	setflag FLAG_DEFEATED_MEW
+	release
+	end
+
+LilycoveCity_Harbor_EventScript_RanFromMew:
+	setflag FLAG_DEFEATED_MEW
+	bufferspeciesname STR_VAR_1, SPECIES_MEW
+	msgbox gText_LegendaryFlewAway, MSGBOX_DEFAULT
+	release
+	end
+
+LilycoveCity_Harbor_EventScript_NoMew:
+	msgbox LilycoveCity_Harbor_Text_OldTruck, MSGBOX_SIGN
+	end
+
 LilycoveCity_Harbor_Text_FerryUnavailable:
 	.string "I beg your pardon?\n"
 	.string "You're looking for a ship?\p"
@@ -590,3 +637,6 @@ LilycoveCity_Harbor_Text_SailorFerryAvailable:
 	.string "The folks at the SHIPYARD in SLATEPORT\n"
 	.string "must've worked extra hard.\p"
 	.string "Well, it's my turn to get busy now!$"
+
+LilycoveCity_Harbor_Text_OldTruck:
+	.string "It's an old truck.$"
