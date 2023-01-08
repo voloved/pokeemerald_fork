@@ -4646,7 +4646,7 @@ const struct PokedexEntry gPokedexEntries[] =
 
     [NATIONAL_DEX_MISSINGNO] =
     {
-        .categoryName = _("POKéMON"),
+        .categoryName = _("???"),
         .height = 10,
         .weight = 100,    
         .description = gMissingnoPokedexText,
