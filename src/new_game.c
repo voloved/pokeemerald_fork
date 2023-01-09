@@ -153,6 +153,7 @@ void ResetMenuAndMonGlobals(void)
 void NewGameInitData(void)
 {
     bool8 typeEffectPrev = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
+    bool8 nuzlockePrev = FlagGet(FLAG_NUZLOCKE);
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
         RtcReset();
 
@@ -212,6 +213,7 @@ void NewGameInitData(void)
     ResetTrainerHillResults();
     ResetContestLinkResults();
     typeEffectPrev ? FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW) : FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
+    nuzlockePrev ? FlagSet(FLAG_NUZLOCKE) : FlagClear(FLAG_NUZLOCKE);
 }
 
 static void ResetMiniGamesRecords(void)
