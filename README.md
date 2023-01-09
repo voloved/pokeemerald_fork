@@ -5,30 +5,38 @@ Made as a 2022 Christmas gift for a friend, where the character sprites are made
 To set up the repository, see [INSTALL.md](INSTALL.md).
 
 Link to [Patch File is Here](https://drive.google.com/drive/folders/1GFChFDEmOJHn6WBoZAN-GRA9a2UXGeu_?usp=sharing).  
-To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokemon Emerald (those devs who made the game 20 years ago gotta eat too).  
+To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokémon Emerald (those devs who made the game 20 years ago gotta eat too).  
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
-## Not In Release
+## v1.2.0
 - [Pressing B as the ball shakes raises catching odds.](https://github.com/pret/pokeemerald/wiki/Raise-Odds-of-Catching-a-Pokemon-by-Pressing-B-When-the-Ball-Shakes)
 - Final Elite Four battle is now a double battle with Steven and Wallace.
+= Missingno. is now encounterable in the game after speaking to Wally's father and surfing in Pacifidlog Town.
+- The Old Sea Map to get Mew is receivable under an old truck in the Lilycove harbor.
+- Jumping over ledges when bunny-hopping on the Acro bike is now possible.
+- Can now quickly run from a battle by holding Right while the wild Pokémon's name appears.
+- R is now Turbo B most of the time in the overworld and battles.
+- Shedinja has a max HP of 50.
+- Rapidash is now much faster.
+- Bug fix on Show Battle Effectiveness in double battle.
 - Death Move knocking out an opponent that can be permanently stolen will also remove them from the game.
 
 ## v1.1.0
 - [Added Thief Ball](https://github.com/pret/pokeemerald/wiki/Add-Thief-Ball)
 - [Norman's Slaking Has Ability Intimidate and can learn Death Move at level 100.](https://github.com/pret/pokeemerald/wiki/Make-Norman%27s-Slaking-Have-Ability-Intimidate)
-- [Added PC Access in PokeNav](https://github.com/pret/pokeemerald/wiki/Add-PC-Access-in-PokeNav)
-- [Allowed All Pokemon to Evolve Without Trading](https://github.com/pret/pokeemerald/wiki/Allow-All-Pokemon-to-Evolve-Without-Trading)
-- [Using HMs Without Any Pokemon in your Party Knowing Them Possible](https://github.com/pret/pokeemerald/wiki/Use-HMs-Without-Any-Pokemon-in-your-Party-Knowing-Them)
+- [Added PC Access in PokéNav](https://github.com/pret/pokeemerald/wiki/Add-PC-Access-in-PokeNav)
+- [Allowed All Pokémon to Evolve Without Trading](https://github.com/pret/pokeemerald/wiki/Allow-All-Pokemon-to-Evolve-Without-Trading)
+- [Using HMs Without Any Pokémon in your Party Knowing Them Possible](https://github.com/pret/pokeemerald/wiki/Use-HMs-Without-Any-Pokemon-in-your-Party-Knowing-Them)
 - [Changed Someone's PC to Lanette's PC from the Start of the Game](https://github.com/pret/pokeemerald/wiki/Change-Someone%27s-PC-to-Lanette%27s-PC-from-the-Start-of-the-Game)
-- [Made Daycare Faster at Leveling Pokemon](https://github.com/pret/pokeemerald/wiki/Make-Daycare-Faster-at-Leveling-Pok%C3%A9mon)
+- [Made Daycare Faster at Leveling Pokémon](https://github.com/pret/pokeemerald/wiki/Make-Daycare-Faster-at-Leveling-Pok%C3%A9mon)
 - [Allowed Feebas to be caught on any Valid Fishing Spot in Route 119 if the Last Shot on the Basketball Hoop Went In](https://github.com/pret/pokeemerald/wiki/Allow-Feebas-to-be-caught-on-any-Valid-Fishing-Spot-in-Route-119-rather-than-only-Three)
-- Added a Clock in Every PokeMart.
+- Added a Clock in Every PokéMart.
 - Charizard is fire/dragon, Meowth is normal/dark, Gyarados can learn fly
 - Added Zen Headbutt, Moonblast, Play Rough, Draining Kiss, Fairy Wind, and Death Move.
 - [Added Physical/Special Move Split](https://github.com/pret/pokeemerald/wiki/add-physical-special-split) [Credit: Kurausukun]
 - [Physical Special Split Icons In Battle](https://www.pokecommunity.com/showpost.php?p=10527471) [Credit: Anon822]
-- [Use Fly and Flash for Any Compatible Pokemon](https://www.pokecommunity.com/showpost.php?p=10420068) [Credit: ScyrousFX]
+- [Use Fly and Flash for Any Compatible Pokémon](https://www.pokecommunity.com/showpost.php?p=10420068) [Credit: ScyrousFX]
 - [Added Fairy-Type](https://www.pokecommunity.com/showpost.php?p=10325868) [Credit: Lunos]
 - [Not showing dex entries until getting the Pokédex](https://github.com/pret/pokeemerald/wiki/Not-showing-dex-entries-until-getting-the-Pok%C3%A9dex) [Credit: AsparagusEduardo]
 - [Enable trade with FRLG Without Beating the Game](https://github.com/pret/pokeemerald/wiki/Enable-trade-with-FRLG-without-beating-the-game) [Credit: AsparagusEduardo]
