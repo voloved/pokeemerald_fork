@@ -469,6 +469,7 @@ static const u8 sText_Trainer1UsedItem[] = _("{B_TRAINER1_CLASS} {B_TRAINER1_NAM
 static const u8 sText_TrainerBlockedBall[] = _("The TRAINER blocked the BALL!");
 static const u8 sText_DontBeAThief[] = _("Don't be a thief!");
 static const u8 sText_CantWithThief[] = _("Thief balls don't work in\nthis kind of battle!");
+static const u8 sText_TooManyWitnesses[] = _("There's too many\nwitnesses...");
 static const u8 sText_ItDodgedBall[] = _("It dodged the thrown BALL!\nThis POKéMON can't be caught!");
 static const u8 sText_YouMissedPkmn[] = _("You missed the POKéMON!");
 static const u8 sText_PkmnBrokeFree[] = _("Oh, no!\nThe POKéMON broke free!");
@@ -895,6 +896,7 @@ const u8 * const gBattleStringsTable[BATTLESTRINGS_COUNT - BATTLESTRINGS_TABLE_S
     [STRINGID_PLAYERLOSTTOENEMYTRAINER - BATTLESTRINGS_TABLE_START] = sText_PlayerLostToEnemyTrainer,
     [STRINGID_PLAYERPAIDPRIZEMONEY - BATTLESTRINGS_TABLE_START] = sText_PlayerPaidPrizeMoney,
     [STRINGID_CANTWITHTHIEF - BATTLESTRINGS_TABLE_START] = sText_CantWithThief,
+    [STRINGID_TOOMANYWITNESSES - BATTLESTRINGS_TABLE_START] = sText_TooManyWitnesses,
     [STRINGID_GOTCHAPKMNCAUGHTNOBGM - BATTLESTRINGS_TABLE_START] = sText_GotchaPkmnCaughtNoBgm,
 };
 
