@@ -572,7 +572,7 @@ LilycoveCity_Harbor_OldSeaMap_NoBagSpace:
 	msgbox LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapBagFull, MSGBOX_SIGN
 	end
 
-LilycoveCity_Harbor_EventScript_NoMew:
+LilycoveCity_Harbor_EventScript_NoMew::
 	msgbox LilycoveCity_Harbor_Text_OldTruck, MSGBOX_SIGN
 	end
 
