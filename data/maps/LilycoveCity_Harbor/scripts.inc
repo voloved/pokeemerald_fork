@@ -553,35 +553,23 @@ LilycoveCity_Harbor_Movement_SailorBoardWithBrineyEast:
 	step_end
 
 LilycoveCity_Harbor_EventScript_Truck::
-	goto_if_set FLAG_DEFEATED_MEW, LilycoveCity_Harbor_EventScript_NoMew
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	goto_if_ne VAR_RESULT, DIR_EAST, LilycoveCity_Harbor_EventScript_NoMew
 	goto_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_EventScript_NoMew
-	lock
-	faceplayer
-	setwildbattle SPECIES_MEW, 35
-	waitse
-	playmoncry SPECIES_MEW, CRY_MODE_ENCOUNTER
-	delay 40
-	waitmoncry
-	setflag FLAG_SYS_CTRL_OBJ_DELETE
-	dowildbattle
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, LilycoveCity_Harbor_EventScript_DefeatedMew
-	goto LilycoveCity_Harbor_EventScript_RanFromMew
-	setflag FLAG_DEFEATED_MEW
-	release
+	goto_if_set FLAG_RECEIVED_OLD_SEA_MAP, LilycoveCity_Harbor_EventScript_NoMew
+	goto_if_set FLAG_CAUGHT_MEW, LilycoveCity_Harbor_EventScript_NoMew
+	checkitem ITEM_OLD_SEA_MAP
+	goto_if_eq VAR_RESULT, TRUE, LilycoveCity_Harbor_EventScript_NoMew
+	checkitemspace ITEM_OLD_SEA_MAP
+	goto_if_eq VAR_RESULT, FALSE, LilycoveCity_Harbor_OldSeaMap_NoBagSpace
+	giveitem ITEM_OLD_SEA_MAP
+	setflag FLAG_ENABLE_SHIP_FARAWAY_ISLAND
+	setflag FLAG_RECEIVED_OLD_SEA_MAP
+	msgbox LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapUseAtPort, MSGBOX_SIGN
 	end
 
-LilycoveCity_Harbor_EventScript_DefeatedMew:
-	setflag FLAG_DEFEATED_MEW
-	release
-	end
-
-LilycoveCity_Harbor_EventScript_RanFromMew:
-	setflag FLAG_DEFEATED_MEW
-	bufferspeciesname STR_VAR_1, SPECIES_MEW
-	msgbox gText_LegendaryFlewAway, MSGBOX_DEFAULT
-	release
+LilycoveCity_Harbor_OldSeaMap_NoBagSpace:
+	msgbox LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapBagFull, MSGBOX_SIGN
 	end
 
 LilycoveCity_Harbor_EventScript_NoMew:
@@ -640,3 +628,13 @@ LilycoveCity_Harbor_Text_SailorFerryAvailable:
 
 LilycoveCity_Harbor_Text_OldTruck:
 	.string "It's an old truck.$"
+
+LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapUseAtPort:
+	.string "It appears to be for use at the\n"
+	.string "LILYCOVE CITY port once you defeat\l"
+	.string "the ELITE FOUR.$"
+
+LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapBagFull:
+	.string "Your BAG's KEY ITEMS POCKET is full.\p"
+	.string "Please store something on your PC,\n"
+	.string "then come back for this.$"

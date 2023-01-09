@@ -118,7 +118,7 @@
       "x": 19,
       "y": 13,
       "elevation": 3,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_EAST",
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "LilycoveCity_Harbor_EventScript_Truck"
     },
     {
@@ -126,7 +126,23 @@
       "x": 19,
       "y": 14,
       "elevation": 3,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_EAST",
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "LilycoveCity_Harbor_EventScript_Truck"
+    },
+    {
+      "type": "sign",
+      "x": 20,
+      "y": 13,
+      "elevation": 3,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "LilycoveCity_Harbor_EventScript_Truck"
+    },
+    {
+      "type": "sign",
+      "x": 21,
+      "y": 13,
+      "elevation": 3,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "LilycoveCity_Harbor_EventScript_Truck"
     }
   ]
