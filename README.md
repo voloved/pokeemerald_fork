@@ -16,14 +16,14 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Missingno. is now encounterable in the game after speaking to Wally's father and surfing in Pacifidlog Town.
 - The Old Sea Map to get Mew is receivable under an old truck in the Lilycove harbor if the Nuzlocke challenge is on.
 - [Jumping over ledges when bunny-hopping on the Acro Bike is now possible.](https://github.com/pret/pokeemerald/wiki/Allow-Jumping-Over-Ledges-with-Acro-Bike)
-- (Can now quickly run from a battle by holding Right while the wild Pokémon's name appears.](https://github.com/pret/pokeemerald/wiki/Quickly-Run-from-a-Battle-by-Holding-Right-While-the-Wild-Pok%C3%A9mon's-Name-Appears)
+- [Can now quickly run from a battle by holding Right while the wild Pokémon's name appears.](https://github.com/pret/pokeemerald/wiki/Quickly-Run-from-a-Battle-by-Holding-Right-While-the-Wild-Pok%C3%A9mon's-Name-Appears)
 - R is now Turbo B most of the time in the overworld and battles.
 - Shedinja has a max HP of 50.
 - Ponyta and Rapidash are now much faster.
 - Pokémon have a 543,000 in 61,543,000 chance of getting infatuated by a Pokémon of the same gender.
 - Bug fix on Show Battle Effectiveness in double battle.
 - Death Move knocking out an opponent that can be permanently stolen will also remove them from the game.
-- Added ability to avoid damage in the debug menu.
+- [Added ability to avoid damage in the debug menu.](https://github.com/pret/pokeemerald/wiki/Add-Ability-to-Avoid-Battle-Damage-in-Debug-Menu)
 - [Surviving poison outside of battle with 1HP](https://www.pokecommunity.com/showpost.php?p=10068565&postcount=32) [Credit: Lunos]
 
 ## v1.1.0
