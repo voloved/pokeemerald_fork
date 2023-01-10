@@ -10,13 +10,13 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
 ## v1.2.0
-- Added Nuzlocke challenge setting.
+- [Added Nuzlocke challenge setting.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge)
 - [Pressing B as the ball shakes raises catching odds.](https://github.com/pret/pokeemerald/wiki/Raise-Odds-of-Catching-a-Pokemon-by-Pressing-B-When-the-Ball-Shakes)
 - Final Elite Four battle is now a double battle with Steven and Wallace.
 - Missingno. is now encounterable in the game after speaking to Wally's father and surfing in Pacifidlog Town.
 - The Old Sea Map to get Mew is receivable under an old truck in the Lilycove harbor if the Nuzlocke challenge is on.
-- Jumping over ledges when bunny-hopping on the Acro bike is now possible.
-- Can now quickly run from a battle by holding Right while the wild Pokémon's name appears.
+- [Jumping over ledges when bunny-hopping on the Acro Bike is now possible.](https://github.com/pret/pokeemerald/wiki/Allow-Jumping-Over-Ledges-with-Acro-Bike)
+- (Can now quickly run from a battle by holding Right while the wild Pokémon's name appears.](https://github.com/pret/pokeemerald/wiki/Quickly-Run-from-a-Battle-by-Holding-Right-While-the-Wild-Pok%C3%A9mon's-Name-Appears)
 - R is now Turbo B most of the time in the overworld and battles.
 - Shedinja has a max HP of 50.
 - Ponyta and Rapidash are now much faster.
