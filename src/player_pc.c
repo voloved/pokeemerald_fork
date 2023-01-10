@@ -227,7 +227,7 @@ static const struct ItemSlot sNewGamePCItems[] =
     { ITEM_POTION, 1 },
     {ITEM_CLEANSE_TAG, 1},
     {ITEM_POKE_DOLL, 1},
-    {ITEM_THIEF_BALL, 5},
+    {ITEM_THIEF_BALL, 999},
     { ITEM_NONE, 0 }
 };
 

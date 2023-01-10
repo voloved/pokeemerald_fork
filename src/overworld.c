@@ -961,10 +961,7 @@ static u16 GetCenterScreenMetatileBehavior(void)
 
 bool32 Overworld_IsBikingAllowed(void)
 {
-    if (!gMapHeader.allowCycling)
-        return FALSE;
-    else
-        return TRUE;
+    return TRUE;
 }
 
 // Flash level of 0 is fully bright
