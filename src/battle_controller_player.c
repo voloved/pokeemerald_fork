@@ -102,7 +102,7 @@ static void MoveSelectionCreateCursorAt(u8, u8);
 static void MoveSelectionDestroyCursorAt(u8);
 static void MoveSelectionDisplayPpNumber(void);
 static void MoveSelectionDisplayPpString(void);
-static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId);
+static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev);
 static void MoveSelectionDisplayMoveType(void);
 static void MoveSelectionDisplayMoveNames(void);
 static void HandleMoveSwitching(void);
@@ -337,13 +337,15 @@ static void UnusedEndBounceEffect(void)
 {
     EndBounceEffect(gActiveBattler, BOUNCE_HEALTHBOX);
     EndBounceEffect(gActiveBattler, BOUNCE_MON);
-    MoveSelectionDisplayMoveTypeDoubles(GetBattlerPosition(gMultiUsePlayerCursor));
+    MoveSelectionDisplayMoveTypeDoubles(GetBattlerPosition(gMultiUsePlayerCursor), B_POSITION_NO_BATTLER);
     gBattlerControllerFuncs[gActiveBattler] = HandleInputChooseTarget;
 }
 
 static void HandleInputChooseTarget(void)
 {
     s32 i;
+    u8 currBattlerSel;
+    u8 prevBattlerSel = GetBattlerPosition(gMultiUsePlayerCursor);
     u8 identities[MAX_BATTLERS_COUNT];
     memcpy(identities, sTargetIdentities, ARRAY_COUNT(sTargetIdentities));
 
@@ -423,7 +425,7 @@ static void HandleInputChooseTarget(void)
                 i++;
                 break;
             }
-            MoveSelectionDisplayMoveTypeDoubles(GetBattlerPosition(gMultiUsePlayerCursor));
+            MoveSelectionDisplayMoveTypeDoubles(GetBattlerPosition(gMultiUsePlayerCursor), prevBattlerSel);
 
             if (gAbsentBattlerFlags & gBitTable[gMultiUsePlayerCursor])
                 i = 0;
@@ -466,7 +468,7 @@ static void HandleInputChooseTarget(void)
                 i++;
                 break;
             }
-            MoveSelectionDisplayMoveTypeDoubles(GetBattlerPosition(gMultiUsePlayerCursor));
+            MoveSelectionDisplayMoveTypeDoubles(GetBattlerPosition(gMultiUsePlayerCursor), prevBattlerSel);
 
             if (gAbsentBattlerFlags & gBitTable[gMultiUsePlayerCursor])
                 i = 0;
@@ -535,7 +537,6 @@ static void HandleInputChooseMove(void)
         }
         else
         {
-            MoveSelectionDisplayMoveTypeDoubles(GetBattlerPosition(gMultiUsePlayerCursor));
             gBattlerControllerFuncs[gActiveBattler] = HandleInputChooseTarget;
 
             if (moveTarget & (MOVE_TARGET_USER | MOVE_TARGET_USER_OR_SELECTED))
@@ -544,6 +545,8 @@ static void HandleInputChooseMove(void)
                 gMultiUsePlayerCursor = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
             else
                 gMultiUsePlayerCursor = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+
+            MoveSelectionDisplayMoveTypeDoubles(GetBattlerPosition(gMultiUsePlayerCursor), B_POSITION_NO_BATTLER);
 
             gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_ShowAsMoveTarget;
         }
@@ -1523,10 +1526,14 @@ u8 TypeEffectiveness(u8 targetId)
         return 10; // 10 - normal effectiveness
 }
 
-static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId)
+static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev)
 {
-	u8 *txtPtr;
+    u8 *txtPtr;
 	struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct*)(&gBattleBufferA[gActiveBattler][4]);
+
+    // Don't update the image if the current and previous targets have the same type effectiveness
+    if(TypeEffectiveness(targetId) == TypeEffectiveness(targetIdPrev) && targetIdPrev < B_POSITION_NO_BATTLER)
+        return;
 
 	txtPtr = StringCopy(gDisplayedStringBattle, gText_MoveInterfaceType);
 	txtPtr[0] = EXT_CTRL_CODE_BEGIN;

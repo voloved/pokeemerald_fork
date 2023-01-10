@@ -313,8 +313,10 @@ static bool8 TryStartInteractionScript(struct MapPosition *position, u16 metatil
 static const u8 *GetInteractionScript(struct MapPosition *position, u8 metatileBehavior, u8 direction)
 {
     const u8 *script = GetInteractedObjectEventScript(position, metatileBehavior, direction);
-    if (script != NULL)
+    if (script != NULL){
+        FlagClear(FLAG_MISSINGNO);
         return script;
+    }
 
     script = GetInteractedBackgroundEventScript(position, metatileBehavior, direction);
     if (script != NULL)

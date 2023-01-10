@@ -22,6 +22,8 @@
 #include "constants/layouts.h"
 #include "constants/weather.h"
 #include "constants/flags.h"
+#include "pokedex.h"
+#include "item.h"
 
 extern const u8 EventScript_RepelWoreOff[];
 
@@ -449,7 +451,15 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
     if (gMapHeader.mapLayoutId != LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS && flags & WILD_CHECK_KEEN_EYE && !IsAbilityAllowingEncounter(level))
         return FALSE;
 
-    CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
+    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(PACIFIDLOG_TOWN) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(PACIFIDLOG_TOWN)
+    && FlagGet(FLAG_MISSINGNO)){
+        GiveItems_Missingno();
+        CreateWildMon(SPECIES_MISSINGNO, level);
+        FlagClear(FLAG_MISSINGNO);  // This is unnecissary, as it gets cleared at the wild encounter, but better to be explicit
+    }
+    else{
+        CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
+    }
     return TRUE;
 }
 

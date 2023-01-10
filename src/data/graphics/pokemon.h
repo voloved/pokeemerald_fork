@@ -2712,6 +2712,13 @@ const u32 gMonShinyPalette_Chimecho[] = INCBIN_U32("graphics/pokemon/chimecho/sh
 const u8 gMonIcon_Chimecho[] = INCBIN_U8("graphics/pokemon/chimecho/icon.4bpp");
 const u8 gMonFootprint_Chimecho[] = INCBIN_U8("graphics/pokemon/chimecho/footprint.1bpp");
 
+const u32 gMonStillFrontPic_Missingno[] = INCBIN_U32("graphics/pokemon/missingno/front.4bpp.lz");
+const u32 gMonPalette_Missingno[] = INCBIN_U32("graphics/pokemon/missingno/normal.gbapal.lz");
+const u32 gMonBackPic_Missingno[] = INCBIN_U32("graphics/pokemon/missingno/back.4bpp.lz");
+const u32 gMonShinyPalette_Missingno[] = INCBIN_U32("graphics/pokemon/missingno/shiny.gbapal.lz");
+const u8 gMonIcon_Missingno[] = INCBIN_U8("graphics/pokemon/missingno/icon.4bpp");
+const u8 gMonFootprint_Missingno[] = INCBIN_U8("graphics/pokemon/missingno/footprint.1bpp");
+
 const u32 gMonStillFrontPic_Egg[] = INCBIN_U32("graphics/pokemon/egg/front.4bpp.lz");
 const u32 gMonPalette_Egg[] = INCBIN_U32("graphics/pokemon/egg/normal.gbapal.lz");
 

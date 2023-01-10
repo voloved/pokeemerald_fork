@@ -4643,4 +4643,16 @@ const struct PokedexEntry gPokedexEntries[] =
         .trainerScale = 290,
         .trainerOffset = 2,
     },
+
+    [NATIONAL_DEX_MISSINGNO] =
+    {
+        .categoryName = _("???"),
+        .height = 10,
+        .weight = 100,    
+        .description = gMissingnoPokedexText,
+        .pokemonScale = 335,
+        .pokemonOffset = 10,
+        .trainerScale = 256,
+        .trainerOffset = 0,
+    },
 };

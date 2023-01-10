@@ -53,6 +53,8 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
+#include "constants/flags.h"
+#include "debug.h"
 
 extern const u8 *const gBattleScriptsForMoveEffects[];
 
@@ -327,7 +329,7 @@ static void Cmd_removeattackerstatus1(void);
 static void Cmd_finishaction(void);
 static void Cmd_finishturn(void);
 static void Cmd_trainerslideout(void);
-static bool32 OppMonsFainted(void);
+static void Cmd_handlechangeodds(void);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
 {
@@ -580,6 +582,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_finishaction,                            //0xF6
     Cmd_finishturn,                              //0xF7
     Cmd_trainerslideout,                         //0xF8
+    Cmd_handlechangeodds                         //0xF9
 };
 
 struct StatFractions
@@ -1093,7 +1096,7 @@ static bool8 AccuracyCalcHelper(u16 move)
     gHitMarker &= ~HITMARKER_IGNORE_UNDERWATER;
 
     if ((WEATHER_HAS_EFFECT && (gBattleWeather & B_WEATHER_RAIN) && gBattleMoves[move].effect == EFFECT_THUNDER)
-     || (gBattleMoves[move].effect == EFFECT_ALWAYS_HIT || EFFECT_DEATH_MOVE || gBattleMoves[move].effect == EFFECT_VITAL_THROW))
+     || (gBattleMoves[move].effect == EFFECT_ALWAYS_HIT || gBattleMoves[move].effect == EFFECT_DEATH_MOVE || gBattleMoves[move].effect == EFFECT_VITAL_THROW))
     {
         JumpIfMoveFailed(7, move);
         return TRUE;
@@ -1807,7 +1810,15 @@ static void Cmd_waitanimation(void)
 }
 
 static void Cmd_healthbarupdate(void)
-{
+{ 
+    #if TX_DEBUG_SYSTEM_ENABLE == TRUE
+    u8 side = GetBattlerSide(gBattlerTarget);
+    if (FlagGet(FLAG_SYS_NO_BATTLE_DMG) && side == B_SIDE_PLAYER)
+    {
+        gMoveResultFlags |= MOVE_RESULT_NO_EFFECT;
+    }
+    #endif
+
     if (gBattleControllerExecFlags)
         return;
 
@@ -2985,6 +2996,10 @@ static void Cmd_tryfaintmon(void)
             gBattlescriptCurrInstr = BS_ptr;
             if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
             {
+                if (FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
+                    bool8 dead = TRUE;
+                    SetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEAD, &dead);
+                }
                 gHitMarker |= HITMARKER_PLAYER_FAINTED;
                 if (gBattleResults.playerFaintCounter < 255)
                     gBattleResults.playerFaintCounter++;
@@ -2992,6 +3007,12 @@ static void Cmd_tryfaintmon(void)
             }
             else
             {
+                if(gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE){
+                    u16 stoleValue = 0;
+                    stoleValue = checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species);
+                    if (stoleValue != 0)
+                        VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | stoleValue);
+                }
                 if (gBattleResults.opponentFaintCounter < 255)
                     gBattleResults.opponentFaintCounter++;
                 gBattleResults.lastOpponentSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPECIES, NULL);
@@ -7424,6 +7445,14 @@ static void Cmd_tryKO(void)
 {
     u8 holdEffect, param;
 
+    // Death Move just hits
+    if (gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE){
+        gBattleMoveDamage = gBattleMons[gBattlerTarget].hp;
+        gMoveResultFlags |= MOVE_RESULT_ONE_HIT_KO;
+        gBattlescriptCurrInstr += 5;
+        return;
+    }
+
     if (gBattleMons[gBattlerTarget].item == ITEM_ENIGMA_BERRY)
     {
        holdEffect = gEnigmaBerries[gBattlerTarget].holdEffect;
@@ -7442,7 +7471,7 @@ static void Cmd_tryKO(void)
         RecordItemEffectBattle(gBattlerTarget, HOLD_EFFECT_FOCUS_BAND);
         gSpecialStatuses[gBattlerTarget].focusBanded = 1;
     }
-
+        
     if (gBattleMons[gBattlerTarget].ability == ABILITY_STURDY)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
@@ -7614,7 +7643,8 @@ static void Cmd_tryinfatuating(void)
     }
     else
     {
-        if (GetGenderFromSpeciesAndPersonality(speciesAttacker, personalityAttacker) == GetGenderFromSpeciesAndPersonality(speciesTarget, personalityTarget)
+        if ((GetGenderFromSpeciesAndPersonality(speciesAttacker, personalityAttacker) == GetGenderFromSpeciesAndPersonality(speciesTarget, personalityTarget) 
+            && Random() % 61543 > 543)  // 2019 Census: There are 543,000 married same-sex couples in the USA and 61M opposite-sex marriages
             || gBattleMons[gBattlerTarget].status2 & STATUS2_INFATUATION
             || GetGenderFromSpeciesAndPersonality(speciesAttacker, personalityAttacker) == MON_GENDERLESS
             || GetGenderFromSpeciesAndPersonality(speciesTarget, personalityTarget) == MON_GENDERLESS)
@@ -9813,6 +9843,7 @@ static void Cmd_removelightscreenreflect(void)
 static void Cmd_handleballthrow(void)
 {
     u8 ballMultiplier = 0;
+    gBallShakesBData.ballShakesArray = 0;
 
     if (gBattleControllerExecFlags)
         return;
@@ -9842,7 +9873,8 @@ static void Cmd_handleballthrow(void)
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_WALLY_TUTORIAL)
     {
-        BtlController_EmitBallThrowAnim(BUFFER_A, BALL_3_SHAKES_SUCCESS);
+        gBallShakesBData.shakes = CalcNextShakeFromOdds(gBallShakesBData.odds);
+        BtlController_EmitBallThrowAnim(BUFFER_A, gBallShakesBData.shakes);
         MarkBattlerForControllerExec(gActiveBattler);
         gBattlescriptCurrInstr = BattleScript_WallyBallThrow;
     }
@@ -9931,55 +9963,11 @@ static void Cmd_handleballthrow(void)
             }
         }
 
-        if (odds > 254) // mon caught
-        {
-            BtlController_EmitBallThrowAnim(BUFFER_A, BALL_3_SHAKES_SUCCESS);
-            MarkBattlerForControllerExec(gActiveBattler);
-            if (gUsingThiefBall == THIEF_BALL_CATCHING){
-                gUsingThiefBall = THIEF_BALL_CAUGHT;
-            }
-            gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
-            SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
-
-            if (CalculatePlayerPartyCount() == PARTY_SIZE)
-                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
-            else
-                gBattleCommunication[MULTISTRING_CHOOSER] = 1;
-        }
-        else // mon may be caught, calculate shakes
-        {
-            u8 shakes;
-
-            odds = Sqrt(Sqrt(16711680 / odds));
-            odds = 1048560 / odds;
-
-            for (shakes = 0; shakes < BALL_3_SHAKES_SUCCESS && Random() < odds; shakes++);
-
-            if (gLastUsedItem == ITEM_MASTER_BALL)
-                shakes = BALL_3_SHAKES_SUCCESS; // why calculate the shakes before that check?
-
-            BtlController_EmitBallThrowAnim(BUFFER_A, shakes);
-            MarkBattlerForControllerExec(gActiveBattler);
-            if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
-            {
-                if (gUsingThiefBall == THIEF_BALL_CATCHING){
-                    gUsingThiefBall = THIEF_BALL_CAUGHT;
-                }
-                gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
-                SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
-
-                if (CalculatePlayerPartyCount() == PARTY_SIZE)
-                    gBattleCommunication[MULTISTRING_CHOOSER] = 0;
-                else
-                    gBattleCommunication[MULTISTRING_CHOOSER] = 1;
-            }
-            else // not caught
-            {
-                gUsingThiefBall = THIEF_BALL_NOT_USING;
-                gBattleCommunication[MULTISTRING_CHOOSER] = shakes;
-                gBattlescriptCurrInstr = BattleScript_ShakeBallThrow;
-            }
-        }
+        gBallShakesBData.odds = odds;
+        gBallShakesBData.shakes = CalcNextShakeFromOdds(gBallShakesBData.odds);
+        BtlController_EmitBallThrowAnim(BUFFER_A, gBallShakesBData.shakes);
+        MarkBattlerForControllerExec(gActiveBattler);
+        gBattlescriptCurrInstr = BattleScript_ChangeOdds;
     }
 }
 
@@ -10270,18 +10258,40 @@ static void Cmd_trainerslideout(void)
     gBattlescriptCurrInstr += 2;
 }
 
-static bool32 OppMonsFainted(void)
+static void Cmd_handlechangeodds(void)
 {
-    int i;
-    struct Pokemon *pokemon = gEnemyParty;
-    u16 species;
-    for (i = 0; i < PARTY_SIZE; i++, pokemon++)
+    u8 shakes = gBallShakesBData.shakes;
+    HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE); // If stealing a Pokemon, count it towards the Nuzlocke
+    if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
     {
-        u16 species = GetMonData(pokemon, MON_DATA_SPECIES2);
-        if (species == SPECIES_NONE || species == SPECIES_EGG)
-            continue;
-        if (GetMonData(pokemon, MON_DATA_HP) != 0)
-            return FALSE;
+        if (gUsingThiefBall == THIEF_BALL_CATCHING){
+            gUsingThiefBall = THIEF_BALL_CAUGHT;
+        }
+        gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
+        SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
+
+        if (CalculatePlayerPartyCount() == PARTY_SIZE)
+            gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+        else
+            gBattleCommunication[MULTISTRING_CHOOSER] = 1;
     }
-    return TRUE;
+    else // not caught
+    {
+        gUsingThiefBall = THIEF_BALL_NOT_USING;
+        gBattleCommunication[MULTISTRING_CHOOSER] = shakes;
+        gBattlescriptCurrInstr = BattleScript_ShakeBallThrow;
+    }
+    gBallShakesBData.odds = 0;
+    gBallShakesBData.ballShakesArray = 0;
+    gBallShakesBData.shakes = 0;
+}
+
+bool8 CalcNextShakeFromOdds(u32 odds)
+{
+    if (odds > 254 || gLastUsedItem == ITEM_MASTER_BALL || gBattleTypeFlags & BATTLE_TYPE_WALLY_TUTORIAL){ // mon caught
+       return TRUE;
+    }
+    odds = Sqrt(Sqrt(16711680 / odds));
+    odds = 1048560 / odds;
+    return Random() < odds;
 }

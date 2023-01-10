@@ -4446,7 +4446,10 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
     {
         gPartyMenuUseExitCallback = FALSE;
         PlaySE(SE_SELECT);
-        DisplayPartyMenuMessage(gText_WontHaveEffect, TRUE);
+        if (canHeal && FlagGet(FLAG_NUZLOCKE) && GetMonData(mon, MON_DATA_DEAD))
+            DisplayPartyMenuMessage(gText_WontHaveEffectNuzlocke, TRUE);
+        else
+            DisplayPartyMenuMessage(gText_WontHaveEffect, TRUE);
         ScheduleBgCopyTilemapToVram(2);
         gTasks[taskId].func = task;
     }

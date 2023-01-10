@@ -509,6 +509,7 @@ static const u16 sSpeciesToHoennPokedexNum[NUM_SPECIES - 1] =
     SPECIES_TO_HOENN(JIRACHI),
     SPECIES_TO_HOENN(DEOXYS),
     SPECIES_TO_HOENN(CHIMECHO),
+    SPECIES_TO_HOENN(MISSINGNO),
 };
 
 // Assigns all species to the National Dex Index (Summary No. for National Dex)
@@ -925,6 +926,7 @@ static const u16 sSpeciesToNationalPokedexNum[NUM_SPECIES - 1] =
     SPECIES_TO_NATIONAL(JIRACHI),
     SPECIES_TO_NATIONAL(DEOXYS),
     SPECIES_TO_NATIONAL(CHIMECHO),
+    SPECIES_TO_NATIONAL(MISSINGNO),
 };
 
 // Assigns all Hoenn Dex Indexes to a National Dex Index
@@ -1132,6 +1134,7 @@ static const u16 sHoennToNationalOrder[NUM_SPECIES - 1] =
     HOENN_TO_NATIONAL(RAYQUAZA),
     HOENN_TO_NATIONAL(JIRACHI),
     HOENN_TO_NATIONAL(DEOXYS),
+    HOENN_TO_NATIONAL(MISSINGNO),
     HOENN_TO_NATIONAL(BULBASAUR), // Pokémon from here onwards are UNSEEN in the HoennDex.
     HOENN_TO_NATIONAL(IVYSAUR),
     HOENN_TO_NATIONAL(VENUSAUR),
@@ -1782,6 +1785,7 @@ static const u8 sMonFrontAnimIdsTable[NUM_SPECIES - 1] =
     [SPECIES_JIRACHI - 1]     = ANIM_SWING_CONVEX,
     [SPECIES_DEOXYS - 1]      = ANIM_H_PIVOT,
     [SPECIES_CHIMECHO - 1]    = ANIM_H_SLIDE_WOBBLE,
+    [SPECIES_MISSINGNO - 1]    = ANIM_TWIST,
 };
 
 static const u8 sMonAnimationDelayTable[NUM_SPECIES - 1] =
@@ -2837,7 +2841,7 @@ void CalculateMonStats(struct Pokemon *mon)
 
     if (species == SPECIES_SHEDINJA)
     {
-        newMaxHP = 1;
+        newMaxHP = 50;
     }
     else
     {
@@ -3772,7 +3776,10 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         break;
     }
     case MON_DATA_LANGUAGE:
-        retVal = boxMon->language;
+        retVal = boxMon->language & 0x7F;
+        break;
+    case MON_DATA_DEAD:
+        retVal = boxMon->language >> 7;
         break;
     case MON_DATA_SANITY_IS_BAD_EGG:
         retVal = boxMon->isBadEgg;
@@ -4105,6 +4112,7 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
 void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
 {
     const u8 *data = dataArg;
+    u8 dataLang;
 
     struct PokemonSubstruct0 *substruct0 = NULL;
     struct PokemonSubstruct1 *substruct1 = NULL;
@@ -4146,7 +4154,14 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     }
     case MON_DATA_LANGUAGE:
-        SET8(boxMon->language);
+        dataLang = *data & 0x7F;
+        boxMon->language &= 0x80;
+        boxMon->language |= dataLang;
+        break;
+    case MON_DATA_DEAD:
+        dataLang = (*data << 7) & 0x80;
+        boxMon->language &= 0x7F;
+        boxMon->language |= dataLang;
         break;
     case MON_DATA_SANITY_IS_BAD_EGG:
         SET8(boxMon->isBadEgg);
@@ -4989,7 +5004,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         // If Revive, update number of times revive has been used
                         if (effectFlags & (ITEM4_REVIVE >> 2))
                         {
-                            if (GetMonData(mon, MON_DATA_HP, NULL) != 0)
+                            if (GetMonData(mon, MON_DATA_HP, NULL) != 0 || (GetMonData(mon, MON_DATA_DEAD, NULL) && FlagGet(FLAG_NUZLOCKE)))
                             {
                                 itemEffectParam++;
                                 break;

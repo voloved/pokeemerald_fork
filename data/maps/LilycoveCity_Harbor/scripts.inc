@@ -4,11 +4,22 @@
 .set LOCALID_BRINEY, 5
 
 LilycoveCity_Harbor_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, LilycoveCity_Harbor_OnLoad
 	map_script MAP_SCRIPT_ON_TRANSITION, LilycoveCity_Harbor_OnTransition
 	.byte 0
 
+LilycoveCity_Harbor_OnLoad:
+	call_if_unset FLAG_HIDE_LILYCOVE_HARBOR_SSTIDAL, LilycoveCity_Harbor_DisallowSurf
+	call_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_DisallowSurf
+	end
+
 LilycoveCity_Harbor_OnTransition:
 	setescapewarp MAP_LILYCOVE_CITY, 12, 33
+	end
+
+LilycoveCity_Harbor_DisallowSurf:
+	setmetatile 7, 9, METATILE_General_CalmWater, TRUE
+	setmetatile 8, 9, METATILE_General_CalmWater, TRUE
 	end
 
 LilycoveCity_Harbor_EventScript_FerryAttendant::
@@ -541,6 +552,30 @@ LilycoveCity_Harbor_Movement_SailorBoardWithBrineyEast:
 	set_invisible
 	step_end
 
+LilycoveCity_Harbor_EventScript_Truck::
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	goto_if_ne VAR_RESULT, DIR_EAST, LilycoveCity_Harbor_EventScript_NoMew
+	goto_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_EventScript_NoMew
+	goto_if_set FLAG_RECEIVED_OLD_SEA_MAP, LilycoveCity_Harbor_EventScript_NoMew
+	goto_if_set FLAG_CAUGHT_MEW, LilycoveCity_Harbor_EventScript_NoMew
+	checkitem ITEM_OLD_SEA_MAP
+	goto_if_eq VAR_RESULT, TRUE, LilycoveCity_Harbor_EventScript_NoMew
+	checkitemspace ITEM_OLD_SEA_MAP
+	goto_if_eq VAR_RESULT, FALSE, LilycoveCity_Harbor_OldSeaMap_NoBagSpace
+	giveitem ITEM_OLD_SEA_MAP
+	setflag FLAG_ENABLE_SHIP_FARAWAY_ISLAND
+	setflag FLAG_RECEIVED_OLD_SEA_MAP
+	msgbox LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapUseAtPort, MSGBOX_SIGN
+	end
+
+LilycoveCity_Harbor_OldSeaMap_NoBagSpace:
+	msgbox LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapBagFull, MSGBOX_SIGN
+	end
+
+LilycoveCity_Harbor_EventScript_NoMew::
+	msgbox LilycoveCity_Harbor_Text_OldTruck, MSGBOX_SIGN
+	end
+
 LilycoveCity_Harbor_Text_FerryUnavailable:
 	.string "I beg your pardon?\n"
 	.string "You're looking for a ship?\p"
@@ -590,3 +625,16 @@ LilycoveCity_Harbor_Text_SailorFerryAvailable:
 	.string "The folks at the SHIPYARD in SLATEPORT\n"
 	.string "must've worked extra hard.\p"
 	.string "Well, it's my turn to get busy now!$"
+
+LilycoveCity_Harbor_Text_OldTruck:
+	.string "It's an old truck.$"
+
+LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapUseAtPort:
+	.string "It appears to be for use at the\n"
+	.string "LILYCOVE CITY port once you defeat\l"
+	.string "the ELITE FOUR.$"
+
+LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapBagFull:
+	.string "Your BAG's KEY ITEMS POCKET is full.\p"
+	.string "Please store something on your PC,\n"
+	.string "then come back for this.$"

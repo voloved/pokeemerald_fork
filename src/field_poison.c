@@ -53,7 +53,7 @@ static void FaintFromFieldPoison(u8 partyIdx)
 static bool32 MonFaintedFromPoison(u8 partyIdx)
 {
     struct Pokemon *pokemon = &gPlayerParty[partyIdx];
-    if (IsMonValidSpecies(pokemon) && GetMonData(pokemon, MON_DATA_HP) == 0 && GetAilmentFromStatus(GetMonData(pokemon, MON_DATA_STATUS)) == AILMENT_PSN)
+    if (IsMonValidSpecies(pokemon) && GetMonData(pokemon, MON_DATA_HP) == 1 && GetAilmentFromStatus(GetMonData(pokemon, MON_DATA_STATUS)) == AILMENT_PSN)
         return TRUE;
 
     return FALSE;
@@ -127,10 +127,16 @@ s32 DoPoisonFieldEffect(void)
         {
             // Apply poison damage
             hp = GetMonData(pokemon, MON_DATA_HP);
-            if (hp == 0 || --hp == 0)
+            if (hp == 1 || --hp == 1)
                 numFainted++;
 
             SetMonData(pokemon, MON_DATA_HP, &hp);
+            if (hp == 0){
+                u32 status = STATUS1_NONE;
+                bool8 dead = (FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)) ? TRUE : FALSE;  //Uses to set or remove the Nuzlocke dead status in the field
+                SetMonData(pokemon, MON_DATA_DEAD, &dead);
+                SetMonData(pokemon, MON_DATA_STATUS, &status);
+            }
             numPoisoned++;
         }
         pokemon++;

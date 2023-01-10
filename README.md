@@ -5,26 +5,42 @@ Made as a 2022 Christmas gift for a friend, where the character sprites are made
 To set up the repository, see [INSTALL.md](INSTALL.md).
 
 Link to [Patch File is Here](https://drive.google.com/drive/folders/1GFChFDEmOJHn6WBoZAN-GRA9a2UXGeu_?usp=sharing).  
-To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokemon Emerald (those devs who made the game 20 years ago gotta eat too).  
+To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokémon Emerald (those devs who made the game 20 years ago gotta eat too).  
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v1.2.0
+- [Added Nuzlocke challenge setting.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge)
+- [Pressing B as the ball shakes raises catching odds.](https://github.com/pret/pokeemerald/wiki/Raise-Odds-of-Catching-a-Pokemon-by-Pressing-B-When-the-Ball-Shakes)
+- Final Elite Four battle is now a double battle with Steven and Wallace.
+- Missingno. is now encounterable in the game after speaking to Wally's father and surfing in Pacifidlog Town.
+- The Old Sea Map to get Mew is receivable under an old truck in the Lilycove harbor if the Nuzlocke challenge is on.
+- [Jumping over ledges when bunny-hopping on the Acro Bike is now possible.](https://github.com/pret/pokeemerald/wiki/Allow-Jumping-Over-Ledges-with-Acro-Bike)
+- [Can now quickly run from a battle by holding Right while the wild Pokémon's name appears.](https://github.com/pret/pokeemerald/wiki/Quickly-Run-from-a-Battle-by-Holding-Right-While-the-Wild-Pok%C3%A9mon's-Name-Appears)
+- R is now Turbo B most of the time in the overworld and battles.
+- Shedinja has a max HP of 50.
+- Ponyta and Rapidash are now much faster.
+- Pokémon have a 543,000 in 61,543,000 chance of getting infatuated by a Pokémon of the same gender.
+- Bug fix on Show Battle Effectiveness in double battle.
+- Death Move knocking out an opponent that can be permanently stolen will also remove them from the game.
+- [Added ability to avoid damage in the debug menu.](https://github.com/pret/pokeemerald/wiki/Add-Ability-to-Avoid-Battle-Damage-in-Debug-Menu)
+- [Surviving poison outside of battle with 1HP](https://www.pokecommunity.com/showpost.php?p=10068565&postcount=32) [Credit: Lunos]
 
 ## v1.1.0
 - [Added Thief Ball](https://github.com/pret/pokeemerald/wiki/Add-Thief-Ball)
 - [Norman's Slaking Has Ability Intimidate and can learn Death Move at level 100.](https://github.com/pret/pokeemerald/wiki/Make-Norman%27s-Slaking-Have-Ability-Intimidate)
-- [Added PC Access in PokeNav](https://github.com/pret/pokeemerald/wiki/Add-PC-Access-in-PokeNav)
-- [Allowed All Pokemon to Evolve Without Trading](https://github.com/pret/pokeemerald/wiki/Allow-All-Pokemon-to-Evolve-Without-Trading)
-- [Using HMs Without Any Pokemon in your Party Knowing Them Possible](https://github.com/pret/pokeemerald/wiki/Use-HMs-Without-Any-Pokemon-in-your-Party-Knowing-Them)
+- [Added PC Access in PokéNav](https://github.com/pret/pokeemerald/wiki/Add-PC-Access-in-PokeNav)
+- [Allowed All Pokémon to Evolve Without Trading](https://github.com/pret/pokeemerald/wiki/Allow-All-Pokemon-to-Evolve-Without-Trading)
+- [Using HMs Without Any Pokémon in your Party Knowing Them Possible](https://github.com/pret/pokeemerald/wiki/Use-HMs-Without-Any-Pokemon-in-your-Party-Knowing-Them)
 - [Changed Someone's PC to Lanette's PC from the Start of the Game](https://github.com/pret/pokeemerald/wiki/Change-Someone%27s-PC-to-Lanette%27s-PC-from-the-Start-of-the-Game)
-- [Made Daycare Faster at Leveling Pokemon](https://github.com/pret/pokeemerald/wiki/Make-Daycare-Faster-at-Leveling-Pok%C3%A9mon)
-- [Allowed Feebas to be caught on any Valid Fishing Spot in Route 119 if the Last Shot on the Bastetball Hoop Went In](https://github.com/pret/pokeemerald/wiki/Allow-Feebas-to-be-caught-on-any-Valid-Fishing-Spot-in-Route-119-rather-than-only-Three)
-- Added a Clock in Every PokeMart.
+- [Made Daycare Faster at Leveling Pokémon](https://github.com/pret/pokeemerald/wiki/Make-Daycare-Faster-at-Leveling-Pok%C3%A9mon)
+- [Allowed Feebas to be caught on any Valid Fishing Spot in Route 119 if the Last Shot on the Basketball Hoop Went In](https://github.com/pret/pokeemerald/wiki/Allow-Feebas-to-be-caught-on-any-Valid-Fishing-Spot-in-Route-119-rather-than-only-Three)
+- Added a Clock in Every PokéMart.
 - Charizard is fire/dragon, Meowth is normal/dark, Gyarados can learn fly
 - Added Zen Headbutt, Moonblast, Play Rough, Draining Kiss, Fairy Wind, and Death Move.
-- [Added Pysyical/Special Move Split](https://github.com/pret/pokeemerald/wiki/add-physical-special-split) [Credit: Kurausukun]
+- [Added Physical/Special Move Split](https://github.com/pret/pokeemerald/wiki/add-physical-special-split) [Credit: Kurausukun]
 - [Physical Special Split Icons In Battle](https://www.pokecommunity.com/showpost.php?p=10527471) [Credit: Anon822]
-- [Use Fly and Flash for Any Compatible Pokemon](https://www.pokecommunity.com/showpost.php?p=10420068) [Credit: ScyrousFX]
+- [Use Fly and Flash for Any Compatible Pokémon](https://www.pokecommunity.com/showpost.php?p=10420068) [Credit: ScyrousFX]
 - [Added Fairy-Type](https://www.pokecommunity.com/showpost.php?p=10325868) [Credit: Lunos]
 - [Not showing dex entries until getting the Pokédex](https://github.com/pret/pokeemerald/wiki/Not-showing-dex-entries-until-getting-the-Pok%C3%A9dex) [Credit: AsparagusEduardo]
 - [Enable trade with FRLG Without Beating the Game](https://github.com/pret/pokeemerald/wiki/Enable-trade-with-FRLG-without-beating-the-game) [Credit: AsparagusEduardo]

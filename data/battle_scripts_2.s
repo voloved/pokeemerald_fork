@@ -52,6 +52,9 @@ BattleScript_BallThrow::
 	printstring STRINGID_PLAYERUSEDITEM
 	handleballthrow
 
+BattleScript_ChangeOdds::
+	handlechangeodds
+
 BattleScript_BallThrowByWally::
 	printstring STRINGID_WALLYUSEDITEM
 	handleballthrow
@@ -115,8 +118,11 @@ BattleScript_TrainerBallBlock::
 	printstring STRINGID_DONTBEATHIEF
 	goto BattleScript_TrainerBallBlockEnd
 BattleScript_TrainerBallBlockThiefBall::
-	printstring STRINGID_CANTWITHTHIEF
 	setbyte gUsingThiefBall, THIEF_BALL_NOT_USING
+	printstring STRINGID_CANTWITHTHIEF
+	jumpifnotbattletype BATTLE_TYPE_DOUBLE, BattleScript_TrainerBallBlockEnd
+	waitmessage B_WAIT_TIME_LONG
+	printstring STRINGID_TOOMANYWITNESSES
 BattleScript_TrainerBallBlockEnd::
 	waitmessage B_WAIT_TIME_LONG
 	finishaction

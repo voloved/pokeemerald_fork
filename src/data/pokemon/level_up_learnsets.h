@@ -5364,9 +5364,6 @@ static const u16 sArmaldoLevelUpLearnset[] = {
 };
 
 static const u16 sRaltsLevelUpLearnset[] = {
-    LEVEL_UP_MOVE( 1, MOVE_MOONBLAST),
-    LEVEL_UP_MOVE( 1, MOVE_PLAY_ROUGH),
-    LEVEL_UP_MOVE( 1, MOVE_FAIRY_WIND),
     LEVEL_UP_MOVE( 1, MOVE_GROWL),
     LEVEL_UP_MOVE( 6, MOVE_CONFUSION),
     LEVEL_UP_MOVE(11, MOVE_DOUBLE_TEAM),
@@ -5683,5 +5680,14 @@ static const u16 sChimechoLevelUpLearnset[] = {
     LEVEL_UP_MOVE(38, MOVE_HEAL_BELL),
     LEVEL_UP_MOVE(41, MOVE_SAFEGUARD),
     LEVEL_UP_MOVE(46, MOVE_PSYCHIC),
+    LEVEL_UP_END
+};
+
+static const u16 sMissingnoLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_WATER_GUN),
+    LEVEL_UP_MOVE( 1, MOVE_WATER_GUN),
+    LEVEL_UP_MOVE( 1, MOVE_SKY_ATTACK),
+    LEVEL_UP_MOVE( 5, MOVE_BIND),
+    LEVEL_UP_MOVE( 10, MOVE_PAY_DAY),
     LEVEL_UP_END
 };
