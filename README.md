@@ -9,6 +9,11 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## Not Yet Versioned
+- [Show Species That You're Switching For in the Party Menu](https://github.com/pret/pokeemerald/wiki/Show-Species-That-You're-Switching-For-in-the-Party-Menu)
+- Added ability to buy evolutionary stones in Lilycove Department Store.
+- Electrike and Manectric can now learn Flamethrower.
+
 ## v1.2.1
 - Fixed bug that causes duplicates of caught Pokémon if they were nicknamed after being caught.
 - Removed delay from leaving Pokémon Center by removing healing fanfare.
