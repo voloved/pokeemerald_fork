@@ -6,7 +6,7 @@ gText_WouldYouLikeToRestYourPkmn::
 	.string "Would you like to rest your POKéMON?$"
 
 gText_IllTakeYourPkmn::
-	.string "Okay, I'll take your POKéMON\n"
+	.string "Let me take your POKéMON\n"
 	.string "for a few seconds.$"
 
 gText_RestoredPkmnToFullHealth::

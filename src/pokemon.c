@@ -5004,10 +5004,21 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         // If Revive, update number of times revive has been used
                         if (effectFlags & (ITEM4_REVIVE >> 2))
                         {
-                            if (GetMonData(mon, MON_DATA_HP, NULL) != 0 || (GetMonData(mon, MON_DATA_DEAD, NULL) && FlagGet(FLAG_NUZLOCKE)))
+                            if (GetMonData(mon, MON_DATA_HP, NULL) != 0)
                             {
                                 itemEffectParam++;
                                 break;
+                            }
+                            else if (GetMonData(mon, MON_DATA_DEAD, NULL))
+                            {
+                                 if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
+                                    bool8 dead = FALSE;
+                                    SetMonData(mon, MON_DATA_DEAD, &dead);
+                                }
+                                else{
+                                    itemEffectParam++;
+                                    break;
+                                }
                             }
                             if (gMain.inBattle)
                             {
