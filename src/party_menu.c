@@ -659,12 +659,16 @@ static bool8 ShowPartyMenu(void)
         gMain.state++;
         break;
     case 20:
+    {
+        u8 enemyNextMonID = *(gBattleStruct->monToSwitchIntoId + gBattlerTarget);
+        u16 species = GetMonData(&gEnemyParty[enemyNextMonID], MON_DATA_SPECIES);
         CreateTask(sPartyMenuInternal->task, 0);
-        StringCopy(gStringVar1, gSpeciesNames[gBattleMons[gBattlerAttacker].species]);
-        DebugPrintf("2: %d", gBattleMons[gBattlerAttacker].species);
+        StringCopy(gStringVar2, gSpeciesNames[species]);
+        DebugPrintf("2: %d   %d", species, enemyNextMonID);
         DisplayPartyMenuStdMessage(sPartyMenuInternal->messageId);
         gMain.state++;
         break;
+    }
     case 21:
         BlendPalettes(PALETTES_ALL, 16, 0);
         gPaletteFade.bufferTransferDisabled = FALSE;
