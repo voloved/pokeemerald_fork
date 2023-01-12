@@ -9,6 +9,12 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v1.2.1
+- Fixed bug that causes duplicates of caught Pokémon if they were nicknamed after being caught.
+- Removed delay from leaving Pokémon Center by removing healing fanfare.
+- Made Missingno smaller to match its height.
+- Made dead Pokémon checking for the Nuzlocke challenge no longer occur during field poisoning and instead check and remove if needed when using a healing item.
+
 ## v1.2.0
 - [Added Nuzlocke challenge setting.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge)
 - [Pressing B as the ball shakes raises catching odds.](https://github.com/pret/pokeemerald/wiki/Raise-Odds-of-Catching-a-Pokemon-by-Pressing-B-When-the-Ball-Shakes)
