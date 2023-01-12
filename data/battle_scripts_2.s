@@ -83,6 +83,7 @@ BattleScript_TryNicknameCaughtMon::
 	givecaughtmon
 	printfromtable gCaughtMonStringIds
 	waitmessage B_WAIT_TIME_LONG
+	goto BattleScript_SuccessBallThrowEnd
 BattleScript_GiveCaughtMonEnd::
 	givecaughtmon
 BattleScript_SuccessBallThrowEnd::
