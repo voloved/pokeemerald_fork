@@ -660,6 +660,8 @@ static bool8 ShowPartyMenu(void)
         break;
     case 20:
         CreateTask(sPartyMenuInternal->task, 0);
+        StringCopy(gStringVar1, gSpeciesNames[gBattleMons[gBattlerAttacker].species]);
+        DebugPrintf("2: %d", gBattleMons[gBattlerAttacker].species);
         DisplayPartyMenuStdMessage(sPartyMenuInternal->messageId);
         gMain.state++;
         break;
