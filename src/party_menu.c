@@ -659,16 +659,10 @@ static bool8 ShowPartyMenu(void)
         gMain.state++;
         break;
     case 20:
-    {
-        u8 enemyNextMonID = *(gBattleStruct->monToSwitchIntoId + gBattlerTarget);
-        u16 species = GetMonData(&gEnemyParty[enemyNextMonID], MON_DATA_SPECIES);
         CreateTask(sPartyMenuInternal->task, 0);
-        StringCopy(gStringVar2, gSpeciesNames[species]);
-        DebugPrintf("2: %d   %d", species, enemyNextMonID);
         DisplayPartyMenuStdMessage(sPartyMenuInternal->messageId);
         gMain.state++;
         break;
-    }
     case 21:
         BlendPalettes(PALETTES_ALL, 16, 0);
         gPaletteFade.bufferTransferDisabled = FALSE;
@@ -2495,10 +2489,16 @@ void DisplayPartyMenuStdMessage(u32 stringId)
 
         if (stringId == PARTY_MSG_CHOOSE_MON)
         {
+            u8 enemyNextMonID = *(gBattleStruct->monToSwitchIntoId + gBattlerTarget);
+            u16 species = GetMonData(&gEnemyParty[enemyNextMonID], MON_DATA_SPECIES);
             if (sPartyMenuInternal->chooseHalf)
                 stringId = PARTY_MSG_CHOOSE_MON_AND_CONFIRM;
             else if (!ShouldUseChooseMonText())
                 stringId = PARTY_MSG_CHOOSE_MON_OR_CANCEL;
+            else if (species >= NUM_SPECIES ||  species == SPECIES_NONE)
+                stringId = PARTY_MSG_CHOOSE_MON_2;
+            else
+                StringCopy(gStringVar2, gSpeciesNames[species]);
         }
         DrawStdFrameWithCustomTileAndPalette(*windowPtr, FALSE, 0x4F, 0xD);
         StringExpandPlaceholders(gStringVar4, sActionStringTable[stringId]);

@@ -4208,9 +4208,6 @@ void SwitchPartyOrder(u8 battler)
         {
             *(battler * 3 + i + (u8 *)(gBattleStruct->battlerPartyOrders)) = gBattlePartyCurrentOrder[i];
         }
-        DebugPrintf("a real one: %d", GetMonData(&gEnemyParty[partyId2], MON_DATA_SPECIES));
-        DebugPrintf("chosenMonId: %d", *(gBattleStruct->monToSwitchIntoId + gActiveBattler));
-        DebugPrintf("maybe: %d, %d", GetMonData(&gEnemyParty[gActiveBattler], MON_DATA_SPECIES), gActiveBattler);
     }
 }
 
