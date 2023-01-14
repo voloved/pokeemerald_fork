@@ -16,6 +16,7 @@ LavaridgeTown_PokemonCenter_1F_EventScript_Nurse::
 	waitmessage
 	waitbuttonpress
 	release
+	zerofanfare
 	end
 
 LavaridgeTown_PokemonCenter_1F_EventScript_Youngster::

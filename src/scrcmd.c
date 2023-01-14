@@ -937,6 +937,12 @@ bool8 ScrCmd_waitfanfare(struct ScriptContext *ctx)
     return TRUE;
 }
 
+bool8 ScrCmd_zerofanfare()
+{
+    zeroFanfareCounter();
+    return FALSE;
+}
+
 bool8 ScrCmd_playbgm(struct ScriptContext *ctx)
 {
     u16 songId = ScriptReadHalfword(ctx);
