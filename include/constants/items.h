@@ -539,6 +539,6 @@
 #define ITEM_HAS_EFFECT(item) (((item) >= ITEM_POTION && (item) <= MAX_BERRY_INDEX) \
 || (item) == ITEM_KINGS_ROCK || (item) == ITEM_DRAGON_SCALE || (item) == ITEM_METAL_COAT \
 || (item) == ITEM_UP_GRADE || (item) == ITEM_DEEP_SEA_TOOTH || (item) == ITEM_DEEP_SEA_SCALE \
-|| (item) == ITEM_NEVER_MELT_ICE || (item) == ITEM_EVERSTONE)
+|| (item) == ITEM_NEVER_MELT_ICE || (item) == ITEM_EVERSTONE|| (item) == ITEM_STAR_PIECE)
 
 #endif  // GUARD_CONSTANTS_ITEMS_H
