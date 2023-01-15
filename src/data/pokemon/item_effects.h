@@ -320,6 +320,14 @@ const u8 gItemEffect_DeepSeaTooth[6] = {
     [4] = ITEM4_EVO_STONE,
 };
 
+const u8 gItemEffect_Everstone[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
+const u8 gItemEffect_Nevermeltice[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
 const u8 gItemEffect_CheriBerry[6] = {
     [3] = ITEM3_PARALYSIS,
 };
@@ -483,5 +491,7 @@ const u8 *const gItemEffectTable[] =
     [ITEM_UP_GRADE - ITEM_POTION]        = gItemEffect_UpGrade,
     [ITEM_DEEP_SEA_SCALE - ITEM_POTION]  = gItemEffect_DeepSeaScale,
     [ITEM_DEEP_SEA_TOOTH - ITEM_POTION]  = gItemEffect_DeepSeaTooth,
+    [ITEM_EVERSTONE - ITEM_POTION]       = gItemEffect_Everstone,
+    [ITEM_NEVER_MELT_ICE - ITEM_POTION]  = gItemEffect_Nevermeltice,
     [LAST_BERRY_INDEX - ITEM_POTION]   = NULL
 };
