@@ -403,6 +403,9 @@ gCryTable::
 	cry Cry_Gallade
 	cry Cry_Probopass
 	cry Cry_Dusknoir
+	cry Cry_Leafeon
+	cry Cry_Glaceon
+	cry Cry_Sylveon
 	cry Cry_Missingno
 
 	.align 2
@@ -810,4 +813,7 @@ gCryTable_Reverse::
 	cry_reverse Cry_Gallade
 	cry_reverse Cry_Probopass
 	cry_reverse Cry_Dusknoir
+	cry_reverse Cry_Leafeon
+	cry_reverse Cry_Glaceon
+	cry_reverse Cry_Sylveon
 	cry_reverse Cry_Missingno

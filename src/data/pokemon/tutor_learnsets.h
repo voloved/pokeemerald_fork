@@ -5938,6 +5938,31 @@ static const u32 sTutorLearnsets[] =
                                 | TUTOR(MOVE_SWAGGER)
                                 | TUTOR(MOVE_THUNDER_PUNCH)),
 
+    [SPECIES_LEAFEON]          = (TUTOR(MOVE_ENDURE)
+                                | TUTOR(MOVE_FURY_CUTTER)
+                                | TUTOR(MOVE_MUD_SLAP)
+                                | TUTOR(MOVE_SLEEP_TALK)
+                                | TUTOR(MOVE_SNORE)
+                                | TUTOR(MOVE_SUBSTITUTE)
+                                | TUTOR(MOVE_SWAGGER)
+                                | TUTOR(MOVE_SWIFT)
+                                | TUTOR(MOVE_SWORDS_DANCE)),
+
+    [SPECIES_GLACEON]          = (TUTOR(MOVE_ENDURE)
+                                | TUTOR(MOVE_ICY_WIND)
+                                | TUTOR(MOVE_MUD_SLAP)
+                                | TUTOR(MOVE_SLEEP_TALK)
+                                | TUTOR(MOVE_SNORE)
+                                | TUTOR(MOVE_SUBSTITUTE)
+                                | TUTOR(MOVE_SWAGGER)
+                                | TUTOR(MOVE_SWIFT)),
+
+    [SPECIES_SYLVEON]          = (TUTOR(MOVE_PSYCH_UP)
+                                | TUTOR(MOVE_SLEEP_TALK)
+                                | TUTOR(MOVE_SNORE)
+                                | TUTOR(MOVE_SUBSTITUTE)
+                                | TUTOR(MOVE_SWAGGER)
+                                | TUTOR(MOVE_SWIFT)),
 
     [SPECIES_MISSINGNO]        = (TUTOR(MOVE_BODY_SLAM)
                                 | TUTOR(MOVE_DOUBLE_EDGE)

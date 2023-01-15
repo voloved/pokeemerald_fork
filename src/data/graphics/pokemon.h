@@ -2727,6 +2727,9 @@ const u32 gMonStillFrontPic_PorygonZ[] = INCBIN_U32("graphics/pokemon/porygon_z/
 const u32 gMonStillFrontPic_Gallade[] = INCBIN_U32("graphics/pokemon/gallade/front.4bpp.lz");
 const u32 gMonStillFrontPic_Probopass[] = INCBIN_U32("graphics/pokemon/probopass/front.4bpp.lz");
 const u32 gMonStillFrontPic_Dusknoir[] = INCBIN_U32("graphics/pokemon/dusknoir/front.4bpp.lz");
+const u32 gMonStillFrontPic_Leafeon[] = INCBIN_U32("graphics/pokemon/leafeon/front.4bpp.lz");
+const u32 gMonStillFrontPic_Glaceon[] = INCBIN_U32("graphics/pokemon/glaceon/front.4bpp.lz");
+const u32 gMonStillFrontPic_Sylveon[] = INCBIN_U32("graphics/pokemon/sylveon/front.4bpp.lz");
 
 const u32 gMonBackPic_Weavile[] = INCBIN_U32("graphics/pokemon/weavile/back.4bpp.lz");
 const u32 gMonBackPic_Magnezone[] = INCBIN_U32("graphics/pokemon/magnezone/back.4bpp.lz");
@@ -2743,6 +2746,9 @@ const u32 gMonBackPic_PorygonZ[] = INCBIN_U32("graphics/pokemon/porygon_z/back.4
 const u32 gMonBackPic_Gallade[] = INCBIN_U32("graphics/pokemon/gallade/back.4bpp.lz");
 const u32 gMonBackPic_Probopass[] = INCBIN_U32("graphics/pokemon/probopass/back.4bpp.lz");
 const u32 gMonBackPic_Dusknoir[] = INCBIN_U32("graphics/pokemon/dusknoir/back.4bpp.lz");
+const u32 gMonBackPic_Leafeon[] = INCBIN_U32("graphics/pokemon/leafeon/back.4bpp.lz");
+const u32 gMonBackPic_Glaceon[] = INCBIN_U32("graphics/pokemon/glaceon/back.4bpp.lz");
+const u32 gMonBackPic_Sylveon[] = INCBIN_U32("graphics/pokemon/sylveon/back.4bpp.lz");
 
 const u32 gMonPalette_Weavile[] = INCBIN_U32("graphics/pokemon/weavile/normal.gbapal.lz");
 const u32 gMonPalette_Magnezone[] = INCBIN_U32("graphics/pokemon/magnezone/normal.gbapal.lz");
@@ -2759,7 +2765,9 @@ const u32 gMonPalette_PorygonZ[] = INCBIN_U32("graphics/pokemon/porygon_z/normal
 const u32 gMonPalette_Gallade[] = INCBIN_U32("graphics/pokemon/gallade/normal.gbapal.lz");
 const u32 gMonPalette_Probopass[] = INCBIN_U32("graphics/pokemon/probopass/normal.gbapal.lz");
 const u32 gMonPalette_Dusknoir[] = INCBIN_U32("graphics/pokemon/dusknoir/normal.gbapal.lz");
-
+const u32 gMonPalette_Leafeon[] = INCBIN_U32("graphics/pokemon/leafeon/normal.gbapal.lz");
+const u32 gMonPalette_Glaceon[] = INCBIN_U32("graphics/pokemon/glaceon/normal.gbapal.lz");
+const u32 gMonPalette_Sylveon[] = INCBIN_U32("graphics/pokemon/sylveon/normal.gbapal.lz");
 
 const u32 gMonShinyPalette_Weavile[] = INCBIN_U32("graphics/pokemon/weavile/shiny.gbapal.lz");
 const u32 gMonShinyPalette_Magnezone[] = INCBIN_U32("graphics/pokemon/magnezone/shiny.gbapal.lz");
@@ -2776,6 +2784,9 @@ const u32 gMonShinyPalette_PorygonZ[] = INCBIN_U32("graphics/pokemon/porygon_z/s
 const u32 gMonShinyPalette_Gallade[] = INCBIN_U32("graphics/pokemon/gallade/shiny.gbapal.lz");
 const u32 gMonShinyPalette_Probopass[] = INCBIN_U32("graphics/pokemon/probopass/shiny.gbapal.lz");
 const u32 gMonShinyPalette_Dusknoir[] = INCBIN_U32("graphics/pokemon/dusknoir/shiny.gbapal.lz");
+const u32 gMonShinyPalette_Leafeon[] = INCBIN_U32("graphics/pokemon/leafeon/shiny.gbapal.lz");
+const u32 gMonShinyPalette_Glaceon[] = INCBIN_U32("graphics/pokemon/glaceon/shiny.gbapal.lz");
+const u32 gMonShinyPalette_Sylveon[] = INCBIN_U32("graphics/pokemon/sylveon/shiny.gbapal.lz");
 
 const u8 gMonIcon_Weavile[] = INCBIN_U8("graphics/pokemon/weavile/icon.4bpp");
 const u8 gMonIcon_Magnezone[] = INCBIN_U8("graphics/pokemon/magnezone/icon.4bpp");
@@ -2792,6 +2803,9 @@ const u8 gMonIcon_PorygonZ[] = INCBIN_U8("graphics/pokemon/porygon_z/icon.4bpp")
 const u8 gMonIcon_Gallade[] = INCBIN_U8("graphics/pokemon/gallade/icon.4bpp");
 const u8 gMonIcon_Probopass[] = INCBIN_U8("graphics/pokemon/probopass/icon.4bpp");
 const u8 gMonIcon_Dusknoir[] = INCBIN_U8("graphics/pokemon/dusknoir/icon.4bpp");
+const u8 gMonIcon_Leafeon[] = INCBIN_U8("graphics/pokemon/leafeon/icon.4bpp");
+const u8 gMonIcon_Glaceon[] = INCBIN_U8("graphics/pokemon/glaceon/icon.4bpp");
+const u8 gMonIcon_Sylveon[] = INCBIN_U8("graphics/pokemon/sylveon/icon.4bpp");
 
 const u8 gMonFootprint_Weavile[] = INCBIN_U8("graphics/pokemon/weavile/footprint.1bpp");
 const u8 gMonFootprint_Magnezone[] = INCBIN_U8("graphics/pokemon/magnezone/footprint.1bpp");
@@ -2808,6 +2822,9 @@ const u8 gMonFootprint_PorygonZ[] = INCBIN_U8("graphics/pokemon/porygon_z/footpr
 const u8 gMonFootprint_Gallade[] = INCBIN_U8("graphics/pokemon/gallade/footprint.1bpp");
 const u8 gMonFootprint_Probopass[] = INCBIN_U8("graphics/pokemon/probopass/footprint.1bpp");
 const u8 gMonFootprint_Dusknoir[] = INCBIN_U8("graphics/pokemon/dusknoir/footprint.1bpp");
+const u8 gMonFootprint_Leafeon[] = INCBIN_U8("graphics/pokemon/leafeon/footprint.1bpp");
+const u8 gMonFootprint_Glaceon[] = INCBIN_U8("graphics/pokemon/glaceon/footprint.1bpp");
+const u8 gMonFootprint_Sylveon[] = INCBIN_U8("graphics/pokemon/sylveon/footprint.1bpp");
 
 const u32 gMonStillFrontPic_Missingno[] = INCBIN_U32("graphics/pokemon/missingno/front.4bpp.lz");
 const u32 gMonPalette_Missingno[] = INCBIN_U32("graphics/pokemon/missingno/normal.gbapal.lz");

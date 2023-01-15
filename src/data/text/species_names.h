@@ -426,5 +426,8 @@ const u8 gSpeciesNames[][POKEMON_NAME_LENGTH + 1] = {
     [SPECIES_GALLADE] = _("Gallade"),
     [SPECIES_PROBOPASS] = _("Probopass"),
     [SPECIES_DUSKNOIR] = _("Dusknoir"),
+    [SPECIES_LEAFEON] = _("Leafeon"),
+    [SPECIES_GLACEON] = _("Glaceon"),
+    [SPECIES_SYLVEON] = _("Sylveon"),
     [SPECIES_MISSINGNO] = _("MISSINGNO."),
 };
