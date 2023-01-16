@@ -29,6 +29,10 @@ LilycoveCity_DepartmentStore_4F_Pokemart_AttackTMs:
 	.2byte ITEM_TM25  @ Thunder
 	.2byte ITEM_TM14  @ Blizzard
 	.2byte ITEM_TM15  @ Hyper Beam
+	.2byte ITEM_TM35  @ Flame Thrower
+	.2byte ITEM_TM13  @ Ice Beam
+	.2byte ITEM_TM29  @ Psychic
+	.2byte ITEM_TM24  @ Thunderbolt
 	.2byte ITEM_TM17  @ Protect
 	.2byte ITEM_TM20  @ Safeguard
 	.2byte ITEM_TM33  @ Reflect

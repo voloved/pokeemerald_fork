@@ -16,6 +16,7 @@ PetalburgCity_PokemonCenter_1F_EventScript_Nurse::
 	waitmessage
 	waitbuttonpress
 	release
+	zerofanfare
 	end
 
 PetalburgCity_PokemonCenter_1F_EventScript_FatMan::

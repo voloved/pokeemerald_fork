@@ -1729,6 +1729,11 @@
 	.2byte \quantity
 	.endm
 
+	@ Zeros the fanfare's timer, which causes the bgm to play again. This stops a long delay caused by exiting th ePkmn
+	@ Center while the heal music is still playing
+	.macro zerofanfare
+	.byte 0xe3
+	.endm
 
 @ Supplementary
 

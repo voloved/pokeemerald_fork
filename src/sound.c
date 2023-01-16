@@ -210,6 +210,11 @@ void StopFanfareByFanfareNum(u8 fanfareNum)
     m4aSongNumStop(sFanfares[fanfareNum].songNum);
 }
 
+void zeroFanfareCounter(void)
+{
+    sFanfareCounter = 0;
+}
+
 void PlayFanfare(u16 songNum)
 {
     s32 i;

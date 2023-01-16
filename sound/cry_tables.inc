@@ -388,6 +388,24 @@ gCryTable::
 	cry Cry_Jirachi
 	cry Cry_Deoxys
 	cry Cry_Chimecho
+	cry Cry_Weavile
+	cry Cry_Magnezone
+	cry Cry_Lickilicky
+	cry Cry_Rhyperior
+	cry Cry_Tangrowth
+	cry Cry_Electivire
+	cry Cry_Magmortar
+	cry Cry_Togekiss
+	cry Cry_Yanmega
+	cry Cry_Gliscor
+	cry Cry_Mamoswine
+	cry Cry_PorygonZ
+	cry Cry_Gallade
+	cry Cry_Probopass
+	cry Cry_Dusknoir
+	cry Cry_Leafeon
+	cry Cry_Glaceon
+	cry Cry_Sylveon
 	cry Cry_Missingno
 
 	.align 2
@@ -780,4 +798,22 @@ gCryTable_Reverse::
 	cry_reverse Cry_Jirachi
 	cry_reverse Cry_Deoxys
 	cry_reverse Cry_Chimecho
+	cry_reverse Cry_Weavile
+	cry_reverse Cry_Magnezone
+	cry_reverse Cry_Lickilicky
+	cry_reverse Cry_Rhyperior
+	cry_reverse Cry_Tangrowth
+	cry_reverse Cry_Electivire
+	cry_reverse Cry_Magmortar
+	cry_reverse Cry_Togekiss
+	cry_reverse Cry_Yanmega
+	cry_reverse Cry_Gliscor
+	cry_reverse Cry_Mamoswine
+	cry_reverse Cry_PorygonZ
+	cry_reverse Cry_Gallade
+	cry_reverse Cry_Probopass
+	cry_reverse Cry_Dusknoir
+	cry_reverse Cry_Leafeon
+	cry_reverse Cry_Glaceon
+	cry_reverse Cry_Sylveon
 	cry_reverse Cry_Missingno
