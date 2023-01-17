@@ -10,7 +10,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
 ## Not Yet Versioned
-- Added Weavile, Magnezone, Lickilicky, Rhyperior, Tangrowth, Electrivire, Magmortar, Togekiss, Yanmega, Gliscor, Mamoswine, Porygon Z, Gallade, Probopass, Dusknoir, Leafeon, Glaceon, and Sylveon.
+- Added Leafeon, Glaceon, and Sylveon.
 - All Eeveelutions can evolve into each other. They can evolve to Sylveon with Start Piece, back to Eevee with Everstone, and Glaceon with Never Melt Ice.
 - Bug fix where overworld music cuts when the berry fanfare still plays when the player goes into their bag to plant a new berry.
 - Readded healing fanfare at Pokémon Center but cause overworld music to play over it once the Nurse Joy Message is closed.
