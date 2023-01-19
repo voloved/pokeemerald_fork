@@ -22,6 +22,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - [Button Press to Skip Copyright Screen](https://github.com/pret/pokeemerald/wiki/Button-Press-to-Skip-Copyright-Screen)
 - Added ability to buy evolutionary stones and TMs from Mauville Game Corner in Lilycove Department Store.
 - Electrike and Manectric can now learn Flamethrower.
+- Psyduck and Golduck can learn fly.
 - Made Raquaza's eye's yellow-ish at the title screen.
 - Some overworld player sprite clean-up.
 
