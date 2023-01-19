@@ -9,7 +9,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
-## Not Yet Versioned
+## v1.3.0
 - Added Leafeon, Glaceon, and Sylveon.
 - All Eeveelutions can evolve into each other. They can evolve to Sylveon with Start Piece, back to Eevee with Everstone, and Glaceon with Never Melt Ice.
 - Bug fix where overworld music cuts when the berry fanfare still plays when the player goes into their bag to plant a new berry.
@@ -17,6 +17,9 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - [Show Species That You're Battling in the Party Menu](https://github.com/pret/pokeemerald/wiki/Show-Species-That-You're-Switching-For-in-the-Party-Menu)
 - [Trainers No Longer Spin to Face You Right As You Pass Them](https://github.com/pret/pokeemerald/wiki/Trainers-No-Longer-Spin-to-Face-You-Right-As-You-Pass-Them)
 - [Shifting to Pokémon Already in Battle Exits the Shift Menu](https://github.com/pret/pokeemerald/wiki/Shifting-to-Pok%C3%A9mon-Already-in-Battle-Exits-the-Shift-Menu)
+- [Get Rid of Pokemon Disobeying You](https://github.com/pret/pokeemerald/wiki/Get-Rid-of-Pokemon-Disobeying-You)
+- [Option to Skip Copyright and Intro](https://github.com/pret/pokeemerald/wiki/Option-to-Skip-Copyright-and-Intro)
+- [Button Press to Skip Copyright Screen](https://github.com/pret/pokeemerald/wiki/Button-Press-to-Skip-Copyright-Screen)
 - Added ability to buy evolutionary stones and TMs from Mauville Game Corner in Lilycove Department Store.
 - Electrike and Manectric can now learn Flamethrower.
 - Made Raquaza's eye's yellow-ish at the title screen.
@@ -37,6 +40,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - The Old Sea Map to get Mew is receivable under an old truck in the Lilycove harbor if the Nuzlocke challenge is on.
 - [Jumping over ledges when bunny-hopping on the Acro Bike is now possible.](https://github.com/pret/pokeemerald/wiki/Allow-Jumping-Over-Ledges-with-Acro-Bike)
 - [Can now quickly run from a battle by holding Right while the wild Pokémon's name appears.](https://github.com/pret/pokeemerald/wiki/Quickly-Run-from-a-Battle-by-Holding-Right-While-the-Wild-Pok%C3%A9mon's-Name-Appears)
+- [Make Pokémon that Require a Fateful Encounter to be Legal to Always Be Set to Legal](https://github.com/pret/pokeemerald/wiki/Make-Pokemon-that-Require-a-Fateful-Encounter-to-be-Legal-to-Always-Be-Set-to-Legal)
 - R is now Turbo B most of the time in the overworld and battles.
 - Shedinja has a max HP of 50.
 - Ponyta and Rapidash are now much faster.
