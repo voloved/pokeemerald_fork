@@ -20,9 +20,13 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - [Get Rid of Pokemon Disobeying You](https://github.com/pret/pokeemerald/wiki/Get-Rid-of-Pokemon-Disobeying-You)
 - [Option to Skip Copyright and Intro](https://github.com/pret/pokeemerald/wiki/Option-to-Skip-Copyright-and-Intro)
 - [Button Press to Skip Copyright Screen](https://github.com/pret/pokeemerald/wiki/Button-Press-to-Skip-Copyright-Screen)
+- Jump Kick and High Jump Kick now has the effects of newer generations.
+- Put more interesting Pokémon into the Safari Zone.
+- Added Surkit, Masquerain, Meditite, Roselia, Zangoose, and Lunatone.
 - Added ability to buy evolutionary stones and TMs from Mauville Game Corner in Lilycove Department Store.
 - Electrike and Manectric can now learn Flamethrower.
-- Psyduck and Golduck can learn fly.
+- Psyduck and Golduck can learn Fly.
+- Zangoose can learn Cut.
 - Made Raquaza's eye's yellow-ish at the title screen.
 - Some overworld player sprite clean-up.
 

@@ -1206,7 +1206,7 @@
               {
                 "min_level": 16,
                 "max_level": 16,
-                "species": "SPECIES_LOMBRE"
+                "species": "SPECIES_SURSKIT"
               },
               {
                 "min_level": 16,
@@ -1231,7 +1231,7 @@
               {
                 "min_level": 17,
                 "max_level": 17,
-                "species": "SPECIES_SEVIPER"
+                "species": "SPECIES_MASQUERAIN"
               },
               {
                 "min_level": 15,
