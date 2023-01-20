@@ -9862,8 +9862,8 @@ static void Cmd_handleballthrow(void)
     else{
         gUsingThiefBall = THIEF_BALL_NOT_USING;
     }
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER &&
-    (gUsingThiefBall == THIEF_BALL_NOT_USING || gUsingThiefBall == THIEF_BALL_CANNOT_USE)
+    if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER &&
+    (gUsingThiefBall == THIEF_BALL_NOT_USING || gUsingThiefBall == THIEF_BALL_CANNOT_USE))
     || (gBattleTypeFlags & BATTLE_TYPE_SAFARI && gNuzlockeCannotCatch)) 
     {
         BtlController_EmitBallThrowAnim(BUFFER_A, BALL_TRAINER_BLOCK);
