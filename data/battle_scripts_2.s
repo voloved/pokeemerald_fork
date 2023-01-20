@@ -53,7 +53,7 @@ BattleScript_BallThrow::
 	handleballthrow
 
 BattleScript_ChangeOdds::
-	handlechangeodds
+	ballthrowend
 
 BattleScript_BallThrowByWally::
 	printstring STRINGID_WALLYUSEDITEM
@@ -113,10 +113,14 @@ BattleScript_ShakeBallThrowEnd::
 
 BattleScript_TrainerBallBlock::
 	waitmessage B_WAIT_TIME_LONG
+	jumpifbyte CMP_EQUAL, gNuzlockeCannotCatch, 1, BattleScript_TrainerBallBlockNuzlocke
 	printstring STRINGID_TRAINERBLOCKEDBALL
 	waitmessage B_WAIT_TIME_LONG
 	jumpifbyte CMP_EQUAL, gUsingThiefBall, THIEF_BALL_CANNOT_USE, BattleScript_TrainerBallBlockThiefBall
 	printstring STRINGID_DONTBEATHIEF
+	goto BattleScript_TrainerBallBlockEnd
+BattleScript_TrainerBallBlockNuzlocke::
+	printstring STRINGID_CANTWITHNUZLOCKE
 	goto BattleScript_TrainerBallBlockEnd
 BattleScript_TrainerBallBlockThiefBall::
 	setbyte gUsingThiefBall, THIEF_BALL_NOT_USING
