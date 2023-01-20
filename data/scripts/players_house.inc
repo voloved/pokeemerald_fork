@@ -487,12 +487,14 @@ PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV::
 	end
 
 PlayersHouse_1F_EventScript_NuzlockeOver::
+	call_if_set FLAG_NUZLOCKE_LOST, PlayersHouse_1F_EventScript_NuzlockeOver_End
 	playfanfare MUS_OBTAIN_BADGE
 	msgbox PlayersHouse_1F_Text_NuzlockeIsOver, MSGBOX_DEFAULT
 	waitfanfare
 	clearflag FLAG_NUZLOCKE
 	msgbox PlayersHouse_1F_Text_NuzlockeGiveThiefBalls
 	giveitem ITEM_THIEF_BALL, 10
+PlayersHouse_1F_EventScript_NuzlockeOver_End:
 	return
 
 @ Never called.

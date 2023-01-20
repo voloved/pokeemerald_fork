@@ -55,11 +55,11 @@ Debug_Script_3::
 	end
 
 Debug_Script_4::
-	clearflag FLAG_HIDE_LILYCOVE_HARBOR_SSTIDAL
+	setflag FLAG_NUZLOCKE_LOST
 	end
 
 Debug_Script_5::
-	setflag FLAG_HIDE_LILYCOVE_HARBOR_SSTIDAL
+	clearflag FLAG_NUZLOCKE_LOST
 	end
 
 Debug_Script_6::
