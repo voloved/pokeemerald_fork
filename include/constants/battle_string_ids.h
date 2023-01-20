@@ -385,8 +385,9 @@
 #define STRINGID_CANTWITHTHIEF              383
 #define STRINGID_TOOMANYWITNESSES           384
 #define STRINGID_GOTCHAPKMNCAUGHTNOBGM      385
+#define STRINGID_CANTWITHNUZLOCKE           386
 
-#define BATTLESTRINGS_COUNT                 386
+#define BATTLESTRINGS_COUNT                 387
 
 // This is the string id that gBattleStringsTable starts with.
 // String ids before this (e.g. STRINGID_INTROMSG) are not in the table,

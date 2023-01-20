@@ -329,7 +329,7 @@ static void Cmd_removeattackerstatus1(void);
 static void Cmd_finishaction(void);
 static void Cmd_finishturn(void);
 static void Cmd_trainerslideout(void);
-static void Cmd_handlechangeodds(void);
+static void Cmd_ballthrowend(void);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
 {
@@ -582,7 +582,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_finishaction,                            //0xF6
     Cmd_finishturn,                              //0xF7
     Cmd_trainerslideout,                         //0xF8
-    Cmd_handlechangeodds                         //0xF9
+    Cmd_ballthrowend                         //0xF9
 };
 
 struct StatFractions
@@ -9865,7 +9865,8 @@ static void Cmd_handleballthrow(void)
         gUsingThiefBall = THIEF_BALL_NOT_USING;
     }
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER &&
-    (gUsingThiefBall == THIEF_BALL_NOT_USING || gUsingThiefBall == THIEF_BALL_CANNOT_USE))
+    (gUsingThiefBall == THIEF_BALL_NOT_USING || gUsingThiefBall == THIEF_BALL_CANNOT_USE)
+    || (gBattleTypeFlags & BATTLE_TYPE_SAFARI && gNuzlockeCannotCatch)) 
     {
         BtlController_EmitBallThrowAnim(BUFFER_A, BALL_TRAINER_BLOCK);
         MarkBattlerForControllerExec(gActiveBattler);
@@ -10258,7 +10259,7 @@ static void Cmd_trainerslideout(void)
     gBattlescriptCurrInstr += 2;
 }
 
-static void Cmd_handlechangeodds(void)
+static void Cmd_ballthrowend(void)
 {
     u8 shakes = gBallShakesBData.shakes;
     HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE); // If stealing a Pokemon, count it towards the Nuzlocke

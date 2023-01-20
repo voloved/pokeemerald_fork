@@ -1253,7 +1253,7 @@
 	.byte \position
 	.endm
 
-	.macro 	handlechangeodds
+	.macro 	ballthrowend
 	.byte 0xf9
 	.endm
 
