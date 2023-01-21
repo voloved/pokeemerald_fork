@@ -1970,11 +1970,6 @@ u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
     };
     currLocation = currLocConvertForNuzlocke(currLocation);
     if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
-        VarSet(VAR_WILD_PKMN_ROUTE_SEEN_0, 0);
-        VarSet(VAR_WILD_PKMN_ROUTE_SEEN_1, 0);
-        VarSet(VAR_WILD_PKMN_ROUTE_SEEN_2, 0);
-        VarSet(VAR_WILD_PKMN_ROUTE_SEEN_3, 0);
-        VarSet(VAR_WILD_PKMN_ROUTE_SEEN_4, 0);
         return 0;
     }
     switch (currLocation)

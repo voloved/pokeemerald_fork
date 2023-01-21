@@ -24,6 +24,7 @@ EverGrandeCity_PokemonLeague_1F_EventScript_Nurse::
 	waitmessage
 	waitbuttonpress
 	release
+	zerofanfare
 	end
 
 EverGrandeCity_PokemonLeague_1F_EventScript_Clerk::

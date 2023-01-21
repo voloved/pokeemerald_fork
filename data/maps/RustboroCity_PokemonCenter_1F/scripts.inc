@@ -16,6 +16,7 @@ RustboroCity_PokemonCenter_1F_EventScript_Nurse::
 	waitmessage
 	waitbuttonpress
 	release
+	zerofanfare
 	end
 
 RustboroCity_PokemonCenter_1F_EventScript_Man::

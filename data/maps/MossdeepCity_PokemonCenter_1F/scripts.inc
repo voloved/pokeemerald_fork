@@ -15,6 +15,7 @@ MossdeepCity_PokemonCenter_1F_EventScript_Nurse::
 	waitmessage
 	waitbuttonpress
 	release
+	zerofanfare
 	end
 
 MossdeepCity_PokemonCenter_1F_EventScript_Woman::

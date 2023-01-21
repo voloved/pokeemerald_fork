@@ -663,6 +663,52 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall::
 	releaseall
 	end
 
+LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SkipIntro, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntroNo
+	setflag FLAG_SKIP_INTRO
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SkipIntroYes, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntroNo::
+	clearflag FLAG_SKIP_INTRO
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SkipIntroNo, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrindRun, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRunNo
+	setflag FLAG_GRINDRUN
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrindRunYes, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_GrindRunNo::
+	clearflag FLAG_GRINDRUN
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrindRunNo, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_Text_SkipIntro:
+	.string "Would you like to skip\n"
+	.string "the intro in the future?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SkipIntroYes:
+	.string "The intro will now be skipped.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SkipIntroNo:
+	.string "The intro will not be skipped.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_GrindRun:
+	.string "Would you like to grind\n"
+	.string "against walls when running?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_GrindRunYes:
+	.string "You can now grind against\n"
+	.string "walls when running.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_GrindRunNo:
+	.string "Your running will\n"
+	.string "be normal.$"
+
 LittlerootTown_ProfessorBirchsLab_Text_BirchAwayOnFieldwork:
 	.string "Hunh? PROF. BIRCH?\p"
 	.string "The PROF's away on fieldwork.\n"

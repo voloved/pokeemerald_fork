@@ -16,6 +16,7 @@ SlateportCity_PokemonCenter_1F_EventScript_Nurse::
 	waitmessage
 	waitbuttonpress
 	release
+	zerofanfare
 	end
 
 SlateportCity_PokemonCenter_1F_EventScript_Sailor::

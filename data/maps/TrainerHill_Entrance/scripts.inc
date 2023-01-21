@@ -106,6 +106,7 @@ TrainerHill_Entrance_EventScript_Nurse::
 	waitmessage
 	waitbuttonpress
 	release
+	zerofanfare
 	end
 
 TrainerHill_Entrance_EventScript_Attendant::

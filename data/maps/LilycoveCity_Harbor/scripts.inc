@@ -10,6 +10,7 @@ LilycoveCity_Harbor_MapScripts::
 
 LilycoveCity_Harbor_OnLoad:
 	call_if_unset FLAG_HIDE_LILYCOVE_HARBOR_SSTIDAL, LilycoveCity_Harbor_DisallowSurf
+	call_if_set FLAG_NUZLOCKE_LOST, LilycoveCity_Harbor_DisallowSurf
 	call_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_DisallowSurf
 	end
 

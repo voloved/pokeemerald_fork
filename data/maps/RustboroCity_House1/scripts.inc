@@ -46,8 +46,36 @@ RustboroCity_House1_EventScript_TradeCompleted::
 	end
 
 RustboroCity_House1_EventScript_Hiker::
+	call_if_unset FLAG_NUZLOCKE_LOST, RustboroCity_House1_EventScript_HikerDefault
+	call_if_set FLAG_NUZLOCKE, RustboroCity_House1_EventScript_HikerDefault
+	goto RustboroCity_House1_EventScript_ContinueNuzlocke
+
+RustboroCity_House1_EventScript_HikerDefault::
 	msgbox RustboroCity_House1_Text_AllSortsOfPlaces, MSGBOX_NPC
 	end
+
+RustboroCity_House1_EventScript_ContinueNuzlocke::
+	msgbox RustboroCity_House1_Text_ContinueNuzlocke, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, RustboroCity_House1_EventScript_ContinueNuzlockeNo
+	setflag FLAG_NUZLOCKE
+	msgbox RustboroCity_House1_Text_ContinueNuzlockeYes, MSGBOX_SIGN
+	end
+
+RustboroCity_House1_EventScript_ContinueNuzlockeNo::
+	msgbox RustboroCity_House1_Text_ContinueNuzlockeoNo, MSGBOX_SIGN
+	end
+
+RustboroCity_House1_Text_ContinueNuzlocke:
+	.string "Would you like to continue\n"
+	.string "the Nuzlocke challenge?$"
+
+RustboroCity_House1_Text_ContinueNuzlockeYes:
+	.string "Nuzlocke challenge\n"
+	.string "is continued.$"
+
+RustboroCity_House1_Text_ContinueNuzlockeoNo:
+	.string "Nuzlocke challenge will\n"
+	.string "not be continued.$"
 
 RustboroCity_House1_Text_IllTradeIfYouWant:
 	.string "Huh? My POKéMON is cute?\n"

@@ -2320,6 +2320,24 @@ const u8 gDeoxysPokedexText[] = _(
     "beam. Its body is configured for superior\n"
     "agility and speed.");
 
+const u8 gLeafeonPokedexText[] = _(
+    "Its cellular composition is closer to\n"
+    "that of a plant than an animal. It uses\n"
+    "photosynthesis to produce its energy\n"
+    "supply without eating food.");
+
+const u8 gGlaceonPokedexText[] = _(
+    "It can control its body temperature\n"
+    "at will. This enables it to freeze the\n"
+    "moisture in the atmosphere, creating\n"
+    "flurries of diamond dust.");
+
+const u8 gSylveonPokedexText[] = _(
+    "Its ribbonlike feelers give off an aura\n"
+    "that weakens hostility in its prey, causing\n"
+    "them to let down their guard. A moment\n"
+    "later, it pounces.");
+
 const u8 gMissingnoPokedexText[] = _(
     "An unsual POKéMON with unknown origins.\n"
     "It has been found around islands through\n"

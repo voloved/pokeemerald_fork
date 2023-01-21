@@ -15,6 +15,7 @@ SootopolisCity_PokemonCenter_1F_EventScript_Nurse::
 	waitmessage
 	waitbuttonpress
 	release
+	zerofanfare
 	end
 
 SootopolisCity_PokemonCenter_1F_EventScript_Gentleman::
