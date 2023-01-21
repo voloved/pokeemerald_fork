@@ -13,6 +13,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Added Leafeon, Glaceon, and Sylveon.
 - All Eeveelutions can evolve into each other. They can evolve to Sylveon with Start Piece, back to Eevee with Everstone, and Glaceon with Never Melt Ice.
 - Bug fix where overworld music cuts when the berry fanfare still plays when the player goes into their bag to plant a new berry.
+- Bug fix where surfing in Slateport Harbor is no longer possible.
 - Readded healing fanfare at Pokémon Center but cause overworld music to play over it once the Nurse Joy Message is closed.
 - [Show Species That You're Battling in the Party Menu](https://github.com/pret/pokeemerald/wiki/Show-Species-That-You're-Switching-For-in-the-Party-Menu)
 - [Trainers No Longer Spin to Face You Right As You Pass Them](https://github.com/pret/pokeemerald/wiki/Trainers-No-Longer-Spin-to-Face-You-Right-As-You-Pass-Them)
@@ -28,7 +29,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Electrike and Manectric can now learn Flamethrower.
 - Psyduck and Golduck can learn Fly.
 - Zangoose can learn Cut.
-- Made Raquaza's eye's yellow-ish at the title screen.
+- Made Raquaza's eye's pink-ish at the title screen.
+- Sped up delay for messages about Intimidate and being buffered by weather conditions.
 - Some overworld player sprite clean-up.
 
 
