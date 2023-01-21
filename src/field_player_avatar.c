@@ -632,8 +632,8 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
                 //      change this, consider that GrindRun takes control away
                 //      from what the player expects and makes precise movements
                 //      more difficult.
-                if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && (gRunToggleBtnSet || FlagGet(FLAG_RUNNING_SHOES_TOGGLE) || (heldKeys & B_BUTTON))
-                && FlagGet(FLAG_SYS_B_DASH))
+                if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && FlagGet(FLAG_SYS_B_DASH)
+                && (FlagGet(FLAG_RUNNING_SHOES_TOGGLE) || heldKeys & B_BUTTON))
                 {
                     //Check for empty spaces next to and diagonally from the player, otherwise actually collide
                     u8 grindRunDirection;

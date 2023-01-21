@@ -35,7 +35,6 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Some overworld player sprite clean-up.
 - [Grindrunning For Easier Diagonal Movement. Able to toggle it on one of Prof. Birch's PCs.](https://www.pokecommunity.com/showpost.php?p=10202986) [Credit: Pyredrid]
 
-
 ## v1.2.1
 - Fixed bug that causes duplicates of caught Pokémon if they were nicknamed after being caught.
 - Removed delay from leaving Pokémon Center by removing healing fanfare.
