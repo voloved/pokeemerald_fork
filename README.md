@@ -19,7 +19,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - [Trainers No Longer Spin to Face You Right As You Pass Them](https://github.com/pret/pokeemerald/wiki/Trainers-No-Longer-Spin-to-Face-You-Right-As-You-Pass-Them)
 - [Shifting to Pokémon Already in Battle Exits the Shift Menu](https://github.com/pret/pokeemerald/wiki/Shifting-to-Pok%C3%A9mon-Already-in-Battle-Exits-the-Shift-Menu)
 - [Get Rid of Pokemon Disobeying You](https://github.com/pret/pokeemerald/wiki/Get-Rid-of-Pokemon-Disobeying-You)
-- [Option to Skip Copyright and Intro](https://github.com/pret/pokeemerald/wiki/Option-to-Skip-Copyright-and-Intro)
+- [Pushing B When Asked To Stop Learning Move Will Cancel Teaching The Move](https://github.com/pret/pokeemerald/wiki/Pushing-B-When-Asked-To-Stop-Learning-Move-Will-Cancel-Teaching-The-Move)
+- [Option to Skip Copyright and Intro. Able to toggle it on one of Prof. Birch's PCs.](https://github.com/pret/pokeemerald/wiki/Option-to-Skip-Copyright-and-Intro)
 - [Button Press to Skip Copyright Screen](https://github.com/pret/pokeemerald/wiki/Button-Press-to-Skip-Copyright-Screen)
 - [Allow Both Latios and Latias Appear](https://github.com/pret/pokeemerald/wiki/Allow-Both-Latios-and-Latias-Appear.)
 - Jump Kick and High Jump Kick now has the effects of newer generations.
@@ -32,6 +33,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Made Raquaza's eye's pink-ish at the title screen.
 - Sped up delay for messages about Intimidate and being buffered by weather conditions.
 - Some overworld player sprite clean-up.
+- [Grindrunning For Easier Diagonal Movement. Able to toggle it on one of Prof. Birch's PCs.](https://www.pokecommunity.com/showpost.php?p=10202986) [Credit: Pyredrid]
 
 
 ## v1.2.1
