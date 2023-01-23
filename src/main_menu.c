@@ -475,7 +475,7 @@ static const struct MenuAction sMenuActions_Nuzlocke[] = {
 };
 
 static const u8 *const sMalePresetNames[] = {
-    gText_DefaultNameStu,
+    gText_DefaultNameJory,
     gText_DefaultNameMilton,
     gText_DefaultNameTom,
     gText_DefaultNameKenny,
@@ -2168,7 +2168,7 @@ void NewGameBirchSpeech_SetDefaultPlayerName(u8 nameId)
     u8 i;
 
     if (gSaveBlock2Ptr->playerGender == MALE)
-        name = gText_DefaultNameNick;
+        name = gText_DefaultNameJory;
     else
         name = sFemalePresetNames[nameId];
     for (i = 0; i < PLAYER_NAME_LENGTH; i++)
