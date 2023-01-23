@@ -5,6 +5,7 @@
 .set LOCALID_SUBMARINE, 8
 
 SlateportCity_Harbor_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, SlateportCity_Harbor_DisallowSurf
 	map_script MAP_SCRIPT_ON_TRANSITION, SlateportCity_Harbor_OnTransition
 	.byte 0
 
@@ -13,6 +14,11 @@ SlateportCity_Harbor_OnTransition:
 	setvar VAR_TEMP_1, 0
 	call_if_eq VAR_SLATEPORT_HARBOR_STATE, 1, SlateportCity_Harbor_EventScript_ReadyAquaEscapeScene
 	call_if_set FLAG_SYS_GAME_CLEAR, SlateportCity_Harbor_EventScript_ShowSSTidal
+	end
+
+SlateportCity_Harbor_DisallowSurf:
+	setmetatile 7, 9, METATILE_General_CalmWater, TRUE
+	setmetatile 8, 9, METATILE_General_CalmWater, TRUE
 	end
 
 SlateportCity_Harbor_EventScript_ShowSSTidal::

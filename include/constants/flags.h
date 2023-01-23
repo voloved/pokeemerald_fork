@@ -47,8 +47,8 @@
 #define FLAG_SYS_NO_BAG_USE         0x23 // Unused Flag //DEBUG
 #define FLAG_SYS_NO_CATCHING        0x24 // Unused Flag //DEBUG
 #define FLAG_SYS_PC_FROM_DEBUG_MENU 0x25 // Unused Flag //DEBUG
-#define FLAG_SYS_PC_FROM_POKENAV    0x26
-#define FLAG_SYS_NO_BATTLE_DMG      0x27 // Unused Flag //DEBUG
+#define FLAG_SYS_NO_BATTLE_DMG      0x26 // Unused Flag //DEBUG
+#define FLAG_UNUSED_0x027    0x27 // Unused Flag
 #define FLAG_UNUSED_0x028    0x28 // Unused Flag
 #define FLAG_UNUSED_0x029    0x29 // Unused Flag
 #define FLAG_UNUSED_0x02A    0x2A // Unused Flag
@@ -1225,8 +1225,8 @@
 #define FLAG_MISSINGNO                                              0x498
 #define FLAG_SKIP_INTRO                                             0x499
 #define FLAG_NUZLOCKE_LOST                                          0x49A
-#define FLAG_UNUSED_0x49B                                           0x49B // Unused Flag
-#define FLAG_UNUSED_0x49C                                           0x49C // Unused Flag
+#define FLAG_SYS_PC_FROM_POKENAV                                    0x49B
+#define FLAG_GRINDRUN                                               0x49C
 #define FLAG_UNUSED_0x49D                                           0x49D // Unused Flag
 #define FLAG_UNUSED_0x49E                                           0x49E // Unused Flag
 #define FLAG_UNUSED_0x49F                                           0x49F // Unused Flag
