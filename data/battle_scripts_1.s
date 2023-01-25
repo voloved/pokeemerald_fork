@@ -3176,7 +3176,7 @@ BattleScript_AskToLearnMove::
 	waitstate
 	setbyte sLEARNMOVE_STATE, 0
 	yesnoboxlearnmove BattleScript_ForgotAndLearnedNewMove
-	printstring STRINGID_STOPLEARNINGMOVE
+	printstring STRINGID_CONTINUELEARNINGMOVE
 	waitstate
 	setbyte sLEARNMOVE_STATE, 0
 	yesnoboxstoplearningmove BattleScript_AskToLearnMove

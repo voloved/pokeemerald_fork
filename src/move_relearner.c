@@ -594,7 +594,7 @@ static void DoMoveRelearnerMain(void)
         break;
     case MENU_STATE_PRINT_STOP_TEACHING:
         StringCopy(gStringVar2, gMoveNames[GetCurrentSelectedMove()]);
-        FormatAndPrintText(gText_MoveRelearnerStopTryingToTeachMove);
+        FormatAndPrintText(gText_MoveRelearnerContinueTryingToTeachMove);
         sMoveRelearnerStruct->state++;
         break;
     case MENU_STATE_WAIT_FOR_STOP_TEACHING:
@@ -608,11 +608,11 @@ static void DoMoveRelearnerMain(void)
         {
             s8 selection = Menu_ProcessInputNoWrapClearOnChoose();
 
-            if (selection == 0)
+            if (selection == MENU_B_PRESSED || selection == 1)
             {
                 sMoveRelearnerStruct->state = MENU_STATE_CHOOSE_SETUP_STATE;
             }
-            else if (selection == MENU_B_PRESSED || selection == 1)
+            else if (selection == 0)
             {
                 // What's the point? It gets set to MENU_STATE_PRINT_TRYING_TO_LEARN_PROMPT, anyway.
                 if (sMoveRelearnerMenuSate.showContestInfo == FALSE)
