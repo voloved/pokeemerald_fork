@@ -9,6 +9,12 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v1.3.1
+- Diving and reflection palette fix.
+- Diving speed underwater same as running speed.
+- [Changed Stop Learning request to Continue Learning.](https://github.com/pret/pokeemerald/wiki/Instead-of-Asking-to-Stop-learning-a-New-Move,-You'll-be-Asked-to-Continue-Learning)
+- Made Eevee and its evolutions all have a 50% gender ratio.
+
 ## v1.3.0
 - Added Leafeon, Glaceon, and Sylveon.
 - All Eeveelutions can evolve into each other. They can evolve to Sylveon with Start Piece, back to Eevee with Everstone, and Glaceon with Never Melt Ice.
@@ -97,8 +103,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Party now gets healed after winning a gym badge (and when receiving your Pokédex completion diploma at the Lilycove Motel)
 - [Turned off getting match calls from trainers who are not looking to battle.](https://github.com/pret/pokeemerald/wiki/Get-Match-Calls-Only-If-Caller-Wants-a-Rematch)
 - [Intro now shows the biking trainer as the gender of the save file (defaults to male)](https://github.com/pret/pokeemerald/wiki/Make-the-Person-in-the-Intro-Match-the-the-Save-File)
-- [Made Cleanse Tag turn the off all wild encounters and made it's held ability work if held by any Pokémon in the party]((https://github.com/pret/pokeemerald/wiki/Make-Cleanse-Tag-Avoid-All-Wild-Encounters-and-Usable-If-Held-By-Anyone-in-Your-Party;-Make-PokeDoll-Do-the-Same-for-Trainers-Seeing-You))
-- Made Poké Doll cause [no trainers to see you](https://github.com/pret/pokeemerald/wiki/Toggle-Trainer-Sight). You can still go up and talk with them.
+- [Made Cleanse Tag turn the off all wild encounters and made it's held ability work if held by any Pokémon in the party](https://github.com/pret/pokeemerald/wiki/Make-Cleanse-Tag-Avoid-All-Wild-Encounters-and-Usable-If-Held-By-Anyone-in-Your-Party;-Make-PokeDoll-Do-the-Same-for-Trainers-Seeing-You)
+- [Made Poké Doll cause no trainers to see you](https://github.com/pret/pokeemerald/wiki/Toggle-Trainer-Sight). You can still go up and talk with them.
 - Added Beldom in Meteor Falls and Mareep in Route 110
 - [Added type color that shows battle effectiveness and added ability to toggle this feature in the option menu.](https://github.com/pret/pokeemerald/wiki/Show-Type-Effectiveness-In-Battle-Using-Pre-Existing--Function-and-Disable-in-Option-Menu)
   - Used [this](https://www.pokecommunity.com/showpost.php?p=10167016&postcount=83), but the vanilla code needed modification for it to work well.
