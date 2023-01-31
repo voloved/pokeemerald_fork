@@ -663,6 +663,17 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall::
 	releaseall
 	end
 
+LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
+	multichoicedefault 0, 0, MULTI_TAG_BIRCH_PC_OPTIONS, 0, FALSE
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_Challenge
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
+	end
+
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_SkipIntro, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntroNo

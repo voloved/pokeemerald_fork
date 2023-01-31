@@ -778,6 +778,14 @@ static const struct MenuAction MultichoiceList_TagChallenge[] =
     {gText_Hard},
 };
 
+static const struct MenuAction MultichoiceList_TagBirchPCOptions[] =
+{
+    {(const u8[])_("SKIP INTRO")},
+    {(const u8[])_("DIFFICULTY")},
+    {(const u8[])_("GRINDRUN")},
+    {gText_Exit},
+};
+
 static const struct MenuAction MultichoiceList_Exit[] =
 {
     {gText_Exit},
@@ -906,6 +914,7 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_FALLARBOR_TENT_RULES]       = MULTICHOICE(MultichoiceList_FallarborTentRules),
     [MULTI_TAG_MATCH_TYPE]             = MULTICHOICE(MultichoiceList_TagMatchType),
     [MULTI_TAG_DIFFICULTY]             = MULTICHOICE(MultichoiceList_TagChallenge),
+    [MULTI_TAG_BIRCH_PC_OPTIONS]       = MULTICHOICE(MultichoiceList_TagBirchPCOptions),
 };
 
 const u8 *const gStdStrings[] =

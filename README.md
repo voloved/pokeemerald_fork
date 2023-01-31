@@ -12,6 +12,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 ## not Yet in a Version
 - [Added Difficulty Mode](https://github.com/pret/pokeemerald/wiki/Add-Difficulty-Mode)
 - [Infinite TM usage](https://github.com/pret/pokeemerald/wiki/Infinite-TM-usage) [Credit: ExpoSeed]
+- [Item Automatically Goes to PC if Bag is Full](https://github.com/pret/pokeemerald/wiki/Item-Automatically-Goes-to-PC-if-Bag-is-Full)
 - Bug fix on Blaziken learning Death Move.
 - Made wallclock default to Yes when asking if the setting is correct.
 
