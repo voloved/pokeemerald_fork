@@ -669,7 +669,8 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro
 	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_Challenge
 	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun
-	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
 	end
@@ -696,6 +697,18 @@ LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun::
 LittlerootTown_ProfessorBirchsLab_EventScript_GrindRunNo::
 	clearflag FLAG_GRINDRUN
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrindRunNo, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeep, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeepNo
+	setflag FLAG_NO_LOW_HEALTH_BEEP
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepYes, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeepNo::
+	clearflag FLAG_NO_LOW_HEALTH_BEEP
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepNo, MSGBOX_SIGN
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_Challenge::
@@ -790,6 +803,18 @@ LittlerootTown_ProfessorBirchsLab_Text_GrindRunYes:
 LittlerootTown_ProfessorBirchsLab_Text_GrindRunNo:
 	.string "Your running will\n"
 	.string "be normal.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeep:
+	.string "Would you like to turn off\n"
+	.string "beeping at low health?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepYes:
+	.string "Beeping at low health\n"
+	.string "is turned off.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepNo:
+	.string "Beeping at low health\n"
+	.string "is turned on.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchAwayOnFieldwork:
 	.string "Hunh? PROF. BIRCH?\p"

@@ -783,6 +783,7 @@ static const struct MenuAction MultichoiceList_TagBirchPCOptions[] =
     {(const u8[])_("SKIP INTRO")},
     {(const u8[])_("DIFFICULTY")},
     {(const u8[])_("GRINDRUN")},
+    {(const u8[])_("LOW HEALTH BEEP")},
     {gText_Exit},
 };
 
