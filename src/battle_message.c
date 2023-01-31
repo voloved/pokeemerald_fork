@@ -1783,7 +1783,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [24] = { // 24 "type" super-effective
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1795,7 +1795,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [25] = { // 25 "type" not very effective
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1807,15 +1807,15 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [26] = { // 26 "type" no effect
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
         .lineSpacing = 0,
         .speed = 0,
-        .fgColor = 11,
+        .fgColor = 7,
         .bgColor = 14,
-        .shadowColor = 11,
+        .shadowColor = 15,
     },
 };
 
