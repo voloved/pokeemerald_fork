@@ -647,6 +647,10 @@ LittlerootTown_ProfessorBirchsLab_EventScript_PC::
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_PCUsedForResearch, MSGBOX_SIGN
 	end
 
+LittlerootTown_ProfessorBirchsLab_EventScript_PC_Nuzlocke::
+	goto_if_unset FLAG_NUZLOCKE, LittlerootTown_ProfessorBirchsLab_EventScript_PC
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+
 LittlerootTown_ProfessorBirchsLab_EventScript_Bookshelf::
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_CrammedWithBooksOnPokemon, MSGBOX_SIGN
 	end
@@ -709,6 +713,21 @@ LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep::
 LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeepNo::
 	clearflag FLAG_NO_LOW_HEALTH_BEEP
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepNo, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu::
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoDupesClause, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClauseNo
+	setflag FLAG_NO_DUPES_CLAUSE
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseYes, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClauseNo::
+	clearflag FLAG_NO_DUPES_CLAUSE
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseNo, MSGBOX_SIGN
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_Challenge::
@@ -815,6 +834,18 @@ LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepYes:
 LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepNo:
 	.string "Beeping at low health\n"
 	.string "is turned on.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoDupesClause:
+	.string "Would you like to not use the dupes\n"
+	.string "not in your Nuzlocke challenge?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseYes:
+	.string "You will not use the\n"
+	.string "dupes clause.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseNo:
+	.string "You will use the\n"
+	.string "dupes clause.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchAwayOnFieldwork:
 	.string "Hunh? PROF. BIRCH?\p"
