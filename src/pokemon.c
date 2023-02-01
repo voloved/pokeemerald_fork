@@ -5617,7 +5617,8 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem)
         }
         break;
     }
-
+    if (FlagGet(FLAG_KRABBY_EVO) && targetSpecies != SPECIES_NONE)
+        return SPECIES_KRABBY;
     return targetSpecies;
 }
 

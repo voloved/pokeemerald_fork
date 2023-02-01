@@ -784,6 +784,16 @@ static const struct MenuAction MultichoiceList_TagBirchPCOptions[] =
     {(const u8[])_("DIFFICULTY")},
     {(const u8[])_("GRINDRUN")},
     {(const u8[])_("LOW HEALTH BEEP")},
+    {(const u8[])_("CARCINISATION")},
+    {gText_Exit},
+};
+
+static const struct MenuAction MultichoiceList_TagCarcinisation[] =
+{
+    {(const u8[])_("ALL KRABBY")},
+    {(const u8[])_("WILD KRABBY")},
+    {(const u8[])_("TRAINERS' KRABBY")},
+    {(const u8[])_("EVOLVE TO KRABBY")},
     {gText_Exit},
 };
 
@@ -916,6 +926,7 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_TAG_MATCH_TYPE]             = MULTICHOICE(MultichoiceList_TagMatchType),
     [MULTI_TAG_DIFFICULTY]             = MULTICHOICE(MultichoiceList_TagChallenge),
     [MULTI_TAG_BIRCH_PC_OPTIONS]       = MULTICHOICE(MultichoiceList_TagBirchPCOptions),
+    [MULTI_TAG_CARCINISATION]          = MULTICHOICE(MultichoiceList_TagCarcinisation),
 };
 
 const u8 *const gStdStrings[] =

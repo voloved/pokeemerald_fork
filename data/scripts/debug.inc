@@ -43,7 +43,7 @@ Debug_CheatStart::
 	end
 
 Debug_Script_1::
-	call EverGrandeCity_HallOfFame_EventScript_ResetEliteFour
+	call LittlerootTown_ProfessorBirchsLab_EventScript_Challenge
 	end
 
 Debug_Script_2::
@@ -59,10 +59,15 @@ Debug_Script_4::
 	end
 
 Debug_Script_5::
-	clearflag FLAG_NUZLOCKE_LOST
+	setflag FLAG_KRABBY_WILD
+	setflag FLAG_KRABBY_TRAINER
+	setflag FLAG_KRABBY_EVO
 	end
 
 Debug_Script_6::
+	clearflag FLAG_KRABBY_WILD
+	clearflag FLAG_KRABBY_TRAINER
+	clearflag FLAG_KRABBY_EVO
 	end
 
 Debug_Script_7::

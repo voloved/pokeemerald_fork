@@ -2078,15 +2078,16 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case 0:
             {
                 const struct TrainerMonNoItemDefaultMoves *partyData = gTrainers[trainerNum].party.NoItemDefaultMoves;
-                if (checkStolenPokemon(trainerNum, partyData[i].species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
+                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
                     continue;
                 }
-                for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
-                    nameHash += gSpeciesNames[partyData[i].species][j];
+                for (j = 0; gSpeciesNames[species][j] != EOS; j++)
+                    nameHash += gSpeciesNames[species][j];
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
+                CreateMon(&party[i], species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
                 SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
                 SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
                 break;
@@ -2094,16 +2095,17 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case F_TRAINER_PARTY_CUSTOM_MOVESET:
             {
                 const struct TrainerMonNoItemCustomMoves *partyData = gTrainers[trainerNum].party.NoItemCustomMoves;
-                if (checkStolenPokemon(trainerNum, partyData[i].species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
+                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
                     continue;
                 }
 
-                for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
-                    nameHash += gSpeciesNames[partyData[i].species][j];
+                for (j = 0; gSpeciesNames[species][j] != EOS; j++)
+                    nameHash += gSpeciesNames[species][j];
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
+                CreateMon(&party[i], species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
                 SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
                 SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
 
@@ -2117,16 +2119,17 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case F_TRAINER_PARTY_HELD_ITEM:
             {
                 const struct TrainerMonItemDefaultMoves *partyData = gTrainers[trainerNum].party.ItemDefaultMoves;
-                if (checkStolenPokemon(trainerNum, partyData[i].species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
+                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
                     continue;
                 }
 
-                for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
-                    nameHash += gSpeciesNames[partyData[i].species][j];
+                for (j = 0; gSpeciesNames[species][j] != EOS; j++)
+                    nameHash += gSpeciesNames[species][j];
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
+                CreateMon(&party[i], species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
                 SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
                 SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
 
@@ -2136,19 +2139,20 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case F_TRAINER_PARTY_CUSTOM_MOVESET | F_TRAINER_PARTY_HELD_ITEM:
             {
                 const struct TrainerMonItemCustomMoves *partyData = gTrainers[trainerNum].party.ItemCustomMoves;
-                if (checkStolenPokemon(trainerNum, partyData[i].species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
+                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
                     continue;
                 }
 
-                for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
-                    nameHash += gSpeciesNames[partyData[i].species][j];
+                for (j = 0; gSpeciesNames[species][j] != EOS; j++)
+                    nameHash += gSpeciesNames[species][j];
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
+                CreateMon(&party[i], species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
                 SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
                 SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
-                if (partyData[i].species == SPECIES_SLAKING && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN 
+                if (species == SPECIES_SLAKING && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN 
                 && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)  //Set Norman's Slaking to have intimidate
                     SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfNormansSlaking);
                 

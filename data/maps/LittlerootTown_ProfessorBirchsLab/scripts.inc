@@ -674,7 +674,8 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_Challenge
 	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun
 	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
-	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
 	end
@@ -780,6 +781,118 @@ LittlerootTown_ProfessorBirchsLab_EventScript_SelectedCancel:
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedCancel, MSGBOX_DEFAULT
 	closemessage
 	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation::
+	multichoicedefault 0, 0, MULTI_TAG_CARCINISATION, 0, FALSE
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAll
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyWild
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainer
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvo
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_CarcinisationEnd
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_CarcinisationEnd
+LittlerootTown_ProfessorBirchsLab_EventScript_CarcinisationEnd:
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAll::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyAll, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAllNo
+	setflag FLAG_KRABBY_WILD
+	setflag FLAG_KRABBY_TRAINER
+	setflag FLAG_KRABBY_EVO
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyYes, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAllNo::
+	clearflag FLAG_KRABBY_WILD
+	clearflag FLAG_KRABBY_TRAINER
+	clearflag FLAG_KRABBY_EVO
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyNo, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyWild::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyWild, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAllNo
+	setflag FLAG_KRABBY_WILD
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyWildYes, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyWildNo::
+	clearflag FLAG_KRABBY_WILD
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyWildNo, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainer::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainerNo
+	setflag FLAG_KRABBY_TRAINER
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainerYes, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainerNo::
+	clearflag FLAG_KRABBY_TRAINER
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainerNo, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvo::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyEvo, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvoNo
+	setflag FLAG_KRABBY_EVO
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyEvoYes, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvoNo::
+	clearflag FLAG_KRABBY_EVO
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyEvoNo, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyAll:
+	.string "Would you like to have\n"
+	.string "all POKéMON be KRABBY?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyYes:
+	.string "All POKéMON will\n"
+	.string "now be KRABBY.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyNo:
+	.string "All POKéMON will\n"
+	.string "be normal.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyWild:
+	.string "Would you like to have all\n"
+	.string "wild POKéMON be KRABBY?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyWildYes:
+	.string "All wild POKéMON\n"
+	.string "are now KRABBY.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyWildNo:
+	.string "Wild POKéMON will\n"
+	.string "be normal.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainer:
+	.string "Would you like all trainers'\n"
+	.string "POKéMON to be KRABBY?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainerYes:
+	.string "All trainers' POKéMON\n"
+	.string "will be KRABBY.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainerNo:
+	.string "All trainers' POKéMON\n"
+	.string "will be normal.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyEvo:
+	.string "Would you like to have all\n"
+	.string "POKéMON evolve to KRABBY?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyEvoYes:
+	.string "All POKéMON will\n"
+	.string "evolve to KRABBY.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyEvoNo:
+	.string "All POKéMON will\n"
+	.string "evolve normally.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_Challenge:
 	.string "What difficulty would\n"

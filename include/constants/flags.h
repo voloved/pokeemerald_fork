@@ -1229,9 +1229,9 @@
 #define FLAG_GRINDRUN                                               0x49C
 #define FLAG_NO_LOW_HEALTH_BEEP                                     0x49D
 #define FLAG_NO_DUPES_CLAUSE                                        0x49E
-#define FLAG_UNUSED_0x49F                                           0x49F // Unused Flag
-#define FLAG_UNUSED_0x4A0                                           0x4A0 // Unused Flag
-#define FLAG_UNUSED_0x4A1                                           0x4A1 // Unused Flag
+#define FLAG_KRABBY_WILD                                            0x49F
+#define FLAG_KRABBY_TRAINER                                         0x4A0
+#define FLAG_KRABBY_EVO                                             0x4A1
 #define FLAG_UNUSED_0x4A2                                           0x4A2 // Unused Flag
 #define FLAG_UNUSED_0x4A3                                           0x4A3 // Unused Flag
 #define FLAG_UNUSED_0x4A4                                           0x4A4 // Unused Flag
