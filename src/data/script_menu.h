@@ -791,9 +791,9 @@ static const struct MenuAction MultichoiceList_TagBirchPCOptions[] =
 static const struct MenuAction MultichoiceList_TagCarcinisation[] =
 {
     {(const u8[])_("ALL KRABBY")},
+    {(const u8[])_("EVOLVE TO KRABBY")},
     {(const u8[])_("WILD KRABBY")},
     {(const u8[])_("TRAINERS' KRABBY")},
-    {(const u8[])_("EVOLVE TO KRABBY")},
     {gText_Exit},
 };
 

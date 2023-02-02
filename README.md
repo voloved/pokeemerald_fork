@@ -13,8 +13,15 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - [Added Difficulty Mode](https://github.com/pret/pokeemerald/wiki/Add-Difficulty-Mode)
 - [Infinite TM usage](https://github.com/pret/pokeemerald/wiki/Infinite-TM-usage) [Credit: ExpoSeed]
 - [Item Automatically Goes to PC if Bag is Full](https://github.com/pret/pokeemerald/wiki/Item-Automatically-Goes-to-PC-if-Bag-is-Full)
+- [Fix AI's Switch In Battle (it will remain the same on easy difficulty)](https://github.com/pret/pokeemerald/wiki/Fix-AI's-Switch-In-Battle)
 - Bug fix on Blaziken learning Death Move.
-- Made wallclock default to Yes when asking if the setting is correct.
+- Bug fix on no effect move being orange when move has low PP.
+- Added Carcinisation mode (Everything can now evolve into Krabby, Krabby in the wild, all NPCs have Krabby).
+- Holding R when it's turbo B no longer toggles running shoes.
+- Low health beeping can be toggled off.
+- Dupes clause in Nuzlocke challenge can be toggled off.
+- Made wallclock default to 'Yes' when asking if the setting is correct.
+- [Push B in wild battle moves to Run](https://github.com/pret/pokeemerald/wiki/Push-B-in-wild-battle-moves-to-Run)
 
 ## v1.3.1
 - Diving and reflection palette fix.
@@ -40,6 +47,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Put more interesting Pokémon into the Safari Zone.
 - Added Surkit, Masquerain, Meditite, Roselia, Zangoose, and Lunatone.
 - Added ability to buy evolutionary stones and TMs from Mauville Game Corner in Lilycove Department Store.
+- Ability to restart Nuzlocke challenge after failing by talking to Hiker in House in Rustboro City.
+- Nuzlocke now counts in Safari Zone as well.
 - Electrike and Manectric can now learn Flamethrower.
 - Psyduck and Golduck can learn Fly.
 - Zangoose can learn Cut.
