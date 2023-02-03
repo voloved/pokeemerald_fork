@@ -14,6 +14,11 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - [Infinite TM usage](https://github.com/pret/pokeemerald/wiki/Infinite-TM-usage) [Credit: ExpoSeed]
 - [Item Automatically Goes to PC if Bag is Full](https://github.com/pret/pokeemerald/wiki/Item-Automatically-Goes-to-PC-if-Bag-is-Full)
 - [Fix AI's Switch In Battle (it will remain the same on easy difficulty)](https://github.com/pret/pokeemerald/wiki/Fix-AI's-Switch-In-Battle)
+- Added Nuzlocke options.
+  - Dupes Clause.
+  - Disallow overleveling Gym Leaders.
+  - Disallow shift mode.
+  - Ignore your held items.
 - Bug fix on Blaziken learning Death Move.
 - Bug fix on no effect move being orange when move has low PP.
 - Added Carcinisation mode (Everything can now evolve into Krabby, Krabby in the wild, all NPCs have Krabby).

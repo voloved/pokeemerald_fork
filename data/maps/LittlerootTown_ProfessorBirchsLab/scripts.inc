@@ -723,7 +723,8 @@ LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu::
 	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause
 	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow
 	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevel
-	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd:
 	end
@@ -750,6 +751,18 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow::
 LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallowNo::
 	clearflag FLAG_NUZLOCKE_BATTLE_SET
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallowNo, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffect, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffectNo
+	setflag FLAG_NUZLOCKE_NO_HELD_ITEMS
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectYes, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffectNo::
+	clearflag FLAG_NUZLOCKE_NO_HELD_ITEMS
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectNo, MSGBOX_SIGN
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause::
@@ -1007,6 +1020,19 @@ LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallowYes:
 LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallowNo:
 	.string "Shift mode option\n"
 	.string "is still available.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffect:
+	.string "Ignore your held\n"
+	.string "item effects?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectYes:
+	.string "Your held items will have no effect.\n"
+	.string "Your opponents' held items will\l"
+	.string "still work.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectNo:
+	.string "Your held items\n"
+	.string "will still work.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_NoOverlevel:
 	.string "No leveling above the next leader's\n"
