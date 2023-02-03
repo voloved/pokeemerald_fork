@@ -797,6 +797,14 @@ static const struct MenuAction MultichoiceList_TagCarcinisation[] =
     {gText_Exit},
 };
 
+static const struct MenuAction MultichoiceList_TagNuzlocke[] =
+{
+    {(const u8[])_("TURN OFF DUPES CLAUSE")},
+    {(const u8[])_("DISALLOW SHIFT MODE")},
+    {(const u8[])_("OVERLEVEL LEADERS")},
+    {gText_Exit},
+};
+
 static const struct MenuAction MultichoiceList_Exit[] =
 {
     {gText_Exit},
@@ -927,6 +935,7 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_TAG_DIFFICULTY]             = MULTICHOICE(MultichoiceList_TagChallenge),
     [MULTI_TAG_BIRCH_PC_OPTIONS]       = MULTICHOICE(MultichoiceList_TagBirchPCOptions),
     [MULTI_TAG_CARCINISATION]          = MULTICHOICE(MultichoiceList_TagCarcinisation),
+    [MULTI_TAG_NUZLOCKE]               = MULTICHOICE(MultichoiceList_TagNuzlocke),
 };
 
 const u8 *const gStdStrings[] =

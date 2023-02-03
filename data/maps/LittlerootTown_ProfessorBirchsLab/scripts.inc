@@ -717,17 +717,50 @@ LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeepNo::
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu::
-	goto LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause
+	message LittlerootTown_ProfessorBirchsLab_Text_NuzlockeOptions
+	multichoicedefault 0, 0, MULTI_TAG_NUZLOCKE, 0, FALSE
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevel
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
+LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd:
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevel::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoOverlevel, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevelNo
+	setflag FLAG_NUZLOCKE_LEVEL_CAP
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoOverlevelYes, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevelNo::
+	clearflag FLAG_NUZLOCKE_LEVEL_CAP
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoOverlevelNo, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallow, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallowNo
+	setflag FLAG_NUZLOCKE_BATTLE_SET
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallowYes, MSGBOX_SIGN
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallowNo::
+	clearflag FLAG_NUZLOCKE_BATTLE_SET
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallowNo, MSGBOX_SIGN
+	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause::
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoDupesClause, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClauseNo
-	setflag FLAG_NO_DUPES_CLAUSE
+	setflag FLAG_NUZLOCKE_NO_DUPES_CLAUSE
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseYes, MSGBOX_SIGN
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClauseNo::
-	clearflag FLAG_NO_DUPES_CLAUSE
+	clearflag FLAG_NUZLOCKE_NO_DUPES_CLAUSE
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseNo, MSGBOX_SIGN
 	end
 
@@ -959,6 +992,33 @@ LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseYes:
 LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseNo:
 	.string "You will use the\n"
 	.string "dupes clause.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NuzlockeOptions:
+	.string "NUZLOCKE OPTIONS$"
+
+LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallow:
+	.string "Would you like to disallow\n"
+	.string "shift mode?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallowYes:
+	.string "Shift mode has been\n"
+	.string "disallowed.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallowNo:
+	.string "Shift mode option\n"
+	.string "is still available.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoOverlevel:
+	.string "No leveling above the next leader's\n"
+	.string "highest level POKéMON?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoOverlevelYes:
+	.string "You will no longer be able to level\n"
+	.string "above the next leader's POKéMON.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoOverlevelNo:
+	.string "You can level above the\n"
+	.string "next Gym Leader.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchAwayOnFieldwork:
 	.string "Hunh? PROF. BIRCH?\p"

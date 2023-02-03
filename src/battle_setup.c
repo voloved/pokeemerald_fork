@@ -1958,6 +1958,42 @@ u16 CountBattledRematchTeams(u16 trainerId)
     return i;
 }
 
+bool8 levelCappedNuzlocke(u8 level){
+    u8 levelCap = 0;
+    u16 nextLeader, i;
+    const struct TrainerMonItemCustomMoves *partyData;
+    if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_NUZLOCKE_LEVEL_CAP)){
+        return FALSE;
+    }
+    if (!FlagGet(FLAG_BADGE01_GET))
+        nextLeader = TRAINER_ROXANNE_1;
+    else if (!FlagGet(FLAG_BADGE02_GET))
+        nextLeader = TRAINER_BRAWLY_1;
+    else if (!FlagGet(FLAG_BADGE03_GET))
+        nextLeader = TRAINER_WATTSON_1;
+    else if (!FlagGet(FLAG_BADGE04_GET))
+        nextLeader = TRAINER_FLANNERY_1;
+    else if (!FlagGet(FLAG_BADGE05_GET))
+        nextLeader = TRAINER_NORMAN_1;
+    else if (!FlagGet(FLAG_BADGE06_GET))
+        nextLeader = TRAINER_WINONA_1;
+    else if (!FlagGet(FLAG_BADGE07_GET))
+        nextLeader = TRAINER_TATE_AND_LIZA_1;
+    else if (!FlagGet(FLAG_BADGE08_GET))
+        nextLeader = TRAINER_JUAN_1;
+    else if (!FlagGet(FLAG_IS_CHAMPION))
+        nextLeader = TRAINER_WALLACE;
+
+    partyData = gTrainers[nextLeader].party.ItemCustomMoves;
+    for (i = 0; i < gTrainers[nextLeader].partySize; i++){
+        if (partyData[i].lvl > levelCap)
+            levelCap = partyData[i].lvl;
+    }
+    if (level >= levelCap)
+        return TRUE;
+    return FALSE;
+}
+
 u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
     u8 varToCheck, bitToCheck;
     u16 varValue;
@@ -2287,7 +2323,7 @@ u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
     }
     else if (setVarForThisEnc){
         u16 species_enemy = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)]], MON_DATA_SPECIES2);
-        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species_enemy), FLAG_GET_CAUGHT) && !FlagGet(FLAG_NO_DUPES_CLAUSE)){
+        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species_enemy), FLAG_GET_CAUGHT) && !FlagGet(FLAG_NUZLOCKE_NO_DUPES_CLAUSE)){
             return 2;  // If it's a duplicate Pokemon
         }
         VarSet(pkmnSeenVars[varToCheck], varValue | (1 << bitToCheck));

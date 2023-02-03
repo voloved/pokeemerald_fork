@@ -3185,7 +3185,7 @@ static void BattleStartClearSetData(void)
     else if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK)) && GetBattleSceneInRecordedBattle())
         gHitMarker |= HITMARKER_NO_ANIMATIONS;
 
-    gBattleScripting.battleStyle = gSaveBlock2Ptr->optionsBattleStyle;
+    gBattleScripting.battleStyle = gSaveBlock2Ptr->optionsBattleStyle || (FlagGet(FLAG_NUZLOCKE_BATTLE_SET) && FlagGet(FLAG_NUZLOCKE));
 
     gMultiHitCounter = 0;
     gBattleOutcome = 0;

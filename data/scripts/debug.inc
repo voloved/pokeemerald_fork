@@ -52,6 +52,7 @@ Debug_Script_2::
 
 Debug_Script_3::
 	clearflag FLAG_NUZLOCKE
+	clearflag FLAG_NUZLOCKE_LOST
 	end
 
 Debug_Script_4::

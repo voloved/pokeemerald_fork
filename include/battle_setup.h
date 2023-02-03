@@ -67,6 +67,7 @@ void ShouldTryGetTrainerScript(void);
 u16 CountBattledRematchTeams(u16 trainerId);
 u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc);
 u8 currLocConvertForNuzlocke(u8 currLocation);
+bool8 levelCappedNuzlocke(u8 level);
 
 
 void DoStandardWildBattle_Debug(void);
