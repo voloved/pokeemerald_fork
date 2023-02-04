@@ -672,10 +672,11 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	switch VAR_RESULT
 	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro
 	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_Challenge
-	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun
-	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
-	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
-	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMult
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
+	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
 	end
@@ -927,6 +928,75 @@ LittlerootTown_ProfessorBirchsLab_EventScript_SelectedEasy:
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMult::
+	message LittlerootTown_ProfessorBirchsLab_Text_ExpMult
+	waitmessage
+	switch VAR_EXP_MULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultTimesOne
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultTimesTwo
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultTimesFour
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultDivideTwo
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultZero
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultTimesOne:
+	multichoicedefault 26, 2, MULTI_TAG_EXP_MULT, 2, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultTimesTwo:
+	multichoicedefault 26, 2, MULTI_TAG_EXP_MULT, 3, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultTimesFour:
+	multichoicedefault 26, 2, MULTI_TAG_EXP_MULT, 4, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultDivideTwo:
+	multichoicedefault 26, 2, MULTI_TAG_EXP_MULT, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultZero:
+	multichoicedefault 26, 2, MULTI_TAG_EXP_MULT, 0, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultSelect:
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultZero
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultDivideTwo
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesOne
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesTwo
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesFour
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultZero:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedMultZero, MSGBOX_DEFAULT
+	setvar VAR_EXP_MULT, 4
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultDivideTwo:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedMultDivideTwo, MSGBOX_DEFAULT
+	setvar VAR_EXP_MULT, 3
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesOne:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedMultTimesOne, MSGBOX_DEFAULT
+	setvar VAR_EXP_MULT, 0
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesTwo:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedMultTimesTwo, MSGBOX_DEFAULT
+	setvar VAR_EXP_MULT, 1
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesFour:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedMultTimesFour, MSGBOX_DEFAULT
+	setvar VAR_EXP_MULT, 2
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
 LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation::
 	multichoicedefault 0, 0, MULTI_TAG_CARCINISATION, 0, FALSE
 	switch VAR_RESULT
@@ -1092,6 +1162,30 @@ LittlerootTown_ProfessorBirchsLab_Text_SelectedNormal:
 LittlerootTown_ProfessorBirchsLab_Text_SelectedHard:
 	.string "Hard difficulty\n"
 	.string "was chosen.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_ExpMult:
+	.string "What would you like to\n"
+	.string "multiply your EXP with?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedMultZero:
+	.string "EXP gain will\n"
+	.string "be zero.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedMultDivideTwo:
+	.string "EXP gain will\n"
+	.string "be halved.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedMultTimesOne:
+	.string "EXP gain will\n"
+	.string "be normal.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedMultTimesTwo:
+	.string "EXP gain will\n"
+	.string "be doubled.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedMultTimesFour:
+	.string "EXP gain will\n"
+	.string "be quadrupled.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SkipIntro:
 	.string "Would you like to skip\n"

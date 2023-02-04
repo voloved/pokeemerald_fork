@@ -3307,6 +3307,24 @@ static void Cmd_getexp(void)
 
             calculatedExp = gSpeciesInfo[gBattleMons[gBattlerFainted].species].expYield * gBattleMons[gBattlerFainted].level / 7;
 
+            switch(VarGet(VAR_EXP_MULT))
+            {
+                case 1:
+                    calculatedExp = calculatedExp * 2;
+                    break;
+                case 2:
+                    calculatedExp = calculatedExp * 4;
+                    break;
+                case 3:
+                    calculatedExp = calculatedExp / 2;
+                    if(calculatedExp == 0)
+                        calculatedExp = 1;
+                    break;
+                case 4:
+                    calculatedExp = 0;
+                    break;
+            }
+
             if (viaExpShare) // at least one mon is getting exp via exp share
             {
                 *exp = SAFE_DIV(calculatedExp / 2, viaSentIn);
@@ -3347,7 +3365,8 @@ static void Cmd_getexp(void)
                 gBattleMoveDamage = 0; // used for exp
             }
             else if (GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL) == MAX_LEVEL
-            || levelCappedNuzlocke(GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL)))
+            || levelCappedNuzlocke(GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL))
+            || VarGet(VAR_EXP_MULT) == 4)
             {
                 *(&gBattleStruct->sentInPokes) >>= 1;
                 gBattleScripting.getexpState = 5;

@@ -782,6 +782,7 @@ static const struct MenuAction MultichoiceList_TagBirchPCOptions[] =
 {
     {(const u8[])_("SKIP INTRO")},
     {(const u8[])_("DIFFICULTY")},
+    {(const u8[])_("EXP MULTIPLIER")},
     {(const u8[])_("GRINDRUN")},
     {(const u8[])_("LOW HEALTH BEEP")},
     {(const u8[])_("CARCINISATION")},
@@ -804,6 +805,15 @@ static const struct MenuAction MultichoiceList_TagNuzlocke[] =
     {(const u8[])_("OVERLEVEL LEADERS")},
     {(const u8[])_("IGNORE HELD ITEMS")},
     {gText_Exit},
+};
+
+static const struct MenuAction MultichoiceList_TagExpMult[] =
+{
+    {(const u8[])_("x0")},
+    {(const u8[])_("/2")},
+    {(const u8[])_("x1")},
+    {(const u8[])_("x2")},
+    {(const u8[])_("x4")},
 };
 
 static const struct MenuAction MultichoiceList_Exit[] =
@@ -937,6 +947,7 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_TAG_BIRCH_PC_OPTIONS]       = MULTICHOICE(MultichoiceList_TagBirchPCOptions),
     [MULTI_TAG_CARCINISATION]          = MULTICHOICE(MultichoiceList_TagCarcinisation),
     [MULTI_TAG_NUZLOCKE]               = MULTICHOICE(MultichoiceList_TagNuzlocke),
+    [MULTI_TAG_EXP_MULT]               = MULTICHOICE(MultichoiceList_TagExpMult),    
 };
 
 const u8 *const gStdStrings[] =
