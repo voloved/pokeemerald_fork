@@ -778,33 +778,12 @@ static const struct MenuAction MultichoiceList_TagChallenge[] =
     {gText_Hard},
 };
 
-static const struct MenuAction MultichoiceList_TagBirchPCOptions[] =
-{
-    {(const u8[])_("SKIP INTRO")},
-    {(const u8[])_("DIFFICULTY")},
-    {(const u8[])_("EXP MULTIPLIER")},
-    {(const u8[])_("GRINDRUN")},
-    {(const u8[])_("LOW HEALTH BEEP")},
-    {(const u8[])_("CARCINISATION")},
-    {gText_Exit},
-};
-
 static const struct MenuAction MultichoiceList_TagCarcinisation[] =
 {
     {(const u8[])_("ALL KRABBY")},
     {(const u8[])_("EVOLVE TO KRABBY")},
     {(const u8[])_("WILD KRABBY")},
     {(const u8[])_("TRAINERS' KRABBY")},
-    {gText_Exit},
-};
-
-static const struct MenuAction MultichoiceList_TagNuzlocke[] =
-{
-    {(const u8[])_("TURN OFF DUPES CLAUSE")},
-    {(const u8[])_("DISALLOW SHIFT MODE")},
-    {(const u8[])_("OVERLEVEL LEADERS")},
-    {(const u8[])_("DISALLOW BATTLE ITEMS")},
-    {(const u8[])_("IGNORE HELD ITEMS")},
     {gText_Exit},
 };
 
@@ -945,9 +924,7 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_FALLARBOR_TENT_RULES]       = MULTICHOICE(MultichoiceList_FallarborTentRules),
     [MULTI_TAG_MATCH_TYPE]             = MULTICHOICE(MultichoiceList_TagMatchType),
     [MULTI_TAG_DIFFICULTY]             = MULTICHOICE(MultichoiceList_TagChallenge),
-    [MULTI_TAG_BIRCH_PC_OPTIONS]       = MULTICHOICE(MultichoiceList_TagBirchPCOptions),
     [MULTI_TAG_CARCINISATION]          = MULTICHOICE(MultichoiceList_TagCarcinisation),
-    [MULTI_TAG_NUZLOCKE]               = MULTICHOICE(MultichoiceList_TagNuzlocke),
     [MULTI_TAG_EXP_MULT]               = MULTICHOICE(MultichoiceList_TagExpMult),    
 };
 

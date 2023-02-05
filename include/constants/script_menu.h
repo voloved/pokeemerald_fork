@@ -123,10 +123,8 @@
 #define MULTI_FALLARBOR_TENT_RULES         112
 #define MULTI_TAG_MATCH_TYPE               113
 #define MULTI_TAG_DIFFICULTY               114
-#define MULTI_TAG_BIRCH_PC_OPTIONS         115
 #define MULTI_TAG_CARCINISATION            116
-#define MULTI_TAG_NUZLOCKE                 117
-#define MULTI_TAG_EXP_MULT                 118
+#define MULTI_TAG_EXP_MULT                 117
 
 // Lilycove SS Tidal Multichoice Selections
 #define SSTIDAL_SELECTION_SLATEPORT        0
@@ -169,5 +167,10 @@
 #define STDSTRING_BATTLE_ARENA     27
 #define STDSTRING_BATTLE_PIKE      28
 #define STDSTRING_BATTLE_PYRAMID   29
+
+// Dynamic Multichoice Callbacks
+#define DYN_MULTICHOICE_CB_DEBUG      0
+#define DYN_MULTICHOICE_CB_SHOW_ITEM  1
+#define DYN_MULTICHOICE_CB_NONE       255
 
 #endif //GUARD_SCRIPT_MENU_CONSTANTS_H

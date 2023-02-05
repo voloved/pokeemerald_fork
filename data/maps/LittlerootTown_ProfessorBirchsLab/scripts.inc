@@ -668,7 +668,8 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall::
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
-	multichoicedefault 0, 0, MULTI_TAG_BIRCH_PC_OPTIONS, 0, FALSE
+	waitmessage
+	call EventScript_Multichoice_BirchPCOptions
 	switch VAR_RESULT
 	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro
 	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_Challenge
@@ -680,6 +681,35 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
 	end
+
+EventScript_Multichoice_BirchPCOptions::
+	goto_if_set FLAG_SKIP_INTRO, EventScript_Multichoice_BirchPCOptions_2
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_1, 0
+EventScript_Multichoice_BirchPCOptions_1:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_2, 1
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_3, 2
+	goto_if_set FLAG_GRINDRUN, EventScript_Multichoice_BirchPCOptions_6
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_5, 3
+EventScript_Multichoice_BirchPCOptions_5:
+	goto_if_set FLAG_NO_LOW_HEALTH_BEEP, EventScript_Multichoice_BirchPCOptions_10
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_7, 4
+EventScript_Multichoice_BirchPCOptions_9:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_8, 5
+	dynmultipush EventScript_Multichoice_Exit, 6
+	dynmultistack 0, 0, TRUE, 10, FALSE, 0, DYN_MULTICHOICE_CB_NONE
+	return
+
+EventScript_Multichoice_BirchPCOptions_2:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_0, 0
+	goto EventScript_Multichoice_BirchPCOptions_1
+
+EventScript_Multichoice_BirchPCOptions_6:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_4, 3
+	goto EventScript_Multichoice_BirchPCOptions_5
+
+EventScript_Multichoice_BirchPCOptions_10:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_6, 4
+	goto EventScript_Multichoice_BirchPCOptions_9
 
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
 	message LittlerootTown_ProfessorBirchsLab_Text_SkipIntro
@@ -745,8 +775,9 @@ LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeepNo::
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu::
+	waitmessage
 	message LittlerootTown_ProfessorBirchsLab_Text_NuzlockeOptions
-	multichoicedefault 0, 0, MULTI_TAG_NUZLOCKE, 0, FALSE
+	call EventScript_Multichoice_NuzlockeMenu
 	switch VAR_RESULT
 	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause
 	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow
@@ -758,6 +789,46 @@ LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu::
 LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd:
 	closemessage
 	end
+
+EventScript_Multichoice_NuzlockeMenu::
+	goto_if_set FLAG_NUZLOCKE_NO_DUPES_CLAUSE, EventScript_Multichoice_NuzlockeMenu_2
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_1, 0
+EventScript_Multichoice_NuzlockeMenu_1:
+	goto_if_set FLAG_NUZLOCKE_BATTLE_SET, EventScript_Multichoice_NuzlockeMenu_6
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_3, 1
+EventScript_Multichoice_NuzlockeMenu_5:
+	goto_if_set FLAG_NUZLOCKE_LEVEL_CAP, EventScript_Multichoice_NuzlockeMenu_10
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_5, 2
+EventScript_Multichoice_NuzlockeMenu_9:
+	goto_if_set FLAG_NUZLOCKE_NO_BATTLE_ITEMS, EventScript_Multichoice_NuzlockeMenu_14
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_7, 3
+EventScript_Multichoice_NuzlockeMenu_13:
+	goto_if_set FLAG_NUZLOCKE_NO_HELD_ITEMS, EventScript_Multichoice_NuzlockeMenu_18
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_9, 4
+EventScript_Multichoice_NuzlockeMenu_17:
+	dynmultipush EventScript_Multichoice_Exit, 5
+	dynmultistack 0, 0, TRUE, 8, FALSE, 0, DYN_MULTICHOICE_CB_NONE
+	return
+
+EventScript_Multichoice_NuzlockeMenu_2:
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_0, 0
+	goto EventScript_Multichoice_NuzlockeMenu_1
+
+EventScript_Multichoice_NuzlockeMenu_6:
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_2, 1
+	goto EventScript_Multichoice_NuzlockeMenu_5
+
+EventScript_Multichoice_NuzlockeMenu_10:
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_4, 2
+	goto EventScript_Multichoice_NuzlockeMenu_9
+
+EventScript_Multichoice_NuzlockeMenu_14:
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_6, 3
+	goto EventScript_Multichoice_NuzlockeMenu_13
+
+EventScript_Multichoice_NuzlockeMenu_18:
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_8, 4
+	goto EventScript_Multichoice_NuzlockeMenu_17
 
 LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges::
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoChanges, MSGBOX_SIGN
@@ -1024,7 +1095,8 @@ LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesFour:
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation::
-	multichoicedefault 0, 0, MULTI_TAG_CARCINISATION, 0, FALSE
+	waitmessage
+	call EventScript_Multichoice_Carcinisation
 	switch VAR_RESULT
 	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAll
 	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvo
@@ -1034,6 +1106,33 @@ LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation::
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 LittlerootTown_ProfessorBirchsLab_EventScript_CarcinisationEnd:
 	end
+
+EventScript_Multichoice_Carcinisation::
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_0, 0
+	goto_if_set FLAG_KRABBY_EVO, EventScript_Multichoice_Carcinisation_2
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_2, 1
+EventScript_Multichoice_Carcinisation_1:
+	goto_if_set FLAG_KRABBY_WILD, EventScript_Multichoice_Carcinisation_6
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_4, 2
+EventScript_Multichoice_Carcinisation_5:
+	goto_if_set FLAG_KRABBY_TRAINER, EventScript_Multichoice_Carcinisation_10
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_6, 3
+EventScript_Multichoice_Carcinisation_9:
+	dynmultipush EventScript_Multichoice_Exit, 4
+	dynmultistack 0, 0, TRUE, 10, FALSE, 0, DYN_MULTICHOICE_CB_NONE
+	return
+
+EventScript_Multichoice_Carcinisation_2:
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_1, 1
+	goto EventScript_Multichoice_Carcinisation_1
+
+EventScript_Multichoice_Carcinisation_6:
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_3, 2
+	goto EventScript_Multichoice_Carcinisation_5
+
+EventScript_Multichoice_Carcinisation_10:
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_5, 3
+	goto EventScript_Multichoice_Carcinisation_9
 
 LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAll::
 	message LittlerootTown_ProfessorBirchsLab_Text_KrabbyAll
@@ -1124,6 +1223,87 @@ LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainerNo::
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainerNo, MSGBOX_SIGN
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
 	end
+
+EventScript_Multichoice_BirchPCOptions_Text_0:
+	.string "{COLOR GREEN}SKIP INTRO$"
+
+EventScript_Multichoice_BirchPCOptions_Text_1:
+	.string "{COLOR RED}SKIP INTRO$"
+
+EventScript_Multichoice_BirchPCOptions_Text_2:
+	.string "DIFFICULTY$"
+
+EventScript_Multichoice_BirchPCOptions_Text_3:
+	.string "EXP MULTIPLIER$"
+
+EventScript_Multichoice_BirchPCOptions_Text_4:
+	.string "{COLOR GREEN}GRINDRUN$"
+
+EventScript_Multichoice_BirchPCOptions_Text_5:
+	.string "{COLOR RED}GRINDRUN$"
+
+EventScript_Multichoice_BirchPCOptions_Text_6:
+	.string "{COLOR GREEN}LOW HEALTH BEEP$"
+
+EventScript_Multichoice_BirchPCOptions_Text_7:
+	.string "{COLOR RED}LOW HEALTH BEEP$"
+
+EventScript_Multichoice_BirchPCOptions_Text_8:
+	.string "CARCINISATION$"
+
+EventScript_Multichoice_Exit:
+	.string "EXIT$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_0:
+	.string "{COLOR GREEN}TURN OFF DUPES CLAUSE$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_1:
+	.string "{COLOR RED}TURN OFF DUPES CLAUSE$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_2:
+	.string "{COLOR GREEN}DISALLOW SHIFT MODE$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_3:
+	.string "{COLOR RED}DISALLOW SHIFT MODE$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_4:
+	.string "{COLOR GREEN}OVERLEVEL LEADERS$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_5:
+	.string "{COLOR RED}OVERLEVEL LEADERS$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_6:
+	.string "{COLOR GREEN}DISALLOW BATTLE ITEMS$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_7:
+	.string "{COLOR RED}DISALLOW BATTLE ITEMS$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_8:
+	.string "{COLOR GREEN}IGNORE HELD ITEMS$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_9:
+	.string "{COLOR RED}IGNORE HELD ITEMS$"
+
+EventScript_Multichoice_Carcinisation_Text_0:
+	.string "ALL KRABBY$"
+
+EventScript_Multichoice_Carcinisation_Text_1:
+	.string "{COLOR GREEN}EVOLVE TO KRABBY$"
+
+EventScript_Multichoice_Carcinisation_Text_2:
+	.string "{COLOR RED}EVOLVE TO KRABBY$"
+
+EventScript_Multichoice_Carcinisation_Text_3:
+	.string "{COLOR GREEN}WILD KRABBY$"
+
+EventScript_Multichoice_Carcinisation_Text_4:
+	.string "{COLOR RED}WILD KRABBY$"
+
+EventScript_Multichoice_Carcinisation_Text_5:
+	.string "{COLOR GREEN}TRAINERS' KRABBY$"
+
+EventScript_Multichoice_Carcinisation_Text_6:
+	.string "{COLOR RED}TRAINERS' KRABBY$"
 
 LittlerootTown_ProfessorBirchsLab_Text_KrabbyAll:
 	.string "Would you like to have\n"
