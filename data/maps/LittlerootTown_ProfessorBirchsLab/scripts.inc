@@ -751,8 +751,9 @@ LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu::
 	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause
 	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow
 	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevel
-	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect
-	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect
+	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd:
 	closemessage
@@ -829,6 +830,31 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallowNo::
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
 	end
 
+LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems::
+	message LittlerootTown_ProfessorBirchsLab_Text_NoBattleItems
+	goto_if_set FLAG_NUZLOCKE_NO_BATTLE_ITEMS, LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItemsNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Nuzlocke_Menu
+	setflag FLAG_NUZLOCKE_NO_BATTLE_ITEMS
+	message LittlerootTown_ProfessorBirchsLab_Text_NoBattleItemsYes
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItemsNo::
+	clearflag FLAG_NUZLOCKE_NO_BATTLE_ITEMS
+	message LittlerootTown_ProfessorBirchsLab_Text_NoBattleItemsYes
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
 LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect::
 	message LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffect
 	goto_if_set FLAG_NUZLOCKE_NO_HELD_ITEMS, LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect_Set
@@ -848,7 +874,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect_Cont:
 
 LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffectNo::
 	clearflag FLAG_NUZLOCKE_NO_HELD_ITEMS
-	message LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectYes
+	message LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectNo
 	waitmessage
 	waitbuttonpress
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
@@ -1260,6 +1286,18 @@ LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectYes:
 LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectNo:
 	.string "Your held items\n"
 	.string "will still work.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoBattleItems:
+	.string "Disallow using items\n"
+	.string "in battle?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoBattleItemsYes:
+	.string "You can no longer use\n"
+	.string "items in battle.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoBattleItemsNo:
+	.string "You can still use\n"
+	.string "items in battle.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_NoOverlevel:
 	.string "No leveling above the next leader's\n"

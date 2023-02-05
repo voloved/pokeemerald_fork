@@ -1235,7 +1235,7 @@
 #define FLAG_NUZLOCKE_BATTLE_SET                                    0x4A2
 #define FLAG_NUZLOCKE_LEVEL_CAP                                     0x4A3
 #define FLAG_NUZLOCKE_NO_HELD_ITEMS                                 0x4A4
-#define FLAG_UNUSED_0x4A5                                           0x4A5 // Unused Flag
+#define FLAG_NUZLOCKE_NO_BATTLE_ITEMS                               0x4A5
 #define FLAG_UNUSED_0x4A6                                           0x4A6 // Unused Flag
 #define FLAG_UNUSED_0x4A7                                           0x4A7 // Unused Flag
 #define FLAG_UNUSED_0x4A8                                           0x4A8 // Unused Flag

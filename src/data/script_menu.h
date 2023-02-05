@@ -803,6 +803,7 @@ static const struct MenuAction MultichoiceList_TagNuzlocke[] =
     {(const u8[])_("TURN OFF DUPES CLAUSE")},
     {(const u8[])_("DISALLOW SHIFT MODE")},
     {(const u8[])_("OVERLEVEL LEADERS")},
+    {(const u8[])_("DISALLOW BATTLE ITEMS")},
     {(const u8[])_("IGNORE HELD ITEMS")},
     {gText_Exit},
 };
