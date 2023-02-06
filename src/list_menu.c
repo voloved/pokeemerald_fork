@@ -96,6 +96,7 @@ static EWRAM_DATA struct {
 } sMysteryGiftLinkMenu = {0};
 
 EWRAM_DATA struct ScrollArrowsTemplate gTempScrollArrowTemplate = {0};
+EWRAM_DATA bool8 gWrapForDynamic = FALSE;
 
 // IWRAM common
 struct {
@@ -727,6 +728,10 @@ static u8 ListMenuUpdateSelectedRowIndexAndScrollOffset(struct ListMenu *list, b
 
         if (scrollOffset == 0)
         {
+            if (gWrapForDynamic && selectedRow == 0 && list->template.maxShowed == list->template.totalItems){
+                list->selectedRow = list->template.totalItems - 1;
+                return 1;
+            }
             while (selectedRow != 0)
             {
                 selectedRow--;
@@ -763,6 +768,10 @@ static u8 ListMenuUpdateSelectedRowIndexAndScrollOffset(struct ListMenu *list, b
 
         if (scrollOffset == list->template.totalItems - list->template.maxShowed)
         {
+            if (gWrapForDynamic && selectedRow >= list->template.totalItems - 1 && list->template.maxShowed == list->template.totalItems){
+                list->selectedRow = 0;
+                return 1;
+            }
             while (selectedRow < list->template.maxShowed - 1)
             {
                 selectedRow++;
