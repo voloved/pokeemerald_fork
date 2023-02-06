@@ -364,6 +364,22 @@ MossdeepCity_SpaceCenter_2F_EventScript_BrendanRayquazaCall::
 	waitmessage
 	return
 
+MossdeepCity_SpaceCenter_2F_EventScript_LabEquip::
+	goto_if_unset FLAG_NUZLOCKE, MossdeepCity_SpaceCenter_2F_EventScript_NoDeoxys
+	goto_if_unset FLAG_NUZLOCKE_LOST, MossdeepCity_SpaceCenter_2F_EventScript_NoDeoxys
+	goto_if_set FLAG_RECEIVED_AURORA_TICKET, MossdeepCity_SpaceCenter_2F_EventScript_NoDeoxys
+	goto_if_set FLAG_DEFEATED_DEOXYS, MossdeepCity_SpaceCenter_2F_EventScript_NoDeoxys
+	checkitem ITEM_AURORA_TICKET
+	goto_if_eq VAR_RESULT, TRUE, MossdeepCity_SpaceCenter_2F_EventScript_NoDeoxys
+	checkitemspace ITEM_AURORA_TICKET
+	goto_if_eq VAR_RESULT, FALSE, LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapBagFull
+	msgbox LilycoveCity_Harbor_Text_NuzlockeRun, MSGBOX_SIGN
+	giveitem ITEM_AURORA_TICKET
+	setflag FLAG_ENABLE_SHIP_BIRTH_ISLAND
+	setflag FLAG_RECEIVED_AURORA_TICKET
+	msgbox LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapUseAtPort, MSGBOX_SIGN
+	end
+
 MossdeepCity_SpaceCenter_2F_Text_MossdeepIdealForRockets:
 	.string "MOSSDEEP has mainly sunny weather,\n"
 	.string "and its winds are stable.\p"
@@ -513,3 +529,11 @@ MossdeepCity_SpaceCenter_2F_Text_StevenThankYouComeSeeMeAtHome:
 	.string "after this.\p"
 	.string "Oh, yes, I don't live in RUSTBORO CITY.\n"
 	.string "I live right here on this island.$"
+
+MossdeepCity_SpaceCenter_2F_EventScript_NoDeoxys::
+	msgbox MossdeepCity_SpaceCenter_2F_Text_LabEquip, MSGBOX_SIGN
+	end
+
+MossdeepCity_SpaceCenter_2F_Text_LabEquip:
+	.string "It's some sort of\n"
+	.string "lab equipment.$"
