@@ -728,7 +728,7 @@ static const u8 sMachoBraceDesc[] = _(
     "promotes growth,\n"
     "but reduces SPEED.");
 
-static const u8 sExpShareDesc[] = _(
+static const u8 sExpAllDesc[] = _(
     "A hold item that\n"
     "gives all in party\n"
     "EXP. points.");
@@ -805,7 +805,7 @@ static const u8 sFocusBandDesc[] = _(
 
 static const u8 sLuckyEggDesc[] = _(
     "A hold item that\n"
-    "boosts EXP. points\n"
+    "triples EXP. points\n"
     "earned in battle.");
 
 static const u8 sScopeLensDesc[] = _(

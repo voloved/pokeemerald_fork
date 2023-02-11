@@ -57,6 +57,7 @@ static const u8 sText_PlayerLostToEnemyTrainer[] = _("{B_PLAYER_NAME} is out of\
 static const u8 sText_PlayerPaidPrizeMoney[] = _("{B_PLAYER_NAME} paid ¥{B_BUFF1} as the prize\nmoney…\p{B_PLAYER_NAME} whited out!{PAUSE_UNTIL_PRESS}");
 static const u8 sText_Trainer1LoseText[] = _("{B_TRAINER1_LOSE_TEXT}");
 static const u8 sText_PkmnGainedEXP[] = _("{B_BUFF1} gained{B_BUFF2}\n{B_BUFF3} EXP. Points!\p");
+static const u8 sText_PkmnGainedEXPAll[] = _("{B_BUFF1} gained\n{B_BUFF3} EXP. Points!\pEXP ALL gave at least {B_BUFF2} EXP\nto all others in the party.\p");
 static const u8 sText_EmptyString4[] = _("");
 static const u8 sText_ABoosted[] = _(" a boosted");
 static const u8 sText_PkmnGrewToLv[] = _("{B_BUFF1} grew to\nLV. {B_BUFF2}!{WAIT_SE}\p");
@@ -900,6 +901,7 @@ const u8 * const gBattleStringsTable[BATTLESTRINGS_COUNT - BATTLESTRINGS_TABLE_S
     [STRINGID_TOOMANYWITNESSES - BATTLESTRINGS_TABLE_START] = sText_TooManyWitnesses,
     [STRINGID_GOTCHAPKMNCAUGHTNOBGM - BATTLESTRINGS_TABLE_START] = sText_GotchaPkmnCaughtNoBgm,
     [STRINGID_CANTWITHNUZLOCKE - BATTLESTRINGS_TABLE_START] = sText_CantWithNuzlocke,
+    [STRINGID_PKMNGAINEDEXPALL - BATTLESTRINGS_TABLE_START] = sText_PkmnGainedEXPAll,
 };
 
 const u16 gMissStringIds[] =

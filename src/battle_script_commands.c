@@ -3253,7 +3253,7 @@ static bool8 hasExpAll(void)
     u16 item;
     for (i = 0; i < PARTY_SIZE; i++){
         item = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
-        if (ItemId_GetHoldEffect(item) == HOLD_EFFECT_EXP_SHARE){
+        if (ItemId_GetHoldEffect(item) == HOLD_EFFECT_EXP_ALL){
             return TRUE;
         }
     }
@@ -3266,7 +3266,7 @@ static void Cmd_getexp(void)
     s32 i; // also used as stringId
     u8 holdEffect;
     s32 sentIn;
-    s32 viaExpShare = 0;
+    s32 viaExpAll = 0;
     u16 *exp = &gBattleStruct->expValue;
 
     gBattlerFainted = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
@@ -3316,7 +3316,7 @@ static void Cmd_getexp(void)
                     holdEffect = ItemId_GetHoldEffect(item);
 
                 if (hasExpAll())
-                    viaExpShare++;
+                    viaExpAll++;
             }
 
             calculatedExp = gSpeciesInfo[gBattleMons[gBattlerFainted].species].expYield * gBattleMons[gBattlerFainted].level / 7;
@@ -3339,22 +3339,22 @@ static void Cmd_getexp(void)
                     break;
             }
 
-            if (viaExpShare) // at least one mon is getting exp via exp share
+            if (viaExpAll) // at least one mon is getting exp via exp share
             {
                 *exp = SAFE_DIV(calculatedExp, viaSentIn);
                 if (*exp == 0)
                     *exp = 1;
 
-                gExpShareExp = calculatedExp / 2;
-                if (gExpShareExp == 0)
-                    gExpShareExp = 1;
+                gExpAllExp = calculatedExp / 2;
+                if (gExpAllExp == 0)
+                    gExpAllExp = 1;
             }
             else
             {
                 *exp = SAFE_DIV(calculatedExp, viaSentIn);
                 if (*exp == 0)
                     *exp = 1;
-                gExpShareExp = 0;
+                gExpAllExp = 0;
             }
 
             gBattleScripting.getexpState++;
@@ -3400,13 +3400,13 @@ static void Cmd_getexp(void)
                 {
                     if (gBattleStruct->sentInPokes & 1)
                         gBattleMoveDamage = *exp;
+                    else if (hasExpAll())
+                        gBattleMoveDamage += gExpAllExp;
                     else
                         gBattleMoveDamage = 0;
 
-                    if (hasExpAll())
-                        gBattleMoveDamage += gExpShareExp;
                     if (holdEffect == HOLD_EFFECT_LUCKY_EGG)
-                        gBattleMoveDamage = (gBattleMoveDamage * 150) / 100;
+                        gBattleMoveDamage = gBattleMoveDamage * 3;
                     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
                         gBattleMoveDamage = (gBattleMoveDamage * 150) / 100;
 
@@ -3452,7 +3452,12 @@ static void Cmd_getexp(void)
                     PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff3, 5, gBattleMoveDamage);
 
                     if (gBattleStruct->sentInPokes & 1)
-                        PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gBattleStruct->expGetterBattlerId);
+                        if (hasExpAll()){
+                            PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff2, 5, gExpAllExp);
+                            PrepareStringBattle(STRINGID_PKMNGAINEDEXPALL, gBattleStruct->expGetterBattlerId);
+                        }
+                        else
+                            PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gBattleStruct->expGetterBattlerId);
                     MonGainEVs(&gPlayerParty[gBattleStruct->expGetterMonId], gBattleMons[gBattlerFainted].species);
                 }
                 gBattleStruct->sentInPokes >>= 1;
