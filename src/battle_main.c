@@ -5219,8 +5219,6 @@ static void HandleEndTurn_MonFled(void)
 static void HandleEndTurn_FinishBattle(void)
 {
     gNuzlockeCannotCatch = 0;  // While not necissary, resetting this is nice to stay deterministic
-    gBattleMons[B_SIDE_OPPONENT].species = SPECIES_NONE;  // So the "Choose a Pkmn message doesn't include the last mon battled."
-    *(gBattleStruct->monToSwitchIntoId + B_SIDE_OPPONENT) = SPECIES_NONE;  // Should already be none at the end of a battle, but better to be explicit
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
         if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK
