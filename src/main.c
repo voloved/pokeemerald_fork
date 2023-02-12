@@ -24,6 +24,9 @@
 #include "main.h"
 #include "trainer_hill.h"
 #include "constants/rgb.h"
+#include "wallclock.h"
+#include "union_room_chat.h"
+#include "slot_machine.h"
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -287,7 +290,7 @@ static void ReadKeys(void)
             gMain.heldKeys |= A_BUTTON;
             gMain.newKeys ^= A_BUTTON;
         }
-        if(JOY_HELD(R_BUTTON) && (gMain.callback2 == BattleMainCB2 || gMain.callback2 == CB2_Overworld)){
+        if(JOY_HELD(R_BUTTON) && (gMain.callback2 != CB2_ViewWallClock && gMain.callback2 != CB2_UnionRoomChatMain && gMain.callback2 != CB2_SlotMachine)){
             gMain.newKeys ^= B_BUTTON;
         }
     }

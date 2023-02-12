@@ -199,9 +199,7 @@ struct MessageWindowInfo
 };
 
 static void InitUnionRoomChat(struct UnionRoomChat *);
-static void CB2_LoadInterface(void);
 static void VBlankCB_UnionRoomChatMain(void);
-static void CB2_UnionRoomChatMain(void);
 static void Task_HandlePlayerInput(u8 taskId);
 static void Chat_Join(void);
 static void Chat_HandleInput(void);
@@ -931,7 +929,7 @@ static void FreeUnionRoomChat(void)
     Free(sChat);
 }
 
-static void CB2_LoadInterface(void)
+void CB2_LoadInterface(void)
 {
     switch (gMain.state)
     {
@@ -974,7 +972,7 @@ static void VBlankCB_UnionRoomChatMain(void)
     ScanlineEffect_InitHBlankDmaTransfer();
 }
 
-static void CB2_UnionRoomChatMain(void)
+void CB2_UnionRoomChatMain(void)
 {
     RunTasks();
     RunDisplaySubtasks();
