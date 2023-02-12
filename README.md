@@ -14,6 +14,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - [Infinite TM usage](https://github.com/pret/pokeemerald/wiki/Infinite-TM-usage) [Credit: ExpoSeed]
 - [Item Automatically Goes to PC if Bag is Full](https://github.com/pret/pokeemerald/wiki/Item-Automatically-Goes-to-PC-if-Bag-is-Full)
 - [Fix AI's Switch In Battle (it will remain the same on easy difficulty)](https://github.com/pret/pokeemerald/wiki/Fix-AI's-Switch-In-Battle)
+- Added ability to change how much EXP you'll get in battle.
 - Added Nuzlocke options.
   - Dupes Clause.
   - Disallow overleveling Gym Leaders.
@@ -26,6 +27,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Low health beeping can be toggled off.
 - Dupes clause in Nuzlocke challenge can be toggled off.
 - Made wallclock default to 'Yes' when asking if the setting is correct.
+- Made Lucky Egg triple EXP and a default PC item.
+- [Turn EXP Share into EXP All](https://github.com/pret/pokeemerald/wiki/Turn-EXP-Share-into-EXP-All)
 - [Push B in wild battle moves to Run](https://github.com/pret/pokeemerald/wiki/Push-B-in-wild-battle-moves-to-Run)
 
 ## v1.3.1
