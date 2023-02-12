@@ -729,7 +729,7 @@ static const u8 sMachoBraceDesc[] = _(
     "but reduces SPEED.");
 
 static const u8 sExpShareDesc[] = _(
-    "A hold item that\n"
+    "Turning this on\n"
     "gives all in party\n"
     "EXP. points.");
 

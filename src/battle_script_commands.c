@@ -3422,7 +3422,7 @@ static void Cmd_getexp(void)
                     PREPARE_STRING_BUFFER(gBattleTextBuff2, i);
                     PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff3, 5, gBattleMoveDamage);
                     if (gBattleStruct->sentInPokes & (1 << gBattleStruct->expGetterMonId))
-                            PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gBattleStruct->expGetterBattlerId);
+                        PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gBattleStruct->expGetterBattlerId);
                     MonGainEVs(&gPlayerParty[gBattleStruct->expGetterMonId], gBattleMons[gBattlerFainted].species);
                 }
                 gBattleScripting.getexpState++;

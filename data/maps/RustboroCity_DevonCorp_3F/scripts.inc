@@ -251,10 +251,9 @@ RustboroCity_DevonCorp_3F_Text_ThankYouForDeliveringLetter:
 	.string "It should help you, a TRAINER.$"
 
 RustboroCity_DevonCorp_3F_Text_ExplainExpShare:
-	.string "MR. STONE: If any POKéMON in your party\n"
-	.string "holds EXP. SHARE, all POKéMON in the\l"
-	.string "party will gain half the\l"
-	.string "EXP Points from battle.\p"
+	.string "MR. STONE: If you turn EXP. SHARE on,\n"
+	.string "all POKéMON in the party will gain\l"
+	.string "half the EXP Points from battle.\p"
 	.string "I would say EXP. SHARE is quite useful\n"
 	.string "for raising weak POKéMON.$"
 
