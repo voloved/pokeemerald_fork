@@ -115,7 +115,6 @@ static void Cmd_jumpifsideaffecting(void);
 static void Cmd_jumpifstat(void);
 static void Cmd_jumpifstatus3condition(void);
 static void Cmd_jumpiftype(void);
-static bool8 hasExpShare(void);
 static void Cmd_getexp(void);
 static void Cmd_checkteamslost(void);
 static void Cmd_movevaluescleanup(void);
@@ -3247,19 +3246,6 @@ static void Cmd_jumpiftype(void)
         gBattlescriptCurrInstr += 7;
 }
 
-static bool8 hasExpShare(void)
-{
-    int i;
-    u16 item;
-    for (i = 0; i < PARTY_SIZE; i++){
-        item = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
-        if (ItemId_GetHoldEffect(item) == HOLD_EFFECT_EXP_SHARE){
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
 static void Cmd_getexp(void)
 {
     u16 item;
@@ -3532,7 +3518,7 @@ static void Cmd_getexp(void)
             gBattleStruct->expGetterMonId++;
             if (gBattleStruct->expGetterMonId < PARTY_SIZE)
                 gBattleScripting.getexpState = 2; // loop again
-            else if (!gExpShareCheck && hasExpShare()){
+            else if (!gExpShareCheck && FlagGet(FLAG_EXP_SHARE)){
                 gExpShareCheck = TRUE;
                 gBattleStruct->expGetterMonId = 0;
                 PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff3, 5, gExpShareExp);
