@@ -2220,13 +2220,13 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
-    [ITEM_EXP_ALL] =
+    [ITEM_EXP_SHARE] =
     {
         .name = _("EXP. ALL"),
-        .itemId = ITEM_EXP_ALL,
+        .itemId = ITEM_EXP_SHARE,
         .price = 3000,
-        .holdEffect = HOLD_EFFECT_EXP_ALL,
-        .description = sExpAllDesc,
+        .holdEffect = HOLD_EFFECT_EXP_SHARE,
+        .description = sExpShareDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,

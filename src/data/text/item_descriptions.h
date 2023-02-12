@@ -728,7 +728,7 @@ static const u8 sMachoBraceDesc[] = _(
     "promotes growth,\n"
     "but reduces SPEED.");
 
-static const u8 sExpAllDesc[] = _(
+static const u8 sExpShareDesc[] = _(
     "A hold item that\n"
     "gives all in party\n"
     "EXP. points.");

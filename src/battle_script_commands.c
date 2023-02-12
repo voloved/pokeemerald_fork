@@ -115,7 +115,7 @@ static void Cmd_jumpifsideaffecting(void);
 static void Cmd_jumpifstat(void);
 static void Cmd_jumpifstatus3condition(void);
 static void Cmd_jumpiftype(void);
-static bool8 hasExpAll(void);
+static bool8 hasExpShare(void);
 static void Cmd_getexp(void);
 static void Cmd_checkteamslost(void);
 static void Cmd_movevaluescleanup(void);
@@ -3247,13 +3247,13 @@ static void Cmd_jumpiftype(void)
         gBattlescriptCurrInstr += 7;
 }
 
-static bool8 hasExpAll(void)
+static bool8 hasExpShare(void)
 {
     int i;
     u16 item;
     for (i = 0; i < PARTY_SIZE; i++){
         item = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
-        if (ItemId_GetHoldEffect(item) == HOLD_EFFECT_EXP_ALL){
+        if (ItemId_GetHoldEffect(item) == HOLD_EFFECT_EXP_SHARE){
             return TRUE;
         }
     }
@@ -3266,7 +3266,7 @@ static void Cmd_getexp(void)
     s32 i; // also used as stringId
     u8 holdEffect;
     s32 sentIn;
-    s32 viaExpAll = 0;
+    s32 viaExpShare = 0;
     u16 *exp = &gBattleStruct->expValue;
 
     gBattlerFainted = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
@@ -3315,8 +3315,8 @@ static void Cmd_getexp(void)
                 else
                     holdEffect = ItemId_GetHoldEffect(item);
 
-                if (hasExpAll())
-                    viaExpAll++;
+                if (hasExpShare())
+                    viaExpShare++;
             }
 
             calculatedExp = gSpeciesInfo[gBattleMons[gBattlerFainted].species].expYield * gBattleMons[gBattlerFainted].level / 7;
@@ -3339,22 +3339,22 @@ static void Cmd_getexp(void)
                     break;
             }
 
-            if (viaExpAll) // at least one mon is getting exp via exp share
+            if (viaExpShare) // at least one mon is getting exp via exp share
             {
                 *exp = SAFE_DIV(calculatedExp, viaSentIn);
                 if (*exp == 0)
                     *exp = 1;
 
-                gExpAllExp = calculatedExp / 2;
-                if (gExpAllExp == 0)
-                    gExpAllExp = 1;
+                gExpShareExp = calculatedExp / 2;
+                if (gExpShareExp == 0)
+                    gExpShareExp = 1;
             }
             else
             {
                 *exp = SAFE_DIV(calculatedExp, viaSentIn);
                 if (*exp == 0)
                     *exp = 1;
-                gExpAllExp = 0;
+                gExpShareExp = 0;
             }
 
             gBattleScripting.getexpState++;
@@ -3372,7 +3372,7 @@ static void Cmd_getexp(void)
             else
                 holdEffect = ItemId_GetHoldEffect(item);
 
-            if (!hasExpAll() && !(gBattleStruct->sentInPokes & 1))
+            if (!hasExpShare() && !(gBattleStruct->sentInPokes & 1))
             {
                 *(&gBattleStruct->sentInPokes) >>= 1;
                 gBattleScripting.getexpState = 5;
@@ -3400,8 +3400,8 @@ static void Cmd_getexp(void)
                 {
                     if (gBattleStruct->sentInPokes & 1)
                         gBattleMoveDamage = *exp;
-                    else if (hasExpAll())
-                        gBattleMoveDamage += gExpAllExp;
+                    else if (hasExpShare())
+                        gBattleMoveDamage += gExpShareExp;
                     else
                         gBattleMoveDamage = 0;
 
@@ -3452,8 +3452,8 @@ static void Cmd_getexp(void)
                     PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff3, 5, gBattleMoveDamage);
 
                     if (gBattleStruct->sentInPokes & 1)
-                        if (hasExpAll()){
-                            PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff2, 5, gExpAllExp);
+                        if (hasExpShare()){
+                            PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff2, 5, gExpShareExp);
                             PrepareStringBattle(STRINGID_PKMNGAINEDEXPALL, gBattleStruct->expGetterBattlerId);
                         }
                         else
