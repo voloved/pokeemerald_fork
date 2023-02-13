@@ -415,8 +415,6 @@ struct DigitalDisplaySprite
     /*0x02*/ s16 spriteId;
 };
 
-static void CB2_SlotMachineSetup(void);
-static void CB2_SlotMachine(void);
 static void PlaySlotMachine_Internal(u8, MainCallback);
 static void SlotMachineDummyTask(u8);
 static void SlotMachineSetup_InitBgsWindows(void);
@@ -1029,7 +1027,7 @@ void PlaySlotMachine(u8 machineId, MainCallback exitCallback)
 
 #undef tState
 
-static void CB2_SlotMachineSetup(void)
+void CB2_SlotMachineSetup(void)
 {
     switch (gMain.state)
     {
@@ -1090,7 +1088,7 @@ static void CB2_SlotMachineSetup(void)
     }
 }
 
-static void CB2_SlotMachine(void)
+void CB2_SlotMachine(void)
 {
     RunTasks();
     AnimateSprites();

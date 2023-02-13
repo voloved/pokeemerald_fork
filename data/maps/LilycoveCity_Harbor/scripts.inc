@@ -563,6 +563,7 @@ LilycoveCity_Harbor_EventScript_Truck::
 	goto_if_eq VAR_RESULT, TRUE, LilycoveCity_Harbor_EventScript_NoMew
 	checkitemspace ITEM_OLD_SEA_MAP
 	goto_if_eq VAR_RESULT, FALSE, LilycoveCity_Harbor_OldSeaMap_NoBagSpace
+	msgbox LilycoveCity_Harbor_Text_NuzlockeRun, MSGBOX_SIGN
 	giveitem ITEM_OLD_SEA_MAP
 	setflag FLAG_ENABLE_SHIP_FARAWAY_ISLAND
 	setflag FLAG_RECEIVED_OLD_SEA_MAP
@@ -630,12 +631,16 @@ LilycoveCity_Harbor_Text_SailorFerryAvailable:
 LilycoveCity_Harbor_Text_OldTruck:
 	.string "It's an old truck.$"
 
-LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapUseAtPort:
+LilycoveCity_Harbor_Text_NuzlockeRun::
+	.string "Congrats on not failing the\n"
+	.string "Nuzlocke challenge so far!$"
+
+LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapUseAtPort::
 	.string "It appears to be for use at the\n"
 	.string "LILYCOVE CITY port once you defeat\l"
 	.string "the ELITE FOUR.$"
 
-LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapBagFull:
+LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapBagFull::
 	.string "Your BAG's KEY ITEMS POCKET is full.\p"
 	.string "Please store something on your PC,\n"
 	.string "then come back for this.$"

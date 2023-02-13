@@ -647,6 +647,10 @@ LittlerootTown_ProfessorBirchsLab_EventScript_PC::
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_PCUsedForResearch, MSGBOX_SIGN
 	end
 
+LittlerootTown_ProfessorBirchsLab_EventScript_PC_Nuzlocke::
+	goto_if_unset FLAG_NUZLOCKE, LittlerootTown_ProfessorBirchsLab_EventScript_PC
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+
 LittlerootTown_ProfessorBirchsLab_EventScript_Bookshelf::
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_CrammedWithBooksOnPokemon, MSGBOX_SIGN
 	end
@@ -663,29 +667,731 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall::
 	releaseall
 	end
 
+LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
+	waitmessage
+	call EventScript_Multichoice_BirchPCOptions
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_Challenge
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMult
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
+	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
+	end
+
+EventScript_Multichoice_BirchPCOptions::
+	goto_if_set FLAG_SKIP_INTRO, EventScript_Multichoice_BirchPCOptions_2
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_1, 0
+EventScript_Multichoice_BirchPCOptions_1:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_2, 1
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_3, 2
+	goto_if_set FLAG_GRINDRUN, EventScript_Multichoice_BirchPCOptions_6
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_5, 3
+EventScript_Multichoice_BirchPCOptions_5:
+	goto_if_set FLAG_NO_LOW_HEALTH_BEEP, EventScript_Multichoice_BirchPCOptions_10
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_7, 4
+EventScript_Multichoice_BirchPCOptions_9:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_8, 5
+	dynmultipush EventScript_Multichoice_Exit, 6
+	dynmultistack 0, 0, TRUE, 10, FALSE, 0, DYN_MULTICHOICE_CB_NONE
+	return
+
+EventScript_Multichoice_BirchPCOptions_2:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_0, 0
+	goto EventScript_Multichoice_BirchPCOptions_1
+
+EventScript_Multichoice_BirchPCOptions_6:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_4, 3
+	goto EventScript_Multichoice_BirchPCOptions_5
+
+EventScript_Multichoice_BirchPCOptions_10:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_6, 4
+	goto EventScript_Multichoice_BirchPCOptions_9
+
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
-	msgbox LittlerootTown_ProfessorBirchsLab_Text_SkipIntro, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntroNo
+	message LittlerootTown_ProfessorBirchsLab_Text_SkipIntro
+	goto_if_set FLAG_SKIP_INTRO, LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntroNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
 	setflag FLAG_SKIP_INTRO
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_SkipIntroYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntroNo::
 	clearflag FLAG_SKIP_INTRO
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_SkipIntroNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun::
-	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrindRun, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRunNo
+	message LittlerootTown_ProfessorBirchsLab_Text_GrindRun
+	goto_if_set FLAG_GRINDRUN, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRunNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
 	setflag FLAG_GRINDRUN
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrindRunYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_GrindRunNo::
 	clearflag FLAG_GRINDRUN
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrindRunNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep::
+	message LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeep
+	goto_if_set FLAG_NO_LOW_HEALTH_BEEP, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeepNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	setflag FLAG_NO_LOW_HEALTH_BEEP
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeepNo::
+	clearflag FLAG_NO_LOW_HEALTH_BEEP
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu::
+	waitmessage
+	message LittlerootTown_ProfessorBirchsLab_Text_NuzlockeOptions
+	call EventScript_Multichoice_NuzlockeMenu
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevel
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect
+	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
+LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd:
+	closemessage
+	end
+
+EventScript_Multichoice_NuzlockeMenu::
+	goto_if_set FLAG_NUZLOCKE_NO_DUPES_CLAUSE, EventScript_Multichoice_NuzlockeMenu_2
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_1, 0
+EventScript_Multichoice_NuzlockeMenu_1:
+	goto_if_set FLAG_NUZLOCKE_BATTLE_SET, EventScript_Multichoice_NuzlockeMenu_6
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_3, 1
+EventScript_Multichoice_NuzlockeMenu_5:
+	goto_if_set FLAG_NUZLOCKE_LEVEL_CAP, EventScript_Multichoice_NuzlockeMenu_10
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_5, 2
+EventScript_Multichoice_NuzlockeMenu_9:
+	goto_if_set FLAG_NUZLOCKE_NO_BATTLE_ITEMS, EventScript_Multichoice_NuzlockeMenu_14
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_7, 3
+EventScript_Multichoice_NuzlockeMenu_13:
+	goto_if_set FLAG_NUZLOCKE_NO_HELD_ITEMS, EventScript_Multichoice_NuzlockeMenu_18
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_9, 4
+EventScript_Multichoice_NuzlockeMenu_17:
+	dynmultipush EventScript_Multichoice_Exit, 5
+	dynmultistack 0, 0, TRUE, 8, FALSE, 0, DYN_MULTICHOICE_CB_NONE
+	return
+
+EventScript_Multichoice_NuzlockeMenu_2:
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_0, 0
+	goto EventScript_Multichoice_NuzlockeMenu_1
+
+EventScript_Multichoice_NuzlockeMenu_6:
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_2, 1
+	goto EventScript_Multichoice_NuzlockeMenu_5
+
+EventScript_Multichoice_NuzlockeMenu_10:
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_4, 2
+	goto EventScript_Multichoice_NuzlockeMenu_9
+
+EventScript_Multichoice_NuzlockeMenu_14:
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_6, 3
+	goto EventScript_Multichoice_NuzlockeMenu_13
+
+EventScript_Multichoice_NuzlockeMenu_18:
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_8, 4
+	goto EventScript_Multichoice_NuzlockeMenu_17
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_NoChanges, MSGBOX_SIGN
+	return
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions::
+	call  LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Nuzlocke_Menu::
+	message LittlerootTown_ProfessorBirchsLab_Text_NoChanges
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Carcinisation::
+	call  LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevel::
+	message LittlerootTown_ProfessorBirchsLab_Text_NoOverlevel
+	goto_if_set FLAG_NUZLOCKE_LEVEL_CAP, LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevel_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevel_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevel_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevel_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevelNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Nuzlocke_Menu
+	setflag FLAG_NUZLOCKE_LEVEL_CAP
+	message LittlerootTown_ProfessorBirchsLab_Text_NoOverlevelYes
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevelNo::
+	clearflag FLAG_NUZLOCKE_LEVEL_CAP
+	message LittlerootTown_ProfessorBirchsLab_Text_NoOverlevelYes
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow::
+	message LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallow
+	goto_if_set FLAG_NUZLOCKE_BATTLE_SET, LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallowNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Nuzlocke_Menu
+	setflag FLAG_NUZLOCKE_BATTLE_SET
+	message LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallowYes
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallowNo::
+	clearflag FLAG_NUZLOCKE_BATTLE_SET
+	message LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallowNo
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems::
+	message LittlerootTown_ProfessorBirchsLab_Text_NoBattleItems
+	goto_if_set FLAG_NUZLOCKE_NO_BATTLE_ITEMS, LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItemsNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Nuzlocke_Menu
+	setflag FLAG_NUZLOCKE_NO_BATTLE_ITEMS
+	message LittlerootTown_ProfessorBirchsLab_Text_NoBattleItemsYes
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItemsNo::
+	clearflag FLAG_NUZLOCKE_NO_BATTLE_ITEMS
+	message LittlerootTown_ProfessorBirchsLab_Text_NoBattleItemsYes
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect::
+	message LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffect
+	goto_if_set FLAG_NUZLOCKE_NO_HELD_ITEMS, LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffectNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Nuzlocke_Menu
+	setflag FLAG_NUZLOCKE_NO_HELD_ITEMS
+	message LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectYes
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffectNo::
+	clearflag FLAG_NUZLOCKE_NO_HELD_ITEMS
+	message LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectNo
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause::
+	message LittlerootTown_ProfessorBirchsLab_Text_NoDupesClause
+	goto_if_set FLAG_NUZLOCKE_NO_DUPES_CLAUSE, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClauseNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Nuzlocke_Menu
+	setflag FLAG_NUZLOCKE_NO_DUPES_CLAUSE
+	message LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseYes
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClauseNo::
+	clearflag FLAG_NUZLOCKE_NO_DUPES_CLAUSE
+	message LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseNo
+	waitmessage
+	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_Challenge::
+	message LittlerootTown_ProfessorBirchsLab_Text_Challenge
+	waitmessage
+	switch VAR_DIFFICULTY
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_DefaultNormal
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_DefaultHard
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_DefaultEasy
+
+LittlerootTown_ProfessorBirchsLab_EventScript_DefaultNormal:
+	multichoicedefault 21, 6, MULTI_TAG_DIFFICULTY, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ChallengeSelect
+
+LittlerootTown_ProfessorBirchsLab_EventScript_DefaultHard:
+	multichoicedefault 21, 6, MULTI_TAG_DIFFICULTY, 2, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ChallengeSelect
+
+LittlerootTown_ProfessorBirchsLab_EventScript_DefaultEasy:
+	multichoicedefault 21, 6, MULTI_TAG_DIFFICULTY, 0, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ChallengeSelect
+
+LittlerootTown_ProfessorBirchsLab_EventScript_ChallengeSelect:
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedEasy
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedNormal
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedHard
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedNormal:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedNormal, MSGBOX_DEFAULT
+	setvar VAR_DIFFICULTY, 0
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedHard:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedHard, MSGBOX_DEFAULT
+	setvar VAR_DIFFICULTY, 1
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedEasy:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedEasy, MSGBOX_DEFAULT
+	setvar VAR_DIFFICULTY, 2
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMult::
+	message LittlerootTown_ProfessorBirchsLab_Text_ExpMult
+	waitmessage
+	switch VAR_EXP_MULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultTimesOne
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultTimesTwo
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultTimesFour
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultDivideTwo
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultZero
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultTimesOne:
+	multichoicedefault 26, 2, MULTI_TAG_EXP_MULT, 2, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultTimesTwo:
+	multichoicedefault 26, 2, MULTI_TAG_EXP_MULT, 3, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultTimesFour:
+	multichoicedefault 26, 2, MULTI_TAG_EXP_MULT, 4, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultDivideTwo:
+	multichoicedefault 26, 2, MULTI_TAG_EXP_MULT, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultZero:
+	multichoicedefault 26, 2, MULTI_TAG_EXP_MULT, 0, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_ExpMultSelect:
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultZero
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultDivideTwo
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesOne
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesTwo
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesFour
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultZero:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedMultZero, MSGBOX_DEFAULT
+	setvar VAR_EXP_MULT, 4
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultDivideTwo:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedMultDivideTwo, MSGBOX_DEFAULT
+	setvar VAR_EXP_MULT, 3
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesOne:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedMultTimesOne, MSGBOX_DEFAULT
+	setvar VAR_EXP_MULT, 0
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesTwo:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedMultTimesTwo, MSGBOX_DEFAULT
+	setvar VAR_EXP_MULT, 1
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedMultTimesFour:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedMultTimesFour, MSGBOX_DEFAULT
+	setvar VAR_EXP_MULT, 2
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation::
+	waitmessage
+	call EventScript_Multichoice_Carcinisation
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAll
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvo
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyWild
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainer
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_CarcinisationEnd
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+LittlerootTown_ProfessorBirchsLab_EventScript_CarcinisationEnd:
+	end
+
+EventScript_Multichoice_Carcinisation::
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_0, 0
+	goto_if_set FLAG_KRABBY_EVO, EventScript_Multichoice_Carcinisation_2
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_2, 1
+EventScript_Multichoice_Carcinisation_1:
+	goto_if_set FLAG_KRABBY_WILD, EventScript_Multichoice_Carcinisation_6
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_4, 2
+EventScript_Multichoice_Carcinisation_5:
+	goto_if_set FLAG_KRABBY_TRAINER, EventScript_Multichoice_Carcinisation_10
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_6, 3
+EventScript_Multichoice_Carcinisation_9:
+	dynmultipush EventScript_Multichoice_Exit, 4
+	dynmultistack 0, 0, TRUE, 10, FALSE, 0, DYN_MULTICHOICE_CB_NONE
+	return
+
+EventScript_Multichoice_Carcinisation_2:
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_1, 1
+	goto EventScript_Multichoice_Carcinisation_1
+
+EventScript_Multichoice_Carcinisation_6:
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_3, 2
+	goto EventScript_Multichoice_Carcinisation_5
+
+EventScript_Multichoice_Carcinisation_10:
+	dynmultipush EventScript_Multichoice_Carcinisation_Text_5, 3
+	goto EventScript_Multichoice_Carcinisation_9
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAll::
+	message LittlerootTown_ProfessorBirchsLab_Text_KrabbyAll
+	goto_if_unset FLAG_KRABBY_WILD, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAll_Unset
+	goto_if_unset FLAG_KRABBY_TRAINER, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAll_Unset
+	goto_if_unset FLAG_KRABBY_EVO, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAll_Unset
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAll_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAll_Unset:
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAll_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAllNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Carcinisation
+	setflag FLAG_KRABBY_WILD
+	setflag FLAG_KRABBY_TRAINER
+	setflag FLAG_KRABBY_EVO
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyAllNo::
+	clearflag FLAG_KRABBY_WILD
+	clearflag FLAG_KRABBY_TRAINER
+	clearflag FLAG_KRABBY_EVO
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvo::
+	message LittlerootTown_ProfessorBirchsLab_Text_KrabbyEvo
+	goto_if_set FLAG_KRABBY_EVO, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvo_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvo_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvo_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvo_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvoNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Carcinisation
+	setflag FLAG_KRABBY_EVO
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyEvoYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyEvoNo::
+	clearflag FLAG_KRABBY_EVO
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyEvoNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyWild::
+	message LittlerootTown_ProfessorBirchsLab_Text_KrabbyWild
+	goto_if_set FLAG_KRABBY_WILD, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyWild_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyWild_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyWild_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyWild_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyWildNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Carcinisation
+	setflag FLAG_KRABBY_WILD
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyWildYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyWildNo::
+	clearflag FLAG_KRABBY_WILD
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyWildNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainer::
+	message LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainer
+	goto_if_set FLAG_KRABBY_TRAINER, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainer_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainer_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainer_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainer_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainerNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Carcinisation
+	setflag FLAG_KRABBY_TRAINER
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainerYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_KrabbyTrainerNo::
+	clearflag FLAG_KRABBY_TRAINER
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainerNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	end
+
+EventScript_Multichoice_BirchPCOptions_Text_0:
+	.string "{COLOR GREEN}SKIP INTRO$"
+
+EventScript_Multichoice_BirchPCOptions_Text_1:
+	.string "{COLOR RED}SKIP INTRO$"
+
+EventScript_Multichoice_BirchPCOptions_Text_2:
+	.string "DIFFICULTY$"
+
+EventScript_Multichoice_BirchPCOptions_Text_3:
+	.string "EXP MULTIPLIER$"
+
+EventScript_Multichoice_BirchPCOptions_Text_4:
+	.string "{COLOR GREEN}GRINDRUN$"
+
+EventScript_Multichoice_BirchPCOptions_Text_5:
+	.string "{COLOR RED}GRINDRUN$"
+
+EventScript_Multichoice_BirchPCOptions_Text_6:
+	.string "{COLOR GREEN}LOW HEALTH BEEP$"
+
+EventScript_Multichoice_BirchPCOptions_Text_7:
+	.string "{COLOR RED}LOW HEALTH BEEP$"
+
+EventScript_Multichoice_BirchPCOptions_Text_8:
+	.string "CARCINISATION$"
+
+EventScript_Multichoice_Exit:
+	.string "EXIT$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_0:
+	.string "{COLOR GREEN}TURN OFF DUPES CLAUSE$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_1:
+	.string "{COLOR RED}TURN OFF DUPES CLAUSE$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_2:
+	.string "{COLOR GREEN}DISALLOW SHIFT MODE$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_3:
+	.string "{COLOR RED}DISALLOW SHIFT MODE$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_4:
+	.string "{COLOR GREEN}OVERLEVEL LEADERS$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_5:
+	.string "{COLOR RED}OVERLEVEL LEADERS$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_6:
+	.string "{COLOR GREEN}DISALLOW BATTLE ITEMS$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_7:
+	.string "{COLOR RED}DISALLOW BATTLE ITEMS$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_8:
+	.string "{COLOR GREEN}IGNORE HELD ITEMS$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_9:
+	.string "{COLOR RED}IGNORE HELD ITEMS$"
+
+EventScript_Multichoice_Carcinisation_Text_0:
+	.string "ALL KRABBY$"
+
+EventScript_Multichoice_Carcinisation_Text_1:
+	.string "{COLOR GREEN}EVOLVE TO KRABBY$"
+
+EventScript_Multichoice_Carcinisation_Text_2:
+	.string "{COLOR RED}EVOLVE TO KRABBY$"
+
+EventScript_Multichoice_Carcinisation_Text_3:
+	.string "{COLOR GREEN}WILD KRABBY$"
+
+EventScript_Multichoice_Carcinisation_Text_4:
+	.string "{COLOR RED}WILD KRABBY$"
+
+EventScript_Multichoice_Carcinisation_Text_5:
+	.string "{COLOR GREEN}TRAINERS' KRABBY$"
+
+EventScript_Multichoice_Carcinisation_Text_6:
+	.string "{COLOR RED}TRAINERS' KRABBY$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyAll:
+	.string "Would you like to have\n"
+	.string "all POKéMON be KRABBY?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyYes:
+	.string "All POKéMON will\n"
+	.string "now be KRABBY.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyNo:
+	.string "All POKéMON will\n"
+	.string "be normal.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyEvo:
+	.string "Would you like to have all\n"
+	.string "POKéMON evolve to KRABBY?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyEvoYes:
+	.string "All POKéMON will\n"
+	.string "evolve to KRABBY.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyEvoNo:
+	.string "All POKéMON will\n"
+	.string "evolve normally.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyWild:
+	.string "Would you like to have all\n"
+	.string "wild POKéMON be KRABBY?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyWildYes:
+	.string "All wild POKéMON\n"
+	.string "are now KRABBY.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyWildNo:
+	.string "Wild POKéMON will\n"
+	.string "be normal.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainer:
+	.string "Would you like all trainers'\n"
+	.string "POKéMON to be KRABBY?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainerYes:
+	.string "All trainers' POKéMON\n"
+	.string "will be KRABBY.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainerNo:
+	.string "All trainers' POKéMON\n"
+	.string "will be normal.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_Challenge:
+	.string "What difficulty would\n"
+	.string "you like to play at?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedEasy:
+	.string "Easy difficulty\n"
+	.string "was chosen.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedNormal:
+	.string "Normal difficulty\n"
+	.string "was chosen.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedHard:
+	.string "Hard difficulty\n"
+	.string "was chosen.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_ExpMult:
+	.string "What would you like to\n"
+	.string "multiply your EXP with?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedMultZero:
+	.string "EXP gain will\n"
+	.string "be zero.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedMultDivideTwo:
+	.string "EXP gain will\n"
+	.string "be halved.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedMultTimesOne:
+	.string "EXP gain will\n"
+	.string "be normal.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedMultTimesTwo:
+	.string "EXP gain will\n"
+	.string "be doubled.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedMultTimesFour:
+	.string "EXP gain will\n"
+	.string "be quadrupled.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SkipIntro:
 	.string "Would you like to skip\n"
@@ -708,6 +1414,86 @@ LittlerootTown_ProfessorBirchsLab_Text_GrindRunYes:
 LittlerootTown_ProfessorBirchsLab_Text_GrindRunNo:
 	.string "Your running will\n"
 	.string "be normal.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeep:
+	.string "Would you like to turn off\n"
+	.string "beeping at low health?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepYes:
+	.string "Beeping at low health\n"
+	.string "is turned off.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepNo:
+	.string "Beeping at low health\n"
+	.string "is turned on.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoDupesClause:
+	.string "Would you like to not use the dupes\n"
+	.string "not in your Nuzlocke challenge?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseYes:
+	.string "You will not use the\n"
+	.string "dupes clause.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseNo:
+	.string "You will use the\n"
+	.string "dupes clause.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NuzlockeOptions:
+	.string "NUZLOCKE OPTIONS$"
+
+LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallow:
+	.string "Would you like to disallow\n"
+	.string "shift mode?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallowYes:
+	.string "Shift mode has been\n"
+	.string "disallowed.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_ShiftDisallowNo:
+	.string "Shift mode option\n"
+	.string "is still available.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffect:
+	.string "Ignore your held\n"
+	.string "item effects?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectYes:
+	.string "Your held items will have no effect.\n"
+	.string "Your opponents' held items will\l"
+	.string "still work.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectNo:
+	.string "Your held items\n"
+	.string "will still work.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoBattleItems:
+	.string "Disallow using items\n"
+	.string "in battle?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoBattleItemsYes:
+	.string "You can no longer use\n"
+	.string "items in battle.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoBattleItemsNo:
+	.string "You can still use\n"
+	.string "items in battle.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoOverlevel:
+	.string "No leveling above the next leader's\n"
+	.string "highest level POKéMON?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoOverlevelYes:
+	.string "You will no longer be able to level\n"
+	.string "above the next leader's POKéMON.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoOverlevelNo:
+	.string "You can level above the\n"
+	.string "next Gym Leader.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_NoChanges:
+	.string "No changes have\n"
+	.string "occurred.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchAwayOnFieldwork:
 	.string "Hunh? PROF. BIRCH?\p"

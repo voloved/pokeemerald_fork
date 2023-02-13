@@ -1097,6 +1097,7 @@ static u8 SaveOverwriteInputCallback(void)
     switch (Menu_ProcessInputNoWrapClearOnChoose())
     {
     case 0: // Yes
+        FlagClear(FLAG_MISSINGNO);
         sSaveDialogCallback = SaveSavingMessageCallback;
         return SAVE_IN_PROGRESS;
     case MENU_B_PRESSED:

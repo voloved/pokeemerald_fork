@@ -9,6 +9,36 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v1.4.0
+- Added Weavile, Magnezone, Lickilicky, Rhyperior, Tangrowth, Electivire, Magmortar, Togekiss, Yanmega, Gliscor, Mamoswine, Porygon Z, Gallade, Probopass, Dusknoir
+- [Added Difficulty Mode](https://github.com/pret/pokeemerald/wiki/Add-Difficulty-Mode)
+- [Infinite TM usage](https://github.com/pret/pokeemerald/wiki/Infinite-TM-usage) [Credit: ExpoSeed]
+- [Item Automatically Goes to PC if Bag is Full](https://github.com/pret/pokeemerald/wiki/Item-Automatically-Goes-to-PC-if-Bag-is-Full)
+- [Fix AI's Switch In Battle (it will remain the same on easy difficulty)](https://github.com/pret/pokeemerald/wiki/Fix-AI's-Switch-In-Battle)
+- Added ability to change how much EXP you'll get in battle.
+- Added Nuzlocke options.
+  - [Dupes Clause.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge#Dupes-Clause)
+  - [Disallow overleveling Gym Leaders.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge#Cant-Overlevel-Leaders)
+  - [Disallow shift mode.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge#force-set-mode)
+  - [Ignore your held items.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge#no-held-items)
+  - [No Battle Items.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge#no-battle-items)
+- [Gen. 6 style Exp. Share](https://github.com/pret/pokeemerald/wiki/Gen-6-style-Exp.-Share---Alternative-Option)
+- [All Trees Permanently Get Cut](https://github.com/pret/pokeemerald/wiki/All-Trees-Permanently-Get-Cut)
+- Bug fix on Blaziken learning Death Move.
+- Norman's Slaking no longer knows counter.
+- Bug fix on no effect move being orange when move has low PP in showing type effectiveness.
+-  Added in dynamicmultilist to allow for color changing on PC used to set Nuzlocke and extra settings.
+- Added Carcinisation mode (Everything can now evolve into Krabby, Krabby in the wild, all NPCs have Krabby).
+- EXP multiplier can now be changed as a setting.
+- Holding R when it's turbo B no longer toggles running shoes.
+- Low health beeping can be toggled off.
+- Made getting Aurora Map receivable in Space Station.
+- Turbo B will now always work except in the Slot Machine, Wall Clock, and Chat Rooms.
+- Made wallclock default to 'Yes' when asking if the setting is correct.
+- Made Lucky Egg triple EXP and a default PC item.
+- Added Eevee to Hoenn Pokédex
+- [Push B in wild battle moves to Run](https://github.com/pret/pokeemerald/wiki/Push-B-in-wild-battle-moves-to-Run)
+
 ## v1.3.1
 - Diving and reflection palette fix.
 - Diving speed underwater same as running speed.
@@ -33,6 +63,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Put more interesting Pokémon into the Safari Zone.
 - Added Surkit, Masquerain, Meditite, Roselia, Zangoose, and Lunatone.
 - Added ability to buy evolutionary stones and TMs from Mauville Game Corner in Lilycove Department Store.
+- Ability to restart Nuzlocke challenge after failing by talking to Hiker in House in Rustboro City.
+- Nuzlocke now counts in Safari Zone as well.
 - Electrike and Manectric can now learn Flamethrower.
 - Psyduck and Golduck can learn Fly.
 - Zangoose can learn Cut.

@@ -771,6 +771,31 @@ static const struct MenuAction MultichoiceList_TagMatchType[] =
     {gText_Exit},
 };
 
+static const struct MenuAction MultichoiceList_TagChallenge[] =
+{
+    {gText_Easy},
+    {gText_Normal},
+    {gText_Hard},
+};
+
+static const struct MenuAction MultichoiceList_TagCarcinisation[] =
+{
+    {(const u8[])_("ALL KRABBY")},
+    {(const u8[])_("EVOLVE TO KRABBY")},
+    {(const u8[])_("WILD KRABBY")},
+    {(const u8[])_("TRAINERS' KRABBY")},
+    {gText_Exit},
+};
+
+static const struct MenuAction MultichoiceList_TagExpMult[] =
+{
+    {(const u8[])_("x0")},
+    {(const u8[])_("/2")},
+    {(const u8[])_("x1")},
+    {(const u8[])_("x2")},
+    {(const u8[])_("x4")},
+};
+
 static const struct MenuAction MultichoiceList_Exit[] =
 {
     {gText_Exit},
@@ -898,6 +923,9 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_SLATEPORT_TENT_RULES]       = MULTICHOICE(MultichoiceList_SlateportTentRules),
     [MULTI_FALLARBOR_TENT_RULES]       = MULTICHOICE(MultichoiceList_FallarborTentRules),
     [MULTI_TAG_MATCH_TYPE]             = MULTICHOICE(MultichoiceList_TagMatchType),
+    [MULTI_TAG_DIFFICULTY]             = MULTICHOICE(MultichoiceList_TagChallenge),
+    [MULTI_TAG_CARCINISATION]          = MULTICHOICE(MultichoiceList_TagCarcinisation),
+    [MULTI_TAG_EXP_MULT]               = MULTICHOICE(MultichoiceList_TagExpMult),    
 };
 
 const u8 *const gStdStrings[] =

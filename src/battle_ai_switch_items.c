@@ -11,6 +11,7 @@
 #include "constants/item_effects.h"
 #include "constants/items.h"
 #include "constants/moves.h"
+#include "event_data.h"
 
 // this file's functions
 static bool8 HasSuperEffectiveMoveAgainstOpponents(bool8 noRng);
@@ -642,6 +643,8 @@ u8 GetMostSuitableMonToSwitchInto(void)
     s32 i, j;
     u8 invalidMons;
     u16 move;
+    bool8 checkedAllMonForSEMoves = FALSE;  // We have checked all Pokemon in the party for if they have a super effective move
+    bool8 easyDifficulty = VarGet(VAR_DIFFICULTY) == DIFFICULTY_EASY;
 
     if (*(gBattleStruct->monToSwitchIntoId + gActiveBattler) != PARTY_SIZE)
         return *(gBattleStruct->monToSwitchIntoId + gActiveBattler);
@@ -689,7 +692,10 @@ u8 GetMostSuitableMonToSwitchInto(void)
 
     while (invalidMons != 0x3F) // All mons are invalid.
     {
-        bestDmg = TYPE_MUL_NO_EFFECT;
+        if (easyDifficulty)
+            bestDmg = TYPE_MUL_NO_EFFECT;
+        else
+            bestDmg = 255;
         bestMonId = PARTY_SIZE;
         // Find the mon whose type is the most suitable offensively.
         for (i = firstId; i < lastId; i++)
@@ -709,10 +715,12 @@ u8 GetMostSuitableMonToSwitchInto(void)
                 ModulateByTypeEffectiveness(gBattleMons[opposingBattler].type1, type1, type2, &typeDmg);
                 ModulateByTypeEffectiveness(gBattleMons[opposingBattler].type2, type1, type2, &typeDmg);
 
-                /* Possible bug: this comparison gives the type that takes the most damage, when
+                /* Possible bug with Vanilla: this comparison gives the type that takes the most damage, when
                 a "good" AI would want to select the type that takes the least damage. Unknown if this
-                is a legitimate mistake or if it's an intentional, if weird, design choice */
-                if (bestDmg < typeDmg)
+                is a legitimate mistake or if it's an intentional, if weird, design choice.
+                Now: That possible bug only takes place if playing on easy difficulty. It's fixed on all others*/
+                if ((bestDmg > typeDmg && !easyDifficulty)
+                ||  (bestDmg < typeDmg &&  easyDifficulty))
                 {
                     bestDmg = typeDmg;
                     bestMonId = i;
@@ -734,10 +742,15 @@ u8 GetMostSuitableMonToSwitchInto(void)
                     break;
             }
 
-            if (i != MAX_MON_MOVES)
-                return bestMonId; // Has both the typing and at least one super effective move.
+            if (i != MAX_MON_MOVES || (checkedAllMonForSEMoves && bestDmg <= TYPE_MUL_NOT_EFFECTIVE))
+                return bestMonId; // Has both the typing and at least one super effective move or has a typing that's super effective and no other Pokemon have a super effective move
 
             invalidMons |= gBitTable[bestMonId]; // Sorry buddy, we want something better.
+            if (invalidMons == 0x3F && !checkedAllMonForSEMoves && !easyDifficulty)  // If we already checked all for a super effective move, then use the one with the best typing
+            {
+                invalidMons = 0;
+                checkedAllMonForSEMoves = TRUE;
+            }
         }
         else
         {

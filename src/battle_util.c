@@ -3244,6 +3244,9 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
     u8 battlerHoldEffectParam, atkHoldEffectParam, defHoldEffectParam;
     u16 atkItem, defItem;
 
+    if (GetBattlerSide(battlerId) == B_SIDE_PLAYER && FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_NUZLOCKE_NO_HELD_ITEMS))
+        return ITEM_NO_EFFECT;
+
     gLastUsedItem = gBattleMons[battlerId].item;
     if (gLastUsedItem == ITEM_ENIGMA_BERRY)
     {

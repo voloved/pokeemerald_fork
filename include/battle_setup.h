@@ -47,6 +47,7 @@ void ClearTrainerFlag(u16 trainerId);
 void BattleSetup_StartTrainerBattle(void);
 void BattleSetup_StartRematchBattle(void);
 void ShowTrainerIntroSpeech(void);
+u8 GetScaledLevel(u8 lvl);
 const u8 *BattleSetup_GetScriptAddrAfterBattle(void);
 const u8 *BattleSetup_GetTrainerPostBattleScript(void);
 void ShowTrainerCantBattleSpeech(void);
@@ -66,6 +67,7 @@ void ShouldTryGetTrainerScript(void);
 u16 CountBattledRematchTeams(u16 trainerId);
 u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc);
 u8 currLocConvertForNuzlocke(u8 currLocation);
+bool8 levelCappedNuzlocke(u8 level);
 
 
 void DoStandardWildBattle_Debug(void);

@@ -451,7 +451,10 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
     if (gMapHeader.mapLayoutId != LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS && flags & WILD_CHECK_KEEN_EYE && !IsAbilityAllowingEncounter(level))
         return FALSE;
 
-    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(PACIFIDLOG_TOWN) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(PACIFIDLOG_TOWN)
+    if (FlagGet(FLAG_KRABBY_WILD)){
+        CreateWildMon(SPECIES_KRABBY, level);
+    }
+    else if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(PACIFIDLOG_TOWN) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(PACIFIDLOG_TOWN)
     && FlagGet(FLAG_MISSINGNO)){
         GiveItems_Missingno();
         CreateWildMon(SPECIES_MISSINGNO, level);

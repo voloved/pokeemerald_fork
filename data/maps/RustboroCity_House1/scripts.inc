@@ -46,24 +46,70 @@ RustboroCity_House1_EventScript_TradeCompleted::
 	end
 
 RustboroCity_House1_EventScript_Hiker::
-	call_if_unset FLAG_NUZLOCKE_LOST, RustboroCity_House1_EventScript_HikerDefault
-	call_if_set FLAG_NUZLOCKE, RustboroCity_House1_EventScript_HikerDefault
+	call_if_set FLAG_NUZLOCKE, RustboroCity_House1_EventScript_QuitNuzlocke
+	call_if_unset FLAG_NUZLOCKE_LOST, RustboroCity_House1_EventScript_StartNuzlocke
 	goto RustboroCity_House1_EventScript_ContinueNuzlocke
 
 RustboroCity_House1_EventScript_HikerDefault::
 	msgbox RustboroCity_House1_Text_AllSortsOfPlaces, MSGBOX_NPC
 	end
 
+RustboroCity_House1_EventScript_StartNuzlocke::
+	message RustboroCity_House1_Text_StartNuzlocke
+	waitmessage
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto_if_eq VAR_RESULT, 1, RustboroCity_House1_EventScript_StartNuzlockeNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, RustboroCity_House1_EventScript_StartNuzlockeNo
+	setflag FLAG_NUZLOCKE_LOST @ To disallow benfits that come with doing an uninterrupted Nuzlocke
+	setflag FLAG_NUZLOCKE
+	msgbox RustboroCity_House1_Text_StartNuzlockeYes, MSGBOX_SIGN
+	end
+
+RustboroCity_House1_EventScript_StartNuzlockeNo::
+	msgbox RustboroCity_House1_Text_StartNuzlockeNo, MSGBOX_SIGN
+	end
+
 RustboroCity_House1_EventScript_ContinueNuzlocke::
-	msgbox RustboroCity_House1_Text_ContinueNuzlocke, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, RustboroCity_House1_EventScript_ContinueNuzlockeNo
+	message RustboroCity_House1_Text_ContinueNuzlocke
+	waitmessage
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto_if_eq VAR_RESULT, 1, RustboroCity_House1_EventScript_ContinueNuzlockeNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, RustboroCity_House1_EventScript_ContinueNuzlockeNo
 	setflag FLAG_NUZLOCKE
 	msgbox RustboroCity_House1_Text_ContinueNuzlockeYes, MSGBOX_SIGN
 	end
 
 RustboroCity_House1_EventScript_ContinueNuzlockeNo::
-	msgbox RustboroCity_House1_Text_ContinueNuzlockeoNo, MSGBOX_SIGN
+	msgbox RustboroCity_House1_Text_ContinueNuzlockeNo, MSGBOX_SIGN
 	end
+
+RustboroCity_House1_EventScript_QuitNuzlocke::
+	message RustboroCity_House1_Text_QuitNuzlocke
+	waitmessage
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto_if_eq VAR_RESULT, 1, RustboroCity_House1_EventScript_QuitNuzlockeNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, RustboroCity_House1_EventScript_QuitNuzlockeNo
+	setflag FLAG_NUZLOCKE_LOST @ To disallow benfits that come with doing an uninterrupted Nuzlocke
+	clearflag FLAG_NUZLOCKE
+	msgbox RustboroCity_House1_Text_QuitNuzlockeYes, MSGBOX_SIGN
+	end
+
+RustboroCity_House1_EventScript_QuitNuzlockeNo::
+	msgbox RustboroCity_House1_Text_QuitNuzlockeNo, MSGBOX_SIGN
+	end
+
+RustboroCity_House1_Text_StartNuzlocke:
+	.string "It looks like you haven't started\n"
+	.string "the Nuzlocke challenge?\l"
+	.string "Would you like to?$"
+
+RustboroCity_House1_Text_StartNuzlockeYes:
+	.string "Nuzlocke challenge\n"
+	.string "is started.$"
+
+RustboroCity_House1_Text_StartNuzlockeNo:
+	.string "Nuzlocke challenge will\n"
+	.string "not be started.$"
 
 RustboroCity_House1_Text_ContinueNuzlocke:
 	.string "Would you like to continue\n"
@@ -73,9 +119,21 @@ RustboroCity_House1_Text_ContinueNuzlockeYes:
 	.string "Nuzlocke challenge\n"
 	.string "is continued.$"
 
-RustboroCity_House1_Text_ContinueNuzlockeoNo:
+RustboroCity_House1_Text_ContinueNuzlockeNo:
 	.string "Nuzlocke challenge will\n"
 	.string "not be continued.$"
+
+RustboroCity_House1_Text_QuitNuzlocke:
+	.string "Quit the\n"
+	.string "Nuzlocke challenge?$"
+
+RustboroCity_House1_Text_QuitNuzlockeYes:
+	.string "Nuzlocke challenge\n"
+	.string "has been quit.$"
+
+RustboroCity_House1_Text_QuitNuzlockeNo:
+	.string "Nuzlocke challenge\n"
+	.string "will continue.$"
 
 RustboroCity_House1_Text_IllTradeIfYouWant:
 	.string "Huh? My POKéMON is cute?\n"

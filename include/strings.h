@@ -268,6 +268,9 @@ extern const u8 gText_Peak[];
 extern const u8 gText_SafariBallStock[];
 extern const u8 gText_BattlePyramidFloor[];
 
+extern const u8 gText_Easy[];
+extern const u8 gText_Hard[];
+
 extern const u8 gText_MenuOptionPokedex[];
 extern const u8 gText_MenuOptionPokemon[];
 extern const u8 gText_MenuOptionBag[];
@@ -432,6 +435,7 @@ extern const u8 gText_ReturnToVar1[];
 extern const u8 gText_SelectorArrow2[];
 extern const u8 gText_MoveVar1Where[];
 extern const u8 gText_Var1IsSelected[];
+extern const u8 gText_Var1NuzlockePrevents[];
 extern const u8 gText_TossHowManyVar1s[];
 extern const u8 gText_ConfirmTossItems[];
 extern const u8 gText_ThrewAwayVar2Var1s[];
@@ -929,6 +933,8 @@ extern const u8 gText_Roy[];
 extern const u8 gText_Gabby[];
 extern const u8 gText_Anna[];
 
+extern const u8 gText_ExpShareTurnOn[];
+extern const u8 gText_ExpShareTurnOff[];
 extern const u8 gText_DadsAdvice[];
 extern const u8 gText_CantDismountBike[];
 extern const u8 gText_ItemFinderNothing[];
@@ -1022,6 +1028,7 @@ extern const u8 gText_InBagVar1[];
 extern const u8 gText_Var1AndYouWantedVar2[];
 extern const u8 gText_HereYouGoThankYou[];
 extern const u8 gText_NoMoreRoomForThis[];
+extern const u8 gText_YouAlreadyHaveThis[];
 extern const u8 gText_ThankYouIllSendItHome[];
 extern const u8 gText_ThanksIllSendItHome[];
 extern const u8 gText_SpaceForVar1Full[];

@@ -73,6 +73,7 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "naming_screen.h"
+#include "battle_setup.h"
 
 enum {
     MENU_SUMMARY,
@@ -2495,14 +2496,19 @@ void DisplayPartyMenuStdMessage(u32 stringId)
                 stringId = PARTY_MSG_CHOOSE_MON_AND_CONFIRM;
             else if (!ShouldUseChooseMonText())
                 stringId = PARTY_MSG_CHOOSE_MON_OR_CANCEL;
-            // Checks if the opponent is sending out a new pokemon.
-            else if (species >= NUM_SPECIES ||  species == SPECIES_NONE)
-                species = gBattleMons[B_SIDE_OPPONENT].species;
-                // Now tries to check if there's any opposing pokemon on the field
-                if (species >= NUM_SPECIES ||  species == SPECIES_NONE || gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-                    stringId = PARTY_MSG_CHOOSE_MON_2;
+            else if (gMain.inBattle){
+                // Checks if the opponent is sending out a new pokemon.
+                if (species >= NUM_SPECIES ||  species == SPECIES_NONE){
+                    species = gBattleMons[B_SIDE_OPPONENT].species;
+                    // Now tries to check if there's any opposing pokemon on the field
+                    if (species >= NUM_SPECIES ||  species == SPECIES_NONE || gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+                        stringId = PARTY_MSG_CHOOSE_MON_2;  // No species on the other side, show the default text.
+                }
+                if (stringId == PARTY_MSG_CHOOSE_MON)
+                    StringCopy(gStringVar2, gSpeciesNames[species]);
+            }
             else
-                StringCopy(gStringVar2, gSpeciesNames[species]);
+                stringId = PARTY_MSG_CHOOSE_MON_2;
         }
         DrawStdFrameWithCustomTileAndPalette(*windowPtr, FALSE, 0x4F, 0xD);
         StringExpandPlaceholders(gStringVar4, sActionStringTable[stringId]);
@@ -2639,7 +2645,7 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
 
      // If Mon can learn HM02 and action list consists of < 4 moves, add FLY to action list
     if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM02 - ITEM_TM01) && CheckBagHasItem(ITEM_HM02_FLY, 1)) 
-    AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
     // If Mon can learn HM05 and action list consists of < 4 moves, add FLASH to action list
     if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM05 - ITEM_TM01) && CheckBagHasItem(ITEM_HM05_FLASH, 1)) 
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 1 + MENU_FIELD_MOVES);
@@ -4819,8 +4825,6 @@ static void Task_LearnedMove(u8 taskId)
     if (move[1] == 0)
     {
         AdjustFriendship(mon, FRIENDSHIP_EVENT_LEARN_TMHM);
-        if (item < ITEM_HM01_CUT)
-            RemoveBagItem(item, 1);
     }
     GetMonNickname(mon, gStringVar1);
     StringCopy(gStringVar2, gMoveNames[move[0]]);
@@ -4925,13 +4929,17 @@ static void Task_PartyMenuReplaceMove(u8 taskId)
 {
     struct Pokemon *mon;
     u16 move;
+    u8 oldPP;
 
     if (IsPartyMenuTextPrinterActive() != TRUE)
     {
         mon = &gPlayerParty[gPartyMenu.slotId];
         RemoveMonPPBonus(mon, GetMoveSlotToReplace());
+        oldPP = GetMonData(mon, MON_DATA_PP1 + GetMoveSlotToReplace(), NULL);
         move = gPartyMenu.data1;
         SetMonMoveSlot(mon, move, GetMoveSlotToReplace());
+        if (GetMonData(mon, MON_DATA_PP1 + GetMoveSlotToReplace(), NULL) > oldPP)
+            SetMonData(mon, MON_DATA_PP1 + GetMoveSlotToReplace(), &oldPP);
         Task_LearnedMove(taskId);
     }
 }
@@ -5003,7 +5011,8 @@ void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
     u16 *itemPtr = &gSpecialVar_ItemId;
     bool8 cannotUseEffect;
 
-    if (GetMonData(mon, MON_DATA_LEVEL) != MAX_LEVEL)
+    if (GetMonData(mon, MON_DATA_LEVEL) != MAX_LEVEL
+    && !levelCappedNuzlocke(GetMonData(mon, MON_DATA_LEVEL)))
     {
         BufferMonStatsToTaskData(mon, arrayPtr);
         cannotUseEffect = ExecuteTableBasedItemEffect_(gPartyMenu.slotId, *itemPtr, 0);

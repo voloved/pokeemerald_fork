@@ -3501,7 +3501,7 @@ static const struct TrainerMonItemCustomMoves sParty_Norman1[] = {
     .lvl = 31,
     .species = SPECIES_SLAKING,
     .heldItem = ITEM_SITRUS_BERRY,
-    .moves = {MOVE_COUNTER, MOVE_YAWN, MOVE_FACADE, MOVE_FAINT_ATTACK}
+    .moves = {MOVE_AERIAL_ACE, MOVE_YAWN, MOVE_FACADE, MOVE_FAINT_ATTACK}
     }
 };
 

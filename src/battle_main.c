@@ -220,6 +220,7 @@ EWRAM_DATA u16 gIntroSlideFlags = 0;
 EWRAM_DATA u8 gSentPokesToOpponent[2] = {0};
 EWRAM_DATA u16 gDynamicBasePower = 0;
 EWRAM_DATA u16 gExpShareExp = 0;
+EWRAM_DATA bool8 gExpShareCheck = 0;
 EWRAM_DATA struct BattleEnigmaBerry gEnigmaBerries[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA struct BattleScripting gBattleScripting = {0};
 EWRAM_DATA struct BattleStruct *gBattleStruct = NULL;
@@ -2078,15 +2079,16 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case 0:
             {
                 const struct TrainerMonNoItemDefaultMoves *partyData = gTrainers[trainerNum].party.NoItemDefaultMoves;
-                if (checkStolenPokemon(trainerNum, partyData[i].species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
+                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
                     continue;
                 }
-                for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
-                    nameHash += gSpeciesNames[partyData[i].species][j];
+                for (j = 0; gSpeciesNames[species][j] != EOS; j++)
+                    nameHash += gSpeciesNames[species][j];
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
+                CreateMon(&party[i], species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
                 SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
                 SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
                 break;
@@ -2094,16 +2096,17 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case F_TRAINER_PARTY_CUSTOM_MOVESET:
             {
                 const struct TrainerMonNoItemCustomMoves *partyData = gTrainers[trainerNum].party.NoItemCustomMoves;
-                if (checkStolenPokemon(trainerNum, partyData[i].species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
+                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
                     continue;
                 }
 
-                for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
-                    nameHash += gSpeciesNames[partyData[i].species][j];
+                for (j = 0; gSpeciesNames[species][j] != EOS; j++)
+                    nameHash += gSpeciesNames[species][j];
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
+                CreateMon(&party[i], species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
                 SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
                 SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
 
@@ -2117,16 +2120,17 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case F_TRAINER_PARTY_HELD_ITEM:
             {
                 const struct TrainerMonItemDefaultMoves *partyData = gTrainers[trainerNum].party.ItemDefaultMoves;
-                if (checkStolenPokemon(trainerNum, partyData[i].species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
+                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
                     continue;
                 }
 
-                for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
-                    nameHash += gSpeciesNames[partyData[i].species][j];
+                for (j = 0; gSpeciesNames[species][j] != EOS; j++)
+                    nameHash += gSpeciesNames[species][j];
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
+                CreateMon(&party[i], species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
                 SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
                 SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
 
@@ -2136,19 +2140,20 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case F_TRAINER_PARTY_CUSTOM_MOVESET | F_TRAINER_PARTY_HELD_ITEM:
             {
                 const struct TrainerMonItemCustomMoves *partyData = gTrainers[trainerNum].party.ItemCustomMoves;
-                if (checkStolenPokemon(trainerNum, partyData[i].species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
+                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
                     continue;
                 }
 
-                for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
-                    nameHash += gSpeciesNames[partyData[i].species][j];
+                for (j = 0; gSpeciesNames[species][j] != EOS; j++)
+                    nameHash += gSpeciesNames[species][j];
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
+                CreateMon(&party[i], species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_PRESET, fixedOTID);
                 SetMonData(&party[i], MON_DATA_OT_GENDER, &otGender);
                 SetMonData(&party[i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
-                if (partyData[i].species == SPECIES_SLAKING && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN 
+                if (species == SPECIES_SLAKING && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN 
                 && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)  //Set Norman's Slaking to have intimidate
                     SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfNormansSlaking);
                 
@@ -3181,7 +3186,7 @@ static void BattleStartClearSetData(void)
     else if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK)) && GetBattleSceneInRecordedBattle())
         gHitMarker |= HITMARKER_NO_ANIMATIONS;
 
-    gBattleScripting.battleStyle = gSaveBlock2Ptr->optionsBattleStyle;
+    gBattleScripting.battleStyle = gSaveBlock2Ptr->optionsBattleStyle || (FlagGet(FLAG_NUZLOCKE_BATTLE_SET) && FlagGet(FLAG_NUZLOCKE));
 
     gMultiHitCounter = 0;
     gBattleOutcome = 0;
@@ -4756,6 +4761,7 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
     // badge boost
     if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_FRONTIER))
         && FlagGet(FLAG_BADGE03_GET)
+        && (VarGet(VAR_DIFFICULTY) != DIFFICULTY_HARD)
         && GetBattlerSide(battler1) == B_SIDE_PLAYER)
     {
         speedBattler1 = (speedBattler1 * 110) / 100;
@@ -4790,6 +4796,7 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
     // badge boost
     if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_FRONTIER))
         && FlagGet(FLAG_BADGE03_GET)
+        && (VarGet(VAR_DIFFICULTY) != DIFFICULTY_HARD)
         && GetBattlerSide(battler2) == B_SIDE_PLAYER)
     {
         speedBattler2 = (speedBattler2 * 110) / 100;
@@ -5213,8 +5220,6 @@ static void HandleEndTurn_MonFled(void)
 static void HandleEndTurn_FinishBattle(void)
 {
     gNuzlockeCannotCatch = 0;  // While not necissary, resetting this is nice to stay deterministic
-    gBattleMons[B_SIDE_OPPONENT].species = SPECIES_NONE;  // So the "Choose a Pkmn message doesn't include the last mon battled."
-    *(gBattleStruct->monToSwitchIntoId + B_SIDE_OPPONENT) = SPECIES_NONE;  // Should already be none at the end of a battle, but better to be explicit
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
         if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK

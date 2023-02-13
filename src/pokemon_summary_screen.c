@@ -46,6 +46,7 @@
 #include "constants/region_map_sections.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "battle_setup.h"
 
 enum {
     PSS_PAGE_INFO,
@@ -2610,7 +2611,7 @@ static void DrawExperienceProgressBar(struct Pokemon *unused)
     u16 *dst;
     u8 i;
 
-    if (summary->level < MAX_LEVEL)
+    if (summary->level < MAX_LEVEL && !levelCappedNuzlocke(summary->level))
     {
         u32 expBetweenLevels = gExperienceTables[gSpeciesInfo[summary->species].growthRate][summary->level + 1] - gExperienceTables[gSpeciesInfo[summary->species].growthRate][summary->level];
         u32 expSinceLastLevel = summary->exp - gExperienceTables[gSpeciesInfo[summary->species].growthRate][summary->level];
@@ -3412,7 +3413,7 @@ static void PrintExpPointsNextLevel(void)
     x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar1, 42) + 2;
     PrintTextOnWindow(windowId, gStringVar1, x, 1, 0, 0);
 
-    if (sum->level < MAX_LEVEL)
+    if (sum->level < MAX_LEVEL && !levelCappedNuzlocke(sum->level))
         expToNextLevel = gExperienceTables[gSpeciesInfo[sum->species].growthRate][sum->level + 1] - sum->exp;
     else
         expToNextLevel = 0;
