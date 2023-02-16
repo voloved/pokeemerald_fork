@@ -3218,8 +3218,8 @@ static void MoveSelectionDisplaySplitIcon(void){
 	static const u16 sSplitIcons_Pal[] = INCBIN_U16("graphics/interface/split_icons_battle.gbapal");
 	static const u8 sSplitIcons_Gfx[] = INCBIN_U8("graphics/interface/split_icons_battle.4bpp");
     u16 move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
-	u8 moveType;
-	u8 icon = moveType = gBattleMoves[move].category;
+    u8 icon = isMoveStatus(move) ? 2 : isMoveSpecial(move);
+    // for icon: 0 = phys; 1= spec; 2 = status
 	LoadPalette(sSplitIcons_Pal, 10 * 0x10, 0x20);
 	BlitBitmapToWindow(B_WIN_DUMMY, sSplitIcons_Gfx + 0x80 * icon, 0, 0, 16, 16);
 	PutWindowTilemap(B_WIN_DUMMY);

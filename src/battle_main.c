@@ -5388,3 +5388,15 @@ void RunBattleScriptCommands(void)
     if (gBattleControllerExecFlags == 0)
         gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
 }
+
+u8 isMovePhysical(u16 move){
+    return FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) ? gBattleMoves[move].type < TYPE_MYSTERY : gBattleMoves[move].category == MOVE_CATEGORY_PHYSICAL;
+}
+
+u8 isMoveSpecial(u16 move){
+    return FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) ? gBattleMoves[move].type > TYPE_MYSTERY : gBattleMoves[move].category == MOVE_CATEGORY_SPECIAL;
+}
+
+u8 isMoveStatus(u16 move){
+    return gBattleMoves[move].category == MOVE_CATEGORY_STATUS;
+}

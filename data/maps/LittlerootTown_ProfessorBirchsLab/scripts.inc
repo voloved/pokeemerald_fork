@@ -676,8 +676,9 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMult
 	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun
 	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
-	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
-	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit
+	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
 	end
@@ -694,7 +695,10 @@ EventScript_Multichoice_BirchPCOptions_5:
 	goto_if_set FLAG_NO_LOW_HEALTH_BEEP, EventScript_Multichoice_BirchPCOptions_10
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_7, 4
 EventScript_Multichoice_BirchPCOptions_9:
+	goto_if_set FLAG_MOVE_SPLIT_USE_ORIGINAL, EventScript_Multichoice_BirchPCOptions_12
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_8, 5
+EventScript_Multichoice_BirchPCOptions_11:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 6
 	dynmultipush EventScript_Multichoice_Exit, 6
 	dynmultistack 0, 0, TRUE, 10, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	return
@@ -710,6 +714,10 @@ EventScript_Multichoice_BirchPCOptions_6:
 EventScript_Multichoice_BirchPCOptions_10:
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_6, 4
 	goto EventScript_Multichoice_BirchPCOptions_9
+
+EventScript_Multichoice_BirchPCOptions_12:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_9, 5
+	goto EventScript_Multichoice_BirchPCOptions_11
 
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
 	message LittlerootTown_ProfessorBirchsLab_Text_SkipIntro
@@ -771,6 +779,28 @@ LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep_Cont:
 LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeepNo::
 	clearflag FLAG_NO_LOW_HEALTH_BEEP
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit::
+	message LittlerootTown_ProfessorBirchsLab_Text_GenFourSplit
+	waitmessage
+	goto_if_unset FLAG_MOVE_SPLIT_USE_ORIGINAL, LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit_Unset
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit_Unset:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplitNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	clearflag FLAG_MOVE_SPLIT_USE_ORIGINAL
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_GenFourSplitYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplitNo::
+	setflag FLAG_MOVE_SPLIT_USE_ORIGINAL
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_GenFourSplitNo, MSGBOX_SIGN
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
@@ -1249,6 +1279,12 @@ EventScript_Multichoice_BirchPCOptions_Text_7:
 	.string "{COLOR RED}LOW HEALTH BEEP$"
 
 EventScript_Multichoice_BirchPCOptions_Text_8:
+	.string "{COLOR GREEN}USE GEN 4 MOVE SPLIT$"
+
+EventScript_Multichoice_BirchPCOptions_Text_9:
+	.string "{COLOR RED}USE GEN 4 MOVE SPLIT$"
+
+EventScript_Multichoice_BirchPCOptions_Text_10:
 	.string "CARCINISATION$"
 
 EventScript_Multichoice_Exit:
@@ -1426,6 +1462,19 @@ LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepYes:
 LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepNo:
 	.string "Beeping at low health\n"
 	.string "is turned on.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_GenFourSplit:
+	.string "Would you like the moves' physical\n"
+	.string "and special split to be based off\l"
+	.string "Gen 4 logic rather than move type?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_GenFourSplitYes:
+	.string "Move split set to\n"
+	.string "Gen 4 logic.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_GenFourSplitNo:
+	.string "Move splitting set to\n"
+	.string "Gen 3 default.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_NoDupesClause:
 	.string "Would you like to not use the dupes\n"

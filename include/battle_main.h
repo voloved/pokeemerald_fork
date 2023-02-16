@@ -111,6 +111,9 @@ void RunBattleScriptCommands(void);
 bool8 TryRunFromBattle(u8 battlerId);
 void SpecialStatusesClear(void);
 u16 checkStolenPokemon(u16 trainerNum, u16 speciesType);
+u8 isMovePhysical(u16);
+u8 isMoveSpecial(u16);
+u8 isMoveStatus(u16);
 
 extern struct MultiPartnerMenuPokemon gMultiPartnerParty[MULTI_PARTY_SIZE];
 

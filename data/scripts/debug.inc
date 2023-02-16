@@ -60,15 +60,11 @@ Debug_Script_4::
 	end
 
 Debug_Script_5::
-	setflag FLAG_KRABBY_WILD
-	setflag FLAG_KRABBY_TRAINER
-	setflag FLAG_KRABBY_EVO
+	setflag FLAG_MOVE_SPLIT_USE_ORIGINAL
 	end
 
 Debug_Script_6::
-	clearflag FLAG_KRABBY_WILD
-	clearflag FLAG_KRABBY_TRAINER
-	clearflag FLAG_KRABBY_EVO
+	clearflag FLAG_MOVE_SPLIT_USE_ORIGINAL
 	end
 
 Debug_Script_7::
