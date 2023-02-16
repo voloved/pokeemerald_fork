@@ -667,6 +667,10 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall::
 	releaseall
 	end
 
+LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCAccess::
+	call LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	waitmessage
 	call EventScript_Multichoice_BirchPCOptions
@@ -681,7 +685,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
-	end
+	return
 
 EventScript_Multichoice_BirchPCOptions::
 	goto_if_set FLAG_SKIP_INTRO, EventScript_Multichoice_BirchPCOptions_2
