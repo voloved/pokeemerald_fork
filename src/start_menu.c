@@ -1013,6 +1013,8 @@ static u8 SaveConfirmSaveCallback(void)
     RemoveStartMenuWindow();
     ShowSaveInfoWindow();
 
+    // Test Functions to Run When Pushing 'Save' Go Here
+
     if (InBattlePyramid())
     {
         ShowSaveMessage(gText_BattlePyramidConfirmRest, SaveYesNoCallback);
