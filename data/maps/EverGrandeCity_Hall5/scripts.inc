@@ -7,6 +7,7 @@ EverGrandeCity_Hall5_OnWarp:
 	.2byte 0
 
 EverGrandeCity_Hall5_EventScript_TurnPlayerNorth::
+	call EverGrandeCity_HallOfFame_EventScript_ResetEliteFour
 	turnobject OBJ_EVENT_ID_PLAYER, DIR_NORTH
 	end
 
