@@ -68,6 +68,7 @@ Debug_Script_6::
 	end
 
 Debug_Script_7::
+	call EverGrandeCity_HallOfFame_EventScript_ResetEliteFour
 	end
 
 Debug_Script_8::

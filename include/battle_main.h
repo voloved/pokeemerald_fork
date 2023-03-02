@@ -61,19 +61,47 @@ ballShakesArray: 76543210
 #define BOUNCE_HEALTHBOX    0x1
 
 // Rival's Stolen Pokemon
-#define STOLE_STARTER      (1 << 0)
-#define STOLE_WINGULL      (1 << 1)
-#define STOLE_SLUGMA       (1 << 2)
-#define STOLE_LOTAD        (1 << 3)
-#define STOLE_TROPIUS      (1 << 4)
-#define STOLE_TORKOAL      (1 << 5)
-#define STOLE_LEGENDARY    (1 << 6)
-#define STOLE_RALTS        (1 << 7)
-#define STOLE_ALTARIA      (1 << 8)
-#define STOLE_DELCATTY     (1 << 9)
-#define STOLE_ROSELIA      (1 << 10)
-#define STOLE_MAGNETON     (1 << 11)
-#define STOLE_SLAKING      (1 << 12)
+#define STOLE_STARTER       (1 << 0)
+#define STOLE_WINGULL       (1 << 1)
+#define STOLE_SLUGMA        (1 << 2)
+#define STOLE_LOTAD         (1 << 3)
+#define STOLE_TROPIUS       (1 << 4)
+#define STOLE_TORKOAL       (1 << 5)
+#define STOLE_LEGENDARY     (1 << 6)
+#define STOLE_RALTS         (1 << 7)
+#define STOLE_ALTARIA       (1 << 8)
+#define STOLE_DELCATTY      (1 << 9)
+#define STOLE_ROSELIA       (1 << 10)
+#define STOLE_MAGNETON      (1 << 11)
+#define STOLE_SLAKING       (1 << 12)
+
+// Sidney
+#define STOLE_MIGHTYENA     (1 << 0)
+#define STOLE_SHIFTRY       (1 << 1)
+#define STOLE_CACTURNE      (1 << 2)
+#define STOLE_CRAWDAUNT     (1 << 3)
+#define STOLE_ABSOL         (1 << 4)
+// Pheobe
+#define STOLE_DUSCLOPS      (1 << 5)
+#define STOLE_SHUPPET       (1 << 6)
+#define STOLE_SABLEYE       (1 << 7)
+#define STOLE_BANETTE       (1 << 8)
+#define STOLE_DUSKNOIR      (1 << 9)
+// Glacia
+#define STOLE_SEALEO        (1 << 10)
+#define STOLE_GLALIE        (1 << 11)
+#define STOLE_MAMOSWINE     (1 << 12)
+#define STOLE_WEAVILE       (1 << 13)
+#define STOLE_WALREIN       (1 << 14)
+
+// Drake
+#define STOLE_SHELGON       (1 << 0)
+#define STOLE_ALTARIA_DRAKE (1 << 1)
+#define STOLE_KINGDRA       (1 << 2)
+#define STOLE_FLYGON        (1 << 3)
+#define STOLE_SALAMENCE     (1 << 4)
+
+
 
 void CB2_InitBattle(void);
 void BattleMainCB2(void);
@@ -110,7 +138,7 @@ void RunBattleScriptCommands_PopCallbacksStack(void);
 void RunBattleScriptCommands(void);
 bool8 TryRunFromBattle(u8 battlerId);
 void SpecialStatusesClear(void);
-u16 checkStolenPokemon(u16 trainerNum, u16 speciesType);
+u16 checkStolenPokemon(u16 trainerNum, u16 speciesType, bool8 set);
 u8 isMovePhysical(u16);
 u8 isMoveSpecial(u16);
 u8 isMoveStatus(u16);

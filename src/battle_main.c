@@ -1959,9 +1959,11 @@ static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite)
     }
 }
 
-//VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | checkStolenPokemon(species));
-u16 checkStolenPokemon(u16 trainerNum, u16 speciesType){
+u16 checkStolenPokemon(u16 trainerNum, u16 speciesType, bool8 set){
     u8 trainerClass = gTrainers[trainerNum].trainerClass;
+    u8 trainerPic = gTrainers[trainerNum].trainerPic;
+    u8 varToCheck; // 1 = VAR_PKMN_STOLE_RIVAL; 2 = VAR_PKMN_STOLE_ELITE4_A; 3 = VAR_PKMN_STOLE_ELITE4_B
+    u16 monStolen;
     switch (trainerClass)
     {
     case TRAINER_CLASS_RIVAL:
@@ -1976,50 +1978,194 @@ u16 checkStolenPokemon(u16 trainerNum, u16 speciesType){
         case SPECIES_MUDKIP:
         case SPECIES_MARSHTOMP:
         case SPECIES_SWAMPERT:
-            return STOLE_STARTER;
+            monStolen = STOLE_STARTER;
+            break;
         case SPECIES_WINGULL:
         case SPECIES_PELIPPER:
-            return STOLE_WINGULL;
+            monStolen = STOLE_WINGULL;
+            break;
         case SPECIES_SLUGMA:
         case SPECIES_MAGCARGO:
-            return STOLE_SLUGMA;
+            monStolen = STOLE_SLUGMA;
+            break;
         case SPECIES_LOTAD:
         case SPECIES_LOMBRE:
         case SPECIES_LUDICOLO:
-            return STOLE_LOTAD;
+            monStolen = STOLE_LOTAD;
+            break;
         case SPECIES_TROPIUS:
-            return STOLE_TROPIUS;
+            monStolen = STOLE_TROPIUS;
+            break;
         case SPECIES_TORKOAL:
-            return STOLE_TORKOAL;
+            monStolen = STOLE_TORKOAL;
+            break;
         case SPECIES_GROUDON:
         case SPECIES_KYOGRE:
-            return STOLE_LEGENDARY;
+            monStolen = STOLE_LEGENDARY;
+            break;
         case SPECIES_RALTS:
         case SPECIES_KIRLIA:
         case SPECIES_GARDEVOIR:
-            return STOLE_RALTS;
+            monStolen = STOLE_RALTS;
+            break;
         case SPECIES_ALTARIA:
-            return STOLE_ALTARIA;
+            monStolen = STOLE_ALTARIA;
+            break;
         case SPECIES_DELCATTY:
-            return STOLE_DELCATTY;
+            monStolen = STOLE_DELCATTY;
+            break;
         case SPECIES_ROSELIA:
-            return STOLE_ROSELIA;
+            monStolen = STOLE_ROSELIA;
+            break;
         case SPECIES_MAGNETON:
-            return STOLE_MAGNETON;
-        default:
-            return 0;
+            monStolen = STOLE_MAGNETON;
+            break;
         }
+        varToCheck = 1;
+        break;
     case TRAINER_CLASS_LEADER:
-        switch (speciesType)
+        switch (trainerPic)
         {
-        case SPECIES_SLAKING:
-            if (gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN)
-                return STOLE_SLAKING;
+        case TRAINER_PIC_LEADER_NORMAN:
+            switch (speciesType)
+            {
+            case SPECIES_SLAKING:
+                monStolen = STOLE_SLAKING;
+                break;
+            }
+            varToCheck = 1;
+            break;
+        }
+        break;
+    case TRAINER_CLASS_ELITE_FOUR:
+        switch (trainerPic)
+        {
+        case TRAINER_PIC_ELITE_FOUR_SIDNEY:
+            switch (speciesType)
+            {
+            case SPECIES_MIGHTYENA:
+                monStolen = STOLE_MIGHTYENA;
+                break;
+            case SPECIES_SHIFTRY:
+                monStolen = STOLE_SHIFTRY;
+                break;
+            case SPECIES_CACTURNE:
+                monStolen = STOLE_CACTURNE;
+                break;
+            case SPECIES_CRAWDAUNT:
+                monStolen = STOLE_CRAWDAUNT;
+                break;
+            case SPECIES_ABSOL:
+                monStolen = STOLE_ABSOL;
+                break;
+            }
+            varToCheck = 2;
+            break;
+        case TRAINER_PIC_ELITE_FOUR_PHOEBE:
+            switch (speciesType)
+            {
+            case SPECIES_DUSCLOPS:
+                monStolen = STOLE_DUSCLOPS;
+                break;
+            case SPECIES_SHUPPET:
+                monStolen = STOLE_SHUPPET;
+                break;
+            case SPECIES_SABLEYE:
+                monStolen = STOLE_SABLEYE;
+                break;
+            case SPECIES_BANETTE:
+                monStolen = STOLE_BANETTE;
+                break;
+            case SPECIES_DUSKNOIR:
+                monStolen = STOLE_DUSKNOIR;
+                break;
+            }
+            varToCheck = 2;
+            break;
+        case TRAINER_PIC_ELITE_FOUR_GLACIA:
+            switch (speciesType)
+            {
+            case SPECIES_SEALEO:
+                monStolen = STOLE_SEALEO;
+                break;
+            case SPECIES_GLALIE:
+                monStolen = STOLE_GLALIE;
+                break;
+            case SPECIES_MAMOSWINE:
+                monStolen = STOLE_MAMOSWINE;
+                break;
+            case SPECIES_WEAVILE:
+                monStolen = STOLE_WEAVILE;
+                break;
+            case SPECIES_WALREIN:
+                monStolen = STOLE_WALREIN;
+                break;
+            }
+            varToCheck = 2;
+            break;
+        case TRAINER_PIC_ELITE_FOUR_DRAKE:
+            switch (speciesType)
+            {
+            case SPECIES_SHELGON:
+                monStolen = STOLE_SHELGON;
+                break;
+            case SPECIES_ALTARIA:
+                monStolen = STOLE_ALTARIA_DRAKE;
+                break;
+            case SPECIES_KINGDRA:
+                monStolen = STOLE_KINGDRA;
+                break;
+            case SPECIES_FLYGON:
+                monStolen = STOLE_FLYGON;
+                break;
+            case SPECIES_SALAMENCE:
+                monStolen = STOLE_SALAMENCE;
+                break;
+            }
+            varToCheck = 3;
+            break;
+        }
+        break;
+    default:
+        monStolen = 0;
+        break;
+    }
+    if (set){  // Sets the variable on whether the pokemon was stolen.
+        if (monStolen != 0){
+            switch (varToCheck)
+            {
+            case 1:
+                VarSet(VAR_PKMN_STOLE_RIVAL, VarGet(VAR_PKMN_STOLE_RIVAL) | monStolen);
+                break;
+            case 2:
+                VarSet(VAR_PKMN_STOLE_ELITE4_A, VarGet(VAR_PKMN_STOLE_ELITE4_A) | monStolen);
+                break;
+            case 3:
+                VarSet(VAR_PKMN_STOLE_ELITE4_B, VarGet(VAR_PKMN_STOLE_ELITE4_B) | monStolen);
+                break;
+            default:
+                break;
+            }
+        }
+        return monStolen;
+    }
+    else{  // Used to return if the Pokemon was stolen
+        switch (varToCheck)
+        {
+        case 1:
+            return monStolen & VarGet(VAR_PKMN_STOLE_RIVAL);
+            break;
+        case 2:
+            return monStolen & VarGet(VAR_PKMN_STOLE_ELITE4_A);
+            break;
+        case 3:
+            return monStolen & VarGet(VAR_PKMN_STOLE_ELITE4_B);
+            break;
         default:
             return 0;
+            break;
         }
     }
-    return 0;
 }
 
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer)
@@ -2080,7 +2226,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             {
                 const struct TrainerMonNoItemDefaultMoves *partyData = gTrainers[trainerNum].party.NoItemDefaultMoves;
                 u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
-                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                if (checkStolenPokemon(trainerNum, species, FALSE)){
                     continue;
                 }
                 for (j = 0; gSpeciesNames[species][j] != EOS; j++)
@@ -2097,7 +2243,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             {
                 const struct TrainerMonNoItemCustomMoves *partyData = gTrainers[trainerNum].party.NoItemCustomMoves;
                 u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
-                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                if (checkStolenPokemon(trainerNum, species, FALSE)){
                     continue;
                 }
 
@@ -2121,7 +2267,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             {
                 const struct TrainerMonItemDefaultMoves *partyData = gTrainers[trainerNum].party.ItemDefaultMoves;
                 u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
-                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                if (checkStolenPokemon(trainerNum, species, FALSE)){
                     continue;
                 }
 
@@ -2141,7 +2287,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             {
                 const struct TrainerMonItemCustomMoves *partyData = gTrainers[trainerNum].party.ItemCustomMoves;
                 u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
-                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                if (checkStolenPokemon(trainerNum, species, FALSE)){
                     continue;
                 }
 
