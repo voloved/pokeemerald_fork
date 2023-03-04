@@ -1959,11 +1959,11 @@ static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite)
     }
 }
 
-u16 checkStolenPokemon(u16 trainerNum, u16 speciesType, bool8 set){
+u16 checkStolenPokemon(u16 trainerNum, u16 speciesType, u16 partyIndex, bool8 set){
     u8 trainerClass = gTrainers[trainerNum].trainerClass;
     u8 trainerPic = gTrainers[trainerNum].trainerPic;
     u8 varToCheck; // 1 = VAR_PKMN_STOLE_RIVAL; 2 = VAR_PKMN_STOLE_ELITE4_A; 3 = VAR_PKMN_STOLE_ELITE4_B
-    u16 monStolen;
+    u16 monStolen = 0;
     switch (trainerClass)
     {
     case TRAINER_CLASS_RIVAL:
@@ -2038,88 +2038,89 @@ u16 checkStolenPokemon(u16 trainerNum, u16 speciesType, bool8 set){
         }
         break;
     case TRAINER_CLASS_ELITE_FOUR:
+    // Elite Four party is always the same, so the party order can be used. THis also allows picking same-species mon in their party uniquely
         switch (trainerPic)
         {
         case TRAINER_PIC_ELITE_FOUR_SIDNEY:
-            switch (speciesType)
+            switch (partyIndex)
             {
-            case SPECIES_MIGHTYENA:
-                monStolen = STOLE_MIGHTYENA;
+            case 0:
+                monStolen = STOLE_SIDNEY_1;
                 break;
-            case SPECIES_SHIFTRY:
-                monStolen = STOLE_SHIFTRY;
+            case 1:
+                monStolen = STOLE_SIDNEY_2;
                 break;
-            case SPECIES_CACTURNE:
-                monStolen = STOLE_CACTURNE;
+            case 2:
+                monStolen = STOLE_SIDNEY_3;
                 break;
-            case SPECIES_CRAWDAUNT:
-                monStolen = STOLE_CRAWDAUNT;
+            case 3:
+                monStolen = STOLE_SIDNEY_4;
                 break;
-            case SPECIES_ABSOL:
-                monStolen = STOLE_ABSOL;
+            case 4:
+                monStolen = STOLE_SIDNEY_5;
                 break;
             }
             varToCheck = 2;
             break;
         case TRAINER_PIC_ELITE_FOUR_PHOEBE:
-            switch (speciesType)
+            switch (partyIndex)
             {
-            case SPECIES_DUSCLOPS:
-                monStolen = STOLE_DUSCLOPS;
+            case 0:
+                monStolen = STOLE_PHEOBE_1;
                 break;
-            case SPECIES_SHUPPET:
-                monStolen = STOLE_SHUPPET;
+            case 1:
+                monStolen = STOLE_PHEOBE_2;
                 break;
-            case SPECIES_SABLEYE:
-                monStolen = STOLE_SABLEYE;
+            case 2:
+                monStolen = STOLE_PHEOBE_3;
                 break;
-            case SPECIES_BANETTE:
-                monStolen = STOLE_BANETTE;
+            case 3:
+                monStolen = STOLE_PHEOBE_4;
                 break;
-            case SPECIES_DUSKNOIR:
-                monStolen = STOLE_DUSKNOIR;
+            case 4:
+                monStolen = STOLE_PHEOBE_5;
                 break;
             }
             varToCheck = 2;
             break;
         case TRAINER_PIC_ELITE_FOUR_GLACIA:
-            switch (speciesType)
+            switch (partyIndex)
             {
-            case SPECIES_SEALEO:
-                monStolen = STOLE_SEALEO;
+            case 0:
+                monStolen = STOLE_GLACIA_1;
                 break;
-            case SPECIES_GLALIE:
-                monStolen = STOLE_GLALIE;
+            case 1:
+                monStolen = STOLE_GLACIA_2;
                 break;
-            case SPECIES_MAMOSWINE:
-                monStolen = STOLE_MAMOSWINE;
+            case 2:
+                monStolen = STOLE_GLACIA_3;
                 break;
-            case SPECIES_WEAVILE:
-                monStolen = STOLE_WEAVILE;
+            case 3:
+                monStolen = STOLE_GLACIA_4;
                 break;
-            case SPECIES_WALREIN:
-                monStolen = STOLE_WALREIN;
+            case 4:
+                monStolen = STOLE_GLACIA_5;
                 break;
             }
             varToCheck = 2;
             break;
         case TRAINER_PIC_ELITE_FOUR_DRAKE:
-            switch (speciesType)
+            switch (partyIndex)
             {
-            case SPECIES_SHELGON:
-                monStolen = STOLE_SHELGON;
+            case 0:
+                monStolen = STOLE_DRAKE_1;
                 break;
-            case SPECIES_ALTARIA:
-                monStolen = STOLE_ALTARIA_DRAKE;
+            case 1:
+                monStolen = STOLE_DRAKE_2;
                 break;
-            case SPECIES_KINGDRA:
-                monStolen = STOLE_KINGDRA;
+            case 2:
+                monStolen = STOLE_DRAKE_3;
                 break;
-            case SPECIES_FLYGON:
-                monStolen = STOLE_FLYGON;
+            case 3:
+                monStolen = STOLE_DRAKE_4;
                 break;
-            case SPECIES_SALAMENCE:
-                monStolen = STOLE_SALAMENCE;
+            case 4:
+                monStolen = STOLE_DRAKE_5;
                 break;
             }
             varToCheck = 3;
@@ -2226,7 +2227,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             {
                 const struct TrainerMonNoItemDefaultMoves *partyData = gTrainers[trainerNum].party.NoItemDefaultMoves;
                 u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
-                if (checkStolenPokemon(trainerNum, species, FALSE)){
+                if (checkStolenPokemon(trainerNum, species, i, FALSE)){
                     continue;
                 }
                 for (j = 0; gSpeciesNames[species][j] != EOS; j++)
@@ -2243,7 +2244,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             {
                 const struct TrainerMonNoItemCustomMoves *partyData = gTrainers[trainerNum].party.NoItemCustomMoves;
                 u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
-                if (checkStolenPokemon(trainerNum, species, FALSE)){
+                if (checkStolenPokemon(trainerNum, species, i, FALSE)){
                     continue;
                 }
 
@@ -2267,7 +2268,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             {
                 const struct TrainerMonItemDefaultMoves *partyData = gTrainers[trainerNum].party.ItemDefaultMoves;
                 u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
-                if (checkStolenPokemon(trainerNum, species, FALSE)){
+                if (checkStolenPokemon(trainerNum, species, i, FALSE)){
                     continue;
                 }
 
@@ -2287,7 +2288,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             {
                 const struct TrainerMonItemCustomMoves *partyData = gTrainers[trainerNum].party.ItemCustomMoves;
                 u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
-                if (checkStolenPokemon(trainerNum, species, FALSE)){
+                if (checkStolenPokemon(trainerNum, species, i, FALSE)){
                     continue;
                 }
 

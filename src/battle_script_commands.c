@@ -3008,7 +3008,8 @@ static void Cmd_tryfaintmon(void)
             else
             {
                 if(gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE){ 
-                    checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species, TRUE);
+                    u16 partyIndex = gBattlerPartyIndexes[gActiveBattler];
+                    checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species, partyIndex, TRUE);
                 }
                 if (gBattleResults.opponentFaintCounter < 255)
                     gBattleResults.opponentFaintCounter++;
@@ -9961,7 +9962,7 @@ static void Cmd_handleballthrow(void)
                 break;
             case ITEM_THIEF_BALL:  // If used on trainer, it's 2.5x; if used on a wild Pokemon, it's 1x
                 if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
-                    ballMultiplier = 25;
+                    ballMultiplier = 255;
                 else
                     ballMultiplier = 10;
                 break;
@@ -10028,7 +10029,8 @@ static void Cmd_givecaughtmon(void)
     gBattleResults.caughtMonBall = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_POKEBALL, NULL);
     if (gUsingThiefBall == THIEF_BALL_CAUGHT)
     {
-        checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species, TRUE);
+        u16 partyIndex = gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]; 
+        checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species, partyIndex, TRUE);
         gBattleMons[gBattlerTarget].hp = 0;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_HP, &gBattleMons[gBattlerTarget].hp);
         gBattlerFainted = gBattlerTarget;

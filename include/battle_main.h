@@ -76,30 +76,29 @@ ballShakesArray: 76543210
 #define STOLE_SLAKING       (1 << 12)
 
 // Sidney
-#define STOLE_MIGHTYENA     (1 << 0)
-#define STOLE_SHIFTRY       (1 << 1)
-#define STOLE_CACTURNE      (1 << 2)
-#define STOLE_CRAWDAUNT     (1 << 3)
-#define STOLE_ABSOL         (1 << 4)
+#define STOLE_SIDNEY_1      (1 << 0)
+#define STOLE_SIDNEY_2      (1 << 1)
+#define STOLE_SIDNEY_3      (1 << 2)
+#define STOLE_SIDNEY_4      (1 << 3)
+#define STOLE_SIDNEY_5      (1 << 4)
 // Pheobe
-#define STOLE_DUSCLOPS      (1 << 5)
-#define STOLE_SHUPPET       (1 << 6)
-#define STOLE_SABLEYE       (1 << 7)
-#define STOLE_BANETTE       (1 << 8)
-#define STOLE_DUSKNOIR      (1 << 9)
+#define STOLE_PHEOBE_1      (1 << 5)
+#define STOLE_PHEOBE_2      (1 << 6)
+#define STOLE_PHEOBE_3      (1 << 7)
+#define STOLE_PHEOBE_4      (1 << 8)
+#define STOLE_PHEOBE_5      (1 << 9)
 // Glacia
-#define STOLE_SEALEO        (1 << 10)
-#define STOLE_GLALIE        (1 << 11)
-#define STOLE_MAMOSWINE     (1 << 12)
-#define STOLE_WEAVILE       (1 << 13)
-#define STOLE_WALREIN       (1 << 14)
-
+#define STOLE_GLACIA_1      (1 << 10)
+#define STOLE_GLACIA_2      (1 << 11)
+#define STOLE_GLACIA_3      (1 << 12)
+#define STOLE_GLACIA_4      (1 << 13)
+#define STOLE_GLACIA_5      (1 << 14)
 // Drake
-#define STOLE_SHELGON       (1 << 0)
-#define STOLE_ALTARIA_DRAKE (1 << 1)
-#define STOLE_KINGDRA       (1 << 2)
-#define STOLE_FLYGON        (1 << 3)
-#define STOLE_SALAMENCE     (1 << 4)
+#define STOLE_DRAKE_1       (1 << 0)
+#define STOLE_DRAKE_2       (1 << 1)
+#define STOLE_DRAKE_3       (1 << 2)
+#define STOLE_DRAKE_4       (1 << 3)
+#define STOLE_DRAKE_5       (1 << 4)
 
 
 
@@ -138,7 +137,7 @@ void RunBattleScriptCommands_PopCallbacksStack(void);
 void RunBattleScriptCommands(void);
 bool8 TryRunFromBattle(u8 battlerId);
 void SpecialStatusesClear(void);
-u16 checkStolenPokemon(u16 trainerNum, u16 speciesType, bool8 set);
+u16 checkStolenPokemon(u16 trainerNum, u16 speciesType, u16 partyIndex, bool8 set);
 u8 isMovePhysical(u16);
 u8 isMoveSpecial(u16);
 u8 isMoveStatus(u16);
