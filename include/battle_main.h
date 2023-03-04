@@ -75,32 +75,10 @@ ballShakesArray: 76543210
 #define STOLE_MAGNETON      (1 << 11)
 #define STOLE_SLAKING       (1 << 12)
 
-// Sidney
-#define STOLE_SIDNEY_1      (1 << 0)
-#define STOLE_SIDNEY_2      (1 << 1)
-#define STOLE_SIDNEY_3      (1 << 2)
-#define STOLE_SIDNEY_4      (1 << 3)
-#define STOLE_SIDNEY_5      (1 << 4)
-// Pheobe
-#define STOLE_PHEOBE_1      (1 << 5)
-#define STOLE_PHEOBE_2      (1 << 6)
-#define STOLE_PHEOBE_3      (1 << 7)
-#define STOLE_PHEOBE_4      (1 << 8)
-#define STOLE_PHEOBE_5      (1 << 9)
-// Glacia
-#define STOLE_GLACIA_1      (1 << 10)
-#define STOLE_GLACIA_2      (1 << 11)
-#define STOLE_GLACIA_3      (1 << 12)
-#define STOLE_GLACIA_4      (1 << 13)
-#define STOLE_GLACIA_5      (1 << 14)
-// Drake
-#define STOLE_DRAKE_1       (1 << 0)
-#define STOLE_DRAKE_2       (1 << 1)
-#define STOLE_DRAKE_3       (1 << 2)
-#define STOLE_DRAKE_4       (1 << 3)
-#define STOLE_DRAKE_5       (1 << 4)
-
-
+#define STOLE_SIDNEY_START     0
+#define STOLE_PHEOBE_START     5
+#define STOLE_GLACIA_START     10
+#define STOLE_DRAKE_START      0
 
 void CB2_InitBattle(void);
 void BattleMainCB2(void);

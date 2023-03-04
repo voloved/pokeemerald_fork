@@ -2042,87 +2042,19 @@ u16 checkStolenPokemon(u16 trainerNum, u16 speciesType, u16 partyIndex, bool8 se
         switch (trainerPic)
         {
         case TRAINER_PIC_ELITE_FOUR_SIDNEY:
-            switch (partyIndex)
-            {
-            case 0:
-                monStolen = STOLE_SIDNEY_1;
-                break;
-            case 1:
-                monStolen = STOLE_SIDNEY_2;
-                break;
-            case 2:
-                monStolen = STOLE_SIDNEY_3;
-                break;
-            case 3:
-                monStolen = STOLE_SIDNEY_4;
-                break;
-            case 4:
-                monStolen = STOLE_SIDNEY_5;
-                break;
-            }
+            monStolen = (1 << (partyIndex + STOLE_SIDNEY_START));
             varToCheck = 2;
             break;
         case TRAINER_PIC_ELITE_FOUR_PHOEBE:
-            switch (partyIndex)
-            {
-            case 0:
-                monStolen = STOLE_PHEOBE_1;
-                break;
-            case 1:
-                monStolen = STOLE_PHEOBE_2;
-                break;
-            case 2:
-                monStolen = STOLE_PHEOBE_3;
-                break;
-            case 3:
-                monStolen = STOLE_PHEOBE_4;
-                break;
-            case 4:
-                monStolen = STOLE_PHEOBE_5;
-                break;
-            }
+            monStolen = (1 << (partyIndex + STOLE_PHEOBE_START));
             varToCheck = 2;
             break;
         case TRAINER_PIC_ELITE_FOUR_GLACIA:
-            switch (partyIndex)
-            {
-            case 0:
-                monStolen = STOLE_GLACIA_1;
-                break;
-            case 1:
-                monStolen = STOLE_GLACIA_2;
-                break;
-            case 2:
-                monStolen = STOLE_GLACIA_3;
-                break;
-            case 3:
-                monStolen = STOLE_GLACIA_4;
-                break;
-            case 4:
-                monStolen = STOLE_GLACIA_5;
-                break;
-            }
+            monStolen = (1 << (partyIndex + STOLE_GLACIA_START));
             varToCheck = 2;
             break;
         case TRAINER_PIC_ELITE_FOUR_DRAKE:
-            switch (partyIndex)
-            {
-            case 0:
-                monStolen = STOLE_DRAKE_1;
-                break;
-            case 1:
-                monStolen = STOLE_DRAKE_2;
-                break;
-            case 2:
-                monStolen = STOLE_DRAKE_3;
-                break;
-            case 3:
-                monStolen = STOLE_DRAKE_4;
-                break;
-            case 4:
-                monStolen = STOLE_DRAKE_5;
-                break;
-            }
+            monStolen = (1 << (partyIndex + STOLE_DRAKE_START));
             varToCheck = 3;
             break;
         }

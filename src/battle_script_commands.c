@@ -9962,7 +9962,7 @@ static void Cmd_handleballthrow(void)
                 break;
             case ITEM_THIEF_BALL:  // If used on trainer, it's 2.5x; if used on a wild Pokemon, it's 1x
                 if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
-                    ballMultiplier = 255;
+                    ballMultiplier = 25;
                 else
                     ballMultiplier = 10;
                 break;
