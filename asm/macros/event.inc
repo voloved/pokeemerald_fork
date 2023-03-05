@@ -1775,6 +1775,24 @@
 	_dynmultichoice \left, \top, \ignoreBPress, \maxBeforeScroll, \shouldSort, \initialSelected, \callbacks, NULL
 	.endm
 
+	.macro showdescription
+	.byte 0xe7
+	.endm
+
+	.macro showitemdesc
+	setvar VAR_0x8009, 0
+	showdescription
+	.endm
+
+	.macro showberrydesc
+	setvar VAR_0x8009, 1
+	showdescription
+	.endm
+
+	.macro hideitemdesc
+	.byte 0xe8
+	.endm
+
 @ Supplementary
 
 	.macro goto_if_unset flag:req, dest:req

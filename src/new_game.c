@@ -214,6 +214,8 @@ void NewGameInitData(void)
     ResetContestLinkResults();
     typeEffectPrev ? FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW) : FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     nuzlockePrev ? FlagSet(FLAG_NUZLOCKE) : FlagClear(FLAG_NUZLOCKE);
+    
+    memset(&gSaveBlock2Ptr->itemFlags, 0, sizeof(gSaveBlock2Ptr->itemFlags));
 }
 
 static void ResetMiniGamesRecords(void)

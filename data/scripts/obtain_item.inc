@@ -4,6 +4,7 @@
 Std_ObtainItem::
 	copyvar VAR_0x8004, ITEMID
 	copyvar VAR_0x8005, AMOUNT
+	copyvar VAR_0x8006, ITEMID
 	additem ITEMID, AMOUNT
 	copyvar VAR_0x8007, VAR_RESULT
 	call_if_eq VAR_0x8007, FALSE, EventScript_TryAddItemToPCObtain
@@ -63,6 +64,8 @@ EventScript_BufferBerriesPocket::
 
 EventScript_ObtainedItem::
 	message gText_ObtainedTheItem
+	delay 10
+	showitemdesc
 	waitfanfare
 	call EventScript_PutItemMsg
 	setvar VAR_RESULT, TRUE
@@ -108,6 +111,7 @@ Std_FindItem::
 	lock
 	faceplayer
 	waitse
+	copyvar VAR_0x8006, ITEMID
 	copyvar VAR_0x8004, ITEMID
 	copyvar VAR_0x8005, AMOUNT
 	checkitemspace ITEMID, AMOUNT
@@ -135,6 +139,7 @@ EventScript_CheckPCSpaceContinue::
 
 EventScript_PickUpItem::
 	removeobject VAR_LAST_TALKED
+	copyvar VAR_0x8006 VAR_0x8004
 	goto_if_eq VAR_0x8007, 2, EventScript_PickUpItemPCAdd
 	additem VAR_0x8004, VAR_0x8005
 	goto EventScript_PickUpItemContinueAdd
@@ -145,6 +150,8 @@ EventScript_PickUpItemContinueAdd::
 	copyvar VAR_0x8008, VAR_RESULT
 	call_if_eq VAR_0x8008, TRUE, EventScript_FoundTMHM
 	call_if_eq VAR_0x8008, FALSE, EventScript_FoundItem
+	delay 10
+	showitemdesc
 	waitfanfare
 	waitmessage
 	bufferitemnameplural STR_VAR_2, VAR_0x8004, VAR_0x8005
@@ -155,6 +162,7 @@ EventScript_PickUpItemContinueAdd::
 
 EventScript_PutBattlePyramidItemInBag::
 	msgbox gText_PlayerPutItemInBag, MSGBOX_DEFAULT
+	hideitemdesc
 	return
 
 EventScript_FoundTMHM::
@@ -175,6 +183,7 @@ EventScript_NoRoomToPickUpItem::
 EventScript_HiddenItemScript::
 	lockall
 	waitse
+	copyvar VAR_0x8006, VAR_0x8005
 	additem VAR_0x8005
 	copyvar VAR_0x8007, VAR_RESULT
 	call_if_eq VAR_0x8007, FALSE, EventScript_TryAddItemToPCHidden
@@ -214,6 +223,8 @@ EventScript_FoundHiddenItem::
 	end
 
 EventScript_PutHiddenItemInPocket::
+	delay 10
+	showitemdesc
 	waitmessage
 	waitfanfare
 	bufferitemnameplural STR_VAR_2, VAR_0x8004, 1
@@ -231,6 +242,7 @@ EventScript_PutItemMsg::
 EventScript_PutItemPCMsg::
 	msgbox gText_PutItemInPC, MSGBOX_DEFAULT
 EventScript_PutItemContinueMsg::
+	hideitemdesc
 	return
 
 EventScript_NoRoomForHiddenItem::
