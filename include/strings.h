@@ -138,6 +138,7 @@ extern const u8 gText_CantThrowAwayInUse[];
 extern const u8 gText_DecorationThrownAway[];
 
 extern const u8 gText_PokeBalls[];
+extern const u8 gText_ThiefBalls[];
 extern const u8 gText_Berries[];
 extern const u8 gText_Berry[];
 
