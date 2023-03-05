@@ -14,6 +14,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Field Move Logic Cleaned Up and Flash Now Automatically Runs When Entering a Cave](https://github.com/pret/pokeemerald/wiki/Use-HMs-Without-Any-Pokemon-in-your-Party-Knowing-Them#any-pokemon-can-use-field-move-so-long-as-hm-is-in-bag)
  - [Item Descriptions On First Obtain](https://www.pokecommunity.com/showpost.php?p=10126502&postcount=46)[Credit: Ghoulslash]
  - [Plural giveitem](https://www.pokecommunity.com/showpost.php?p=10177314&postcount=107)[Credit: Ghoulslash]
+ - [Amulet Coin Effects If Anyone In Party is Holding It](https://github.com/pret/pokeemerald/wiki/Amulet-Coin-Effects-If-Anyone-In-Party-is-Holding-It)
  - Thief Ball now works on Elite Four as well.
  - Starter evolutions can now learn the Giga Drain, Flame Thrower, Hydro Pump moves the basics can learn.
  - Name Rater now allows traded Pokémon to be renamed.
