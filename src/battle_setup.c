@@ -1989,7 +1989,7 @@ bool8 levelCappedNuzlocke(u8 level){
         if (partyData[i].lvl > levelCap)
             levelCap = partyData[i].lvl;
     }
-    if (level >= levelCap)
+    if (level >= GetScaledLevel(levelCap))
         return TRUE;
     return FALSE;
 }
