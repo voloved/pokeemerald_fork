@@ -17,6 +17,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Thief Ball now works on Elite Four as well.
  - Starter evolutions can now learn the Giga Drain, Flame Thrower, Hydro Pump moves the basics can learn.
  - Name Rater now allows traded Pokémon to be renamed.
+ - [Fixing the aspect ratio of the Pokémon logo on the title screen](https://github.com/pret/pokeemerald/wiki/Fixing-the-aspect-ratio-of-the-Pok%C3%A9mon-logo-on-the-title-screen) [Credit: meejle]
  - Mareep is female 75% of the time.
 
 ## v1.4.0
