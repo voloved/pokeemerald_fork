@@ -332,6 +332,7 @@ static void Task_HandleCancelParticipationYesNoInput(u8);
 static bool8 CanLearnTutorMove(u16, u8);
 static u16 GetTutorMove(u8);
 static bool8 ShouldUseChooseMonText(void);
+static bool8 CanLearnFlyInParty(void);
 static void SetPartyMonFieldSelectionActions(struct Pokemon *, u8);
 static u8 GetPartyMenuActionsTypeInBattle(struct Pokemon *);
 static u8 GetPartySlotEntryStatus(s8);
@@ -2619,6 +2620,19 @@ static void SetPartyMonSelectionActions(struct Pokemon *mons, u8 slotId, u8 acti
     }
 }
 
+static bool8 CanLearnFlyInParty(void)
+{
+    u8 i;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (!GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL))
+            break;
+        if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG) && CanMonLearnTMHM(&gPlayerParty[i], ITEM_HM02 - ITEM_TM01))
+            return TRUE;
+    }
+    return FALSE;
+}
+
 static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
 {
     u8 i, j;
@@ -2644,7 +2658,8 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     }
 
      // If Mon can learn HM02 and action list consists of < 4 moves, add FLY to action list
-    if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM02 - ITEM_TM01) && CheckBagHasItem(ITEM_HM02_FLY, 1)) 
+    if (sPartyMenuInternal->numActions < 5 && (CanMonLearnTMHM(&mons[slotId], ITEM_HM02 - ITEM_TM01) || 
+    (slotId == 0 && !CanLearnFlyInParty())) && CheckBagHasItem(ITEM_HM02_FLY, 1)) 
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
     // If Mon can learn HM05 and action list consists of < 4 moves, add FLASH to action list
     if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM05 - ITEM_TM01) && CheckBagHasItem(ITEM_HM05_FLASH, 1)) 
