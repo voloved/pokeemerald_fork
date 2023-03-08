@@ -17,8 +17,9 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Amulet Coin Effects If Anyone In Party is Holding It](https://github.com/pret/pokeemerald/wiki/Amulet-Coin-Effects-If-Anyone-In-Party-is-Holding-It)
  - Thief Ball now works on Elite Four as well.
  - Starter evolutions can now learn the Giga Drain, Flame Thrower, Hydro Pump moves the basics can learn.
- - Name Rater now allows traded Pokémon to be renamed.
+ - [Name Rater now allows traded Pokémon to be renamed.](https://github.com/pret/pokeemerald/wiki/Name-Rater-Allows-Traded-Pokemon-to-be-Renamed)
  - [Fixing the aspect ratio of the Pokémon logo on the title screen](https://github.com/pret/pokeemerald/wiki/Fixing-the-aspect-ratio-of-the-Pok%C3%A9mon-logo-on-the-title-screen) [Credit: meejle]
+ - [Pokémon can now follow you.](https://github.com/aarant/pokeemerald/commits/followers) [Credit: aarant]
  - Mareep is female 75% of the time.
 
 ## v1.4.0
