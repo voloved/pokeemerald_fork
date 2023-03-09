@@ -49,6 +49,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Turbo B will now always work except in the Slot Machine, Wall Clock, and Chat Rooms.
 - Made wallclock default to 'Yes' when asking if the setting is correct.
 - Made Lucky Egg triple EXP and a default PC item.
+- Holding B makes surfing and diving faster.
 - Added Eevee to Hoenn Pokédex
 - [Push B in wild battle moves to Run](https://github.com/pret/pokeemerald/wiki/Push-B-in-wild-battle-moves-to-Run)
 
