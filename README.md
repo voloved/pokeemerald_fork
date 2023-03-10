@@ -51,6 +51,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Made Lucky Egg triple EXP and a default PC item.
 - Holding B makes surfing and diving faster.
 - Added Eevee to Hoenn Pokédex
+- Cleanse Tag can now be a use item as well as being held.
 - [Push B in wild battle moves to Run](https://github.com/pret/pokeemerald/wiki/Push-B-in-wild-battle-moves-to-Run)
 
 ## v1.3.1
