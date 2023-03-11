@@ -24,6 +24,7 @@
 #include "task.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "party_menu.h"
 
 /*
  * Move relearner state machine
@@ -152,6 +153,7 @@
 
 #define MAX_RELEARNER_MOVES (MAX_LEVEL_UP_MOVES > 25 ? MAX_LEVEL_UP_MOVES : 25)
 
+static EWRAM_DATA bool8 sPartyMenuReturn = FALSE; // If true, return to party menu
 static EWRAM_DATA struct
 {
     u8 state;
@@ -362,6 +364,11 @@ static void VBlankCB_MoveRelearner(void)
     TransferPlttBuffer();
 }
 
+void MoveRelearnerReturnToPartyMenuSet(void)
+{
+    sPartyMenuReturn = TRUE;
+}
+
 // Script arguments: The pokemon to teach is in VAR_0x8004
 void TeachMoveRelearnerMove(void)
 {
@@ -548,12 +555,12 @@ static void DoMoveRelearnerMain(void)
         {
             s8 selection = Menu_ProcessInputNoWrapClearOnChoose();
 
-            if (selection == 0)
+            if (selection == MENU_B_PRESSED || selection == 1)
             {
                 gSpecialVar_0x8004 = FALSE;
                 sMoveRelearnerStruct->state = MENU_STATE_FADE_AND_RETURN;
             }
-            else if (selection == MENU_B_PRESSED || selection == 1)
+            else if (selection == 0)
             {
                 if (sMoveRelearnerMenuSate.showContestInfo == FALSE)
                 {
@@ -672,7 +679,11 @@ static void DoMoveRelearnerMain(void)
         if (!gPaletteFade.active)
         {
             FreeMoveRelearnerResources();
-            SetMainCallback2(CB2_ReturnToField);
+            if (sPartyMenuReturn)
+                CB2_ReturnToPartyMenuFromSummaryScreen();
+            else
+                SetMainCallback2(CB2_ReturnToField);
+            sPartyMenuReturn = FALSE;
         }
         break;
     case MENU_STATE_FADE_FROM_SUMMARY_SCREEN:
