@@ -2670,7 +2670,7 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     {
         for (j = 0; sFieldMoves[j] != FIELD_MOVES_COUNT; j++)  
         {
-            if (sPartyMenuInternal->numActions < 5 && GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j])
+            if (sPartyMenuInternal->numActions < 4 && GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j])
             {
                 if (sFieldMoves[j] != MOVE_FLY || !CheckBagHasItem(ITEM_HM02_FLY, 1)){ // If Mon already knows FLY and the HM is in the bag, prevent it from being added to action list
                     if (sFieldMoves[j] != MOVE_FLASH || !CheckBagHasItem(ITEM_HM05_FLASH, 1)){ // If Mon already knows FLASH and the HM is in the bag, prevent it from being added to action list
@@ -2693,8 +2693,7 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     }
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_NICKNAME);
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_RELEARN);
-    if (sPartyMenuInternal->numActions < 9)
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_CANCEL1);
+    AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_CANCEL1);
 }
 
 static u8 GetPartyMenuActionsType(struct Pokemon *mon)
@@ -2819,7 +2818,6 @@ static void Task_HandleSelectionMenuInput(u8 taskId)
             PlaySE(SE_SELECT);
             PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[2]);
             CursorCb_Cancel1(taskId);
-            //sCursorOptions[sPartyMenuInternal->actions[sPartyMenuInternal->numActions - 1]].func(taskId);
             break;
         default:
             PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[2]);
