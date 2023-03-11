@@ -149,6 +149,7 @@ const struct Tileset gTileset_EverGrande =
     .metatiles = gMetatiles_EverGrande,
     .metatileAttributes = gMetatileAttributes_EverGrande,
     .callback = InitTilesetAnim_EverGrande,
+    .lightPalettes = LIGHT_PAL(8),
     .swapPalettes = SWAP_PAL(8),
 };
 
