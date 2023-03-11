@@ -343,6 +343,7 @@ static void Task_UpdateHeldItemSprite(u8);
 static void Task_HandleSelectionMenuInput(u8);
 static void CB2_ShowPokemonSummaryScreen(void);
 static void UpdatePartyToBattleOrder(void);
+static void CB2_ReturnToPartyMenuFromSummaryScreen(void);
 static void SlidePartyMenuBoxOneStep(u8);
 static void Task_SlideSelectedSlotsOffscreen(u8);
 static void SwitchPartyMon(void);
@@ -2859,7 +2860,6 @@ static void CursorCb_Relearn(u8 taskId)
 {
     PlaySE(SE_SELECT);
     gSpecialVar_0x8004 = gPartyMenu.slotId;
-    MoveRelearnerReturnToPartyMenuSet();
     TeachMoveRelearnerMove();
 }
 
@@ -2876,7 +2876,7 @@ static void CB2_ShowPokemonSummaryScreen(void)
     }
 }
 
-void CB2_ReturnToPartyMenuFromSummaryScreen(void)
+static void CB2_ReturnToPartyMenuFromSummaryScreen(void)
 {
     gPaletteFade.bufferTransferDisabled = TRUE;
     gPartyMenu.slotId = gLastViewedMonIndex;

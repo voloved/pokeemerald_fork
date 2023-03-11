@@ -18,8 +18,12 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Thief Ball now works on Elite Four as well.
  - Starter evolutions can now learn the Giga Drain, Flame Thrower, Hydro Pump moves the basics can learn.
  - [Name Rater now allows traded Pokémon to be renamed.](https://github.com/pret/pokeemerald/wiki/Name-Rater-Allows-Traded-Pokemon-to-be-Renamed)
+ - [Add Move Relearning Into Party Menu](https://github.com/pret/pokeemerald/wiki/Add-Move-Relearning-Into-Party-Menu)
+ - [Swap party screen slots using Select](https://www.pokecommunity.com/showpost.php?p=10420662)
  - [Fixing the aspect ratio of the Pokémon logo on the title screen](https://github.com/pret/pokeemerald/wiki/Fixing-the-aspect-ratio-of-the-Pok%C3%A9mon-logo-on-the-title-screen) [Credit: meejle]
  - [Pokémon can now follow you.](https://github.com/aarant/pokeemerald/commits/followers) [Credit: aarant]
+ - Cleanse Tag can now be a use item as well as being held.
+ - indicator shown in Nuzlocke challenge if Pokémon can be caught.
  - Mareep is female 75% of the time.
 
 ## v1.4.0
@@ -51,7 +55,6 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Made Lucky Egg triple EXP and a default PC item.
 - Holding B makes surfing and diving faster.
 - Added Eevee to Hoenn Pokédex
-- Cleanse Tag can now be a use item as well as being held.
 - [Push B in wild battle moves to Run](https://github.com/pret/pokeemerald/wiki/Push-B-in-wild-battle-moves-to-Run)
 
 ## v1.3.1
