@@ -5126,7 +5126,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                             }
                             else if (GetMonData(mon, MON_DATA_DEAD, NULL))
                             {
-                                 if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
+                                 if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_SYS_POKEDEX_GET)){
                                     bool8 dead = FALSE;
                                     SetMonData(mon, MON_DATA_DEAD, &dead);
                                 }
