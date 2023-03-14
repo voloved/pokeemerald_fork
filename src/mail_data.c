@@ -195,7 +195,7 @@ bool8 ItemIsMail(u16 itemId)
     case ITEM_BEAD_MAIL:
     case ITEM_SHADOW_MAIL:
     case ITEM_TROPIC_MAIL:
-    case ITEM_DREAM_MAIL:
+    case ITEM_POKEVIAL:
     case ITEM_FAB_MAIL:
     case ITEM_RETRO_MAIL:
         return TRUE;

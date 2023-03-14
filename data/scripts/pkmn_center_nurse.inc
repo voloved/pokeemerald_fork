@@ -16,6 +16,7 @@ EventScript_PkmnCenterNurse_HealPkmn::
 	incrementgamestat GAME_STAT_USED_POKECENTER
 	playfanfare MUS_HEAL
 	special HealPlayerParty
+	setvar VAR_POKEVIAL_USAGES, 0
 	goto_if_unset FLAG_POKERUS_EXPLAINED, EventScript_PkmnCenterNurse_CheckPokerus
 	goto EventScript_PkmnCenterNurse_CheckTrainerHillAndUnionRoom
 	end

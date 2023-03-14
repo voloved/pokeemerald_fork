@@ -249,8 +249,8 @@ const u32 gItemIconPalette_ShadowMail[] = INCBIN_U32("graphics/items/icon_palett
 const u32 gItemIcon_TropicMail[] = INCBIN_U32("graphics/items/icons/tropic_mail.4bpp.lz");
 const u32 gItemIconPalette_TropicMail[] = INCBIN_U32("graphics/items/icon_palettes/tropic_mail.gbapal.lz");
 
-const u32 gItemIcon_DreamMail[] = INCBIN_U32("graphics/items/icons/dream_mail.4bpp.lz");
-const u32 gItemIconPalette_DreamMail[] = INCBIN_U32("graphics/items/icon_palettes/dream_mail.gbapal.lz");
+const u32 gItemIcon_PokeVial[] = INCBIN_U32("graphics/items/icons/pokevial.4bpp.lz");
+const u32 gItemIconPalette_PokeVial[] = INCBIN_U32("graphics/items/icon_palettes/pokevial.gbapal.lz");
 
 const u32 gItemIcon_FabMail[] = INCBIN_U32("graphics/items/icons/fab_mail.4bpp.lz");
 const u32 gItemIconPalette_FabMail[] = INCBIN_U32("graphics/items/icon_palettes/fab_mail.gbapal.lz");

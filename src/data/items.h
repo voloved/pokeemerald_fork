@@ -1578,16 +1578,19 @@ const struct Item gItems[] =
         .secondaryId = ITEM_TO_MAIL(ITEM_TROPIC_MAIL),
     },
 
-    [ITEM_DREAM_MAIL] =
+    [ITEM_POKEVIAL] =
     {
-        .name = _("DREAM MAIL"),
-        .itemId = ITEM_DREAM_MAIL,
-        .price = 50,
-        .description = sDreamMailDesc,
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_MAIL,
+        .name = _("PokéVial"),
+        .itemId = ITEM_POKEVIAL,
+        .price = 0,
+        .importance = 1,
+        .holdEffectParam = 6,
+        .registrability = TRUE,
+        .description = sPokeVialDesc,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_FIELD,
         .fieldUseFunc = ItemUseOutOfBattle_Mail,
-        .secondaryId = ITEM_TO_MAIL(ITEM_DREAM_MAIL),
+        .fieldUseFunc = ItemUseOutOfBattle_PokeVial,
     },
 
     [ITEM_FAB_MAIL] =

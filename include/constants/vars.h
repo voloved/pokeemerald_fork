@@ -270,7 +270,7 @@
 #define VAR_WILD_PKMN_ROUTE_SEEN_4                       0x40FB
 #define VAR_DIFFICULTY                                   0x40FC
 #define VAR_EXP_MULT                                     0x40FD
-#define VAR_UNUSED_0x40FE                                0x40FE // Unused Var
+#define VAR_POKEVIAL_USAGES                              0x40FE
 #define VAR_UNUSED_0x40FF                                0x40FF // Unused Var
 
 #define VARS_END                                         0x40FF
