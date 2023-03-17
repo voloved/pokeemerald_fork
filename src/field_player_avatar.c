@@ -141,6 +141,9 @@ static u8 Fishing_EndNoMon(struct Task *);
 static void AlignFishingAnimationFrames(void);
 
 static u8 TrySpinPlayerForWarp(struct ObjectEvent *, s16 *);
+static void PlayerGoSlow(u8 direction);
+
+// .rodata
 
 // GrindRun: Fuction declarations
 static u8 GetGrindRunDirection(u8 direction);
@@ -674,15 +677,21 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
             return;
         }
     }
-
+    
+    gPlayerAvatar.creeping = FALSE;
     if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_UNDERWATER))
     {
-        if ((heldKeys & B_BUTTON))
+        if (FlagGet(FLAG_SYS_DEXNAV_SEARCH) && (heldKeys & A_BUTTON))
+        {
+            gPlayerAvatar.creeping = TRUE;
+            PlayerGoSlow(direction);
+        }
+        else if ((heldKeys & B_BUTTON))
             PlayerWalkFaster(direction);
         else
-        // same speed as running
-            PlayerWalkFast(direction);
-        return;
+        // speed 2 is fast, same speed as running
+                PlayerWalkFast(direction);
+    return;
     }
 
     // DV 20211201: Modified running controls so that B toggles them
@@ -705,8 +714,13 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
                 gRunToggleBtnSet = FALSE;
                 if (!(heldKeys & B_BUTTON))
                 {
-                    PlayerWalkNormal(direction);
-                }
+                    if (FlagGet(FLAG_SYS_DEXNAV_SEARCH) && (heldKeys & A_BUTTON))
+                    {
+                        gPlayerAvatar.creeping = TRUE;
+                        PlayerGoSlow(direction);
+                    }
+                    else
+                        PlayerWalkNormal(direction);
                 else
                 {
                     PlayerRun(direction);
@@ -722,7 +736,13 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
     else
     {
         gRunToggleBtnSet = FALSE;
-        PlayerWalkNormal(direction);
+        if (FlagGet(FLAG_SYS_DEXNAV_SEARCH) && (heldKeys & A_BUTTON))
+        {
+            gPlayerAvatar.creeping = TRUE;
+            PlayerGoSlow(direction);
+        }
+        else
+            PlayerWalkNormal(direction);
     }
 }
 
@@ -1028,6 +1048,12 @@ void PlayerSetAnimId(u8 movementActionId, u8 copyableMovement)
         PlayerSetCopyableMovement(copyableMovement);
         ObjectEventSetHeldMovement(&gObjectEvents[gPlayerAvatar.objectEventId], movementActionId);
     }
+}
+
+// slow
+static void PlayerGoSlow(u8 direction)
+{
+    PlayerSetAnimId(GetWalkSlowMovementAction(direction), 2);
 }
 
 void PlayerWalkNormal(u8 direction)
