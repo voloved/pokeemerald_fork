@@ -1240,7 +1240,7 @@
 #define FLAG_MOVE_SPLIT_USE_ORIGINAL                                0x4A7 // If this is 1, then the move phys/spec split use gen 3 logic where it's based off the typing
 #define FLAG_POKEMON_FOLLOWERS                                      0x4A8
 #define FLAG_CLEANSE_TAG                                            0x4A9
-#define FLAG_UNUSED_0x4AA                                           0x4AA // Unused Flag
+#define FLAG_PARTY_MOVES                                            0x4AA
 #define FLAG_UNUSED_0x4AB                                           0x4AB // Unused Flag
 #define FLAG_UNUSED_0x4AC                                           0x4AC // Unused Flag
 #define FLAG_UNUSED_0x4AD                                           0x4AD // Unused Flag
