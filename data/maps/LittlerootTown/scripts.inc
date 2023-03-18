@@ -135,8 +135,6 @@ LittlerootTown_EventScript_StepOffTruckFemale::
 	end
 
 LittlerootTown_EventScript_GoInsideWithMom::
-	setflag FLAG_RECEIVED_RUNNING_SHOES	@ Running shoes are now given at the start of the game.
-	setflag FLAG_SYS_B_DASH
 	delay 15
 	playse SE_LEDGE
 	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_PlayerStepOffTruck

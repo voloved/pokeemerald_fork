@@ -4948,7 +4948,6 @@ static const u16 sSlakothLevelUpLearnset[] = {
     LEVEL_UP_MOVE(37, MOVE_COUNTER),
     LEVEL_UP_MOVE(43, MOVE_FLAIL),
     LEVEL_UP_MOVE(47, MOVE_PLAY_ROUGH),
-
     LEVEL_UP_END
 };
 
