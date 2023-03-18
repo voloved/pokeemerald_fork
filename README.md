@@ -19,7 +19,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Thief Ball now works on Elite Four as well.
  - Starter evolutions can now learn the Giga Drain, Flame Thrower, Hydro Pump moves the basics can learn.
  - [Name Rater now allows traded Pokémon to be renamed.](https://github.com/pret/pokeemerald/wiki/Name-Rater-Allows-Traded-Pokemon-to-be-Renamed)
- - [Add Move Relearning Into Party Menu](https://github.com/pret/pokeemerald/wiki/Add-Move-Relearning-Into-Party-Menu)
+ - [Add Move Relearning Into Party Menu](https://www.pokecommunity.com/showpost.php?p=10470602) [Credit: DiegoIsAwesome]
  - [Swap party screen slots using Select](https://www.pokecommunity.com/showpost.php?p=10420662)
  - [Fixing the aspect ratio of the Pokémon logo on the title screen](https://github.com/pret/pokeemerald/wiki/Fixing-the-aspect-ratio-of-the-Pok%C3%A9mon-logo-on-the-title-screen) [Credit: meejle]
  - [Pokémon can now follow you.](https://github.com/aarant/pokeemerald/commits/followers) [Credit: aarant]
