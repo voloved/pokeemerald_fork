@@ -2652,7 +2652,7 @@ static bool8 CanLearnFlyInParty(void)
 static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
 {
     u8 i, j;
-    u8 displayRelearn = GetNumberOfRelearnableMoves(&mons[slotId]) != 0;
+    u8 displayRelearn = FlagGet(FLAG_RELEARN_IN_PARTY_MENU) && GetNumberOfRelearnableMoves(&mons[slotId]) != 0;
 
     sPartyMenuInternal->numActions = 0;
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
