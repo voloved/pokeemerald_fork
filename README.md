@@ -9,7 +9,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
- ## Not Yet Versioned
+ ## v1.5.0
  - [Added PokéVial](https://github.com/pret/pokeemerald/wiki/Add-A-PokeVial-Item)
  - [Fish Will Now Always Get on Hook](https://github.com/pret/pokeemerald/wiki/Fish-Will-Now-Always-Get-on-Hook)
  - [Field Move Logic Cleaned Up and Flash Now Automatically Runs When Entering a Cave](https://github.com/pret/pokeemerald/wiki/Use-HMs-Without-Any-Pokemon-in-your-Party-Knowing-Them#any-pokemon-can-use-field-move-so-long-as-hm-is-in-bag)
@@ -24,8 +24,10 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Fixing the aspect ratio of the Pokémon logo on the title screen](https://github.com/pret/pokeemerald/wiki/Fixing-the-aspect-ratio-of-the-Pok%C3%A9mon-logo-on-the-title-screen) [Credit: meejle]
  - [Pokémon can now follow you.](https://github.com/aarant/pokeemerald/commits/followers) [Credit: aarant]
    - Gen 4 Pokémon are ignored as followers.
+ - [Added Bag Sorting](pokecommunity.com/showpost.php?p=10167488&postcount=84) [Credit: Ghoulslash]
  - Cleanse Tag can now be a use item as well as being held.
- - indicator shown in Nuzlocke challenge if Pokémon can be caught.
+ - Doubled shiny odds.
+ - Indicator shown in Nuzlocke challenge if Pokémon can be caught.
  - Mareep is female 75% of the time.
 
 ## v1.4.0
