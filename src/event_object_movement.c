@@ -191,6 +191,7 @@ static void CreateLevitateMovementTask(struct ObjectEvent *);
 static void DestroyLevitateMovementTask(u8);
 static bool8 GetFollowerInfo(u16 *species, u8 *form, u8 *shiny);
 static u8 LoadDynamicFollowerPalette(u16 species, u8 form, bool8 shiny);
+static struct Pokemon * GetFirstLiveNonGen4Mon(void);
 static const struct ObjectEventGraphicsInfo * SpeciesToGraphicsInfo(u16 species, u8 form);
 static bool8 NpcTakeStep(struct Sprite *);
 static bool8 IsElevationMismatchAt(u8, s16, s16);
@@ -1706,6 +1707,17 @@ struct Pokemon * GetFirstLiveMon(void) { // Return address of first conscious pa
   return NULL;
 }
 
+static struct Pokemon * GetFirstLiveNonGen4Mon(void) {  // Acts the same as GetFirstLiveMon, but ignores the added Gen 4 Pokemon. Used for the follower function.
+  u8 i;
+  for (i=0; i<PARTY_SIZE;i++) {
+    u16 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES);
+    if (gPlayerParty[i].hp > 0 && !(gPlayerParty[i].box.isEgg || gPlayerParty[i].box.isBadEgg)
+    && !((species > SPECIES_CELEBI  && species < SPECIES_OLD_UNOWN_N) || (species > SPECIES_CHIMECHO  && species < SPECIES_EGG)))
+      return &gPlayerParty[i];
+  }
+  return NULL;
+}
+
 struct ObjectEvent * GetFollowerObject(void) { // Return follower ObjectEvent or NULL
   u8 i;
   for (i=0; i < OBJECT_EVENTS_COUNT; i++) {
@@ -1818,7 +1830,7 @@ static u8 GetOverworldCastformForm(void) {
 
 // Retrieve graphic information about the following pokemon, if any
 static bool8 GetFollowerInfo(u16 *species, u8 *form, u8 *shiny) {
-    struct Pokemon *mon = GetFirstLiveMon();
+    struct Pokemon *mon = GetFirstLiveNonGen4Mon();
     if (!mon) {
         *species = SPECIES_NONE;
         *form = 0;
@@ -5521,7 +5533,7 @@ bool8 ScrFunc_GetDirectionToFace(struct ScriptContext *ctx) {
 bool8 ScrFunc_IsFollowerFieldMoveUser(struct ScriptContext *ctx) {
     u16 *var = GetVarPointer(ScriptReadHalfword(ctx));
     u16 userIndex = gFieldEffectArguments[0]; // field move user index
-    struct Pokemon *follower = GetFirstLiveMon();
+    struct Pokemon *follower = GetFirstLiveNonGen4Mon();
     struct ObjectEvent *obj = GetFollowerObject();
     if (var == NULL)
         return FALSE;
