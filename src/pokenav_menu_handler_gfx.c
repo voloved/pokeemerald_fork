@@ -725,7 +725,7 @@ static u32 LoopedTask_SelectRibbonsNoWinners(s32 state)
     {
     case 0:
         PlaySE(SE_FAILURE);
-        PrintCannotAccessPC();
+        PrintNoRibbonWinners();
         return LT_INC_AND_PAUSE;
     case 1:
         if (IsDma3ManagerBusyWithBgCopy())
@@ -741,7 +741,7 @@ static u32 LoopedTask_CannotAccesPC(s32 state)
     {
     case 0:
         PlaySE(SE_FAILURE);
-        PrintNoRibbonWinners();
+        PrintCannotAccessPC();
         return LT_INC_AND_PAUSE;
     case 1:
         if (IsDma3ManagerBusyWithBgCopy())

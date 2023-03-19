@@ -1162,7 +1162,7 @@ static void Cmd_accuracycheck(void)
             calc = (calc * 130) / 100; // 1.3 compound eyes boost
         if (WEATHER_HAS_EFFECT && gBattleMons[gBattlerTarget].ability == ABILITY_SAND_VEIL && gBattleWeather & B_WEATHER_SANDSTORM)
             calc = (calc * 80) / 100; // 1.2 sand veil loss
-        if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && IS_MOVE_PHYSICAL(gCurrentMove))
+        if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && isMovePhysical(gCurrentMove))
             calc = (calc * 80) / 100; // 1.2 hustle loss
 
         if (gBattleMons[gBattlerTarget].item == ITEM_ENIGMA_BERRY)
@@ -1359,6 +1359,62 @@ static void ModulateDmgByType(u8 multiplier)
         }
         break;
     }
+}
+
+s32 GetTypeEffectiveness(struct Pokemon *mon, u8 moveType) {
+    u16 species = GetMonData(mon, MON_DATA_SPECIES);
+    u8 type1 = gSpeciesInfo[species].type1;
+    u8 type2 = gSpeciesInfo[species].type2;
+    s32 i = 0;
+    u8 multiplier;
+    s32 flags = 0;
+    if (GetMonAbility(mon) == ABILITY_LEVITATE && moveType == TYPE_GROUND)
+        return MOVE_RESULT_NOT_VERY_EFFECTIVE;
+    while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE) {
+        if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT) {
+            i += 3;
+            continue;
+        }
+        else if (TYPE_EFFECT_ATK_TYPE(i) == moveType) {
+            // check type1
+            if (TYPE_EFFECT_DEF_TYPE(i) == type1)
+                multiplier = TYPE_EFFECT_MULTIPLIER(i);
+            else if (TYPE_EFFECT_DEF_TYPE(i) == type2 && type1 != type2)
+                multiplier = TYPE_EFFECT_MULTIPLIER(i);
+            else {
+                i += 3;
+                continue;
+            }
+            switch (multiplier)
+            {
+            case TYPE_MUL_NO_EFFECT:
+                flags |= MOVE_RESULT_DOESNT_AFFECT_FOE;
+                flags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE;
+                flags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
+                break;
+            case TYPE_MUL_NOT_EFFECTIVE:
+                if (!(flags & MOVE_RESULT_NO_EFFECT))
+                {
+                    if (flags & MOVE_RESULT_SUPER_EFFECTIVE)
+                        flags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
+                    else
+                        flags |= MOVE_RESULT_NOT_VERY_EFFECTIVE;
+                }
+                break;
+            case TYPE_MUL_SUPER_EFFECTIVE:
+                if (!(flags & MOVE_RESULT_NO_EFFECT))
+                {
+                    if (flags & MOVE_RESULT_NOT_VERY_EFFECTIVE)
+                        flags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE;
+                    else
+                        flags |= MOVE_RESULT_SUPER_EFFECTIVE;
+                }
+                break;
+            }
+        }
+        i += 3;
+    }
+    return flags;
 }
 
 static void Cmd_typecalc(void)
@@ -1934,7 +1990,7 @@ static void Cmd_datahpupdate(void)
                 if (!gSpecialStatuses[gActiveBattler].dmg && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE))
                     gSpecialStatuses[gActiveBattler].dmg = gHpDealt;
 
-                if (IS_MOVE_PHYSICAL(gCurrentMove) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE) && gCurrentMove != MOVE_PAIN_SPLIT)
+                if (isMovePhysical(gCurrentMove) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE) && gCurrentMove != MOVE_PAIN_SPLIT)
                 {
                     gProtectStructs[gActiveBattler].physicalDmg = gHpDealt;
                     gSpecialStatuses[gActiveBattler].physicalDmg = gHpDealt;
@@ -1949,7 +2005,7 @@ static void Cmd_datahpupdate(void)
                         gSpecialStatuses[gActiveBattler].physicalBattlerId = gBattlerTarget;
                     }
                 }
-                else if (IS_MOVE_SPECIAL(gCurrentMove) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE))
+                else if (isMoveSpecial(gCurrentMove) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE))
                 {
                     gProtectStructs[gActiveBattler].specialDmg = gHpDealt;
                     gSpecialStatuses[gActiveBattler].specialDmg = gHpDealt;
@@ -2996,7 +3052,7 @@ static void Cmd_tryfaintmon(void)
             gBattlescriptCurrInstr = BS_ptr;
             if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
             {
-                if (FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
+                if (FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_SYS_POKEDEX_GET)){
                     bool8 dead = TRUE;
                     SetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEAD, &dead);
                 }
@@ -3007,11 +3063,9 @@ static void Cmd_tryfaintmon(void)
             }
             else
             {
-                if(gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE){
-                    u16 stoleValue = 0;
-                    stoleValue = checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species);
-                    if (stoleValue != 0)
-                        VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | stoleValue);
+                if(gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE){ 
+                    u16 partyIndex = gBattlerPartyIndexes[gActiveBattler];
+                    checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species, partyIndex, TRUE);
                 }
                 if (gBattleResults.opponentFaintCounter < 255)
                     gBattleResults.opponentFaintCounter++;
@@ -3289,7 +3343,8 @@ static void Cmd_getexp(void)
 
             for (viaSentIn = 0, i = 0; i < PARTY_SIZE; i++)
             {
-                if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE || GetMonData(&gPlayerParty[i], MON_DATA_HP) == 0)
+                if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE || GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)
+                    || GetMonData(&gPlayerParty[i], MON_DATA_HP) == 0)
                     continue;
                 if (gBitTable[i] & sentIn)
                     viaSentIn++;
@@ -3353,6 +3408,12 @@ static void Cmd_getexp(void)
             else if (GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL) == MAX_LEVEL
             || levelCappedNuzlocke(GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL))
             || VarGet(VAR_EXP_MULT) == 4)
+            {
+                gBattleScripting.getexpState = 5;
+                gBattleMoveDamage = 0; // used for exp
+            }
+            else if (GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_SPECIES) == SPECIES_NONE 
+            || GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_IS_EGG))
             {
                 gBattleScripting.getexpState = 5;
                 gBattleMoveDamage = 0; // used for exp
@@ -3518,15 +3579,29 @@ static void Cmd_getexp(void)
             gBattleStruct->expGetterMonId++;
             if (gBattleStruct->expGetterMonId < PARTY_SIZE)
                 gBattleScripting.getexpState = 2; // loop again
-            else if (!gExpShareCheck && FlagGet(FLAG_EXP_SHARE)){
-                gExpShareCheck = TRUE;
-                gBattleStruct->expGetterMonId = 0;
-                PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff3, 5, gExpShareExp);
-                PrepareStringBattle(STRINGID_PKMNGAINEDEXPALL, gBattleStruct->expGetterBattlerId);
-                gBattleScripting.getexpState = 2; // loop again
+            else{
+                s32 totalMon = 0;
+                s32 viaSentIn = 0;
+                sentIn = gSentPokesToOpponent[(gBattlerFainted & 2) >> 1];
+                for (viaSentIn = 0, i = 0; i < PARTY_SIZE; i++)  // To see if every mon has seen battle
+                {
+                    if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE || GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)
+                    || GetMonData(&gPlayerParty[i], MON_DATA_HP) == 0)
+                        continue;
+				    totalMon++;
+                    if (gBitTable[i] & sentIn)
+                        viaSentIn++;
+                }
+                if (!gExpShareCheck && FlagGet(FLAG_EXP_SHARE) && totalMon>viaSentIn){
+                    gExpShareCheck = TRUE;
+                    gBattleStruct->expGetterMonId = 0;
+                    PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff3, 5, gExpShareExp);
+                    PrepareStringBattle(STRINGID_PKMNGAINEDEXPALL, gBattleStruct->expGetterBattlerId);
+                    gBattleScripting.getexpState = 2; // loop again
+                }
+                else
+                    gBattleScripting.getexpState = 6; // we're done
             }
-            else
-                gBattleScripting.getexpState = 6; // we're done
         }
         break;
     case 6: // increment instruction
@@ -10010,10 +10085,8 @@ static void Cmd_givecaughtmon(void)
     gBattleResults.caughtMonBall = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_POKEBALL, NULL);
     if (gUsingThiefBall == THIEF_BALL_CAUGHT)
     {
-        u16 stoleValue;
-        stoleValue = checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species);
-        if (stoleValue != 0)
-            VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | stoleValue);
+        u16 partyIndex = gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]; 
+        checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species, partyIndex, TRUE);
         gBattleMons[gBattlerTarget].hp = 0;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_HP, &gBattleMons[gBattlerTarget].hp);
         gBattlerFainted = gBattlerTarget;
@@ -10052,6 +10125,7 @@ static void Cmd_displaydexinfo(void)
     case 0:
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
         gBattleCommunication[0]++;
+        break;
     case 1:
         if (!gPaletteFade.active)
         {
@@ -10306,3 +10380,5 @@ bool8 CalcNextShakeFromOdds(u32 odds)
     odds = 1048560 / odds;
     return Random() < odds;
 }
+
+

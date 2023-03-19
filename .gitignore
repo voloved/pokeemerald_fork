@@ -34,8 +34,14 @@ porymap.*.cfg
 prefabs.json
 *.a
 .fuse_hidden*
+.ccls-cache/*
+.ropeproject/
+/overworld/
+/icons/
 *.sna
 *.diff
 *.sym
 *.js
 .vscode/**
+agbcc/
+/*.zip

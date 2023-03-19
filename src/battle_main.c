@@ -123,6 +123,7 @@ static void HandleEndTurn_MonFled(void);
 static void HandleEndTurn_FinishBattle(void);
 static void SpriteCB_UnusedBattleInit(struct Sprite *sprite);
 static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite);
+static bool8 partyMonHoldDoublePrizeEffect(void);
 
 EWRAM_DATA u16 gBattle_BG0_X = 0;
 EWRAM_DATA u16 gBattle_BG0_Y = 0;
@@ -1959,9 +1960,11 @@ static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite)
     }
 }
 
-//VarSet(VAR_RIVAL_PKMN_STOLE, VarGet(VAR_RIVAL_PKMN_STOLE) | checkStolenPokemon(species));
-u16 checkStolenPokemon(u16 trainerNum, u16 speciesType){
+u16 checkStolenPokemon(u16 trainerNum, u16 speciesType, u16 partyIndex, bool8 set){
     u8 trainerClass = gTrainers[trainerNum].trainerClass;
+    u8 trainerPic = gTrainers[trainerNum].trainerPic;
+    u8 varToCheck; // 1 = VAR_PKMN_STOLE_RIVAL; 2 = VAR_PKMN_STOLE_ELITE4_A; 3 = VAR_PKMN_STOLE_ELITE4_B
+    u16 monStolen = 0;
     switch (trainerClass)
     {
     case TRAINER_CLASS_RIVAL:
@@ -1976,50 +1979,127 @@ u16 checkStolenPokemon(u16 trainerNum, u16 speciesType){
         case SPECIES_MUDKIP:
         case SPECIES_MARSHTOMP:
         case SPECIES_SWAMPERT:
-            return STOLE_STARTER;
+            monStolen = STOLE_STARTER;
+            break;
         case SPECIES_WINGULL:
         case SPECIES_PELIPPER:
-            return STOLE_WINGULL;
+            monStolen = STOLE_WINGULL;
+            break;
         case SPECIES_SLUGMA:
         case SPECIES_MAGCARGO:
-            return STOLE_SLUGMA;
+            monStolen = STOLE_SLUGMA;
+            break;
         case SPECIES_LOTAD:
         case SPECIES_LOMBRE:
         case SPECIES_LUDICOLO:
-            return STOLE_LOTAD;
+            monStolen = STOLE_LOTAD;
+            break;
         case SPECIES_TROPIUS:
-            return STOLE_TROPIUS;
+            monStolen = STOLE_TROPIUS;
+            break;
         case SPECIES_TORKOAL:
-            return STOLE_TORKOAL;
+            monStolen = STOLE_TORKOAL;
+            break;
         case SPECIES_GROUDON:
         case SPECIES_KYOGRE:
-            return STOLE_LEGENDARY;
+            monStolen = STOLE_LEGENDARY;
+            break;
         case SPECIES_RALTS:
         case SPECIES_KIRLIA:
         case SPECIES_GARDEVOIR:
-            return STOLE_RALTS;
+            monStolen = STOLE_RALTS;
+            break;
         case SPECIES_ALTARIA:
-            return STOLE_ALTARIA;
+            monStolen = STOLE_ALTARIA;
+            break;
         case SPECIES_DELCATTY:
-            return STOLE_DELCATTY;
+            monStolen = STOLE_DELCATTY;
+            break;
         case SPECIES_ROSELIA:
-            return STOLE_ROSELIA;
+            monStolen = STOLE_ROSELIA;
+            break;
         case SPECIES_MAGNETON:
-            return STOLE_MAGNETON;
-        default:
-            return 0;
+            monStolen = STOLE_MAGNETON;
+            break;
         }
+        varToCheck = 1;
+        break;
     case TRAINER_CLASS_LEADER:
-        switch (speciesType)
+        switch (trainerPic)
         {
-        case SPECIES_SLAKING:
-            if (gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN)
-                return STOLE_SLAKING;
+        case TRAINER_PIC_LEADER_NORMAN:
+            switch (speciesType)
+            {
+            case SPECIES_SLAKING:
+                monStolen = STOLE_SLAKING;
+                break;
+            }
+            varToCheck = 1;
+            break;
+        }
+        break;
+    case TRAINER_CLASS_ELITE_FOUR:
+    // Elite Four party is always the same, so the party order can be used. THis also allows picking same-species mon in their party uniquely
+        switch (trainerPic)
+        {
+        case TRAINER_PIC_ELITE_FOUR_SIDNEY:
+            monStolen = (1 << (partyIndex + STOLE_SIDNEY_START));
+            varToCheck = 2;
+            break;
+        case TRAINER_PIC_ELITE_FOUR_PHOEBE:
+            monStolen = (1 << (partyIndex + STOLE_PHEOBE_START));
+            varToCheck = 2;
+            break;
+        case TRAINER_PIC_ELITE_FOUR_GLACIA:
+            monStolen = (1 << (partyIndex + STOLE_GLACIA_START));
+            varToCheck = 2;
+            break;
+        case TRAINER_PIC_ELITE_FOUR_DRAKE:
+            monStolen = (1 << (partyIndex + STOLE_DRAKE_START));
+            varToCheck = 3;
+            break;
+        }
+        break;
+    default:
+        monStolen = 0;
+        break;
+    }
+    if (set){  // Sets the variable on whether the pokemon was stolen.
+        if (monStolen != 0){
+            switch (varToCheck)
+            {
+            case 1:
+                VarSet(VAR_PKMN_STOLE_RIVAL, VarGet(VAR_PKMN_STOLE_RIVAL) | monStolen);
+                break;
+            case 2:
+                VarSet(VAR_PKMN_STOLE_ELITE4_A, VarGet(VAR_PKMN_STOLE_ELITE4_A) | monStolen);
+                break;
+            case 3:
+                VarSet(VAR_PKMN_STOLE_ELITE4_B, VarGet(VAR_PKMN_STOLE_ELITE4_B) | monStolen);
+                break;
+            default:
+                break;
+            }
+        }
+        return monStolen;
+    }
+    else{  // Used to return if the Pokemon was stolen
+        switch (varToCheck)
+        {
+        case 1:
+            return monStolen & VarGet(VAR_PKMN_STOLE_RIVAL);
+            break;
+        case 2:
+            return monStolen & VarGet(VAR_PKMN_STOLE_ELITE4_A);
+            break;
+        case 3:
+            return monStolen & VarGet(VAR_PKMN_STOLE_ELITE4_B);
+            break;
         default:
             return 0;
+            break;
         }
     }
-    return 0;
 }
 
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer)
@@ -2080,7 +2160,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             {
                 const struct TrainerMonNoItemDefaultMoves *partyData = gTrainers[trainerNum].party.NoItemDefaultMoves;
                 u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
-                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                if (checkStolenPokemon(trainerNum, species, i, FALSE)){
                     continue;
                 }
                 for (j = 0; gSpeciesNames[species][j] != EOS; j++)
@@ -2097,7 +2177,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             {
                 const struct TrainerMonNoItemCustomMoves *partyData = gTrainers[trainerNum].party.NoItemCustomMoves;
                 u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
-                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                if (checkStolenPokemon(trainerNum, species, i, FALSE)){
                     continue;
                 }
 
@@ -2121,7 +2201,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             {
                 const struct TrainerMonItemDefaultMoves *partyData = gTrainers[trainerNum].party.ItemDefaultMoves;
                 u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
-                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                if (checkStolenPokemon(trainerNum, species, i, FALSE)){
                     continue;
                 }
 
@@ -2141,7 +2221,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             {
                 const struct TrainerMonItemCustomMoves *partyData = gTrainers[trainerNum].party.ItemCustomMoves;
                 u16 species = FlagGet(FLAG_KRABBY_TRAINER) ? SPECIES_KRABBY : partyData[i].species;
-                if (checkStolenPokemon(trainerNum, species) & VarGet(VAR_RIVAL_PKMN_STOLE)){
+                if (checkStolenPokemon(trainerNum, species, i, FALSE)){
                     continue;
                 }
 
@@ -3088,6 +3168,29 @@ void SpriteCB_PlayerMonFromBall(struct Sprite *sprite)
         BattleAnimateBackSprite(sprite, sprite->sSpeciesId);
 }
 
+void SpriteCB_PlayerMonSlideIn(struct Sprite *sprite) {
+    if (sprite->data[3] == 0) {
+        PlaySE(SE_BALL_TRAY_ENTER);
+        sprite->data[3]++;
+    } else if (sprite->data[3] == 1) {
+        if (sprite->animEnded)
+            return;
+        sprite->data[4] = sprite->x;
+        sprite->x = -33;
+        sprite->invisible = FALSE;
+        sprite->data[3]++;
+    } else if (sprite->data[3] < 27) {
+        sprite->x += 4;
+        sprite->data[3]++;
+    } else {
+        sprite->data[3] = 0;
+        sprite->x = sprite->data[4];
+        sprite->data[4] = 0;
+        sprite->callback = SpriteCB_PlayerMonFromBall;
+        PlayCry_ByMode(sprite->sSpeciesId, -25, CRY_MODE_NORMAL);
+    }
+}
+
 static void SpriteCB_TrainerThrowObject_Main(struct Sprite *sprite)
 {
     AnimSetCenterToCornerVecX(sprite);
@@ -3211,7 +3314,10 @@ static void BattleStartClearSetData(void)
     *(&gBattleStruct->safariCatchFactor) = gSpeciesInfo[GetMonData(&gEnemyParty[0], MON_DATA_SPECIES)].catchRate * 100 / 1275;
     gBattleStruct->safariEscapeFactor = 3;
     gBattleStruct->wildVictorySong = 0;
-    gBattleStruct->moneyMultiplier = 1;
+    if (partyMonHoldDoublePrizeEffect())
+        gBattleStruct->moneyMultiplier = 2;
+    else
+        gBattleStruct->moneyMultiplier = 1;
 
     for (i = 0; i < 8; i++)
     {
@@ -5164,7 +5270,7 @@ static void HandleEndTurn_BattleLost(void)
     else
     {
         gBattlescriptCurrInstr = BattleScript_LocalBattleLost;
-        if (FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)){
+        if (FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_SYS_POKEDEX_GET)){
             gBattleMainFunc = BattleLostNuzlocke;
             return;
         }
@@ -5387,4 +5493,27 @@ void RunBattleScriptCommands(void)
 {
     if (gBattleControllerExecFlags == 0)
         gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
+}
+
+u8 isMovePhysical(u16 move){
+    return FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) ? gBattleMoves[move].type < TYPE_MYSTERY : gBattleMoves[move].category == MOVE_CATEGORY_PHYSICAL;
+}
+
+u8 isMoveSpecial(u16 move){
+    return FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) ? gBattleMoves[move].type > TYPE_MYSTERY : gBattleMoves[move].category == MOVE_CATEGORY_SPECIAL;
+}
+
+u8 isMoveStatus(u16 move){
+    return gBattleMoves[move].category == MOVE_CATEGORY_STATUS;
+}
+
+static bool8 partyMonHoldDoublePrizeEffect(void){
+    int i;
+    for (i = 0; i < PARTY_SIZE; i++){
+        u8 item = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
+        if (ItemId_GetHoldEffect(item) == HOLD_EFFECT_DOUBLE_PRIZE){
+            return TRUE;
+        }
+    }
+    return FALSE;   
 }

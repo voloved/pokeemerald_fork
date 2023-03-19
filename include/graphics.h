@@ -3661,8 +3661,8 @@ extern const u32 gItemIcon_ShadowMail[];
 extern const u32 gItemIconPalette_ShadowMail[];
 extern const u32 gItemIcon_TropicMail[];
 extern const u32 gItemIconPalette_TropicMail[];
-extern const u32 gItemIcon_DreamMail[];
-extern const u32 gItemIconPalette_DreamMail[];
+extern const u32 gItemIcon_PokeVial[];
+extern const u32 gItemIconPalette_PokeVial[];
 extern const u32 gItemIcon_FabMail[];
 extern const u32 gItemIconPalette_FabMail[];
 extern const u32 gItemIcon_RetroMail[];
@@ -4195,6 +4195,7 @@ extern const u8 gBattleInterface_BallDisplayGfx[];
 extern const u16 gBattleInterface_BallStatusBarPal[];
 extern const u16 gBattleInterface_BallDisplayPal[];
 extern const u8 gHealthboxElementsGfxTable[][32];
+extern const u8 gNuzlockeFirstEncounterIndicator[];
 
 extern const u16 gNamingScreenMenu_Pal[6][16];
 extern const u32 gNamingScreenMenu_Gfx[];

@@ -677,8 +677,11 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
 
     if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_UNDERWATER))
     {
+        if ((heldKeys & B_BUTTON))
+            PlayerWalkFaster(direction);
+        else
         // same speed as running
-        PlayerWalkFast(direction);
+            PlayerWalkFast(direction);
         return;
     }
 
@@ -1005,12 +1008,12 @@ static bool8 PlayerCheckIfAnimFinishedOrInactive(void)
 
 static void PlayerSetCopyableMovement(u8 movement)
 {
-    gObjectEvents[gPlayerAvatar.objectEventId].playerCopyableMovement = movement;
+    gObjectEvents[gPlayerAvatar.objectEventId].extra.playerCopyableMovement = movement;
 }
 
 u8 PlayerGetCopyableMovement(void)
 {
-    return gObjectEvents[gPlayerAvatar.objectEventId].playerCopyableMovement;
+    return gObjectEvents[gPlayerAvatar.objectEventId].extra.playerCopyableMovement;
 }
 
 static void PlayerForceSetHeldMovement(u8 movementActionId)
@@ -1865,10 +1868,8 @@ static bool8 Fishing_ShowDots(struct Task *task)
     task->tFrameCounter++;
     if (JOY_NEW(A_BUTTON))
     {
-        task->tStep = FISHING_NO_BITE;
-        if (task->tRoundsPlayed != 0)
-            task->tStep = FISHING_GOT_AWAY;
-        return TRUE;
+        task->tStep = FISHING_GOT_BITE;
+        return FALSE;
     }
     else
     {
@@ -1877,7 +1878,7 @@ static bool8 Fishing_ShowDots(struct Task *task)
             task->tFrameCounter = 0;
             if (task->tNumDots >= task->tDotsRequired)
             {
-                task->tStep++;
+                task->tStep = FISHING_GOT_BITE;
                 if (task->tRoundsPlayed != 0)
                     task->tStep++;
                 task->tRoundsPlayed++;
@@ -1950,9 +1951,7 @@ static bool8 Fishing_WaitForA(struct Task *task)
 
     AlignFishingAnimationFrames();
     task->tFrameCounter++;
-    if (task->tFrameCounter >= reelTimeouts[task->tFishingRod])
-        task->tStep = FISHING_GOT_AWAY;
-    else if (JOY_NEW(A_BUTTON))
+    if (JOY_NEW(A_BUTTON))
         task->tStep++;
     return FALSE;
 }
@@ -1969,18 +1968,6 @@ static bool8 Fishing_CheckMoreDots(struct Task *task)
 
     AlignFishingAnimationFrames();
     task->tStep++;
-    if (task->tRoundsPlayed < task->tMinRoundsRequired)
-    {
-        task->tStep = FISHING_START_ROUND;
-    }
-    else if (task->tRoundsPlayed < 2)
-    {
-        // probability of having to play another round
-        s16 probability = Random() % 100;
-
-        if (moreDotsChance[task->tFishingRod][task->tRoundsPlayed] > probability)
-            task->tStep = FISHING_START_ROUND;
-    }
     return FALSE;
 }
 

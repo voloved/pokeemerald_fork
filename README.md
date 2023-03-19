@@ -9,6 +9,29 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+ ## v1.5.0
+ - [Added PokéVial](https://github.com/pret/pokeemerald/wiki/Add-A-PokeVial-Item)
+ - [Fish Will Now Always Get on Hook](https://github.com/pret/pokeemerald/wiki/Fish-Will-Now-Always-Get-on-Hook)
+ - [Field Move Logic Cleaned Up and Flash Now Automatically Runs When Entering a Cave](https://github.com/pret/pokeemerald/wiki/Use-HMs-Without-Any-Pokemon-in-your-Party-Knowing-Them#any-pokemon-can-use-field-move-so-long-as-hm-is-in-bag)
+ - [Item Descriptions On First Obtain](https://www.pokecommunity.com/showpost.php?p=10126502&postcount=46)[Credit: Ghoulslash]
+ - [Plural giveitem](https://www.pokecommunity.com/showpost.php?p=10177314&postcount=107)[Credit: Ghoulslash]
+ - [Amulet Coin Effects If Anyone In Party is Holding It](https://github.com/pret/pokeemerald/wiki/Amulet-Coin-Effects-If-Anyone-In-Party-is-Holding-It)
+ - Thief Ball now works on Elite Four as well.
+ - Starter evolutions can now learn the Giga Drain, Flame Thrower, Hydro Pump moves the basics can learn.
+ - [Name Rater now allows traded Pokémon to be renamed.](https://github.com/pret/pokeemerald/wiki/Name-Rater-Allows-Traded-Pokemon-to-be-Renamed)
+ - [Add Move Relearning Into Party Menu](https://www.pokecommunity.com/showpost.php?p=10470602) [Credit: DiegoIsAwesome]
+ - [Swap party screen slots using Select](https://www.pokecommunity.com/showpost.php?p=10420662)
+ - [Fixing the aspect ratio of the Pokémon logo on the title screen](https://github.com/pret/pokeemerald/wiki/Fixing-the-aspect-ratio-of-the-Pok%C3%A9mon-logo-on-the-title-screen) [Credit: meejle]
+ - [Pokémon can now follow you.](https://github.com/aarant/pokeemerald/commits/followers) [Credit: aarant]
+   - Gen 4 Pokémon are ignored as followers.
+ - [Added Bag Sorting](pokecommunity.com/showpost.php?p=10167488&postcount=84) [Credit: Ghoulslash]
+ - [Make Poké Balls usable outside of battles](https://www.pokecommunity.com/showthread.php?p=10539730#post10539730) [Credit: Lunos]
+ - Cleanse Tag can now be a use item as well as being held.
+ - Doubled shiny odds.
+ - Buying more than 10 Poké Balls gives an extra.
+ - Indicator shown in Nuzlocke challenge if Pokémon can be caught.
+ - Mareep is female 75% of the time.
+
 ## v1.4.0
 - Added Weavile, Magnezone, Lickilicky, Rhyperior, Tangrowth, Electivire, Magmortar, Togekiss, Yanmega, Gliscor, Mamoswine, Porygon Z, Gallade, Probopass, Dusknoir
 - [Added Difficulty Mode](https://github.com/pret/pokeemerald/wiki/Add-Difficulty-Mode)
@@ -36,6 +59,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Turbo B will now always work except in the Slot Machine, Wall Clock, and Chat Rooms.
 - Made wallclock default to 'Yes' when asking if the setting is correct.
 - Made Lucky Egg triple EXP and a default PC item.
+- Holding B makes surfing and diving faster.
 - Added Eevee to Hoenn Pokédex
 - [Push B in wild battle moves to Run](https://github.com/pret/pokeemerald/wiki/Push-B-in-wild-battle-moves-to-Run)
 
@@ -99,7 +123,6 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
 ## v1.1.0
 - [Added Thief Ball](https://github.com/pret/pokeemerald/wiki/Add-Thief-Ball)
-- [Norman's Slaking Has Ability Intimidate and can learn Death Move at level 100.](https://github.com/pret/pokeemerald/wiki/Make-Norman%27s-Slaking-Have-Ability-Intimidate)
 - [Added PC Access in PokéNav](https://github.com/pret/pokeemerald/wiki/Add-PC-Access-in-PokeNav)
 - [Allowed All Pokémon to Evolve Without Trading](https://github.com/pret/pokeemerald/wiki/Allow-All-Pokemon-to-Evolve-Without-Trading)
 - [Using HMs Without Any Pokémon in your Party Knowing Them Possible](https://github.com/pret/pokeemerald/wiki/Use-HMs-Without-Any-Pokemon-in-your-Party-Knowing-Them)
@@ -107,6 +130,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - [Made Daycare Faster at Leveling Pokémon](https://github.com/pret/pokeemerald/wiki/Make-Daycare-Faster-at-Leveling-Pok%C3%A9mon)
 - [Allowed Feebas to be caught on any Valid Fishing Spot in Route 119 if the Last Shot on the Basketball Hoop Went In](https://github.com/pret/pokeemerald/wiki/Allow-Feebas-to-be-caught-on-any-Valid-Fishing-Spot-in-Route-119-rather-than-only-Three)
 - Added a Clock in Every PokéMart.
+- Norman's Slaking Has Ability Intimidate and can learn Death Move at level 100.
 - Charizard is fire/dragon, Meowth is normal/dark, Gyarados can learn fly
 - Added Zen Headbutt, Moonblast, Play Rough, Draining Kiss, Fairy Wind, and Death Move.
 - [Added Physical/Special Move Split](https://github.com/pret/pokeemerald/wiki/add-physical-special-split) [Credit: Kurausukun]

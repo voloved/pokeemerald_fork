@@ -11,6 +11,7 @@
 #include "bg.h"
 #include "data.h"
 #include "event_data.h"
+#include "event_object_movement.h"
 #include "item.h"
 #include "item_menu.h"
 #include "link.h"
@@ -117,7 +118,7 @@ static void Task_UpdateLvlInHealthbox(u8);
 static void PrintLinkStandbyMsg(void);
 static u32 CopyPlayerMonData(u8, u8 *);
 static void SetPlayerMonData(u8);
-static void StartSendOutAnim(u8, bool8);
+static void StartSendOutAnim(u8, bool8, bool8);
 static void DoSwitchOutAnimation(void);
 static void PlayerDoMoveAnimation(void);
 static void Task_StartSendOutAnim(u8);
@@ -2256,11 +2257,29 @@ static void PlayerHandleSwitchInAnim(void)
     BattleLoadPlayerMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
     gActionSelectionCursor[gActiveBattler] = 0;
     gMoveSelectionCursor[gActiveBattler] = 0;
-    StartSendOutAnim(gActiveBattler, gBattleBufferA[gActiveBattler][2]);
+    #ifdef BATTLE_ENGINE
+    StartSendOutAnim(gActiveBattler, gBattleResources->bufferA[gActiveBattler][2], FALSE);
+    #else
+    StartSendOutAnim(gActiveBattler, gBattleBufferA[gActiveBattler][2], FALSE);
+    #endif
     gBattlerControllerFuncs[gActiveBattler] = SwitchIn_TryShinyAnimShowHealthbox;
 }
 
-static void StartSendOutAnim(u8 battlerId, bool8 dontClearSubstituteBit)
+// In normal singles, if follower pokemon is out, have it slide in instead of being thrown
+static bool8 ShouldDoSlideInAnim(void) {
+    struct ObjectEvent *followerObj = GetFollowerObject();
+    if (!followerObj || followerObj->invisible)
+        return FALSE;
+    if (gBattleTypeFlags & (
+        BATTLE_TYPE_LINK | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_FIRST_BATTLE |
+        BATTLE_TYPE_SAFARI | BATTLE_TYPE_WALLY_TUTORIAL | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_TWO_OPPONENTS |
+        BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED | BATTLE_TYPE_TRAINER_HILL)
+    )
+        return FALSE;
+    return TRUE;
+}
+
+static void StartSendOutAnim(u8 battlerId, bool8 dontClearSubstituteBit, bool8 doSlideIn)
 {
     u16 species;
 
@@ -2288,7 +2307,7 @@ static void StartSendOutAnim(u8 battlerId, bool8 dontClearSubstituteBit)
     gSprites[gBattlerSpriteIds[battlerId]].invisible = TRUE;
     gSprites[gBattlerSpriteIds[battlerId]].callback = SpriteCallbackDummy;
 
-    gSprites[gBattleControllerData[battlerId]].data[0] = DoPokeballSendOutAnimation(0, POKEBALL_PLAYER_SENDOUT);
+    gSprites[gBattleControllerData[battlerId]].data[0] = DoPokeballSendOutAnimation(0, doSlideIn ? POKEBALL_PLAYER_SLIDEIN : POKEBALL_PLAYER_SENDOUT);
 }
 
 static void PlayerHandleReturnMonToBall(void)
@@ -3025,7 +3044,7 @@ static void PlayerHandleIntroTrainerBallThrow(void)
     gSprites[gBattlerSpriteIds[gActiveBattler]].sBattlerId = gActiveBattler;
 
     StoreSpriteCallbackInData6(&gSprites[gBattlerSpriteIds[gActiveBattler]], SpriteCB_FreePlayerSpriteLoadMonSprite);
-    StartSpriteAnim(&gSprites[gBattlerSpriteIds[gActiveBattler]], 1);
+    StartSpriteAnim(&gSprites[gBattlerSpriteIds[gActiveBattler]], ShouldDoSlideInAnim() ? 2 : 1);
 
     paletteNum = AllocSpritePalette(0xD6F8);
     LoadCompressedPalette(gTrainerBackPicPaletteTable[gSaveBlock2Ptr->playerGender].data, 0x100 + paletteNum * 16, 32);
@@ -3072,16 +3091,16 @@ static void Task_StartSendOutAnim(u8 taskId)
         if (!IsDoubleBattle() || (gBattleTypeFlags & BATTLE_TYPE_MULTI))
         {
             gBattleBufferA[gActiveBattler][1] = gBattlerPartyIndexes[gActiveBattler];
-            StartSendOutAnim(gActiveBattler, FALSE);
+            StartSendOutAnim(gActiveBattler, FALSE, ShouldDoSlideInAnim());
         }
         else
         {
             gBattleBufferA[gActiveBattler][1] = gBattlerPartyIndexes[gActiveBattler];
-            StartSendOutAnim(gActiveBattler, FALSE);
+            StartSendOutAnim(gActiveBattler, FALSE, ShouldDoSlideInAnim());
             gActiveBattler ^= BIT_FLANK;
             gBattleBufferA[gActiveBattler][1] = gBattlerPartyIndexes[gActiveBattler];
             BattleLoadPlayerMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
-            StartSendOutAnim(gActiveBattler, FALSE);
+            StartSendOutAnim(gActiveBattler, FALSE, ShouldDoSlideInAnim());
             gActiveBattler ^= BIT_FLANK;
         }
         gBattlerControllerFuncs[gActiveBattler] = Intro_TryShinyAnimShowHealthbox;
@@ -3218,8 +3237,8 @@ static void MoveSelectionDisplaySplitIcon(void){
 	static const u16 sSplitIcons_Pal[] = INCBIN_U16("graphics/interface/split_icons_battle.gbapal");
 	static const u8 sSplitIcons_Gfx[] = INCBIN_U8("graphics/interface/split_icons_battle.4bpp");
     u16 move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
-	u8 moveType;
-	u8 icon = moveType = gBattleMoves[move].category;
+    u8 icon = isMoveStatus(move) ? 2 : isMoveSpecial(move);
+    // for icon: 0 = phys; 1= spec; 2 = status
 	LoadPalette(sSplitIcons_Pal, 10 * 0x10, 0x20);
 	BlitBitmapToWindow(B_WIN_DUMMY, sSplitIcons_Gfx + 0x80 * icon, 0, 0, 16, 16);
 	PutWindowTilemap(B_WIN_DUMMY);

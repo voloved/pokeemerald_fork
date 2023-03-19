@@ -2,42 +2,33 @@
 EventScript_CutTree::
 	lockall
 	checkpartymove MOVE_CUT
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CutWithoutPokemon
+	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CheckTreeCantCut
 	setfieldeffectargument 0, VAR_RESULT
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
-EventScript_CutTreeContinue::
 	buffermovename STR_VAR_2, MOVE_CUT
 	msgbox Text_WantToCut, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_CancelCut
 	msgbox Text_MonUsedFieldMove, MSGBOX_DEFAULT
 	closemessage
+EventScript_CutTreeCommon:
+	callfunc ScrFunc_IsFollowerFieldMoveUser
+	.2byte VAR_0x8004
+	setfieldeffectargument 3, VAR_0x8004 @ skip pose if so
 	dofieldeffect FLDEFF_USE_CUT_ON_TREE
 	waitstate
-	goto EventScript_CutTreeDown
-	end
-
-EventScript_CutWithoutPokemon::
-	checkitem ITEM_HM01_CUT
-	goto_if_eq VAR_RESULT, FALSE, EventScript_CheckTreeCantCut
-	setfieldeffectargument 0, 0
-	bufferpartymonnick STR_VAR_1, 0
-	goto EventScript_CutTreeContinue
-	end
-
-@ Use cut from party menu
-EventScript_UseCut::
-	lockall
-	dofieldeffect FLDEFF_USE_CUT_ON_TREE
-	waitstate
-	goto EventScript_CutTreeDown
-	end
-
-EventScript_CutTreeDown::
+EventScript_CutTreeDown:: @ fallthrough
+  	setflag FLAG_SAFE_FOLLOWER_MOVEMENT
+	call_if_eq VAR_0x8004, TRUE, EventScript_FollowerFieldMove
 	applymovement VAR_LAST_TALKED, Movement_CutTreeDown
 	waitmovement 0
 	removeobject VAR_LAST_TALKED
 	releaseall
 	end
+
+@ Use cut from party menu
+EventScript_UseCut::
+	lockall
+	goto EventScript_CutTreeCommon
 
 Movement_CutTreeDown:
 	cut_tree
@@ -65,41 +56,33 @@ Text_CantCut:
 	.string "This tree looks like it can be\n"
 	.string "CUT down!$"
 
+@ Use rock smash from party menu
+EventScript_UseRockSmash::
+	lockall
+	goto EventScript_RockSmashCommon
+
 @ Interact with smashable rock
 EventScript_RockSmash::
 	lockall
 	checkpartymove MOVE_ROCK_SMASH
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_RockSmashWithoutPokemon
+	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantSmashRock
 	setfieldeffectargument 0, VAR_RESULT
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
-EventScript_RockSmashContinue::
 	buffermovename STR_VAR_2, MOVE_ROCK_SMASH
 	msgbox Text_WantToSmash, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_CancelSmash
 	msgbox Text_MonUsedFieldMove, MSGBOX_DEFAULT
 	closemessage
+EventScript_RockSmashCommon:
+	@ check if follower should use the field move
+	callfunc ScrFunc_IsFollowerFieldMoveUser
+	.2byte VAR_0x8004
+	setfieldeffectargument 3, VAR_0x8004 @ skip pose if so
 	dofieldeffect FLDEFF_USE_ROCK_SMASH
 	waitstate
-	goto EventScript_SmashRock
-	end
-
-EventScript_RockSmashWithoutPokemon::
-	checkitem ITEM_HM06_ROCK_SMASH
-	goto_if_eq VAR_RESULT, FALSE, EventScript_CantSmashRock
-	setfieldeffectargument 0, 0
-	bufferpartymonnick STR_VAR_1, 0
-	goto EventScript_RockSmashContinue
-	end
-
-@ Use rock smash from party menu
-EventScript_UseRockSmash::
-	lockall
-	dofieldeffect FLDEFF_USE_ROCK_SMASH
-	waitstate
-	goto EventScript_SmashRock
-	end
-
-EventScript_SmashRock::
+EventScript_SmashRock:: @ fallthrough
+	setflag FLAG_SAFE_FOLLOWER_MOVEMENT
+	call_if_eq VAR_0x8004, TRUE, EventScript_FollowerFieldMove
 	applymovement VAR_LAST_TALKED, Movement_SmashRock
 	waitmovement 0
 	removeobject VAR_LAST_TALKED
@@ -111,9 +94,119 @@ EventScript_SmashRock::
 	releaseall
 	end
 
+EventScript_FollowerFieldMove:
+	callfunc ScrFunc_GetDirectionToFace
+	.2byte VAR_0x8005
+	.byte OBJ_EVENT_ID_FOLLOWER
+	.byte OBJ_EVENT_ID_PLAYER
+	specialvar VAR_0x8006, GetPlayerFacingDirection
+	goto_if_eq VAR_0x8005, DIR_NONE, EventScript_FollowerFieldMoveEnd
+	@ Swap follower and player
+	call EventScript_FollowerSwap
+	@ Face follower in direction and jump
+	switch VAR_0x8006
+	case DIR_NORTH, EventScript_FollowerJumpNorth
+	case DIR_EAST, EventScript_FollowerJumpEast
+	case DIR_SOUTH, EventScript_FollowerJumpSouth
+	case DIR_WEST, EventScript_FollowerJumpWest
+EventScript_FollowerFieldMoveEnd:
+	return
+
+EventScript_FollowerSwap:
+	switch VAR_0x8005
+	case DIR_NORTH, EventScript_FollowerMoveNorth
+	case DIR_EAST, EventScript_FollowerMoveEast
+	case DIR_SOUTH, EventScript_FollowerMoveSouth
+	case DIR_WEST, EventScript_FollowerMoveWest
+	return
+
+EventScript_FollowerMoveNorth:
+	applymovement OBJ_EVENT_ID_FOLLOWER, Movement_WalkUp
+	applymovement OBJ_EVENT_ID_PLAYER, Movement_WalkDown
+	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
+	waitmovement 0
+	return
+
+EventScript_FollowerMoveEast:
+	applymovement OBJ_EVENT_ID_FOLLOWER, Movement_WalkRight
+	applymovement OBJ_EVENT_ID_PLAYER, Movement_WalkLeft
+	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight
+	waitmovement 0
+	return
+
+EventScript_FollowerMoveSouth:
+	applymovement OBJ_EVENT_ID_FOLLOWER, Movement_WalkDown
+	applymovement OBJ_EVENT_ID_PLAYER, Movement_WalkUp
+	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
+	waitmovement 0
+	return
+
+EventScript_FollowerMoveWest:
+	applymovement OBJ_EVENT_ID_FOLLOWER, Movement_WalkLeft
+	applymovement OBJ_EVENT_ID_PLAYER, Movement_WalkRight
+	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
+	waitmovement 0
+	return
+
+EventScript_FollowerJumpNorth:
+	applymovement OBJ_EVENT_ID_FOLLOWER, Movement_JumpUp
+	waitmovement 0
+	return
+
+EventScript_FollowerJumpEast:
+	applymovement OBJ_EVENT_ID_FOLLOWER, Movement_JumpRight
+	waitmovement 0
+	return
+
+EventScript_FollowerJumpSouth:
+	applymovement OBJ_EVENT_ID_FOLLOWER, Movement_JumpDown
+	waitmovement 0
+	return
+
+EventScript_FollowerJumpWest:
+	applymovement OBJ_EVENT_ID_FOLLOWER, Movement_JumpLeft
+	waitmovement 0
+	return
+
 EventScript_EndSmash::
 	releaseall
 	end
+
+Movement_WalkUp:
+	walk_up
+	step_end
+
+Movement_JumpUp:
+	jump_in_place_up
+	step_end
+
+Movement_WalkRight:
+	walk_right
+	step_end
+
+Movement_JumpRight:
+	jump_in_place_right
+	step_end
+
+Movement_WalkDown:
+	walk_down
+	step_end
+
+Movement_JumpDown:
+	jump_in_place_down
+	step_end
+
+Movement_WalkLeft:
+	walk_left
+	step_end
+
+Movement_JumpLeft:
+	jump_in_place_left
+	step_end
 
 Movement_SmashRock:
 	rock_smash_break
@@ -141,22 +234,14 @@ EventScript_StrengthBoulder::
 	lockall
 	goto_if_set FLAG_SYS_USE_STRENGTH, EventScript_CheckActivatedBoulder
 	checkpartymove MOVE_STRENGTH
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_StrengthWithoutPokemon
+	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantStrength
 	setfieldeffectargument 0, VAR_RESULT
-EventScript_StrengthContinue::
 	msgbox Text_WantToStrength, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_CancelStrength
 	closemessage
 	dofieldeffect FLDEFF_USE_STRENGTH
 	waitstate
 	goto EventScript_ActivateStrength
-	end
-
-EventScript_StrengthWithoutPokemon::
-	checkitem ITEM_HM04_STRENGTH
-	goto_if_eq VAR_RESULT, FALSE, EventScript_CantStrength
-	setfieldeffectargument 0, 0
-	goto EventScript_StrengthContinue
 	end
 
 EventScript_UseStrength::
@@ -208,24 +293,14 @@ Text_StrengthActivated:
 EventScript_UseWaterfall::
 	lockall
 	checkpartymove MOVE_WATERFALL
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_WaterfallWithoutPokemon
+	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantWaterfall
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
-EventScript_WaterfallContinue::
 	msgbox Text_WantToWaterfall, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_EndWaterfall
 	msgbox Text_MonUsedWaterfall, MSGBOX_DEFAULT
 	dofieldeffect FLDEFF_USE_WATERFALL
 	goto EventScript_EndWaterfall
-
-EventScript_WaterfallWithoutPokemon::
-	checkitem ITEM_HM07_WATERFALL
-	goto_if_eq VAR_RESULT, FALSE, EventScript_CantWaterfall
-	bufferpartymonnick STR_VAR_1, 0
-	setfieldeffectargument 0, 0
-	goto EventScript_WaterfallContinue
-	end
-
 
 EventScript_CannotUseWaterfall::
 	lockall
@@ -251,24 +326,15 @@ Text_MonUsedWaterfall:
 EventScript_UseDive::
 	lockall
 	checkpartymove MOVE_DIVE
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_DiveWithoutPokemon
+	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantDive
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
-EventScript_DiveContinue::
 	setfieldeffectargument 1, 1
 	msgbox Text_WantToDive, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_EndDive
 	msgbox Text_MonUsedDive, MSGBOX_DEFAULT
 	dofieldeffect FLDEFF_USE_DIVE
 	goto EventScript_EndDive
-	end
-
-EventScript_DiveWithoutPokemon::
-	checkitem ITEM_HM08_DIVE
-	goto_if_eq VAR_RESULT, FALSE, EventScript_CantDive
-	bufferpartymonnick STR_VAR_1, 0
-	setfieldeffectargument 0, 0
-	goto EventScript_DiveContinue
 	end
 
 EventScript_CantDive::
@@ -283,10 +349,9 @@ EventScript_EndDive::
 EventScript_UseDiveUnderwater::
 	lockall
 	checkpartymove MOVE_DIVE
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_DiveUnderwaterWithoutPokemon
+	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantSurface
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
-EventScript_DiveUnderwaterContinue::
 	setfieldeffectargument 1, 1
 	msgbox Text_WantToSurface, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_EndSurface
@@ -294,15 +359,6 @@ EventScript_DiveUnderwaterContinue::
 	dofieldeffect FLDEFF_USE_DIVE
 	goto EventScript_EndSurface
 	end
-
-EventScript_DiveUnderwaterWithoutPokemon::
-	checkitem ITEM_HM08_DIVE
-	goto_if_eq VAR_RESULT, FALSE, EventScript_CantSurface
-	bufferpartymonnick STR_VAR_1, 0
-	setfieldeffectargument 0, 0
-	goto EventScript_DiveContinue
-	end
-
 
 EventScript_CantSurface::
 	lockall

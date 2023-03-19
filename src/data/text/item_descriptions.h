@@ -481,10 +481,10 @@ static const u8 sTropicMailDesc[] = _(
     "MAIL to be held by\n"
     "a POKéMON.");
 
-static const u8 sDreamMailDesc[] = _(
-    "MAIL featuring a\n"
-    "sketch of the\n"
-    "holding POKéMON.");
+static const u8 sPokeVialDesc[] = _(
+    "Use to heal party.\n"
+    "Replenishes at\n"
+    "POKéMON Centers.");
 
 static const u8 sFabMailDesc[] = _(
     "A gorgeous-print\n"

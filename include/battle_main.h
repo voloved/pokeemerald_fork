@@ -61,19 +61,24 @@ ballShakesArray: 76543210
 #define BOUNCE_HEALTHBOX    0x1
 
 // Rival's Stolen Pokemon
-#define STOLE_STARTER      (1 << 0)
-#define STOLE_WINGULL      (1 << 1)
-#define STOLE_SLUGMA       (1 << 2)
-#define STOLE_LOTAD        (1 << 3)
-#define STOLE_TROPIUS      (1 << 4)
-#define STOLE_TORKOAL      (1 << 5)
-#define STOLE_LEGENDARY    (1 << 6)
-#define STOLE_RALTS        (1 << 7)
-#define STOLE_ALTARIA      (1 << 8)
-#define STOLE_DELCATTY     (1 << 9)
-#define STOLE_ROSELIA      (1 << 10)
-#define STOLE_MAGNETON     (1 << 11)
-#define STOLE_SLAKING      (1 << 12)
+#define STOLE_STARTER       (1 << 0)
+#define STOLE_WINGULL       (1 << 1)
+#define STOLE_SLUGMA        (1 << 2)
+#define STOLE_LOTAD         (1 << 3)
+#define STOLE_TROPIUS       (1 << 4)
+#define STOLE_TORKOAL       (1 << 5)
+#define STOLE_LEGENDARY     (1 << 6)
+#define STOLE_RALTS         (1 << 7)
+#define STOLE_ALTARIA       (1 << 8)
+#define STOLE_DELCATTY      (1 << 9)
+#define STOLE_ROSELIA       (1 << 10)
+#define STOLE_MAGNETON      (1 << 11)
+#define STOLE_SLAKING       (1 << 12)
+
+#define STOLE_SIDNEY_START     0
+#define STOLE_PHEOBE_START     5
+#define STOLE_GLACIA_START     10
+#define STOLE_DRAKE_START      0
 
 void CB2_InitBattle(void);
 void BattleMainCB2(void);
@@ -95,6 +100,7 @@ void SpriteCB_FaintSlideAnim(struct Sprite *sprite);
 void DoBounceEffect(u8 battler, u8 which, s8 delta, s8 amplitude);
 void EndBounceEffect(u8 battler, u8 which);
 void SpriteCB_PlayerMonFromBall(struct Sprite *sprite);
+void SpriteCB_PlayerMonSlideIn(struct Sprite *sprite);
 void SpriteCB_TrainerThrowObject(struct Sprite *sprite);
 void AnimSetCenterToCornerVecX(struct Sprite *sprite);
 void BeginBattleIntroDummy(void);
@@ -110,7 +116,10 @@ void RunBattleScriptCommands_PopCallbacksStack(void);
 void RunBattleScriptCommands(void);
 bool8 TryRunFromBattle(u8 battlerId);
 void SpecialStatusesClear(void);
-u16 checkStolenPokemon(u16 trainerNum, u16 speciesType);
+u16 checkStolenPokemon(u16 trainerNum, u16 speciesType, u16 partyIndex, bool8 set);
+u8 isMovePhysical(u16);
+u8 isMoveSpecial(u16);
+u8 isMoveStatus(u16);
 
 extern struct MultiPartnerMenuPokemon gMultiPartnerParty[MULTI_PARTY_SIZE];
 

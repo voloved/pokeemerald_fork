@@ -138,6 +138,7 @@ extern const u8 gText_CantThrowAwayInUse[];
 extern const u8 gText_DecorationThrownAway[];
 
 extern const u8 gText_PokeBalls[];
+extern const u8 gText_ThiefBalls[];
 extern const u8 gText_Berries[];
 extern const u8 gText_Berry[];
 
@@ -529,6 +530,7 @@ extern const u8 gText_Speed[];
 extern const u8 gText_Dash[];
 extern const u8 gText_Plus[];
 extern const u8 gText_Nickname[];
+extern const u8 gText_Relearn[];
 
 //pokedex text
 extern const u8 gText_CryOf[];
@@ -935,6 +937,10 @@ extern const u8 gText_Anna[];
 
 extern const u8 gText_ExpShareTurnOn[];
 extern const u8 gText_ExpShareTurnOff[];
+extern const u8 gText_PokeVial_Success[];
+extern const u8 gText_PokeVial_Failure[];
+extern const u8 gText_CleanseTagTurnOn[];
+extern const u8 gText_CleanseTagTurnOff[];
 extern const u8 gText_DadsAdvice[];
 extern const u8 gText_CantDismountBike[];
 extern const u8 gText_ItemFinderNothing[];
@@ -1032,7 +1038,7 @@ extern const u8 gText_YouAlreadyHaveThis[];
 extern const u8 gText_ThankYouIllSendItHome[];
 extern const u8 gText_ThanksIllSendItHome[];
 extern const u8 gText_SpaceForVar1Full[];
-extern const u8 gText_ThrowInThiefBall[];
+extern const u8 gText_ThrowInExtraPokeBall[];
 extern const u8 gText_ShopBuy[];
 extern const u8 gText_ShopSell[];
 extern const u8 gText_ShopQuit[];
@@ -1047,6 +1053,7 @@ extern const u8 gText_LogOff[];
 extern const u8 gText_LanettesPC[];
 extern const u8 gText_SomeonesPC[];
 extern const u8 gText_PlayersPC[];
+extern const u8 gText_SpecialMenu[];
 extern const u8 gText_WhichPCShouldBeAccessed[];
 
 extern const u8 gText_PokenavMatchCall_Strategy[];

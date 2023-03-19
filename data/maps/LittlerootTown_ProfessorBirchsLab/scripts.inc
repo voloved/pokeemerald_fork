@@ -667,6 +667,10 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall::
 	releaseall
 	end
 
+LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCAccess::
+	call LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	waitmessage
 	call EventScript_Multichoice_BirchPCOptions
@@ -676,11 +680,14 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMult
 	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun
 	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
-	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
-	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit
+	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu
+	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_PokemonFollower
+	case 8, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	case 9, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
-	end
+	return
 
 EventScript_Multichoice_BirchPCOptions::
 	goto_if_set FLAG_SKIP_INTRO, EventScript_Multichoice_BirchPCOptions_2
@@ -694,9 +701,18 @@ EventScript_Multichoice_BirchPCOptions_5:
 	goto_if_set FLAG_NO_LOW_HEALTH_BEEP, EventScript_Multichoice_BirchPCOptions_10
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_7, 4
 EventScript_Multichoice_BirchPCOptions_9:
+	goto_if_set FLAG_MOVE_SPLIT_USE_ORIGINAL, EventScript_Multichoice_BirchPCOptions_12
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_8, 5
-	dynmultipush EventScript_Multichoice_Exit, 6
-	dynmultistack 0, 0, TRUE, 10, FALSE, 0, DYN_MULTICHOICE_CB_NONE
+EventScript_Multichoice_BirchPCOptions_15:
+	goto_if_set FLAG_RELEARN_IN_PARTY_MENU, EventScript_Multichoice_BirchPCOptions_16
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_14, 6	
+EventScript_Multichoice_BirchPCOptions_11:
+	goto_if_set FLAG_POKEMON_FOLLOWERS, EventScript_Multichoice_BirchPCOptions_14
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_12, 7
+EventScript_Multichoice_BirchPCOptions_13:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 8
+	dynmultipush EventScript_Multichoice_Exit, 9
+	dynmultistack 0, 0, TRUE, 8, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	return
 
 EventScript_Multichoice_BirchPCOptions_2:
@@ -710,6 +726,18 @@ EventScript_Multichoice_BirchPCOptions_6:
 EventScript_Multichoice_BirchPCOptions_10:
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_6, 4
 	goto EventScript_Multichoice_BirchPCOptions_9
+
+EventScript_Multichoice_BirchPCOptions_12:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_9, 5
+	goto EventScript_Multichoice_BirchPCOptions_15
+
+EventScript_Multichoice_BirchPCOptions_14:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_11, 7
+	goto EventScript_Multichoice_BirchPCOptions_13
+
+EventScript_Multichoice_BirchPCOptions_16:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_13, 6
+	goto EventScript_Multichoice_BirchPCOptions_11
 
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
 	message LittlerootTown_ProfessorBirchsLab_Text_SkipIntro
@@ -771,6 +799,73 @@ LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep_Cont:
 LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeepNo::
 	clearflag FLAG_NO_LOW_HEALTH_BEEP
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit::
+	message LittlerootTown_ProfessorBirchsLab_Text_GenFourSplit
+	waitmessage
+	goto_if_unset FLAG_MOVE_SPLIT_USE_ORIGINAL, LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit_Unset
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit_Unset:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplitNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	clearflag FLAG_MOVE_SPLIT_USE_ORIGINAL
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_GenFourSplitYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplitNo::
+	setflag FLAG_MOVE_SPLIT_USE_ORIGINAL
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_GenFourSplitNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_PokemonFollower::
+	special LoadPlayerParty
+	message LittlerootTown_ProfessorBirchsLab_Text_PokemonFollower
+	goto_if_set FLAG_POKEMON_FOLLOWERS, LittlerootTown_ProfessorBirchsLab_EventScript_PokemonFollower_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_PokemonFollower_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_PokemonFollower_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_PokemonFollower_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_PokemonFollowerNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	setflag FLAG_POKEMON_FOLLOWERS
+	callnative UpdateFollowingPokemon
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_PokemonFollowerYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_PokemonFollowerNo::
+	clearflag FLAG_POKEMON_FOLLOWERS
+	callnative UpdateFollowingPokemon
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_PokemonFollowerNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu::
+	message LittlerootTown_ProfessorBirchsLab_Text_RelearnInMenu
+	goto_if_set FLAG_RELEARN_IN_PARTY_MENU, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenuNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	setflag FLAG_RELEARN_IN_PARTY_MENU
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RelearnInMenuYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenuNo::
+	clearflag FLAG_RELEARN_IN_PARTY_MENU
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RelearnInMenuNo, MSGBOX_SIGN
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
@@ -1243,12 +1338,30 @@ EventScript_Multichoice_BirchPCOptions_Text_5:
 	.string "{COLOR RED}GRINDRUN$"
 
 EventScript_Multichoice_BirchPCOptions_Text_6:
-	.string "{COLOR GREEN}LOW HEALTH BEEP$"
+	.string "{COLOR GREEN}LOW HEALTH BEEP OFF$"
 
 EventScript_Multichoice_BirchPCOptions_Text_7:
-	.string "{COLOR RED}LOW HEALTH BEEP$"
+	.string "{COLOR RED}LOW HEALTH BEEP OFF$"
 
 EventScript_Multichoice_BirchPCOptions_Text_8:
+	.string "{COLOR GREEN}USE GEN 4 MOVE SPLIT$"
+
+EventScript_Multichoice_BirchPCOptions_Text_9:
+	.string "{COLOR RED}USE GEN 4 MOVE SPLIT$"
+
+EventScript_Multichoice_BirchPCOptions_Text_13:
+	.string "{COLOR GREEN}RELEARN MOVES IN MENU$"
+
+EventScript_Multichoice_BirchPCOptions_Text_14:
+	.string "{COLOR RED}RELEARN MOVES IN MENU$"
+
+EventScript_Multichoice_BirchPCOptions_Text_12:
+	.string "{COLOR RED}POKéMON FOLLOWERS$"
+
+EventScript_Multichoice_BirchPCOptions_Text_11:
+	.string "{COLOR GREEN}POKéMON FOLLOWERS$"
+
+EventScript_Multichoice_BirchPCOptions_Text_10:
 	.string "CARCINISATION$"
 
 EventScript_Multichoice_Exit:
@@ -1426,6 +1539,43 @@ LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepYes:
 LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeepNo:
 	.string "Beeping at low health\n"
 	.string "is turned on.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_GenFourSplit:
+	.string "Would you like the moves' physical\n"
+	.string "and special split to be based off\l"
+	.string "Gen 4 logic rather than move type?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_GenFourSplitYes:
+	.string "Move split set to\n"
+	.string "Gen 4 logic.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_GenFourSplitNo:
+	.string "Move splitting set to\n"
+	.string "Gen 3 default.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_PokemonFollower:
+	.string "Would you like to have your\n"
+	.string "POKéMON follow you?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_PokemonFollowerYes:
+	.string "The first POKéMON in your party\n"
+	.string "will now follow you.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_PokemonFollowerNo:
+	.string "POKéMON in your party\n"
+	.string "will not follow you.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RelearnInMenu:
+	.string "Add option to relearn level-up\n"
+	.string "moves in party menu?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RelearnInMenuYes:
+	.string "Relearn will be in\n"
+	.string "the party menu.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RelearnInMenuNo:
+	.string "Relearn will not be\n"
+	.string "in the party menu.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_NoDupesClause:
 	.string "Would you like to not use the dupes\n"
