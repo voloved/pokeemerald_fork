@@ -23,6 +23,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Swap party screen slots using Select](https://www.pokecommunity.com/showpost.php?p=10420662)
  - [Fixing the aspect ratio of the Pokémon logo on the title screen](https://github.com/pret/pokeemerald/wiki/Fixing-the-aspect-ratio-of-the-Pok%C3%A9mon-logo-on-the-title-screen) [Credit: meejle]
  - [Pokémon can now follow you.](https://github.com/aarant/pokeemerald/commits/followers) [Credit: aarant]
+   - Gen 4 Pokémon are ignored as followers.
  - Cleanse Tag can now be a use item as well as being held.
  - indicator shown in Nuzlocke challenge if Pokémon can be caught.
  - Mareep is female 75% of the time.
