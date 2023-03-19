@@ -25,8 +25,10 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Pokémon can now follow you.](https://github.com/aarant/pokeemerald/commits/followers) [Credit: aarant]
    - Gen 4 Pokémon are ignored as followers.
  - [Added Bag Sorting](pokecommunity.com/showpost.php?p=10167488&postcount=84) [Credit: Ghoulslash]
+ - [Make Poké Balls usable outside of battles](https://www.pokecommunity.com/showthread.php?p=10539730#post10539730) [Credit: Lunos]
  - Cleanse Tag can now be a use item as well as being held.
  - Doubled shiny odds.
+ - Buying more than 10 Poké Balls gives an extra.
  - Indicator shown in Nuzlocke challenge if Pokémon can be caught.
  - Mareep is female 75% of the time.
 

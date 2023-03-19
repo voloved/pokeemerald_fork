@@ -1162,7 +1162,12 @@ static void Task_ReturnToItemListAfterItemPurchase(u8 taskId)
     if (JOY_NEW(A_BUTTON | B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        BuyMenuReturnToItemList(taskId);
+
+        // Purchasing 10+ Poke Balls gets the player a Premier Ball
+        if (tItemId == ITEM_POKE_BALL && tItemCount >= 10 && AddBagItem(ITEM_POKE_BALL, 1) == TRUE)
+            BuyMenuDisplayMessage(taskId, gText_ThrowInExtraPokeBall, BuyMenuReturnToItemList);
+        else
+            BuyMenuReturnToItemList(taskId);
     }
 }
 
