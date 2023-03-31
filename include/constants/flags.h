@@ -1280,15 +1280,15 @@
 #define FLAG_UNUSED_0x4CF                                           0x4CF // Unused Flag
 #define FLAG_UNUSED_0x4D0                                           0x4D0 // Unused Flag
 #define FLAG_UNUSED_0x4D1                                           0x4D1 // Unused Flag
-#define FLAG_UNUSED_0x4D2                                           0x4D2 // Unused Flag
-#define FLAG_UNUSED_0x4D3                                           0x4D3 // Unused Flag
-#define FLAG_UNUSED_0x4D4                                           0x4D4 // Unused Flag
-#define FLAG_UNUSED_0x4D5                                           0x4D5 // Unused Flag
-#define FLAG_UNUSED_0x4D6                                           0x4D6 // Unused Flag
-#define FLAG_UNUSED_0x4D7                                           0x4D7 // Unused Flag
-#define FLAG_UNUSED_0x4D8                                           0x4D8 // Unused Flag
-#define FLAG_UNUSED_0x4D9                                           0x4D9 // Unused Flag
-#define FLAG_TREE_PETALBURGWOODS_1                                  0x4DA // Unused Flag
+#define FLAG_ROCK_ROUTE111_1                                        0x4D2
+#define FLAG_ROCK_ROUTE111_2                                        0x4D3
+#define FLAG_ROCK_ROUTE114_1                                        0x4D4
+#define FLAG_ROCK_ROUTE114_2                                        0x4D5
+#define FLAG_ROCK_ROUTE114_3                                        0x4D6
+#define FLAG_ROCK_ROUTE114_4                                        0x4D7
+#define FLAG_ROCK_ROUTE114_5                                        0x4D8
+#define FLAG_ROCK_ROUTE115_1                                        0x4D9
+#define FLAG_TREE_PETALBURGWOODS_1                                  0x4DA
 #define FLAG_TREE_PETALBURGWOODS_2                                  0x4DB
 #define FLAG_TREE_ROUTE103_1                                        0x4DC
 #define FLAG_TREE_ROUTE103_2                                        0x4DD

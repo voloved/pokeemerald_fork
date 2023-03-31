@@ -9,6 +9,18 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v1.5.1
+ - Got rid of item description window on first berry picked due to it being buggy.
+ - Nurse Joy now tells you what the level cap for Nuzlocke is.
+ - Resetting wallclock ages the berry growth by a day and iterates daily events by a day.
+ - PokéVial renamed to POKéVIAL.
+ - Fury Cutter based power changed to 40.
+ - Able to buy Thief Ball in Petalburg Mart after 6 badges.
+ - Biking indoors is now allowed.
+ - Fire-type cannot be frozen.
+ - Player PC now has 10 Thief Balls in it rather than 5.
+ - Some rocks can permanently be smashed.
+
  ## v1.5.0
  - [Added PokéVial](https://github.com/pret/pokeemerald/wiki/Add-A-PokeVial-Item)
  - [Fish Will Now Always Get on Hook](https://github.com/pret/pokeemerald/wiki/Fish-Will-Now-Always-Get-on-Hook)
