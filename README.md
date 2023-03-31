@@ -9,6 +9,9 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## No Yet Versioned
+ - Resetting wallclock ages the berry growth by a day and iterates daily events by a day.
+
  ## v1.5.0
  - [Added PokéVial](https://github.com/pret/pokeemerald/wiki/Add-A-PokeVial-Item)
  - [Fish Will Now Always Get on Hook](https://github.com/pret/pokeemerald/wiki/Fish-Will-Now-Always-Get-on-Hook)
