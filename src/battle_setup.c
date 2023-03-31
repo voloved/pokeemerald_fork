@@ -95,6 +95,7 @@ static void RegisterTrainerInMatchCall(void);
 static void HandleRematchVarsOnBattleEnd(void);
 static const u8 *GetIntroSpeechOfApproachingTrainer(void);
 static const u8 *GetTrainerCantBattleSpeech(void);
+static u8 getLevelCap(void);
 
 EWRAM_DATA static u16 sTrainerBattleMode = 0;
 EWRAM_DATA u16 gTrainerBattleOpponent_A = 0;
@@ -1958,13 +1959,10 @@ u16 CountBattledRematchTeams(u16 trainerId)
     return i;
 }
 
-bool8 levelCappedNuzlocke(u8 level){
+static u8 getLevelCap(void){
     u8 levelCap = 0;
     u16 nextLeader, i;
     const struct TrainerMonItemCustomMoves *partyData;
-    if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_NUZLOCKE_LEVEL_CAP)){
-        return FALSE;
-    }
     if (!FlagGet(FLAG_BADGE01_GET))
         nextLeader = TRAINER_ROXANNE_1;
     else if (!FlagGet(FLAG_BADGE02_GET))
@@ -1983,15 +1981,28 @@ bool8 levelCappedNuzlocke(u8 level){
         nextLeader = TRAINER_JUAN_1;
     else if (!FlagGet(FLAG_IS_CHAMPION))
         nextLeader = TRAINER_WALLACE;
+    else
+        return 100;
 
     partyData = gTrainers[nextLeader].party.ItemCustomMoves;
     for (i = 0; i < gTrainers[nextLeader].partySize; i++){
         if (partyData[i].lvl > levelCap)
             levelCap = partyData[i].lvl;
     }
-    if (level >= GetScaledLevel(levelCap))
+    return GetScaledLevel(levelCap);
+}
+
+bool8 levelCappedNuzlocke(u8 level){
+    u8 levelCap = getLevelCap();
+    if (level >= levelCap)
         return TRUE;
     return FALSE;
+}
+
+void LevelCapToString(void){
+    u8 lvl_txt[3];
+    ConvertIntToDecimalStringN(lvl_txt, getLevelCap(), STR_CONV_MODE_LEFT_ALIGN, 3);
+    StringCopy(gStringVar1, lvl_txt);
 }
 
 u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
@@ -2418,3 +2429,5 @@ u8 GetScaledLevel(u8 lvl)
         lvl = 1;
     return lvl;
 }
+
+

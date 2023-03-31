@@ -11,6 +11,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
 ## No Yet Versioned
  - Got rid of item description window on first berry picked due to it being buggy.
+ - Nurse Joy now tells you what the level cap for Nuzlocke is.
  - Resetting wallclock ages the berry growth by a day and iterates daily events by a day.
  - PokéVial renamed to POKéVIAL.
  - Fury Cutter based power changed to 40.
