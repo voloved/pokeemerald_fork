@@ -15,6 +15,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - PokéVial renamed to POKéVIAL.
  - Fury Cutter based power changed to 40.
  - Fire-type cannot be frozen.
+ - Some rocks can perminently be smashed.
 
  ## v1.5.0
  - [Added PokéVial](https://github.com/pret/pokeemerald/wiki/Add-A-PokeVial-Item)
