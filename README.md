@@ -15,6 +15,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Resetting wallclock ages the berry growth by a day and iterates daily events by a day.
  - PokéVial renamed to POKéVIAL.
  - Fury Cutter based power changed to 40.
+ - Able to buy Thief Ball in Petalburg Mart after 6 badges.
  - Fire-type cannot be frozen.
  - Some rocks can perminently be smashed.
 
