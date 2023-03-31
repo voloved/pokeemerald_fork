@@ -10,6 +10,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
 ## No Yet Versioned
+ - Got rid of item description window on first berry picked due to it being buggy.
  - Resetting wallclock ages the berry growth by a day and iterates daily events by a day.
  - PokéVial renamed to POKéVIAL.
  - Fury Cutter based power changed to 40.
