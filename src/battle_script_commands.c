@@ -2430,6 +2430,8 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 noSunCanFreeze = FALSE;
             if (IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_ICE))
                 break;
+            if (IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_FIRE))
+                break;
             if (gBattleMons[gEffectBattler].status1)
                 break;
             if (noSunCanFreeze == FALSE)

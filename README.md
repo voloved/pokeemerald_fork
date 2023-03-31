@@ -11,6 +11,9 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
 ## No Yet Versioned
  - Resetting wallclock ages the berry growth by a day and iterates daily events by a day.
+ - PokéVial renamed to POKéVIAL.
+ - Fury Cutter based power changed to 40.
+ - Fire-type cannot be frozen.
 
  ## v1.5.0
  - [Added PokéVial](https://github.com/pret/pokeemerald/wiki/Add-A-PokeVial-Item)

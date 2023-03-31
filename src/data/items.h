@@ -1592,7 +1592,7 @@ const struct Item gItems[] =
 
     [ITEM_POKEVIAL] =
     {
-        .name = _("PokéVial"),
+        .name = _("POKéVIAL"),
         .itemId = ITEM_POKEVIAL,
         .price = 0,
         .importance = 1,
