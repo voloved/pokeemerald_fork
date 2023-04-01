@@ -1994,6 +1994,8 @@ static u8 getLevelCap(void){
 
 bool8 levelCappedNuzlocke(u8 level){
     u8 levelCap = getLevelCap();
+    if (FlagGet(FLAG_IS_CHAMPION))
+        return FALSE;
     if (level >= levelCap)
         return TRUE;
     return FALSE;
