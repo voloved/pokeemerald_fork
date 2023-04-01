@@ -14,6 +14,7 @@ EventScript_PkmnCenterNurse_Goodbye::
 @ VAR_0x8004 is 1 when player has Gold Card; jumps are identical
 EventScript_PkmnCenterNurse_HealPkmn::
 	incrementgamestat GAME_STAT_USED_POKECENTER
+	playfanfare MUS_HEAL
 	special HealPlayerParty
 	setvar VAR_POKEVIAL_USAGES, 0
 	goto_if_unset FLAG_POKERUS_EXPLAINED, EventScript_PkmnCenterNurse_CheckPokerus
