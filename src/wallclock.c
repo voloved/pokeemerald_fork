@@ -884,7 +884,7 @@ static void Task_ViewClock_HandleInput(u8 taskId)
     if (JOY_NEW(A_BUTTON | B_BUTTON))
         gTasks[taskId].func = Task_ViewClock_FadeOut;
     if (JOY_NEW(R_BUTTON)){
-        UpdateByDay(1);
+        FastForwardTime(1, 24);
         PlaySE(SE_SELECT);
         LZ77UnCompVram(gWallClockStart_Tilemap, (u16 *)BG_SCREEN_ADDR(7));
         ClearStdWindowAndFrameToTransparent(1, FALSE);

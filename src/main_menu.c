@@ -38,6 +38,7 @@
 #include "window.h"
 #include "mystery_gift_menu.h"
 #include "constants/flags.h"
+#include "clock.h"
 
 /*
  * Main menu state machine
@@ -727,8 +728,9 @@ static void Task_MainMenuCheckBattery(u8 taskId)
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_BG0);
         SetGpuReg(REG_OFFSET_BLDALPHA, 0);
         SetGpuReg(REG_OFFSET_BLDY, 7);
+        if (RtcGetErrorStatus() & RTC_ERR_FLAG_MASK)
+            FastForwardTime(1, 12);
         gTasks[taskId].func = Task_DisplayMainMenu;
-       
     }
 }
 
