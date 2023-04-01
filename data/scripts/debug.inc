@@ -72,4 +72,5 @@ Debug_Script_7::
 	end
 
 Debug_Script_8::
+	call RustboroCity_House1_EventScript_Hiker
 	end
