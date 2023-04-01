@@ -1963,7 +1963,9 @@ static u8 getLevelCap(void){
     u8 levelCap = 0;
     u16 nextLeader, i;
     const struct TrainerMonItemCustomMoves *partyData;
-    if (!FlagGet(FLAG_BADGE01_GET))
+    if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_NUZLOCKE_LEVEL_CAP) || FlagGet(FLAG_IS_CHAMPION))
+        return 100;
+    else if (!FlagGet(FLAG_BADGE01_GET))
         nextLeader = TRAINER_ROXANNE_1;
     else if (!FlagGet(FLAG_BADGE02_GET))
         nextLeader = TRAINER_BRAWLY_1;
@@ -1979,10 +1981,8 @@ static u8 getLevelCap(void){
         nextLeader = TRAINER_TATE_AND_LIZA_1;
     else if (!FlagGet(FLAG_BADGE08_GET))
         nextLeader = TRAINER_JUAN_1;
-    else if (!FlagGet(FLAG_IS_CHAMPION))
-        nextLeader = TRAINER_WALLACE;
     else
-        return 100;
+        nextLeader = TRAINER_WALLACE;
 
     partyData = gTrainers[nextLeader].party.ItemCustomMoves;
     for (i = 0; i < gTrainers[nextLeader].partySize; i++){
@@ -1994,8 +1994,8 @@ static u8 getLevelCap(void){
 
 bool8 levelCappedNuzlocke(u8 level){
     u8 levelCap = getLevelCap();
-    if (FlagGet(FLAG_IS_CHAMPION))
-        return FALSE;
+    if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_NUZLOCKE_LEVEL_CAP) || FlagGet(FLAG_IS_CHAMPION))
+        return FALSE;  //Redundant since getLevelCap would already return 100 for these, but better to be explicit
     if (level >= levelCap)
         return TRUE;
     return FALSE;

@@ -73,20 +73,17 @@ static void UpdatePerMinute(struct Time *localTime)
     }
 }
 
-void UpdateByDay(u16 daysSince){  // Used to move all of the times forword when resetting on the wallclock.
-//Specifically useful for growing berries when playing on an emulator with no RTC.
-		ClearDailyFlags();
-        UpdateDewfordTrendPerDay(daysSince);
-        UpdateTVShowsPerDay(daysSince);
-        UpdateWeatherPerDay(daysSince);
-        UpdatePartyPokerusTime(daysSince);
-        UpdateMirageRnd(daysSince);
-        UpdateBirchState(daysSince);
-        UpdateFrontierManiac(daysSince);
-        UpdateFrontierGambler(daysSince);
-        SetShoalItemFlag(daysSince);
-        SetRandomLotteryNumber(daysSince);
-		BerryTreeTimeUpdate(daysSince * 24 * 60);
+void FastForwardTime(s16 daysToUpdateDay, s16 hoursToGrowBerries){  // Used to move all of the times forword when resetting on the wallclock or when enterring the game without a RTC.
+// Specifically useful for growing berries when playing on an emulator with no RTC.
+        s16 daysBerry = hoursToGrowBerries / 24;
+        s8 hoursBerry = hoursToGrowBerries % 24;
+        struct Time localTimeOffset;
+        localTimeOffset.days = *GetVarPointer(VAR_DAYS) + daysToUpdateDay;
+        UpdatePerDay(&localTimeOffset);
+        localTimeOffset = gSaveBlock2Ptr->lastBerryTreeUpdate;
+        localTimeOffset.days += daysBerry;
+        localTimeOffset.hours += hoursBerry;
+        UpdatePerMinute(&localTimeOffset);
 }
 
 static void ReturnFromStartWallClock(void)
