@@ -9,6 +9,11 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v1.5.3
+ - [Loading the game now ages the berries by 12 hours and iterates daily events by a day](https://github.com/pret/pokeemerald/wiki/Get-Rid-of-Battery-Run-Dry-Error-Message#extra-update-daily-events-and-berries-still-grow-when-playing-without-a-rtc)
+ - Berries that are fully-grown do not continue the cycle if the RTC is dead.
+ - Overlevel check turns off if Nuzlocke setting is off.
+
 ## v1.5.2
  - Readded Nuse Joy chime when healing.
  - No longer shows Nuzlocke cap if player is champion.
@@ -16,7 +21,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 ## v1.5.1
  - Got rid of item description window on first berry picked due to it being buggy.
  - Nurse Joy now tells you what the level cap for Nuzlocke is.
- - Resetting wallclock ages the berry growth by a day and iterates daily events by a day.
+ - Resetting wallclock ages the berry growth by 24 hours and iterates daily events by a day.
  - PokéVial renamed to POKéVIAL.
  - Fury Cutter based power changed to 40.
  - Able to buy Thief Ball in Petalburg Mart after 6 badges.

@@ -13,6 +13,7 @@
 #include "text.h"
 #include "constants/event_object_movement.h"
 #include "constants/items.h"
+#include "rtc.h"
 
 static u32 GetEnigmaBerryChecksum(struct EnigmaBerry *enigmaBerry);
 static bool32 BerryTreeGrow(struct BerryTree *tree);
@@ -1060,6 +1061,8 @@ static bool32 BerryTreeGrow(struct BerryTree *tree)
         tree->stage++;
         break;
     case BERRY_STAGE_BERRIES:
+        if (RtcGetErrorStatus() & RTC_ERR_FLAG_MASK) // Don't get rid of berries if the RTC is dead.
+            break;
         tree->watered1 = 0;
         tree->watered2 = 0;
         tree->watered3 = 0;
@@ -1084,7 +1087,7 @@ void BerryTreeTimeUpdate(s32 minutes)
 
         if (tree->berry && tree->stage && !tree->stopGrowth)
         {
-            if (minutes >= GetStageDurationByBerryType(tree->berry) * 71)
+            if (minutes >= GetStageDurationByBerryType(tree->berry) * 71 && !(RtcGetErrorStatus() & RTC_ERR_FLAG_MASK))
             {
                 *tree = gBlankBerryTree;
             }
