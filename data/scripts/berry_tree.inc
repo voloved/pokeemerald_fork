@@ -102,6 +102,7 @@ BerryTree_EventScript_CheckBerryFullyGrown::
 	buffernumberstring STR_VAR_2, VAR_0x8006
 	lock
 	faceplayer
+	special ObjectEventInteractionGetBerryCountString
 	goto BerryTree_EventScript_PickBerry
 
 BerryTree_EventScript_PickBerry::
@@ -110,9 +111,12 @@ BerryTree_EventScript_PickBerry::
 	special IncrementDailyPickedBerries
 	special ObjectEventInteractionRemoveBerryTree
 	message BerryTree_Text_PickedTheBerry
+	delay 10
+	showberrydesc
 	playfanfare MUS_OBTAIN_BERRY
 	waitmessage
 	waitbuttonpress
+	hideitemdesc
 	release
 	end
 
