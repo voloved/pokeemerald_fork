@@ -54,6 +54,7 @@ EventScript_PkmnCenterNurse_ReturnPkmn::
 	goto_if_eq VAR_0x8004, 1, EventScript_PkmnCenterNurse_ReturnPkmn2
 	goto_if_unset FLAG_NUZLOCKE, EventScript_PkmnCenterNurse_ReturnPkmnDefault
 	goto_if_unset FLAG_NUZLOCKE_LEVEL_CAP, EventScript_PkmnCenterNurse_ReturnPkmnDefault
+	goto_if_set FLAG_IS_CHAMPION, EventScript_PkmnCenterNurse_ReturnPkmnDefault
 	callnative LevelCapToString
 	message gText_WeHopeToSeeYouAgain4
 	return

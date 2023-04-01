@@ -11,6 +11,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
 ## v1.5.2
  - Readded Nuse Joy chime when healing.
+ - No longer shows Nuzlocke cap if player is champion.
 
 ## v1.5.1
  - Got rid of item description window on first berry picked due to it being buggy.
