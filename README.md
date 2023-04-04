@@ -8,8 +8,9 @@ Link to [Patch File is Here](https://drive.google.com/drive/folders/1GFChFDEmOJH
 To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokémon Emerald (those devs who made the game 20 years ago gotta eat too).  
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
-## Not Yet Versioned
- - Gen 4 Pokémon are added as followers.
+
+## v1.5.4
+ - Gen 4 Pokémon are Added as Followers.
  - Berry Pick-up Text On New Berry Now Works.
  
 ## v1.5.3
