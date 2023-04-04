@@ -9,6 +9,10 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v1.5.4
+ - Gen 4 Pokémon are Added as Followers.
+ - Berry Pick-up Text On New Berry Now Works.
+ 
 ## v1.5.3
  - [Loading the game now ages the berries by 12 hours and iterates daily events by a day](https://github.com/pret/pokeemerald/wiki/Get-Rid-of-Battery-Run-Dry-Error-Message#extra-update-daily-events-and-berries-still-grow-when-playing-without-a-rtc)
  - Berries that are fully-grown do not continue the cycle if the RTC is dead.
@@ -151,7 +155,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - [Made Daycare Faster at Leveling Pokémon](https://github.com/pret/pokeemerald/wiki/Make-Daycare-Faster-at-Leveling-Pok%C3%A9mon)
 - [Allowed Feebas to be caught on any Valid Fishing Spot in Route 119 if the Last Shot on the Basketball Hoop Went In](https://github.com/pret/pokeemerald/wiki/Allow-Feebas-to-be-caught-on-any-Valid-Fishing-Spot-in-Route-119-rather-than-only-Three)
 - Added a Clock in Every PokéMart.
-- Norman's Slaking Has Ability Intimidate and can learn Death Move at level 100.
+- [Norman's Slaking Has Ability Intimidate and can learn Death Move at level 100.](https://github.com/pret/pokeemerald/wiki/Make-Norman's-Slaking-Have-Ability-Intimidate)
 - Charizard is fire/dragon, Meowth is normal/dark, Gyarados can learn fly
 - Added Zen Headbutt, Moonblast, Play Rough, Draining Kiss, Fairy Wind, and Death Move.
 - [Added Physical/Special Move Split](https://github.com/pret/pokeemerald/wiki/add-physical-special-split) [Credit: Kurausukun]
