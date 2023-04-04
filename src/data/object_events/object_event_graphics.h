@@ -763,6 +763,7 @@ const u32 gObjectEventPic_Rayquaza[] = INCBIN_U32("graphics/object_events/pics/p
 const u32 gObjectEventPic_Jirachi[] = INCBIN_U32("graphics/object_events/pics/pokemon/jirachi.4bpp");
 const u32 gObjectEventPic_Deoxys[] = INCBIN_U32("graphics/object_events/pics/pokemon/deoxys.4bpp");
 const u32 gObjectEventPic_Leafeon[] = INCBIN_U32("graphics/object_events/pics/pokemon/leafeon.4bpp");
+const u32 gObjectEventPic_Missingno[] = INCBIN_U32("graphics/object_events/pics/pokemon/missingno.4bpp");
 
 const u32 gObjectEventPic_DeoxysOld[] = INCBIN_U32("graphics/object_events/pics/pokemon/deoxys_old.4bpp");
 const u32 gObjectEventPic_MewOld[] = INCBIN_U32("graphics/object_events/pics/pokemon/mew_old.4bpp");

@@ -1938,6 +1938,9 @@ $(OBJEVENTGFXDIR)/pokemon/deoxys.4bpp: %.4bpp: %.png
 $(OBJEVENTGFXDIR)/pokemon/leafeon.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 4 -mheight 4
 
+$(OBJEVENTGFXDIR)/pokemon/missingno.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
 $(MISCGFXDIR)/emotes.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 2
 

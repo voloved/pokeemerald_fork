@@ -5326,6 +5326,14 @@ static const struct SpriteFrameImage sPicTable_Leafeon[] = {
     overworld_frame(gObjectEventPic_Leafeon, 4, 4, 4),
     overworld_frame(gObjectEventPic_Leafeon, 4, 4, 5),
 };
+static const struct SpriteFrameImage sPicTable_Missingno[] = {
+    overworld_frame(gObjectEventPic_Missingno, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Missingno, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Missingno, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Missingno, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Missingno, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Missingno, 4, 4, 0),
+};
 
 static const struct SpriteFrameImage sPicTable_DeoxysOld[] = {
     overworld_frame(gObjectEventPic_DeoxysOld, 4, 4, 0),
