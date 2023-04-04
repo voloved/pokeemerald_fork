@@ -779,6 +779,7 @@ const u32 gObjectEventPic_Probopass[] = INCBIN_U32("graphics/object_events/pics/
 const u32 gObjectEventPic_Dusknoir[] = INCBIN_U32("graphics/object_events/pics/pokemon/dusknoir.4bpp");
 const u32 gObjectEventPic_Leafeon[] = INCBIN_U32("graphics/object_events/pics/pokemon/leafeon.4bpp");
 const u32 gObjectEventPic_Glaceon[] = INCBIN_U32("graphics/object_events/pics/pokemon/glaceon.4bpp");
+const u32 gObjectEventPic_Sylveon[] = INCBIN_U32("graphics/object_events/pics/pokemon/sylveon.4bpp");
 const u32 gObjectEventPic_Missingno[] = INCBIN_U32("graphics/object_events/pics/pokemon/missingno.4bpp");
 
 const u32 gObjectEventPic_DeoxysOld[] = INCBIN_U32("graphics/object_events/pics/pokemon/deoxys_old.4bpp");

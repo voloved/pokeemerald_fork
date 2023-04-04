@@ -1983,7 +1983,10 @@ $(OBJEVENTGFXDIR)/pokemon/dusknoir.4bpp: %.4bpp: %.png
 $(OBJEVENTGFXDIR)/pokemon/leafeon.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 4 -mheight 4
 
-$(OBJEVENTGFXDIR)/pokemon/glaceon.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/pokemon/glaceon.4bpp: %.4bpp: %.png # Credit to Kyle-Dove https://www.deviantart.com/kyle-dove/art/Sylveon-Sprite-353872866
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
+$(OBJEVENTGFXDIR)/pokemon/sylveon.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 4 -mheight 4
 
 $(OBJEVENTGFXDIR)/pokemon/missingno.4bpp: %.4bpp: %.png
