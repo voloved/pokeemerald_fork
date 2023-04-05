@@ -11,6 +11,9 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
 ## Not Yet Versioned.
  - When putting a Pokémon into a new ball, the old ball gets put back into the bag if it's not a Thief Ball nor Master Ball.
+ - [Allow Move Relearner to Teach Moves that Pre Evolutions Know](https://github.com/pret/pokeemerald/wiki/Allow-Move-Relearner-to-Teach-Moves-that-Pre-Evolutions-Know)
+ - Animated Missingno follower sprite.
+ - Bug fix on an endless loop if an Eeveelution is bred.
 
 ## v1.5.4
  - Gen 4 Pokémon are Added as Followers.
