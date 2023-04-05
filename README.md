@@ -9,12 +9,15 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## Not Yet Versioned.
+ - When putting a Pokémon into a new ball, the old ball gets put back into the bag if it's not a Thief Ball nor Master Ball.
+
 ## v1.5.4
  - Gen 4 Pokémon are Added as Followers.
  - Berry Pick-up Text On New Berry Now Works.
  
 ## v1.5.3
- - [Loading the game now ages the berries by 12 hours and iterates daily events by a day](https://github.com/pret/pokeemerald/wiki/Get-Rid-of-Battery-Run-Dry-Error-Message#extra-update-daily-events-and-berries-still-grow-when-playing-without-a-rtc)
+ - [Loading the game now ages the berries by 12 hours and iterates daily events by a day.](https://github.com/pret/pokeemerald/wiki/Get-Rid-of-Battery-Run-Dry-Error-Message#extra-update-daily-events-and-berries-still-grow-when-playing-without-a-rtc)
  - Berries that are fully-grown do not continue the cycle if the RTC is dead.
  - Overlevel check turns off if Nuzlocke setting is off.
 
