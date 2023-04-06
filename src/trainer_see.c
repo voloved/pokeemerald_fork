@@ -405,7 +405,7 @@ static u8 CheckTrainer(u8 objectEventId)
 {
     const u8 *scriptPtr;
     u8 numTrainers = 1;
-    u8 approachDistance;
+    u8 approachDistance = GetTrainerApproachDistance(&gObjectEvents[objectEventId]);
 
     if (InTrainerHill() == TRUE)
         scriptPtr = GetTrainerHillTrainerScript();
@@ -422,13 +422,11 @@ static u8 CheckTrainer(u8 objectEventId)
         if (GetHillTrainerFlag(objectEventId))
             return 0;
     }
-    else
+    else if (approachDistance != 0)
     {
         if (GetTrainerFlagFromScriptPointer(scriptPtr))
             return 0;
     }
-
-    approachDistance = GetTrainerApproachDistance(&gObjectEvents[objectEventId]);
 
     if (approachDistance != 0)
     {

@@ -51,7 +51,6 @@
 #include "constants/region_map_sections.h"
 #include "battle_anim.h"
 #include "pokedex.h"
-#include "gba/isagbprint.h"
 
 enum {
     TRANSITION_TYPE_NORMAL,

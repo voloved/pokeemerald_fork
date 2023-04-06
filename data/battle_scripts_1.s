@@ -3079,6 +3079,10 @@ BattleScript_PrintCantRunFromTrainer::
 	printstring STRINGID_NORUNNINGFROMTRAINERS
 	end2
 
+BattleScript_PrintCantRunFromTrainerDuringNuzlocke::
+	printstring STRINGID_NORUNNINGNUZLOCKE
+	end2
+
 BattleScript_PrintFailedToRunString::
 	printfromtable gNoEscapeStringIds
 	waitmessage B_WAIT_TIME_LONG

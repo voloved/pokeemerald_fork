@@ -1,7 +1,6 @@
 #include "global.h"
 #include "event_data.h"
 #include "pokedex.h"
-#include "gba/isagbprint.h"
 
 #define NUM_SPECIAL_FLAGS (SPECIAL_FLAGS_END - SPECIAL_FLAGS_START + 1)
 #define NUM_TEMP_FLAGS    (TEMP_FLAGS_END - TEMP_FLAGS_START + 1)
