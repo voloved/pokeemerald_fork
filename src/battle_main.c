@@ -4292,6 +4292,31 @@ u8 IsRunningFromBattleImpossible(void)
     return BATTLE_RUN_SUCCESS;
 }
 
+u8 IsTrainerCantRunFrom(void){
+    u8 trainerClass;
+    if (FlagGet(FLAG_NUZLOCKE))
+        return BATTLE_RUN_FORBIDDEN;
+    if (gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_TRAINER_HILL))
+        return BATTLE_RUN_FORBIDDEN;
+    trainerClass = gTrainers[gTrainerBattleOpponent_A].trainerClass;
+    switch (trainerClass)
+    {
+    case TRAINER_CLASS_AQUA_LEADER:
+    case TRAINER_CLASS_MAGMA_LEADER:
+    case TRAINER_CLASS_TEAM_AQUA:
+    case TRAINER_CLASS_TEAM_MAGMA:
+    case TRAINER_CLASS_AQUA_ADMIN:
+    case TRAINER_CLASS_MAGMA_ADMIN:
+    case TRAINER_CLASS_LEADER:
+    case TRAINER_CLASS_CHAMPION:
+    case TRAINER_CLASS_RIVAL:
+    case TRAINER_CLASS_ELITE_FOUR:
+        return BATTLE_RUN_FORBIDDEN;
+    default:
+        return BATTLE_RUN_SUCCESS;
+    }
+}
+
 void SwitchPartyOrder(u8 battler)
 {
     s32 i;
@@ -4553,12 +4578,24 @@ static void HandleTurnActionSelectionState(void)
                     *(gBattleStruct->stateIdAfterSelScript + gActiveBattler) = STATE_BEFORE_ACTION_CHOSEN;
                     return;
                 }
-                else if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER 
+                else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER 
                          && !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
                          && gBattleBufferB[gActiveBattler][1] == B_ACTION_RUN)
                 {
-                    BattleScriptExecute(BattleScript_PrintCantRunFromTrainer);
-                    gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
+                    if (FlagGet(FLAG_NUZLOCKE))
+                    {
+                        BattleScriptExecute(BattleScript_PrintCantRunFromTrainerDuringNuzlocke);
+                        gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
+                    }
+                    else if (IsTrainerCantRunFrom())
+                    {
+                        BattleScriptExecute(BattleScript_PrintCantRunFromTrainer);
+                        gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
+                    }
+                    else
+                    {
+                        gBattleCommunication[gActiveBattler]++;
+                    }
                 }
                 else if (IsRunningFromBattleImpossible() != BATTLE_RUN_SUCCESS
                          && gBattleBufferB[gActiveBattler][1] == B_ACTION_RUN)

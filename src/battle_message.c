@@ -334,6 +334,7 @@ static const u8 sText_PlayerBattledToDrawVsTwo[] = _("Player battled to a draw a
 static const u8 sText_WildFled[] = _("{PLAY_SE SE_FLEE}{B_LINK_OPPONENT1_NAME} fled!");
 static const u8 sText_TwoWildFled[] = _("{PLAY_SE SE_FLEE}{B_LINK_OPPONENT1_NAME} and\n{B_LINK_OPPONENT2_NAME} fled!");
 static const u8 sText_NoRunningFromTrainers[] = _("There's no running from\nthis TRAINER battle!\p");
+static const u8 sText_NoRunningNuzlocke[] = _("There's no running from a TRAINER\nbattle during Nuzlocke!\p");
 static const u8 sText_CantEscape[] = _("Can't escape!\p");
 static const u8 sText_DontLeaveBirch[] = _("PROF. BIRCH: Don't leave me like this!\p");
 static const u8 sText_ButNothingHappened[] = _("But nothing happened!");
@@ -902,6 +903,7 @@ const u8 * const gBattleStringsTable[BATTLESTRINGS_COUNT - BATTLESTRINGS_TABLE_S
     [STRINGID_GOTCHAPKMNCAUGHTNOBGM - BATTLESTRINGS_TABLE_START] = sText_GotchaPkmnCaughtNoBgm,
     [STRINGID_CANTWITHNUZLOCKE - BATTLESTRINGS_TABLE_START] = sText_CantWithNuzlocke,
     [STRINGID_PKMNGAINEDEXPALL - BATTLESTRINGS_TABLE_START] = sText_PkmnGainedEXPAll,
+    [STRINGID_NORUNNINGNUZLOCKE - BATTLESTRINGS_TABLE_START] = sText_NoRunningNuzlocke,
 };
 
 const u16 gMissStringIds[] =
