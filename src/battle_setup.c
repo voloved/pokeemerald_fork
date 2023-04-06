@@ -115,6 +115,7 @@ EWRAM_DATA static u8 *sTrainerABattleScriptRetAddr = NULL;
 EWRAM_DATA static u8 *sTrainerBBattleScriptRetAddr = NULL;
 EWRAM_DATA static bool8 sShouldCheckTrainerBScript = FALSE;
 EWRAM_DATA static u8 sNoOfPossibleTrainerRetScripts = 0;
+EWRAM_DATA static u32 sPrevTrainerSeeing = 0;
 
 // The first transition is used if the enemy pokemon are lower level than our pokemon.
 // Otherwise, the second transition is used.
@@ -1273,9 +1274,11 @@ void SetUpTwoTrainersBattle(void)
 bool32 GetTrainerFlagFromScriptPointer(const u8 *data)
 {
     u32 flag = TrainerBattleLoadArg16(data + 2);
-    u16 RouteID_A = flag % 16;
-    DebugPrintf("Get: %d %d %d", FlagGet(TRAINER_SEE_TEMP_FLAGS_START + RouteID_A), RouteID_A, TRAINER_SEE_TEMP_FLAGS_START + RouteID_A);
-    return (FlagGet(TRAINER_FLAGS_START + flag) || FlagGet(TRAINER_SEE_TEMP_FLAGS_START + RouteID_A));
+    if (flag != sPrevTrainerSeeing){
+        sPrevTrainerSeeing = flag;
+        FlagClear(FLAG_RAN_FROM_TRAINER);
+    }
+    return (FlagGet(TRAINER_FLAGS_START + flag) || FlagGet(FLAG_RAN_FROM_TRAINER));
 }
 
 // Set trainer's movement type so they stop and remain facing that direction
@@ -1304,14 +1307,7 @@ bool8 GetTrainerFlag(void)
 
 static void SetBattledTrainersSeeFlags(void)
 {
-    u16 RouteID_A, RouteID_B;
-    RouteID_A = gTrainerBattleOpponent_A % 16;
-    RouteID_B = gTrainerBattleOpponent_B % 16;
-
-    if (gTrainerBattleOpponent_B != 0)
-        FlagSet(TRAINER_SEE_TEMP_FLAGS_START + RouteID_B);
-    FlagSet(TRAINER_SEE_TEMP_FLAGS_START + RouteID_A);
-    DebugPrintf("Set: %d %d %d", FlagGet(TRAINER_SEE_TEMP_FLAGS_START + RouteID_A), RouteID_A, TRAINER_SEE_TEMP_FLAGS_START + RouteID_A);
+    FlagSet(FLAG_RAN_FROM_TRAINER);
 }
 
 static void SetBattledTrainersFlags(void)
