@@ -655,22 +655,26 @@
 #define FLAG_UNUSED_0x265  0x265 // Unused Flag
 #define FLAG_UNUSED_0x266  0x266 // Unused Flag
 #define FLAG_UNUSED_0x267  0x267 // Unused Flag
-#define FLAG_UNUSED_0x268  0x268 // Unused Flag
-#define FLAG_UNUSED_0x269  0x269 // Unused Flag
-#define FLAG_UNUSED_0x26A  0x26A // Unused Flag
-#define FLAG_UNUSED_0x26B  0x26B // Unused Flag
-#define FLAG_UNUSED_0x26C  0x26C // Unused Flag
-#define FLAG_UNUSED_0x26D  0x26D // Unused Flag
-#define FLAG_UNUSED_0x26E  0x26E // Unused Flag
-#define FLAG_UNUSED_0x26F  0x26F // Unused Flag
-#define FLAG_UNUSED_0x270  0x270 // Unused Flag
-#define FLAG_UNUSED_0x271  0x271 // Unused Flag
-#define FLAG_UNUSED_0x272  0x272 // Unused Flag
-#define FLAG_UNUSED_0x273  0x273 // Unused Flag
-#define FLAG_UNUSED_0x274  0x274 // Unused Flag
-#define FLAG_UNUSED_0x275  0x275 // Unused Flag
-#define FLAG_UNUSED_0x276  0x276 // Unused Flag
-#define FLAG_UNUSED_0x277  0x277 // Unused Flag
+
+#define TRAINER_SEE_TEMP_FLAGS_START   0x268
+#define TRAINER_SEE_TEMP_FLAGS_0      (TRAINER_SEE_TEMP_FLAGS_START + 0x0)
+#define TRAINER_SEE_TEMP_FLAGS_1      (TRAINER_SEE_TEMP_FLAGS_START + 0x1)
+#define TRAINER_SEE_TEMP_FLAGS_2      (TRAINER_SEE_TEMP_FLAGS_START + 0x2)
+#define TRAINER_SEE_TEMP_FLAGS_3      (TRAINER_SEE_TEMP_FLAGS_START + 0x3)
+#define TRAINER_SEE_TEMP_FLAGS_4      (TRAINER_SEE_TEMP_FLAGS_START + 0x4)
+#define TRAINER_SEE_TEMP_FLAGS_5      (TRAINER_SEE_TEMP_FLAGS_START + 0x5)
+#define TRAINER_SEE_TEMP_FLAGS_6      (TRAINER_SEE_TEMP_FLAGS_START + 0x6)
+#define TRAINER_SEE_TEMP_FLAGS_7      (TRAINER_SEE_TEMP_FLAGS_START + 0x7)
+#define TRAINER_SEE_TEMP_FLAGS_8      (TRAINER_SEE_TEMP_FLAGS_START + 0x8)
+#define TRAINER_SEE_TEMP_FLAGS_9      (TRAINER_SEE_TEMP_FLAGS_START + 0x9)
+#define TRAINER_SEE_TEMP_FLAGS_A      (TRAINER_SEE_TEMP_FLAGS_START + 0xA)
+#define TRAINER_SEE_TEMP_FLAGS_B      (TRAINER_SEE_TEMP_FLAGS_START + 0xB)
+#define TRAINER_SEE_TEMP_FLAGS_C      (TRAINER_SEE_TEMP_FLAGS_START + 0xC)
+#define TRAINER_SEE_TEMP_FLAGS_D      (TRAINER_SEE_TEMP_FLAGS_START + 0xD)
+#define TRAINER_SEE_TEMP_FLAGS_E      (TRAINER_SEE_TEMP_FLAGS_START + 0xE)
+#define TRAINER_SEE_TEMP_FLAGS_F      (TRAINER_SEE_TEMP_FLAGS_START + 0xF)
+#define TRAINER_SEE_TEMP_FLAGS_END     TRAINER_SEE_TEMP_FLAGS_F
+
 #define FLAG_UNUSED_0x278  0x278 // Unused Flag
 #define FLAG_UNUSED_0x279  0x279 // Unused Flag
 #define FLAG_UNUSED_0x27A  0x27A // Unused Flag
@@ -1242,7 +1246,7 @@
 #define FLAG_CLEANSE_TAG                                            0x4A9
 #define FLAG_PARTY_MOVES                                            0x4AA
 #define FLAG_RELEARN_IN_PARTY_MENU                                  0x4AB
-#define FLAG_UNUSED_0x4AC                                           0x4AC // Unused Flag
+#define FLAG_RAN_FROM_TRAINER                                       0x4AC
 #define FLAG_UNUSED_0x4AD                                           0x4AD // Unused Flag
 #define FLAG_UNUSED_0x4AE                                           0x4AE // Unused Flag
 #define FLAG_UNUSED_0x4AF                                           0x4AF // Unused Flag
