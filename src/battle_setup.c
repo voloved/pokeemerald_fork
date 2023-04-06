@@ -1304,7 +1304,7 @@ bool8 GetTrainerFlag(void)
         return FlagGet(GetTrainerAFlag());
 }
 
-static void SetBattledTrainersSeeFlags(void)
+static void SetBattledTrainersSeeFlag(void)
 {
     FlagSet(FLAG_RAN_FROM_TRAINER);
 }
@@ -1424,7 +1424,7 @@ static void CB2_EndTrainerBattle(void)
         if (!InBattlePyramid() && !InTrainerHillChallenge())
         {
             if (gBattleOutcome == B_OUTCOME_RAN){
-                SetBattledTrainersSeeFlags();
+                SetBattledTrainersSeeFlag();
             }
             else
             {
