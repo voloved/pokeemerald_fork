@@ -329,7 +329,7 @@ static void HandleInputChooseAction(void)
         }
         else
         {
-            if(!(gBattleTypeFlags & BATTLE_TYPE_TRAINER)) //if wild, pressing B moves cursor to run
+            if(!(gBattleTypeFlags & BATTLE_TYPE_FRONTIER)) //if wild, pressing B moves cursor to run
             {
                 PlaySE(SE_SELECT);
                 ActionSelectionDestroyCursorAt(gActionSelectionCursor[gActiveBattler]);

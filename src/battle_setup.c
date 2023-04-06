@@ -51,6 +51,7 @@
 #include "constants/region_map_sections.h"
 #include "battle_anim.h"
 #include "pokedex.h"
+#include "gba/isagbprint.h"
 
 enum {
     TRANSITION_TYPE_NORMAL,
@@ -1272,7 +1273,9 @@ void SetUpTwoTrainersBattle(void)
 bool32 GetTrainerFlagFromScriptPointer(const u8 *data)
 {
     u32 flag = TrainerBattleLoadArg16(data + 2);
-    return FlagGet(TRAINER_FLAGS_START + flag);
+    u16 RouteID_A = flag % 16;
+    DebugPrintf("Get: %d %d %d", FlagGet(TRAINER_SEE_TEMP_FLAGS_START + RouteID_A), RouteID_A, TRAINER_SEE_TEMP_FLAGS_START + RouteID_A);
+    return (FlagGet(TRAINER_FLAGS_START + flag) || FlagGet(TRAINER_SEE_TEMP_FLAGS_START + RouteID_A));
 }
 
 // Set trainer's movement type so they stop and remain facing that direction
@@ -1297,6 +1300,18 @@ bool8 GetTrainerFlag(void)
         return GetHillTrainerFlag(gSelectedObjectEvent);
     else
         return FlagGet(GetTrainerAFlag());
+}
+
+static void SetBattledTrainersSeeFlags(void)
+{
+    u16 RouteID_A, RouteID_B;
+    RouteID_A = gTrainerBattleOpponent_A % 16;
+    RouteID_B = gTrainerBattleOpponent_B % 16;
+
+    if (gTrainerBattleOpponent_B != 0)
+        FlagSet(TRAINER_SEE_TEMP_FLAGS_START + RouteID_B);
+    FlagSet(TRAINER_SEE_TEMP_FLAGS_START + RouteID_A);
+    DebugPrintf("Set: %d %d %d", FlagGet(TRAINER_SEE_TEMP_FLAGS_START + RouteID_A), RouteID_A, TRAINER_SEE_TEMP_FLAGS_START + RouteID_A);
 }
 
 static void SetBattledTrainersFlags(void)
@@ -1413,8 +1428,14 @@ static void CB2_EndTrainerBattle(void)
         SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
         if (!InBattlePyramid() && !InTrainerHillChallenge())
         {
-            RegisterTrainerInMatchCall();
-            SetBattledTrainersFlags();
+            if (gBattleOutcome == B_OUTCOME_RAN){
+                SetBattledTrainersSeeFlags();
+            }
+            else
+            {
+                RegisterTrainerInMatchCall();
+                SetBattledTrainersFlags();
+            }
         }
     }
 }

@@ -1,16 +1,19 @@
 #include "global.h"
 #include "event_data.h"
 #include "pokedex.h"
+#include "gba/isagbprint.h"
 
-#define NUM_SPECIAL_FLAGS (SPECIAL_FLAGS_END - SPECIAL_FLAGS_START + 1)
-#define NUM_TEMP_FLAGS    (TEMP_FLAGS_END - TEMP_FLAGS_START + 1)
-#define NUM_DAILY_FLAGS   (DAILY_FLAGS_END - DAILY_FLAGS_START + 1)
-#define NUM_TEMP_VARS     (TEMP_VARS_END - TEMP_VARS_START + 1)
+#define NUM_SPECIAL_FLAGS          (SPECIAL_FLAGS_END - SPECIAL_FLAGS_START + 1)
+#define NUM_TEMP_FLAGS             (TEMP_FLAGS_END - TEMP_FLAGS_START + 1)
+#define NUM_TRAIN_SEE_TEMP_FLAGS   (TRAINER_SEE_TEMP_FLAGS_END - TRAINER_SEE_TEMP_FLAGS_START + 1)
+#define NUM_DAILY_FLAGS            (DAILY_FLAGS_END - DAILY_FLAGS_START + 1)
+#define NUM_TEMP_VARS              (TEMP_VARS_END - TEMP_VARS_START + 1)
 
-#define SPECIAL_FLAGS_SIZE  (NUM_SPECIAL_FLAGS / 8)  // 8 flags per byte
-#define TEMP_FLAGS_SIZE     (NUM_TEMP_FLAGS / 8)
-#define DAILY_FLAGS_SIZE    (NUM_DAILY_FLAGS / 8)
-#define TEMP_VARS_SIZE      (NUM_TEMP_VARS * 2)      // 1/2 var per byte
+#define SPECIAL_FLAGS_SIZE         (NUM_SPECIAL_FLAGS / 8)  // 8 flags per byte
+#define TEMP_FLAGS_SIZE            (NUM_TEMP_FLAGS / 8)
+#define TRAIN_SEE_TEMP_FLAGS_SIZE  (NUM_TRAIN_SEE_TEMP_FLAGS / 8)
+#define DAILY_FLAGS_SIZE           (NUM_DAILY_FLAGS / 8)
+#define TEMP_VARS_SIZE             (NUM_TEMP_VARS * 2)      // 1/2 var per byte
 
 EWRAM_DATA u16 gSpecialVar_0x8000 = 0;
 EWRAM_DATA u16 gSpecialVar_0x8001 = 0;
@@ -44,6 +47,7 @@ void InitEventData(void)
 void ClearTempFieldEventData(void)
 {
     memset(gSaveBlock1Ptr->flags + (TEMP_FLAGS_START / 8), 0, TEMP_FLAGS_SIZE);
+    memset(gSaveBlock1Ptr->flags + (TRAINER_SEE_TEMP_FLAGS_START / 8), 0, TRAIN_SEE_TEMP_FLAGS_SIZE);
     memset(gSaveBlock1Ptr->vars + ((TEMP_VARS_START - VARS_START) * 2), 0, TEMP_VARS_SIZE);
     FlagClear(FLAG_SYS_ENC_UP_ITEM);
     FlagClear(FLAG_SYS_ENC_DOWN_ITEM);
