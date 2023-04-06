@@ -2394,6 +2394,9 @@ void BufferStringBattle(u16 stringID)
     case STRINGID_NUZLOCKEDUPS:
         stringPtr = sText_PlayerDuplicateMon;
         break;
+    case STRINGID_CANTESCAPE:
+        stringPtr = sText_CantEscape;
+        break;
     default: // load a string from the table
         if (stringID >= BATTLESTRINGS_COUNT)
         {

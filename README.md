@@ -16,6 +16,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Allow Running From Trainer Battles](https://github.com/pret/pokeemerald/wiki/Allow-Running-From-Trainer-Battles)
    - This will not work when running the Nuzlocke challenge.
  - Bug fix on an endless loop if an Eeveelution is bred.
+ - Holding R when starting a wild encounter will not allow running if escaping isn't possible.
 
 ## v1.5.4
  - Gen 4 Pokémon are Added as Followers.

@@ -98,6 +98,7 @@ static void BattleIntroDrawPartySummaryScreens(void);
 static void BattleIntroPrintTrainerWantsToBattle(void);
 static void BattleIntroPrintWildMonAttacked(void);
 static void BattleIntroQuickRun(void);
+static void BattleIntroNuzlockDups(void);
 static void BattleIntroPrintOpponentSendsOut(void);
 static void BattleIntroPrintPlayerSendsOut(void);
 static void BattleIntroOpponent1SendsOutMonAnimation(void);
@@ -3788,15 +3789,24 @@ static void BattleIntroQuickRun(void)
     if (gBattleControllerExecFlags == 0)
     {
         if (JOY_HELD(DPAD_RIGHT)){
-            gBattleMainFunc = HandleEndTurn_RanFromBattle;
-        }
-        else{
-            u16 species_enemy = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)]], MON_DATA_SPECIES2);
-            gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
-            if (gNuzlockeCannotCatch == 2){  // If Pokemon was first in this route and was already caught
-                PrepareStringBattle(STRINGID_NUZLOCKEDUPS, 0);
+            if (!IsRunningFromBattleImpossible()){
+                gBattleMainFunc = HandleEndTurn_RanFromBattle;
+                return;
             }
+            PrepareStringBattle(STRINGID_CANTESCAPE, 0);
         }
+        gBattleMainFunc = BattleIntroNuzlockDups;
+    }
+}
+
+static void BattleIntroNuzlockDups(void)
+{
+    if (gBattleControllerExecFlags == 0)
+    {
+        if (gNuzlockeCannotCatch == 2){  // If Pokemon was first in this route and was already caught
+            PrepareStringBattle(STRINGID_NUZLOCKEDUPS, 0);
+        }
+        gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
     }
 }
 
