@@ -515,8 +515,6 @@ static void HandleInputChooseMove(void)
             ClearStdWindowAndFrame(B_WIN_MOVE_DESCRIPTION, FALSE);
             CopyWindowToVram(B_WIN_MOVE_DESCRIPTION, COPYWIN_GFX);
             PlaySE(SE_SELECT);
-            MoveSelectionDisplayMoveNames();
-            MoveSelectionCreateCursorAt(gMoveSelectionCursor[gActiveBattler], 0);
             MoveSelectionDisplayPpNumber();
             MoveSelectionDisplayMoveType();
         }
@@ -660,7 +658,6 @@ static void HandleInputChooseMove(void)
     else if (JOY_NEW(START_BUTTON)) //AdditionalBattleInfo
     {
         gAdditionalBattleInfoSubmenu = TRUE;
-        MoveSelectionDestroyCursorAt(gMoveSelectionCursor[gActiveBattler]);
         MoveSelectionDisplayMoveDescription();
     }
 }
