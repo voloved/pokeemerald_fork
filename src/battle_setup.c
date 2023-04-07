@@ -1304,11 +1304,6 @@ bool8 GetTrainerFlag(void)
         return FlagGet(GetTrainerAFlag());
 }
 
-static void SetBattledTrainersSeeFlag(void)
-{
-    FlagSet(FLAG_RAN_FROM_TRAINER);
-}
-
 static void SetBattledTrainersFlags(void)
 {
     if (gTrainerBattleOpponent_B != 0)
@@ -1424,10 +1419,11 @@ static void CB2_EndTrainerBattle(void)
         if (!InBattlePyramid() && !InTrainerHillChallenge())
         {
             if (gBattleOutcome == B_OUTCOME_RAN){
-                SetBattledTrainersSeeFlag();
+                FlagSet(FLAG_RAN_FROM_TRAINER);
             }
             else
             {
+                FlagClear(FLAG_RAN_FROM_TRAINER);
                 RegisterTrainerInMatchCall();
                 SetBattledTrainersFlags();
             }
@@ -1499,7 +1495,8 @@ const u8 *BattleSetup_GetScriptAddrAfterBattle(void)
 const u8 *BattleSetup_GetTrainerPostBattleScript(void)
 {
     if (FlagGet(FLAG_RAN_FROM_TRAINER))
-        return EventScript_TryGetTrainerScript;
+        return NULL;
+
     if (sShouldCheckTrainerBScript)
     {
         sShouldCheckTrainerBScript = FALSE;
