@@ -37,6 +37,8 @@
 #include "constants/songs.h"
 #include "constants/trainers.h"
 #include "constants/rgb.h"
+#include "menu.h"
+#include "pokemon_summary_screen.h"
 
 static void PlayerHandleGetMonData(void);
 static void PlayerHandleSetMonData(void);
@@ -105,6 +107,7 @@ static void MoveSelectionDisplayPpNumber(void);
 static void MoveSelectionDisplayPpString(void);
 static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev);
 static void MoveSelectionDisplayMoveType(void);
+static void MoveSelectionDisplayMoveDescription(void);
 static void MoveSelectionDisplayMoveNames(void);
 static void HandleMoveSwitching(void);
 static void SwitchIn_HandleSoundAndEnd(void);
@@ -185,6 +188,10 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
     [CONTROLLER_ENDLINKBATTLE]            = PlayerHandleEndLinkBattle,
     [CONTROLLER_TERMINATOR_NOP]           = PlayerCmdEnd
 };
+
+EWRAM_DATA bool8 gAdditionalBattleInfoSubmenu = 0;
+
+
 
 static const u8 sTargetIdentities[MAX_BATTLERS_COUNT] = {B_POSITION_PLAYER_LEFT, B_POSITION_PLAYER_RIGHT, B_POSITION_OPPONENT_RIGHT, B_POSITION_OPPONENT_LEFT};
 
@@ -498,7 +505,23 @@ static void HandleInputChooseMove(void)
     else
         gPlayerDpadHoldFrames = 0;
 
-    if (JOY_NEW(A_BUTTON))
+
+    if (gAdditionalBattleInfoSubmenu)
+    {
+        if (JOY_NEW(START_BUTTON) || JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
+        {
+            gAdditionalBattleInfoSubmenu = FALSE;
+            FillWindowPixelBuffer(B_WIN_MOVE_DESCRIPTION, PIXEL_FILL(0));
+            ClearStdWindowAndFrame(B_WIN_MOVE_DESCRIPTION, FALSE);
+            CopyWindowToVram(B_WIN_MOVE_DESCRIPTION, COPYWIN_GFX);
+            PlaySE(SE_SELECT);
+            MoveSelectionDisplayMoveNames();
+            MoveSelectionCreateCursorAt(gMoveSelectionCursor[gActiveBattler], 0);
+            MoveSelectionDisplayPpNumber();
+            MoveSelectionDisplayMoveType();
+        }
+    }
+    else if (JOY_NEW(A_BUTTON))
     {
         u8 moveTarget;
 
@@ -633,6 +656,12 @@ static void HandleInputChooseMove(void)
             BattlePutTextOnWindow(gText_BattleSwitchWhich, B_WIN_SWITCH_PROMPT);
             gBattlerControllerFuncs[gActiveBattler] = HandleMoveSwitching;
         }
+    }
+    else if (JOY_NEW(START_BUTTON)) //AdditionalBattleInfo
+    {
+        gAdditionalBattleInfoSubmenu = TRUE;
+        MoveSelectionDestroyCursorAt(gMoveSelectionCursor[gActiveBattler]);
+        MoveSelectionDisplayMoveDescription();
     }
 }
 
@@ -1520,21 +1549,21 @@ u8 TypeEffectiveness(u8 targetId)
     u8 moveFlags;
     u16 move;
     if (FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW) == FALSE){
-        return 10;
+        return B_WIN_MOVE_TYPE;
     }
     move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
     moveFlags = AI_TypeCalc(move, gBattleMons[targetId].species, gBattleMons[targetId].ability);
     if (moveFlags & MOVE_RESULT_NO_EFFECT) {
-        return 26;  // 26 - no effect
+        return B_WIN_TYPE_NO_EFF;  // 26 - no effect
     }
     else if (moveFlags & MOVE_RESULT_NOT_VERY_EFFECTIVE ) {
-        return 25;  // 25 - not very effective
+        return B_WIN_TYPE_NOT_VERY_EFF;  // 25 - not very effective
     }
     else if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE) {
-        return 24; // 24 - super effective
+        return B_WIN_TYPE_SUPER_EFF; // 24 - super effective
     } 
     else
-        return 10; // 10 - normal effectiveness
+        return B_WIN_MOVE_TYPE; // 10 - normal effectiveness
 }
 
 static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev)
@@ -1562,7 +1591,7 @@ static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev)
 static void MoveSelectionDisplayMoveType(void)
 {
     u8 *txtPtr;
-    u8 typeColor = IsDoubleBattle() ? 10 : TypeEffectiveness(GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerPosition(gActiveBattler))));
+    u8 typeColor = IsDoubleBattle() ? B_WIN_MOVE_TYPE : TypeEffectiveness(GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerPosition(gActiveBattler))));
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleBufferA[gActiveBattler][4]);
 
     txtPtr = StringCopy(gDisplayedStringBattle, gText_MoveInterfaceType);
@@ -1573,6 +1602,21 @@ static void MoveSelectionDisplayMoveType(void)
     StringCopy(txtPtr, gTypeNames[gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type]);
     BattlePutTextOnWindow(gDisplayedStringBattle, typeColor);
     MoveSelectionDisplaySplitIcon();
+}
+
+static void MoveSelectionDisplayMoveDescription(void)
+{
+    u8 *txtPtr;
+    struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct*)(&gBattleBufferA[gActiveBattler][4]);
+    u16 move = moveInfo->moves[gMoveSelectionCursor[gActiveBattler]];
+
+    LoadMessageBoxAndBorderGfx();
+    DrawStdWindowFrameBattleInfoSystem(B_WIN_MOVE_DESCRIPTION);
+
+    StringCopy(gDisplayedStringBattle, gMoveDescriptionPointers[move -1]);
+
+    BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_DESCRIPTION);
+    CopyWindowToVram(B_WIN_MOVE_DESCRIPTION, COPYWIN_FULL);
 }
 
 static void MoveSelectionCreateCursorAt(u8 cursorPosition, u8 baseTileNum)
