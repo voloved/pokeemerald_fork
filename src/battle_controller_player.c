@@ -189,10 +189,7 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
     [CONTROLLER_TERMINATOR_NOP]           = PlayerCmdEnd
 };
 
-EWRAM_DATA bool8 gAdditionalBattleInfoSubmenu = 0;
-
-
-
+static EWRAM_DATA bool8 sDescriptionSubmenu = FALSE;
 static const u8 sTargetIdentities[MAX_BATTLERS_COUNT] = {B_POSITION_PLAYER_LEFT, B_POSITION_PLAYER_RIGHT, B_POSITION_OPPONENT_RIGHT, B_POSITION_OPPONENT_LEFT};
 
 // unknown unused data
@@ -506,11 +503,11 @@ static void HandleInputChooseMove(void)
         gPlayerDpadHoldFrames = 0;
 
 
-    if (gAdditionalBattleInfoSubmenu)
+    if (sDescriptionSubmenu)
     {
         if (JOY_NEW(START_BUTTON) || JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
         {
-            gAdditionalBattleInfoSubmenu = FALSE;
+            sDescriptionSubmenu = FALSE;
             FillWindowPixelBuffer(B_WIN_MOVE_DESCRIPTION, PIXEL_FILL(0));
             ClearStdWindowAndFrame(B_WIN_MOVE_DESCRIPTION, FALSE);
             CopyWindowToVram(B_WIN_MOVE_DESCRIPTION, COPYWIN_GFX);
@@ -657,7 +654,7 @@ static void HandleInputChooseMove(void)
     }
     else if (JOY_NEW(START_BUTTON)) //AdditionalBattleInfo
     {
-        gAdditionalBattleInfoSubmenu = TRUE;
+        sDescriptionSubmenu = TRUE;
         MoveSelectionDisplayMoveDescription();
     }
 }
