@@ -3789,7 +3789,7 @@ static void BattleIntroQuickRun(void)
     if (gBattleControllerExecFlags == 0)
     {
         if (JOY_HELD(DPAD_RIGHT)){
-            if (!IsRunningFromBattleImpossible()){
+            if (!IsRunningFromBattleImpossible() && TryRunFromBattle(gBattlerAttacker)){
                 gBattleMainFunc = HandleEndTurn_RanFromBattle;
                 return;
             }
