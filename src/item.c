@@ -1014,9 +1014,9 @@ void GiveItems_Missingno(void)
     {
         u16 itemId = ItemId_GetId(gBagPockets[pockets[i]].itemSlots[itemSlot - 1].itemId);
         u16 quantity = gBagPockets[pockets[i]].itemSlots[itemSlot - 1].quantity;
-        if (GetBagItemQuantity(&quantity) != 128)
+        if (GetBagItemQuantity(&quantity) != MAX_BAG_ITEM_CAPACITY)
         {
-             AddBagItem(itemId, 127);
+             AddBagItem(itemId, MAX_BAG_ITEM_CAPACITY - 1);
         }
     }
 }
