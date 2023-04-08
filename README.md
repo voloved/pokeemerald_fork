@@ -16,6 +16,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Pressing Start in a Battle Will Show the Description of the Move.](https://github.com/pret/pokeemerald/wiki/Add-Description-Submenu)
  - [Allow Running From Trainer Battles](https://github.com/pret/pokeemerald/wiki/Allow-Running-From-Trainer-Battles)
    - This will not work when running the Nuzlocke challenge.
+ - [Key Items With No Field Effect Will No Longer Be Register-able Nor Usable](https://github.com/pret/pokeemerald/wiki/Make-Key-Items-That-Cannot-Be-Used-In-The-Field-Not-Show-A-Use-or-Register-Option)
  - Bug fix on an endless loop if an Eeveelution is bred.
  - Holding R when starting a wild encounter will not allow running if escaping isn't possible.
 
