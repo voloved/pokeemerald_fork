@@ -4596,18 +4596,19 @@ static void HandleTurnActionSelectionState(void)
                     {
                         BattleScriptExecute(BattleScript_PrintCantRunFromTrainerDuringNuzlocke);
                         gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
+                        return;
                     }
                     else if (IsTrainerCantRunFrom())
                     {
                         BattleScriptExecute(BattleScript_PrintCantRunFromTrainer);
                         gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
+                        return;
                     }
-                    else
-                    {
-                        gBattleCommunication[gActiveBattler]++;
+                    else{
+                        ;   // Allow to passthrough to the below logic of IsRunningFromBattleImpossible
                     }
                 }
-                else if (IsRunningFromBattleImpossible() != BATTLE_RUN_SUCCESS
+                if (IsRunningFromBattleImpossible() != BATTLE_RUN_SUCCESS
                          && gBattleBufferB[gActiveBattler][1] == B_ACTION_RUN)
                 {
                     gSelectionBattleScripts[gActiveBattler] = BattleScript_PrintCantEscapeFromBattle;
