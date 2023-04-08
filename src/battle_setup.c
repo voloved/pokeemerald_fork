@@ -1495,7 +1495,7 @@ const u8 *BattleSetup_GetScriptAddrAfterBattle(void)
 const u8 *BattleSetup_GetTrainerPostBattleScript(void)
 {
     if (FlagGet(FLAG_RAN_FROM_TRAINER))
-        return NULL;
+        return EventScript_TryGetTrainerScript;
 
     if (sShouldCheckTrainerBScript)
     {

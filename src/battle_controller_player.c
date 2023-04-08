@@ -2320,11 +2320,7 @@ static void PlayerHandleSwitchInAnim(void)
     BattleLoadPlayerMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
     gActionSelectionCursor[gActiveBattler] = 0;
     gMoveSelectionCursor[gActiveBattler] = 0;
-    #ifdef BATTLE_ENGINE
-    StartSendOutAnim(gActiveBattler, gBattleResources->bufferA[gActiveBattler][2], FALSE);
-    #else
     StartSendOutAnim(gActiveBattler, gBattleBufferA[gActiveBattler][2], FALSE);
-    #endif
     gBattlerControllerFuncs[gActiveBattler] = SwitchIn_TryShinyAnimShowHealthbox;
 }
 
