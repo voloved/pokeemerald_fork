@@ -1013,10 +1013,11 @@ void GiveItems_Missingno(void)
     for (i = 0; i < ARRAY_COUNT(pockets); i++)
     {
         u16 itemId = ItemId_GetId(gBagPockets[pockets[i]].itemSlots[itemSlot - 1].itemId);
-        u16 quantity = gBagPockets[pockets[i]].itemSlots[itemSlot - 1].quantity;
-        if (GetBagItemQuantity(&quantity) != MAX_BAG_ITEM_CAPACITY)
+        u16 quantity = GetBagItemQuantity(&gBagPockets[pockets[i]].itemSlots[itemSlot - 1].quantity);
+        u16 maxQuantDiff = MAX_BAG_ITEM_CAPACITY - quantity;
+        if (maxQuantDiff > 0)
         {
-             AddBagItem(itemId, MAX_BAG_ITEM_CAPACITY - 1);
+             AddBagItem(itemId, maxQuantDiff);
         }
     }
 }
