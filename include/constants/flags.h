@@ -1243,7 +1243,7 @@
 #define FLAG_PARTY_MOVES                                            0x4AA
 #define FLAG_RELEARN_IN_PARTY_MENU                                  0x4AB
 #define FLAG_RAN_FROM_TRAINER                                       0x4AC
-#define FLAG_UNUSED_0x4AD                                           0x4AD // Unused Flag
+#define FLAG_POKE_DOLL                                              0x4AD
 #define FLAG_UNUSED_0x4AE                                           0x4AE // Unused Flag
 #define FLAG_UNUSED_0x4AF                                           0x4AF // Unused Flag
 #define FLAG_UNUSED_0x4B0                                           0x4B0 // Unused Flag

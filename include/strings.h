@@ -944,6 +944,8 @@ extern const u8 gText_PokeVial_Success[];
 extern const u8 gText_PokeVial_Failure[];
 extern const u8 gText_CleanseTagTurnOn[];
 extern const u8 gText_CleanseTagTurnOff[];
+extern const u8 gText_PokeDollTurnOn[];
+extern const u8 gText_PokeDollTurnOff[];
 extern const u8 gText_DadsAdvice[];
 extern const u8 gText_CantDismountBike[];
 extern const u8 gText_ItemFinderNothing[];
