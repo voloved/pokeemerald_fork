@@ -72,6 +72,29 @@ void ApplyNewEncryptionKeyToBagItems_(u32 newKey) // really GF?
     ApplyNewEncryptionKeyToBagItems(newKey);
 }
 
+void SortBagToProperCompartments(void)
+{
+    u16 i, itemCount;
+    u8 pocket, pocket_correct;
+    u16 itemId;
+    for (pocket = 0; pocket < POCKETS_COUNT; pocket++)
+    {
+        for (i = 0; i < gBagPockets[pocket].capacity; i++)
+        {
+            itemId = gBagPockets[pocket].itemSlots[i].itemId;
+            itemCount = GetBagItemQuantity(&gBagPockets[pocket].itemSlots[i].quantity);
+            pocket_correct = GetPocketByItemId(itemId) - 1;
+            if (itemId != ITEM_NONE && pocket_correct != pocket)
+            {
+                AddBagItem(itemId, itemCount);
+                gBagPockets[pocket].itemSlots[i].itemId = ITEM_NONE;
+                SetBagItemQuantity(&gBagPockets[pocket].itemSlots[i].quantity, 0);
+
+            }
+        }
+    }
+}
+
 void SetBagItemsPointers(void)
 {
     gBagPockets[ITEMS_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_Items;
