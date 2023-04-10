@@ -17,6 +17,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Allow Running From Trainer Battles](https://github.com/pret/pokeemerald/wiki/Allow-Running-From-Trainer-Battles)
    - This will not work when running the Nuzlocke challenge.
  - [Key Items With No Field Effect Will No Longer Be Register-able Nor Usable](https://github.com/pret/pokeemerald/wiki/Make-Key-Items-That-Cannot-Be-Used-In-The-Field-Not-Show-A-Use-or-Register-Option)
+ - [Added BetterBag. This makes the bag be able to hold 78 more items.](https://github.com/pret/pokeemerald/wiki/Feature-Branches#BetterBag) [Credit: AsparagusEduardo]
+ - Made Poké Doll a toggle-able item, like Cleanse Tag.
  - Bug fix on an endless loop if an Eeveelution is bred.
  - Holding R when starting a wild encounter will not allow running if escaping isn't possible.
 
