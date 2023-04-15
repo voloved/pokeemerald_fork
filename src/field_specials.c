@@ -1023,7 +1023,7 @@ static void PCTurnOnEffect_0(struct Task *task)
 static void PCTurnOnEffect_1(s16 isPcTurnedOn, s8 dx, s8 dy)
 {
     u16 tileId = 0;
-    if(FlagGet(FLAG_SYS_PC_FROM_POKENAV))
+    if(gSysPcFromPokenav)
         return;
     if (isPcTurnedOn)
     {
@@ -1057,8 +1057,8 @@ static void PCTurnOffEffect(void)
     s8 dy = 0;
     u16 tileId = 0;
     u8 playerDirection = GetPlayerFacingDirection();
-    if(FlagGet(FLAG_SYS_PC_FROM_POKENAV)){
-        FlagClear(FLAG_SYS_PC_FROM_POKENAV);
+    if(gSysPcFromPokenav){
+        gSysPcFromPokenav = FALSE;
         return;
     }
     switch (playerDirection)

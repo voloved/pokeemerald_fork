@@ -67,17 +67,17 @@ EventScript_BufferBerriesPocket::
 
 EventScript_BufferMedicinePocket::
 	bufferstdstring STR_VAR_3, STDSTRING_MEDICINE
-	call_if_eq VAR_0x8007, TRUE, EventScript_PlayFanfareObtainedItem
+	call_if_ne VAR_0x8007, FALSE, EventScript_PlayFanfareObtainedItem
 	return
 
 EventScript_BufferBattleItemsPocket::
 	bufferstdstring STR_VAR_3, STDSTRING_BATTLEITEMS
-	call_if_eq VAR_0x8007, TRUE, EventScript_PlayFanfareObtainedItem
+	call_if_ne VAR_0x8007, FALSE, EventScript_PlayFanfareObtainedItem
 	return
 
 EventScript_BufferTreasuresPocket::
 	bufferstdstring STR_VAR_3, STDSTRING_TREASURES
-	call_if_eq VAR_0x8007, TRUE, EventScript_PlayFanfareObtainedItem
+	call_if_ne VAR_0x8007, FALSE, EventScript_PlayFanfareObtainedItem
 	return
 
 EventScript_ObtainedItem::
