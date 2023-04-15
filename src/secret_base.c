@@ -47,6 +47,8 @@
 #include "constants/songs.h"
 #include "constants/trainers.h"
 
+#include "gba/isagbprint.h"
+
 // Values for registryStatus
 enum {
     UNREGISTERED,
@@ -92,6 +94,8 @@ static void DeleteRegistry_No(u8);
 static void ReturnToMainRegistryMenu(u8);
 static void GoToSecretBasePCRegisterMenu(u8);
 static u8 GetSecretBaseOwnerType(u8);
+static s16 GetSecretBaseIndexFromId(u8);
+static u8 FindAvailableSecretBaseIndex(void);
 
 static const struct SecretBaseEntranceMetatiles sSecretBaseEntranceMetatiles[] =
 {
@@ -257,7 +261,7 @@ void CheckPlayerHasSecretBase(void)
 {
     // The player's secret base is always the first in the array.
     if (gSaveBlock1Ptr->secretBases[0].secretBaseId)
-        gSpecialVar_Result = TRUE;
+        gSpecialVar_Result = FALSE;
     else
         gSpecialVar_Result = FALSE;
 }
@@ -362,16 +366,19 @@ static u8 GetNameLength(const u8 *secretBaseOwnerName)
 
 void SetPlayerSecretBase(void)
 {
-    u16 i;
+    u16 i, baseNumber;
 
-    gSaveBlock1Ptr->secretBases[0].secretBaseId = sCurSecretBaseId;
+    baseNumber = FindAvailableSecretBaseIndex();
+    FlagSet(FLAG_SECRET_BASE_OWNED_00 + baseNumber);
+
+    gSaveBlock1Ptr->secretBases[baseNumber].secretBaseId = sCurSecretBaseId;
     for (i = 0; i < TRAINER_ID_LENGTH; i++)
-        gSaveBlock1Ptr->secretBases[0].trainerId[i] = gSaveBlock2Ptr->playerTrainerId[i];
+        gSaveBlock1Ptr->secretBases[baseNumber].trainerId[i] = gSaveBlock2Ptr->playerTrainerId[i];
 
-    VarSet(VAR_CURRENT_SECRET_BASE, 0);
-    StringCopyN(gSaveBlock1Ptr->secretBases[0].trainerName, gSaveBlock2Ptr->playerName, GetNameLength(gSaveBlock2Ptr->playerName));
-    gSaveBlock1Ptr->secretBases[0].gender = gSaveBlock2Ptr->playerGender;
-    gSaveBlock1Ptr->secretBases[0].language = GAME_LANGUAGE;
+    VarSet(VAR_CURRENT_SECRET_BASE, baseNumber);
+    StringCopyN(gSaveBlock1Ptr->secretBases[baseNumber].trainerName, gSaveBlock2Ptr->playerName, GetNameLength(gSaveBlock2Ptr->playerName));
+    gSaveBlock1Ptr->secretBases[baseNumber].gender = gSaveBlock2Ptr->playerGender;
+    gSaveBlock1Ptr->secretBases[baseNumber].language = GAME_LANGUAGE;
     VarSet(VAR_SECRET_BASE_MAP, gMapHeader.regionMapSectionId);
 }
 
@@ -532,7 +539,7 @@ void InitSecretBaseAppearance(bool8 hidePC)
                 ShowDecorationOnMap((decorPos[x] >> 4) + MAP_OFFSET, (decorPos[x] & 0xF) + MAP_OFFSET, decorations[x]);
         }
 
-        if (secretBaseIdx != 0)
+        if (IsSecretBaseOwnedByAnotherPlayerFromIndex(secretBaseIdx))
         {
             // Another player's secret base. Change PC type to the "Register" PC.
             FindMetatileIdMapCoords(&x, &y, METATILE_SecretBase_PC);
@@ -604,7 +611,7 @@ void InitSecretBaseDecorationSprites(void)
                 TrySpawnObjectEvent(gSpecialVar_Result, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
                 TryMoveObjectEventToMapCoords(gSpecialVar_Result, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, gSpecialVar_0x8006, gSpecialVar_0x8007);
                 TryOverrideObjectEventTemplateCoords(gSpecialVar_Result, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
-                if (CurMapIsSecretBase() == TRUE && VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+                if (CurMapIsSecretBase() == TRUE && IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 {
                     if (category == DECORCAT_DOLL)
                     {
@@ -717,10 +724,32 @@ static void WarpOutOfSecretBase(void)
 
 void IsCurSecretBaseOwnedByAnotherPlayer(void)
 {
-    if (gSaveBlock1Ptr->secretBases[0].secretBaseId != sCurSecretBaseId)
-        gSpecialVar_Result = TRUE;
-    else
-        gSpecialVar_Result = FALSE;
+    
+    int i;
+    for (i = 0; i < SECRET_BASES_COUNT; i++)
+    {
+        DebugPrintf("sCurSecretBaseId: %d  %d  %d  %d %d", i, sCurSecretBaseId, GetSecretBaseIndexFromId(sCurSecretBaseId), FindAvailableSecretBaseIndex(), FlagGet(FLAG_SECRET_BASE_OWNED_00 + i));
+        if (FlagGet(FLAG_SECRET_BASE_OWNED_00 + i) &&  GetSecretBaseIndexFromId(sCurSecretBaseId) == i)
+        {
+            gSpecialVar_Result = FALSE;
+            return;
+        }
+    }
+    gSpecialVar_Result = TRUE;
+}
+
+bool8 IsSecretBaseOwnedByAnotherPlayerFromIndex(u16 secretBaseIdx){
+    int i;
+    for (i = 0; i < SECRET_BASES_COUNT; i++)
+    {
+        if (FlagGet(FLAG_SECRET_BASE_OWNED_00 + i) && secretBaseIdx == i)
+            return FALSE;
+    }
+    return TRUE;
+}
+
+bool8 IsSecretBaseOwnedByAnotherPlayerFromId(u8 secretBaseId){
+    return IsSecretBaseOwnedByAnotherPlayerFromIndex(GetSecretBaseIndexFromId(secretBaseId));
 }
 
 static u8 *GetSecretBaseName(u8 *dest, u8 secretBaseIdx)
@@ -807,8 +836,11 @@ void SetPlayerSecretBaseParty(void)
 
 void ClearAndLeaveSecretBase(void)
 {
+    u16 baseIndex = GetSecretBaseIndexFromId(sCurSecretBaseId);
+    DebugPrintf("baseIndex %d", baseIndex);
     u16 temp = gSaveBlock1Ptr->secretBases[0].numSecretBasesReceived;
-    ClearSecretBase(&gSaveBlock1Ptr->secretBases[0]);
+    FlagClear(FLAG_SECRET_BASE_OWNED_00 + baseIndex);
+    ClearSecretBase(&gSaveBlock1Ptr->secretBases[baseIndex]);
     gSaveBlock1Ptr->secretBases[0].numSecretBasesReceived = temp;
     WarpOutOfSecretBase();
 }
@@ -854,6 +886,7 @@ static void ClosePlayerSecretBaseEntrance(void)
 void MoveOutOfSecretBaseFromOutside(void)
 {
     u16 temp;
+    return;
 
     ClosePlayerSecretBaseEntrance();
     IncrementGameStat(GAME_STAT_MOVED_SECRET_BASE);
@@ -1109,7 +1142,7 @@ static void ReturnToMainRegistryMenu(u8 taskId)
 
 static void GoToSecretBasePCRegisterMenu(u8 taskId)
 {
-    if (VarGet(VAR_CURRENT_SECRET_BASE) == 0)
+    if (!IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
         ScriptContext_SetupScript(SecretBase_EventScript_PCCancel);
     else
         ScriptContext_SetupScript(SecretBase_EventScript_ShowRegisterMenu);
@@ -1205,7 +1238,7 @@ void SecretBasePerStepCallback(u8 taskId)
     switch (tState)
     {
     case 0:
-        if (VarGet(VAR_CURRENT_SECRET_BASE))
+        if (!IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
             sInFriendSecretBase = TRUE;
         else
             sInFriendSecretBase = FALSE;
@@ -1805,7 +1838,7 @@ void InitSecretBaseVars(void)
     VarSet(VAR_SECRET_BASE_LAST_ITEM_USED, 0);
     VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, 0);
     VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, 0);
-    if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+    if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
         VarSet(VAR_SECRET_BASE_IS_NOT_LOCAL, TRUE);
     else
         VarSet(VAR_SECRET_BASE_IS_NOT_LOCAL, FALSE);
@@ -1830,19 +1863,19 @@ void CheckLeftFriendsSecretBase(void)
 
 void CheckInteractedWithFriendsDollDecor(void)
 {
-    if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+    if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
         VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_DOLL);
 }
 
 void CheckInteractedWithFriendsCushionDecor(void)
 {
-    if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+    if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
         VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_CUSHION);
 }
 
 void DeclinedSecretBaseBattle(void)
 {
-    if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+    if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
     {
         VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) & ~(SECRET_BASE_BATTLED_WON | SECRET_BASE_BATTLED_LOST | SECRET_BASE_DECLINED_BATTLE));
         VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) & ~(SECRET_BASE_BATTLED_DRAW));
@@ -1852,7 +1885,7 @@ void DeclinedSecretBaseBattle(void)
 
 void WonSecretBaseBattle(void)
 {
-    if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+    if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
     {
         VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) & ~(SECRET_BASE_BATTLED_WON | SECRET_BASE_BATTLED_LOST | SECRET_BASE_DECLINED_BATTLE));
         VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) & ~(SECRET_BASE_BATTLED_DRAW));
@@ -1862,7 +1895,7 @@ void WonSecretBaseBattle(void)
 
 void LostSecretBaseBattle(void)
 {
-    if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+    if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
     {
         VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) & ~(SECRET_BASE_BATTLED_WON | SECRET_BASE_BATTLED_LOST | SECRET_BASE_DECLINED_BATTLE));
         VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) & ~(SECRET_BASE_BATTLED_DRAW));
@@ -1872,7 +1905,7 @@ void LostSecretBaseBattle(void)
 
 void DrewSecretBaseBattle(void)
 {
-    if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+    if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
     {
         VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) & ~(SECRET_BASE_BATTLED_WON | SECRET_BASE_BATTLED_LOST | SECRET_BASE_DECLINED_BATTLE));
         VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) & ~(SECRET_BASE_BATTLED_DRAW));
@@ -1902,7 +1935,7 @@ void CheckInteractedWithFriendsPosterDecor(void)
         case METATILE_SecretBase_RedPoster:
         case METATILE_SecretBase_BluePoster:
         case METATILE_SecretBase_CutePoster:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_POSTER);
             break;
     }
@@ -1917,7 +1950,7 @@ void CheckInteractedWithFriendsFurnitureBottom(void)
     {
         case METATILE_SecretBase_GlassOrnament_Base1:
         case METATILE_SecretBase_GlassOrnament_Base2:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_GLASS_ORNAMENT);
             break;
         case METATILE_SecretBase_RedPlant_Base1:
@@ -1938,23 +1971,23 @@ void CheckInteractedWithFriendsFurnitureBottom(void)
         case METATILE_SecretBase_GorgeousPlant_BaseRight1:
         case METATILE_SecretBase_GorgeousPlant_BaseLeft2:
         case METATILE_SecretBase_GorgeousPlant_BaseRight2:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_PLANT);
             break;
         case METATILE_SecretBase_Fence_Horizontal:
         case METATILE_SecretBase_Fence_Vertical:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_FENCE);
             break;
         case METATILE_SecretBase_Tire_BottomLeft:
         case METATILE_SecretBase_Tire_BottomRight:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_TIRE);
             break;
         case METATILE_SecretBase_RedBrick_Bottom:
         case METATILE_SecretBase_YellowBrick_Bottom:
         case METATILE_SecretBase_BlueBrick_Bottom:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_BRICK);
             break;
         case METATILE_SecretBase_SmallDesk:
@@ -1980,7 +2013,7 @@ void CheckInteractedWithFriendsFurnitureBottom(void)
         case METATILE_SecretBase_PrettyDesk_BottomLeft:
         case METATILE_SecretBase_PrettyDesk_BottomMid:
         case METATILE_SecretBase_PrettyDesk_BottomRight:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_DESK);
             break;
     }
@@ -2004,7 +2037,7 @@ void CheckInteractedWithFriendsFurnitureMiddle(void)
         case METATILE_SecretBase_HardDesk_Center:
         case METATILE_SecretBase_PrettyDesk_TopMid:
         case METATILE_SecretBase_PrettyDesk_Center:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_DESK);
             break;
     }
@@ -2039,18 +2072,18 @@ void CheckInteractedWithFriendsFurnitureTop(void)
         case METATILE_SecretBase_PrettyDesk_TopRight:
         case METATILE_SecretBase_PrettyDesk_MidLeft:
         case METATILE_SecretBase_PrettyDesk_MidRight:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_DESK);
             break;
         case METATILE_SecretBase_Tire_TopLeft:
         case METATILE_SecretBase_Tire_TopRight:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_TIRE);
             break;
         case METATILE_SecretBase_RedBrick_Top:
         case METATILE_SecretBase_YellowBrick_Top:
         case METATILE_SecretBase_BlueBrick_Top:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_BRICK);
             break;
     }
@@ -2065,7 +2098,7 @@ void CheckInteractedWithFriendsSandOrnament(void)
     {
         case METATILE_SecretBase_SandOrnament_Base1:
         case METATILE_SecretBase_SandOrnament_Base2:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            if (IsSecretBaseOwnedByAnotherPlayerFromIndex(VarGet(VAR_CURRENT_SECRET_BASE)))
                 VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_SAND_ORNAMENT);
             break;
     }
