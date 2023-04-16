@@ -255,23 +255,17 @@ void TrySetCurSecretBaseIndex(void)
     }
 }
 
-static u16 GetHighestOwnedSecretBaseIdx(void)
-{
-    u16 idx;
-    for (idx = SECRET_BASES_COUNT - 1; idx >= 0; idx--)
-    {
-        if (FlagGet(FLAG_SECRET_BASE_OWNED_00 + idx))
-            return idx + 1;
-    }
-    return 0;
-}
-
 void CheckPlayerHasSecretBase(void)
 {
-    if (GetHighestOwnedSecretBaseIdx() == 0)
-        gSpecialVar_Result = FALSE;
-    else
-        gSpecialVar_Result = TRUE;
+    u16 i;
+    for (i = 0; i < SECRET_BASES_COUNT; i++)
+    {
+        if (FlagGet(FLAG_SECRET_BASE_OWNED_00 + i)){
+            gSpecialVar_Result = TRUE;
+            return;
+        }   
+    }
+    gSpecialVar_Result = FALSE;
 }
 
 void CheckNoMoreSecretBases(void)
