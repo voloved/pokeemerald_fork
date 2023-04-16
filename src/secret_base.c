@@ -93,7 +93,7 @@ static void ReturnToMainRegistryMenu(u8);
 static void GoToSecretBasePCRegisterMenu(u8);
 static u8 GetSecretBaseOwnerType(u8);
 static s16 GetSecretBaseIndexFromId(u8);
-static u8 FindAvailableSecretBaseIndex(void);
+static s16 FindAvailableSecretBaseIndex(void);
 
 static const struct SecretBaseEntranceMetatiles sSecretBaseEntranceMetatiles[] =
 {
@@ -276,7 +276,7 @@ void CheckPlayerHasSecretBase(void)
 
 void CheckNoMoreSecretBases(void)
 {
-    if (FindAvailableSecretBaseIndex() > SECRET_BASES_COUNT) // If we're out of Secret Bases
+    if (FindAvailableSecretBaseIndex() == -1) // If we're out of Secret Bases
         gSpecialVar_Result = TRUE;
     else
         gSpecialVar_Result = FALSE;
@@ -762,10 +762,6 @@ bool8 IsSecretBaseOwnedByAnotherPlayerFromIndex(u16 secretBaseIdx){
             return FALSE;
     }
     return TRUE;
-}
-
-bool8 IsSecretBaseOwnedByAnotherPlayerFromId(u8 secretBaseId){
-    return IsSecretBaseOwnedByAnotherPlayerFromIndex(GetSecretBaseIndexFromId(secretBaseId));
 }
 
 static u8 *GetSecretBaseName(u8 *dest, u8 secretBaseIdx)
@@ -1451,16 +1447,16 @@ static s16 GetSecretBaseIndexFromId(u8 secretBaseId)
     return -1;
 }
 
-static u8 FindAvailableSecretBaseIndex(void)
+static s16 FindAvailableSecretBaseIndex(void)
 {
     s16 i;
-    for (i = 0; i < 3; i++)
+    for (i = 0; i < SECRET_BASES_COUNT; i++)
     {
         if (gSaveBlock1Ptr->secretBases[i].secretBaseId == 0)
             return i;
     }
 
-    return SECRET_BASES_COUNT + 1;
+    return -1;
 }
 
 static u8 FindUnregisteredSecretBaseIndex(void)
@@ -1503,7 +1499,7 @@ static u8 TrySaveFriendsSecretBase(struct SecretBase *secretBase, u32 version, u
         else
         {
             index = FindAvailableSecretBaseIndex();
-            if (index != 0 && index > SECRET_BASES_COUNT)
+            if (index > 0)
             {
                 // Save in empty space
                 SaveSecretBase(index, secretBase, version, language);
