@@ -391,8 +391,8 @@ static const struct YesNoFuncTable sPlaceDecorationYesNoFunctions =
 
 static const struct YesNoFuncTable sCancelDecoratingYesNoFunctions =
 {
-    .yesFunc = CancelDecorating,
-    .noFunc = ContinueDecorating,
+    .yesFunc = ContinueDecorating,
+    .noFunc = CancelDecorating,
 };
 
 static const struct YesNoFuncTable sPlacePutAwayYesNoFunctions[] =
@@ -437,8 +437,8 @@ static const struct YesNoFuncTable sReturnDecorationYesNoFunctions =
 
 static const struct YesNoFuncTable sStopPuttingAwayDecorationsYesNoFunctions =
 {
-    .yesFunc = StopPuttingAwayDecorations,
-    .noFunc = ContinuePuttingAwayDecorations,
+    .yesFunc = ContinuePuttingAwayDecorations,
+    .noFunc = StopPuttingAwayDecorations,
 };
 
 static const u8 sDecorationPuttingAwayCursor[] = INCBIN_U8("graphics/decorations/put_away_cursor.4bpp");
@@ -1473,7 +1473,7 @@ static void AttemptCancelPlaceDecoration(u8 taskId)
     gSprites[sDecor_CameraSpriteObjectIdx1].data[7] = 1;
     gSprites[sDecor_CameraSpriteObjectIdx2].data[7] = 1;
     ResetCursorMovement();
-    StringExpandPlaceholders(gStringVar4, gText_CancelDecorating);
+    StringExpandPlaceholders(gStringVar4, gText_ContinuelDecorating);
     DisplayItemMessageOnField(taskId, gStringVar4, CancelDecoratingPrompt);
 }
 
@@ -2360,7 +2360,7 @@ static void AttemptCancelPutAwayDecoration(u8 taskId)
     ResetCursorMovement();
     gSprites[sDecor_CameraSpriteObjectIdx1].invisible = FALSE;
     gSprites[sDecor_CameraSpriteObjectIdx1].callback = SpriteCallbackDummy;
-    StringExpandPlaceholders(gStringVar4, gText_StopPuttingAwayDecorations);
+    StringExpandPlaceholders(gStringVar4, gText_ContinuePuttingAwayDecorations);
     DisplayItemMessageOnField(taskId, gStringVar4, StopPuttingAwayDecorationsPrompt);
 }
 
@@ -2383,7 +2383,7 @@ static void AttemptPutAwayDecoration_(u8 taskId)
         {
             gSprites[sDecor_CameraSpriteObjectIdx1].invisible = FALSE;
             gSprites[sDecor_CameraSpriteObjectIdx1].callback = SpriteCallbackDummy;
-            StringExpandPlaceholders(gStringVar4, gText_StopPuttingAwayDecorations);
+            StringExpandPlaceholders(gStringVar4, gText_ContinuePuttingAwayDecorations);
             DisplayItemMessageOnField(taskId, gStringVar4, StopPuttingAwayDecorationsPrompt);
         }
         else
