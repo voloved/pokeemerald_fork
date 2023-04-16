@@ -548,7 +548,7 @@ bool8 SetUpFieldMove_SecretPower(void)
 {
     u8 mb;
 
-    CheckPlayerHasSecretBase();
+    CheckNoMoreSecretBases();
 
     if (gSpecialVar_Result == 1 || GetPlayerFacingDirection() != DIR_NORTH)
         return FALSE;

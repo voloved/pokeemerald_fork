@@ -47,8 +47,6 @@
 #include "constants/songs.h"
 #include "constants/trainers.h"
 
-#include "gba/isagbprint.h"
-
 // Values for registryStatus
 enum {
     UNREGISTERED,
@@ -224,7 +222,7 @@ static const struct ListMenuTemplate sRegistryListMenuTemplate =
 static void ClearSecretBase(struct SecretBase *secretBase)
 {
     u16 i;
-    CpuFastFill16(0, secretBase, sizeof(struct SecretBase));
+    memset(secretBase, 0, sizeof(struct SecretBase));
     for (i = 0; i < PLAYER_NAME_LENGTH; i++)
         secretBase->trainerName[i] = EOS;
 }
@@ -257,11 +255,29 @@ void TrySetCurSecretBaseIndex(void)
     }
 }
 
+static u16 GetHighestOwnedSecretBaseIdx(void)
+{
+    u16 idx;
+    for (idx = SECRET_BASES_COUNT - 1; idx >= 0; idx--)
+    {
+        if (FlagGet(FLAG_SECRET_BASE_OWNED_00 + idx))
+            return idx + 1;
+    }
+    return 0;
+}
+
 void CheckPlayerHasSecretBase(void)
 {
-    // The player's secret base is always the first in the array.
-    if (gSaveBlock1Ptr->secretBases[0].secretBaseId)
+    if (GetHighestOwnedSecretBaseIdx() == 0)
         gSpecialVar_Result = FALSE;
+    else
+        gSpecialVar_Result = TRUE;
+}
+
+void CheckNoMoreSecretBases(void)
+{
+    if (FindAvailableSecretBaseIndex() > SECRET_BASES_COUNT) // If we're out of Secret Bases
+        gSpecialVar_Result = TRUE;
     else
         gSpecialVar_Result = FALSE;
 }
@@ -379,6 +395,7 @@ void SetPlayerSecretBase(void)
     StringCopyN(gSaveBlock1Ptr->secretBases[baseNumber].trainerName, gSaveBlock2Ptr->playerName, GetNameLength(gSaveBlock2Ptr->playerName));
     gSaveBlock1Ptr->secretBases[baseNumber].gender = gSaveBlock2Ptr->playerGender;
     gSaveBlock1Ptr->secretBases[baseNumber].language = GAME_LANGUAGE;
+    VarSet(VAR_LAST_MADE_SECRET_BASE, baseNumber);
     VarSet(VAR_SECRET_BASE_MAP, gMapHeader.regionMapSectionId);
 }
 
@@ -728,7 +745,6 @@ void IsCurSecretBaseOwnedByAnotherPlayer(void)
     int i;
     for (i = 0; i < SECRET_BASES_COUNT; i++)
     {
-        DebugPrintf("sCurSecretBaseId: %d  %d  %d  %d %d", i, sCurSecretBaseId, GetSecretBaseIndexFromId(sCurSecretBaseId), FindAvailableSecretBaseIndex(), FlagGet(FLAG_SECRET_BASE_OWNED_00 + i));
         if (FlagGet(FLAG_SECRET_BASE_OWNED_00 + i) &&  GetSecretBaseIndexFromId(sCurSecretBaseId) == i)
         {
             gSpecialVar_Result = FALSE;
@@ -837,11 +853,10 @@ void SetPlayerSecretBaseParty(void)
 void ClearAndLeaveSecretBase(void)
 {
     u16 baseIndex = GetSecretBaseIndexFromId(sCurSecretBaseId);
-    DebugPrintf("baseIndex %d", baseIndex);
-    u16 temp = gSaveBlock1Ptr->secretBases[0].numSecretBasesReceived;
+    u16 temp = gSaveBlock1Ptr->secretBases[baseIndex].numSecretBasesReceived;
     FlagClear(FLAG_SECRET_BASE_OWNED_00 + baseIndex);
     ClearSecretBase(&gSaveBlock1Ptr->secretBases[baseIndex]);
-    gSaveBlock1Ptr->secretBases[0].numSecretBasesReceived = temp;
+    gSaveBlock1Ptr->secretBases[baseIndex].numSecretBasesReceived = temp;
     WarpOutOfSecretBase();
 }
 
@@ -851,7 +866,7 @@ void MoveOutOfSecretBase(void)
     ClearAndLeaveSecretBase();
 }
 
-static void ClosePlayerSecretBaseEntrance(void)
+static void ClosePlayerSecretBaseEntrance(u16 secretBaseIdx)
 {
     u16 i;
     u16 j;
@@ -861,7 +876,7 @@ static void ClosePlayerSecretBaseEntrance(void)
     for (i = 0; i < events->bgEventCount; i++)
     {
         if (events->bgEvents[i].kind == BG_EVENT_SECRET_BASE
-         && gSaveBlock1Ptr->secretBases[0].secretBaseId == events->bgEvents[i].bgUnion.secretBaseId)
+         && gSaveBlock1Ptr->secretBases[secretBaseIdx].secretBaseId == events->bgEvents[i].bgUnion.secretBaseId)
         {
             metatileId = MapGridGetMetatileIdAt(events->bgEvents[i].x + MAP_OFFSET, events->bgEvents[i].y + MAP_OFFSET);
             for (j = 0; j < ARRAY_COUNT(sSecretBaseEntranceMetatiles); j++)
@@ -886,13 +901,13 @@ static void ClosePlayerSecretBaseEntrance(void)
 void MoveOutOfSecretBaseFromOutside(void)
 {
     u16 temp;
-    return;
+    u16 secretBaseIdx = VarGet(VAR_LAST_MADE_SECRET_BASE);
 
-    ClosePlayerSecretBaseEntrance();
+    ClosePlayerSecretBaseEntrance(secretBaseIdx);
     IncrementGameStat(GAME_STAT_MOVED_SECRET_BASE);
-    temp = gSaveBlock1Ptr->secretBases[0].numSecretBasesReceived;
-    ClearSecretBase(&gSaveBlock1Ptr->secretBases[0]);
-    gSaveBlock1Ptr->secretBases[0].numSecretBasesReceived = temp;
+    temp = gSaveBlock1Ptr->secretBases[secretBaseIdx].numSecretBasesReceived;
+    ClearSecretBase(&gSaveBlock1Ptr->secretBases[secretBaseIdx]);
+    gSaveBlock1Ptr->secretBases[secretBaseIdx].numSecretBasesReceived = temp;
 }
 
 static u8 GetNumRegisteredSecretBases(void)
@@ -1439,13 +1454,13 @@ static s16 GetSecretBaseIndexFromId(u8 secretBaseId)
 static u8 FindAvailableSecretBaseIndex(void)
 {
     s16 i;
-    for (i = 1; i < SECRET_BASES_COUNT; i++)
+    for (i = 0; i < 3; i++)
     {
         if (gSaveBlock1Ptr->secretBases[i].secretBaseId == 0)
             return i;
     }
 
-    return 0;
+    return SECRET_BASES_COUNT + 1;
 }
 
 static u8 FindUnregisteredSecretBaseIndex(void)
@@ -1488,7 +1503,7 @@ static u8 TrySaveFriendsSecretBase(struct SecretBase *secretBase, u32 version, u
         else
         {
             index = FindAvailableSecretBaseIndex();
-            if (index != 0)
+            if (index != 0 && index > SECRET_BASES_COUNT)
             {
                 // Save in empty space
                 SaveSecretBase(index, secretBase, version, language);

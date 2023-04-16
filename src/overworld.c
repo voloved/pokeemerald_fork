@@ -69,6 +69,7 @@
 #include "constants/weather.h"
 #include "item.h"
 #include "constants/items.h"
+#include "decoration.h"
 
 struct CableClubPlayer
 {
@@ -2073,6 +2074,7 @@ static void ResetMirageTowerAndSaveBlockPtrs(void)
 {
     ClearMirageTowerPulseBlend();
     MoveSaveBlocks_ResetHeap();
+    InitDecorationContextItems();  // Runs this command again once the save file is loaded
 }
 
 static void ResetScreenForMapLoad(void)

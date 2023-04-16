@@ -511,7 +511,6 @@ void InitDecorationContextItems(void)
     if (sDecorationContext.isPlayerRoom == FALSE)
     {
         u16 currSecretBaseIdx = VarGet(VAR_CURRENT_SECRET_BASE);
-        memcpy(gSaveBlock1Ptr->secretBases[currSecretBaseIdx].decorations, gSaveBlock1Ptr->secretBases[0].decorations, sizeof(gSaveBlock1Ptr->secretBases[0].decorations));
         sDecorationContext.items = gSaveBlock1Ptr->secretBases[currSecretBaseIdx].decorations;
         sDecorationContext.pos = gSaveBlock1Ptr->secretBases[currSecretBaseIdx].decorationPositions;
     }
@@ -1329,6 +1328,7 @@ static void DecorationItemsMenuAction_AttemptPlace(u8 taskId)
         if (HasDecorationSpace() == TRUE)
         {
             FadeScreen(FADE_TO_BLACK, 0);
+            RemoveFollowingPokemon();
             gTasks[taskId].tState = 0;
             gTasks[taskId].func = Task_PlaceDecoration;
         }
@@ -1718,6 +1718,7 @@ static void CancelDecorating(u8 taskId)
 static void CancelDecorating_(u8 taskId)
 {
     FadeScreen(FADE_TO_BLACK, 0);
+    UpdateFollowingPokemon();
     gTasks[taskId].tState = 0;
     gTasks[taskId].func = c1_overworld_prev_quest;
 }
@@ -2597,6 +2598,7 @@ static void ReturnDecorationPrompt(u8 taskId)
 static void PutAwayDecoration(u8 taskId)
 {
     FadeScreen(FADE_TO_BLACK, 0);
+    RemoveFollowingPokemon();
     gTasks[taskId].tState = 0;
     gTasks[taskId].func = Task_PutAwayDecoration;
 }
@@ -2616,6 +2618,7 @@ static void StopPuttingAwayDecorations(u8 taskId)
 static void StopPuttingAwayDecorations_(u8 taskId)
 {
     FadeScreen(FADE_TO_BLACK, 0);
+    UpdateFollowingPokemon();
     gTasks[taskId].tState = 0;
     gTasks[taskId].func = Task_StopPuttingAwayDecorations;
 }
