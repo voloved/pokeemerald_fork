@@ -59,6 +59,7 @@
 #define BAG_TREASURES_COUNT 18
 #define OBJECT_EVENT_TEMPLATES_COUNT 64
 #define DECOR_MAX_SECRET_BASE 36
+#define DECOR_MAX_SECRET_DOLLS 14  // 16 objects allowed. One for the follower. One more for the player.
 #define DECOR_MAX_PLAYERS_HOUSE 12
 #define APPRENTICE_COUNT 4
 #define APPRENTICE_MAX_QUESTIONS 9

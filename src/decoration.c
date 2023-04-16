@@ -1316,6 +1316,18 @@ static bool8 HasDecorationSpace(void)
     return FALSE;
 }
 
+static u16 GetSpriteAmount(void)
+{
+    u16 i;
+    u16 sprites = 0;
+    for (i = 0; i < sDecorationContext.size; i++)
+    {
+        if (gDecorations[sDecorationContext.items[i]].permission == DECORPERM_SPRITE)
+            sprites++;
+    }
+    return sprites;
+}
+
 static void DecorationItemsMenuAction_AttemptPlace(u8 taskId)
 {
     if (sDecorationContext.isPlayerRoom == TRUE && sCurDecorationCategory != DECORCAT_DOLL && sCurDecorationCategory != DECORCAT_CUSHION)
@@ -1325,7 +1337,13 @@ static void DecorationItemsMenuAction_AttemptPlace(u8 taskId)
     }
     else if (IsSelectedDecorInThePC() == TRUE)
     {
-        if (HasDecorationSpace() == TRUE)
+        if (GetSpriteAmount() >= DECOR_MAX_SECRET_DOLLS)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, DECOR_MAX_SECRET_DOLLS, STR_CONV_MODE_RIGHT_ALIGN, 2);
+            StringExpandPlaceholders(gStringVar4, gText_NoMoreDolls);
+            DisplayItemMessageOnField(taskId, gStringVar4, ReturnToDecorationItemsAfterInvalidSelection);
+        }
+        else if (HasDecorationSpace() == TRUE)
         {
             FadeScreen(FADE_TO_BLACK, 0);
             RemoveFollowingPokemon();
