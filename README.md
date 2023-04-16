@@ -9,9 +9,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
-## Not Yet Versioned.
+## v1.5.5
  - [Make Multiple Secret Bases](https://github.com/pret/pokeemerald/wiki/Make-Multiple-Secret-Bases)
- - Secret Bases Able to Have 36 Decorations (Was 16), But Only a Max Base count of 16 (Was 20).
  - When putting a Pokémon into a new ball, the old ball gets put back into the bag if it's not a Thief Ball nor Master Ball.
  - [Allow Move Relearner to Teach Moves that Pre Evolutions Know](https://github.com/pret/pokeemerald/wiki/Allow-Move-Relearner-to-Teach-Moves-that-Pre-Evolutions-Know)
  - Animated Missingno follower sprite.
@@ -20,6 +19,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
    - This will not work when running the Nuzlocke challenge.
  - [Key Items With No Field Effect Will No Longer Be Register-able Nor Usable](https://github.com/pret/pokeemerald/wiki/Make-Key-Items-That-Cannot-Be-Used-In-The-Field-Not-Show-A-Use-or-Register-Option)
  - [Added BetterBag. This makes the bag be able to hold 78 more items.](https://github.com/pret/pokeemerald/wiki/Feature-Branches#BetterBag) [Credit: AsparagusEduardo]
+   - This will keep compatability with an vanilla Emerald save file, but going back to the vanilla game saving in this game will cause battle items, treasures, and medicine to disappear.
  - Made Poké Doll a toggle-able item, like Cleanse Tag.
  - Bug fix on an endless loop if an Eeveelution is bred.
  - Holding R when starting a wild encounter will not allow running if escaping isn't possible.
