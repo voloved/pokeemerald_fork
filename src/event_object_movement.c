@@ -1250,6 +1250,18 @@ u8 GetFirstInactiveObjectEventId(void)
     return i;
 }
 
+u8 GetAmountOfinactiveObjectEvents(void)
+{
+    u8 i;
+    u8 inactive = 0;
+    for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
+    {
+        if (!gObjectEvents[i].active)
+            inactive++;
+    }
+    return inactive;
+}
+
 u8 GetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId)
 {
     if (localId < OBJ_EVENT_ID_FOLLOWER)
