@@ -98,6 +98,7 @@ static void BattleIntroDrawPartySummaryScreens(void);
 static void BattleIntroPrintTrainerWantsToBattle(void);
 static void BattleIntroPrintWildMonAttacked(void);
 static void BattleIntroQuickRun(void);
+static void BattleIntroNuzlockDups(void);
 static void BattleIntroPrintOpponentSendsOut(void);
 static void BattleIntroPrintPlayerSendsOut(void);
 static void BattleIntroOpponent1SendsOutMonAnimation(void);
@@ -3788,15 +3789,24 @@ static void BattleIntroQuickRun(void)
     if (gBattleControllerExecFlags == 0)
     {
         if (JOY_HELD(DPAD_RIGHT)){
-            gBattleMainFunc = HandleEndTurn_RanFromBattle;
-        }
-        else{
-            u16 species_enemy = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)]], MON_DATA_SPECIES2);
-            gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
-            if (gNuzlockeCannotCatch == 2){  // If Pokemon was first in this route and was already caught
-                PrepareStringBattle(STRINGID_NUZLOCKEDUPS, 0);
+            if (!IsRunningFromBattleImpossible() && TryRunFromBattle(gBattlerAttacker)){
+                gBattleMainFunc = HandleEndTurn_RanFromBattle;
+                return;
             }
+            PrepareStringBattle(STRINGID_CANTESCAPE, 0);
         }
+        gBattleMainFunc = BattleIntroNuzlockDups;
+    }
+}
+
+static void BattleIntroNuzlockDups(void)
+{
+    if (gBattleControllerExecFlags == 0)
+    {
+        if (gNuzlockeCannotCatch == 2){  // If Pokemon was first in this route and was already caught
+            PrepareStringBattle(STRINGID_NUZLOCKEDUPS, 0);
+        }
+        gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
     }
 }
 
@@ -4292,6 +4302,31 @@ u8 IsRunningFromBattleImpossible(void)
     return BATTLE_RUN_SUCCESS;
 }
 
+u8 IsTrainerCantRunFrom(void){
+    u8 trainerClass;
+    if (FlagGet(FLAG_NUZLOCKE))
+        return BATTLE_RUN_FORBIDDEN;
+    if (gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_TRAINER_HILL))
+        return BATTLE_RUN_FORBIDDEN;
+    trainerClass = gTrainers[gTrainerBattleOpponent_A].trainerClass;
+    switch (trainerClass)
+    {
+    case TRAINER_CLASS_AQUA_LEADER:
+    case TRAINER_CLASS_MAGMA_LEADER:
+    case TRAINER_CLASS_TEAM_AQUA:
+    case TRAINER_CLASS_TEAM_MAGMA:
+    case TRAINER_CLASS_AQUA_ADMIN:
+    case TRAINER_CLASS_MAGMA_ADMIN:
+    case TRAINER_CLASS_LEADER:
+    case TRAINER_CLASS_CHAMPION:
+    case TRAINER_CLASS_RIVAL:
+    case TRAINER_CLASS_ELITE_FOUR:
+        return BATTLE_RUN_FORBIDDEN;
+    default:
+        return BATTLE_RUN_SUCCESS;
+    }
+}
+
 void SwitchPartyOrder(u8 battler)
 {
     s32 i;
@@ -4557,10 +4592,23 @@ static void HandleTurnActionSelectionState(void)
                          && !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
                          && gBattleBufferB[gActiveBattler][1] == B_ACTION_RUN)
                 {
-                    BattleScriptExecute(BattleScript_PrintCantRunFromTrainer);
-                    gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
+                    if (FlagGet(FLAG_NUZLOCKE))
+                    {
+                        BattleScriptExecute(BattleScript_PrintCantRunFromTrainerDuringNuzlocke);
+                        gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
+                        return;
+                    }
+                    else if (IsTrainerCantRunFrom())
+                    {
+                        BattleScriptExecute(BattleScript_PrintCantRunFromTrainer);
+                        gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
+                        return;
+                    }
+                    else{
+                        ;   // Allow to passthrough to the below logic of IsRunningFromBattleImpossible
+                    }
                 }
-                else if (IsRunningFromBattleImpossible() != BATTLE_RUN_SUCCESS
+                if (IsRunningFromBattleImpossible() != BATTLE_RUN_SUCCESS
                          && gBattleBufferB[gActiveBattler][1] == B_ACTION_RUN)
                 {
                     gSelectionBattleScripts[gActiveBattler] = BattleScript_PrintCantEscapeFromBattle;

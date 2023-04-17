@@ -333,7 +333,8 @@ static const u8 sText_PlayerBattledToDrawLinkTrainer[] = _("Player battled to a 
 static const u8 sText_PlayerBattledToDrawVsTwo[] = _("Player battled to a draw against\n{B_LINK_OPPONENT1_NAME} and {B_LINK_OPPONENT2_NAME}!");
 static const u8 sText_WildFled[] = _("{PLAY_SE SE_FLEE}{B_LINK_OPPONENT1_NAME} fled!");
 static const u8 sText_TwoWildFled[] = _("{PLAY_SE SE_FLEE}{B_LINK_OPPONENT1_NAME} and\n{B_LINK_OPPONENT2_NAME} fled!");
-static const u8 sText_NoRunningFromTrainers[] = _("No! There's no running\nfrom a TRAINER battle!\p");
+static const u8 sText_NoRunningFromTrainers[] = _("There's no running from\nthis TRAINER battle!\p");
+static const u8 sText_NoRunningNuzlocke[] = _("There's no running from TRAINER\nbattles during a Nuzlocke challenge!\p");
 static const u8 sText_CantEscape[] = _("Can't escape!\p");
 static const u8 sText_DontLeaveBirch[] = _("PROF. BIRCH: Don't leave me like this!\p");
 static const u8 sText_ButNothingHappened[] = _("But nothing happened!");
@@ -902,6 +903,7 @@ const u8 * const gBattleStringsTable[BATTLESTRINGS_COUNT - BATTLESTRINGS_TABLE_S
     [STRINGID_GOTCHAPKMNCAUGHTNOBGM - BATTLESTRINGS_TABLE_START] = sText_GotchaPkmnCaughtNoBgm,
     [STRINGID_CANTWITHNUZLOCKE - BATTLESTRINGS_TABLE_START] = sText_CantWithNuzlocke,
     [STRINGID_PKMNGAINEDEXPALL - BATTLESTRINGS_TABLE_START] = sText_PkmnGainedEXPAll,
+    [STRINGID_NORUNNINGNUZLOCKE - BATTLESTRINGS_TABLE_START] = sText_NoRunningNuzlocke,
 };
 
 const u16 gMissStringIds[] =
@@ -1783,7 +1785,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
         .bgColor = TEXT_COLOR_TRANSPARENT,
         .shadowColor = TEXT_COLOR_GREEN,
     },
-    [24] = { // 24 "type" super-effective
+    [B_WIN_TYPE_SUPER_EFF] = { // 24 "type" super-effective
         .fillValue = PIXEL_FILL(0xE),
         .fontId = FONT_NARROW,
         .x = 0,
@@ -1795,7 +1797,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
         .bgColor = 14,
         .shadowColor = 5,
     },
-    [25] = { // 25 "type" not very effective
+    [B_WIN_TYPE_NOT_VERY_EFF] = { // 25 "type" not very effective
         .fillValue = PIXEL_FILL(0xE),
         .fontId = FONT_NARROW,
         .x = 0,
@@ -1807,7 +1809,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
         .bgColor = 14,
         .shadowColor = 3,
     },
-    [26] = { // 26 "type" no effect
+    [B_WIN_TYPE_NO_EFF] = { // 26 "type" no effect
         .fillValue = PIXEL_FILL(0xE),
         .fontId = FONT_NARROW,
         .x = 0,
@@ -1818,6 +1820,18 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
         .fgColor = 7,
         .bgColor = 14,
         .shadowColor = 15,
+    },
+    [B_WIN_MOVE_DESCRIPTION] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NARROW,
+        .x = 0,
+        .y = 1,
+        .letterSpacing = 0,
+        .lineSpacing = 0,
+        .speed = 0,
+        .fgColor = TEXT_DYNAMIC_COLOR_4,
+        .bgColor = TEXT_DYNAMIC_COLOR_5,
+        .shadowColor = TEXT_DYNAMIC_COLOR_6,
     },
 };
 
@@ -2391,6 +2405,9 @@ void BufferStringBattle(u16 stringID)
         break;
     case STRINGID_NUZLOCKEDUPS:
         stringPtr = sText_PlayerDuplicateMon;
+        break;
+    case STRINGID_CANTESCAPE:
+        stringPtr = sText_CantEscape;
         break;
     default: // load a string from the table
         if (stringID >= BATTLESTRINGS_COUNT)

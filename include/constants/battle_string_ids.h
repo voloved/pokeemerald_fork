@@ -387,8 +387,9 @@
 #define STRINGID_GOTCHAPKMNCAUGHTNOBGM      385
 #define STRINGID_CANTWITHNUZLOCKE           386
 #define STRINGID_PKMNGAINEDEXPALL           387
+#define STRINGID_NORUNNINGNUZLOCKE          388
 
-#define BATTLESTRINGS_COUNT                 388
+#define BATTLESTRINGS_COUNT                 389
 
 // This is the string id that gBattleStringsTable starts with.
 // String ids before this (e.g. STRINGID_INTROMSG) are not in the table,

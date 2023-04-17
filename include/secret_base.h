@@ -23,8 +23,10 @@ void ClearSecretBases(void);
 void SetCurSecretBaseIdFromPosition(const struct MapPosition *position, const struct MapEvents *events);
 void TrySetCurSecretBaseIndex(void);
 void CheckPlayerHasSecretBase(void);
+void CheckNoMoreSecretBases(void);
 void ToggleSecretBaseEntranceMetatile(void);
 void ScriptContext_Enable(void);
 void ReceiveSecretBasesData(void *records, size_t recordSize, u8 linkIdx);
+bool8 IsSecretBaseOwnedByAnotherPlayerFromIndex(u16 secretBaseIdx);
 
 #endif //GUARD_SECRET_BASE_H

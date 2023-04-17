@@ -109,6 +109,7 @@ void SwitchInClearSetData(void);
 void FaintClearSetData(void);
 void BattleTurnPassed(void);
 u8 IsRunningFromBattleImpossible(void);
+u8 IsTrainerCantRunFrom(void);
 void SwitchPartyOrder(u8 battlerId);
 void SwapTurnOrder(u8 id1, u8 id2);
 u8 GetWhoStrikesFirst(u8 battlerId1, u8 battlerId2, bool8 ignoreChosenMoves);

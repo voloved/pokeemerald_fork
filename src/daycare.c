@@ -25,6 +25,7 @@
 #include "battle_setup.h"
 
 extern const struct Evolution gEvolutionTable[][EVOS_PER_MON];
+extern const u16 gEeveelutions[NUM_EEVEELUTIONS];
 
 static void ClearDaycareMonMail(struct DaycareMail *mail);
 static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *daycare);
@@ -388,6 +389,14 @@ static u16 GetEggSpecies(u16 species)
 {
     int i, j, k;
     bool8 found;
+
+    if (species == SPECIES_EEVEE)
+        return species;
+    
+    for (i = 0; i < ARRAY_COUNT(gEeveelutions); i++){
+        if (species == gEeveelutions[i])
+                return SPECIES_EEVEE;
+    }
 
     // Working backwards up to 5 times seems arbitrary, since the maximum number
     // of times would only be 3 for 3-stage evolutions.

@@ -9,12 +9,28 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v1.6.0
+ - [Make Multiple Secret Bases](https://github.com/pret/pokeemerald/wiki/Make-Multiple-Secret-Bases)
+ - When putting a Pokémon into a new ball, the old ball gets put back into the bag if it's not a Thief Ball nor Master Ball.
+ - [Allow Move Relearner to Teach Moves that Pre Evolutions Know](https://github.com/pret/pokeemerald/wiki/Allow-Move-Relearner-to-Teach-Moves-that-Pre-Evolutions-Know)
+ - Animated Missingno follower sprite.
+ - [Pressing Start in a Battle Will Show the Description of the Move.](https://github.com/pret/pokeemerald/wiki/Add-Description-Submenu)
+ - [Allow Running From Trainer Battles](https://github.com/pret/pokeemerald/wiki/Allow-Running-From-Trainer-Battles)
+   - This will not work when running the Nuzlocke challenge.
+ - [Key Items With No Field Effect Will No Longer Be Register-able Nor Usable](https://github.com/pret/pokeemerald/wiki/Make-Key-Items-That-Cannot-Be-Used-In-The-Field-Not-Show-A-Use-or-Register-Option)
+ - [Added BetterBag. This makes the bag be able to hold 78 more items.](https://github.com/pret/pokeemerald/wiki/Feature-Branches#BetterBag) [Credit: AsparagusEduardo]
+   - This will keep compatability with an vanilla Emerald save file, but going back to the vanilla game saving in this game will cause battle items, treasures, and medicine to disappear.
+ - Made Poké Doll a toggle-able item, like Cleanse Tag.
+ - Bug fix on an endless loop if an Eeveelution is bred.
+ - Holding R when starting a wild encounter will not allow running if escaping isn't possible.
+ - Text Scroll is Mildly Faster.
+
 ## v1.5.4
  - Gen 4 Pokémon are Added as Followers.
  - Berry Pick-up Text On New Berry Now Works.
  
 ## v1.5.3
- - [Loading the game now ages the berries by 12 hours and iterates daily events by a day](https://github.com/pret/pokeemerald/wiki/Get-Rid-of-Battery-Run-Dry-Error-Message#extra-update-daily-events-and-berries-still-grow-when-playing-without-a-rtc)
+ - [Loading the game now ages the berries by 12 hours and iterates daily events by a day.](https://github.com/pret/pokeemerald/wiki/Get-Rid-of-Battery-Run-Dry-Error-Message#extra-update-daily-events-and-berries-still-grow-when-playing-without-a-rtc)
  - Berries that are fully-grown do not continue the cycle if the RTC is dead.
  - Overlevel check turns off if Nuzlocke setting is off.
 
@@ -51,7 +67,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
    - Gen 4 Pokémon are ignored as followers.
  - [Added Bag Sorting](pokecommunity.com/showpost.php?p=10167488&postcount=84) [Credit: Ghoulslash]
  - [Make Poké Balls usable outside of battles](https://www.pokecommunity.com/showthread.php?p=10539730#post10539730) [Credit: Lunos]
- - Cleanse Tag can now be a use item as well as being held.
+ - [Cleanse Tag can now be a use item as well as being held.](https://github.com/pret/pokeemerald/wiki/Make-Cleanse-Tag-Avoid-All-Wild-Encounters-and-Usable-If-Held-By-Anyone-in-Your-Party;-Make-PokeDoll-Do-the-Same-for-Trainers-Seeing-You#make-cleanse-tag-a-toggle-able-use-item)
  - Doubled shiny odds.
  - Buying more than 10 Poké Balls gives an extra.
  - Indicator shown in Nuzlocke challenge if Pokémon can be caught.
@@ -184,8 +200,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Party now gets healed after winning a gym badge (and when receiving your Pokédex completion diploma at the Lilycove Motel)
 - [Turned off getting match calls from trainers who are not looking to battle.](https://github.com/pret/pokeemerald/wiki/Get-Match-Calls-Only-If-Caller-Wants-a-Rematch)
 - [Intro now shows the biking trainer as the gender of the save file (defaults to male)](https://github.com/pret/pokeemerald/wiki/Make-the-Person-in-the-Intro-Match-the-the-Save-File)
-- [Made Cleanse Tag turn the off all wild encounters and made it's held ability work if held by any Pokémon in the party](https://github.com/pret/pokeemerald/wiki/Make-Cleanse-Tag-Avoid-All-Wild-Encounters-and-Usable-If-Held-By-Anyone-in-Your-Party;-Make-PokeDoll-Do-the-Same-for-Trainers-Seeing-You)
-- [Made Poké Doll cause no trainers to see you](https://github.com/pret/pokeemerald/wiki/Toggle-Trainer-Sight). You can still go up and talk with them.
+- [Made Cleanse Tag turn the off all wild encounters and made it's held ability work if held by any Pokémon in the party](https://github.com/pret/pokeemerald/wiki/Make-Cleanse-Tag-Avoid-All-Wild-Encounters-and-Usable-If-Held-By-Anyone-in-Your-Party;-Make-PokeDoll-Do-the-Same-for-Trainers-Seeing-You#de-nerf-cleanse-tag)
+- [Made Poké Doll cause no trainers to see you](https://github.com/pret/pokeemerald/wiki/Make-Cleanse-Tag-Avoid-All-Wild-Encounters-and-Usable-If-Held-By-Anyone-in-Your-Party;-Make-PokeDoll-Do-the-Same-for-Trainers-Seeing-You#pokedoll-to-avoid-battles). You can still go up and talk with them.
 - Added Beldom in Meteor Falls and Mareep in Route 110
 - [Added type color that shows battle effectiveness and added ability to toggle this feature in the option menu.](https://github.com/pret/pokeemerald/wiki/Show-Type-Effectiveness-In-Battle-Using-Pre-Existing--Function-and-Disable-in-Option-Menu)
   - Used [this](https://www.pokecommunity.com/showpost.php?p=10167016&postcount=83), but the vanilla code needed modification for it to work well.

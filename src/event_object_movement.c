@@ -1250,6 +1250,18 @@ u8 GetFirstInactiveObjectEventId(void)
     return i;
 }
 
+u8 GetAmountOfinactiveObjectEvents(void)
+{
+    u8 i;
+    u8 inactive = 0;
+    for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
+    {
+        if (!gObjectEvents[i].active)
+            inactive++;
+    }
+    return inactive;
+}
+
 u8 GetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId)
 {
     if (localId < OBJ_EVENT_ID_FOLLOWER)
@@ -2086,11 +2098,7 @@ bool8 ScrFunc_getfolloweraction(struct ScriptContext *ctx) // Essentially a big 
   }
 
   emotion = RandomWeightedIndex(emotion_weight, FOLLOWER_EMOTION_LENGTH);
-  #ifdef BATTLE_ENGINE
-  if ((mon->status & STATUS1_PSN_ANY) && GetMonAbility(mon) != ABILITY_POISON_HEAL)
-  #else
   if (mon->status & STATUS1_PSN_ANY)
-  #endif
     emotion = FOLLOWER_EMOTION_POISONED;
   multi = Random() % followerBasicMessages[emotion].length;
   // With 50% chance, select special message using reservoir sampling
