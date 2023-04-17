@@ -10,7 +10,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
 ## Not Yet Versioned
- - Truck That Player Comes To Hometown In Is Now A UHaul. 
+ - Truck That Player Comes To Hometown In Is Now A UHaul.
+ - Added 'Add All HMs' To Debug Menu.
 
 ## v2.0.0
  - Secret Bases Able to Have 36 Decorations (Was 16), But Only a Max Base count of 16 (Was 20).
