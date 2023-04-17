@@ -177,6 +177,10 @@
 
 static EWRAM_DATA bool8 sStartedPokeBallTask = 0;
 static EWRAM_DATA u16 sCurrItemAndOptionMenuCheck = 0;
+static EWRAM_DATA bool8 sCurrDebugCodeEntered = FALSE;
+
+// Global RAM declarations
+EWRAM_DATA bool8 gShowDebugMenu = FALSE;
 
 static u8 sBirchSpeechMainTaskId;
 
@@ -421,6 +425,8 @@ static const u16 sMainMenuTextPal[] = INCBIN_U16("graphics/interface/main_menu_t
 
 static const u8 sTextColor_Headers[] = {TEXT_DYNAMIC_COLOR_1, TEXT_DYNAMIC_COLOR_2, TEXT_DYNAMIC_COLOR_3};
 static const u8 sTextColor_MenuInfo[] = {TEXT_DYNAMIC_COLOR_1, TEXT_COLOR_WHITE, TEXT_DYNAMIC_COLOR_3};
+static const int sDebugCode[] = { DPAD_UP, DPAD_UP, DPAD_DOWN, DPAD_DOWN, DPAD_LEFT, DPAD_RIGHT,
+                                 DPAD_LEFT,DPAD_RIGHT, B_BUTTON, A_BUTTON, START_BUTTON };
 
 static const struct BgTemplate sMainMenuBgTemplates[] = {
     {
@@ -892,6 +898,21 @@ static void Task_HighlightSelectedMainMenuItem(u8 taskId)
 static bool8 HandleMainMenuInput(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
+
+    if (!gShowDebugMenu){
+        if (ARRAY_COUNT(sDebugCode) <= sCurrDebugCodeEntered){
+            PlaySE(SE_SUCCESS);
+            gShowDebugMenu = TRUE;
+        }
+        else if (JOY_NEW(sDebugCode[sCurrDebugCodeEntered])){
+            sCurrDebugCodeEntered++;
+            if(JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
+                return FALSE;
+        }
+        else if (gMain.newKeys != 0){
+            sCurrDebugCodeEntered = 0;
+        }
+    }
 
     if (JOY_NEW(A_BUTTON))
     {
