@@ -9,6 +9,10 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v2.0.0
+ - Secret Bases Able to Have 36 Decorations (Was 16), But Only a Max Base count of 16 (Was 20).
+   - This breaks compatability with sharing Secret Bases with the vanilla game.
+
 ## v1.6.0
  - [Make Multiple Secret Bases](https://github.com/pret/pokeemerald/wiki/Make-Multiple-Secret-Bases)
  - When putting a Pokémon into a new ball, the old ball gets put back into the bag if it's not a Thief Ball nor Master Ball.
