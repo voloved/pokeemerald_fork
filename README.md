@@ -9,7 +9,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
-## v1.5.5
+## v1.6.0
  - [Make Multiple Secret Bases](https://github.com/pret/pokeemerald/wiki/Make-Multiple-Secret-Bases)
  - When putting a Pokémon into a new ball, the old ball gets put back into the bag if it's not a Thief Ball nor Master Ball.
  - [Allow Move Relearner to Teach Moves that Pre Evolutions Know](https://github.com/pret/pokeemerald/wiki/Allow-Move-Relearner-to-Teach-Moves-that-Pre-Evolutions-Know)
