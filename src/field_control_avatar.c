@@ -137,13 +137,12 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
         gRunToggleBtnSet = TRUE;
     }
 
-#if TX_DEBUG_SYSTEM_ENABLE == TRUE && TX_DEBUG_SYSTEM_IN_MENU == FALSE
-    if ((heldKeys & TX_DEBUG_SYSTEM_HELD_KEYS) && input->TX_DEBUG_SYSTEM_TRIGGER_EVENT)
+    if (TX_DEBUG_SYSTEM_ENABLE == TRUE && TX_DEBUG_SYSTEM_IN_MENU == FALSE &&
+       (heldKeys & TX_DEBUG_SYSTEM_HELD_KEYS) && input->TX_DEBUG_SYSTEM_TRIGGER_EVENT)
     {
         input->input_field_1_2 = TRUE;
         input->TX_DEBUG_SYSTEM_TRIGGER_EVENT = FALSE;
     }
-#endif
 }
 
 int ProcessPlayerFieldInput(struct FieldInput *input)
@@ -202,15 +201,13 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     if (input->pressedSelectButton && UseRegisteredKeyItemOnField() == TRUE)
         return TRUE;
 
-#if TX_DEBUG_SYSTEM_ENABLE == TRUE && TX_DEBUG_SYSTEM_IN_MENU == FALSE
-    if (input->input_field_1_2)
+    if(TX_DEBUG_SYSTEM_ENABLE == TRUE && TX_DEBUG_SYSTEM_IN_MENU == FALSE && input->input_field_1_2)
     {
         PlaySE(SE_WIN_OPEN);
         FreezeObjectEvents();
         Debug_ShowMainMenu();
         return TRUE;
     }
-#endif
 
     return FALSE;
 }
@@ -744,10 +741,8 @@ void RestartWildEncounterImmunitySteps(void)
 
 static bool8 CheckStandardWildEncounter(u16 metatileBehavior)
 {
-    #if TX_DEBUG_SYSTEM_ENABLE == TRUE
-    if (FlagGet(FLAG_SYS_NO_ENCOUNTER))
+    if ((TX_DEBUG_SYSTEM_ENABLE == TRUE || gShowDebugMenu) && FlagGet(FLAG_SYS_NO_ENCOUNTER))
         return FALSE;
-    #endif
 
     if (sWildEncounterImmunitySteps < 4)
     {

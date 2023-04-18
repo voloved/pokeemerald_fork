@@ -61,7 +61,6 @@
 #include "constants/weather.h"
 
 
-#if TX_DEBUG_SYSTEM_ENABLE == TRUE
 // *******************************
 // Enums
 enum { // Main
@@ -4395,5 +4394,3 @@ static void DebugAction_AccessPC(u8 taskId)
     BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
     CreateTask(Task_WaitFadeAccessPC, 0);
 }
-
-#endif

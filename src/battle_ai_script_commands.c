@@ -14,6 +14,7 @@
 #include "constants/battle_ai.h"
 #include "constants/battle_move_effects.h"
 #include "constants/moves.h"
+#include "debug.h"
 
 #define AI_ACTION_DONE          0x0001
 #define AI_ACTION_FLEE          0x0002
@@ -379,10 +380,8 @@ void BattleAI_SetupAIData(u8 defaultScoreMoves)
     else
        AI_THINKING_STRUCT->aiFlags = gTrainers[gTrainerBattleOpponent_A].aiFlags;
 
-#if TX_DEBUG_SYSTEM_ENABLE == TRUE
-    if (gIsDebugBattle)
-        AI_THINKING_STRUCT->aiFlags = gDebugAIFlags;
-#endif
+    if ((TX_DEBUG_SYSTEM_ENABLE == TRUE || gShowDebugMenu) && gIsDebugBattle)
+            AI_THINKING_STRUCT->aiFlags = gDebugAIFlags;
 
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
         AI_THINKING_STRUCT->aiFlags |= AI_SCRIPT_DOUBLE_BATTLE; // act smart in doubles and don't attack your partner

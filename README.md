@@ -10,6 +10,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
 ## Not Yet Versioned
+ - Entering the Konami Code at the Main Menu Screen Allows for the Debug Menu in the Start Menu.
  - Truck That Player Comes To Hometown In Is Now A UHaul.
  - Added 'Add All HMs' To Debug Menu.
 
