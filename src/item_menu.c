@@ -2750,8 +2750,8 @@ static const u8 sBagMenuSortKeyItems[] =
 static const u8 sBagMenuSortBerries[] =
 {
     ACTION_BY_NAME,
+    ACTION_BY_NUMBER,
     ACTION_BY_AMOUNT,
-    ACTION_DUMMY,
     ACTION_CANCEL,
 };
 
