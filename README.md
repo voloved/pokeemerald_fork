@@ -13,6 +13,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Entering the Konami Code at the Main Menu Screen Allows for the Debug Menu in the Start Menu.
  - Truck That Player Comes To Hometown In Is Now A UHaul.
  - Added 'Add All HMs' To Debug Menu.
+ - Wally opens correct pocket for Poké Ball.
+ - A trainer you've already battled can no longer reset FLAG_RAN_FROM_TRAINER.
 
 ## v2.0.0
  - Secret Bases Able to Have 36 Decorations (Was 16), But Only a Max Base count of 16 (Was 20).
