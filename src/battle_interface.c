@@ -32,6 +32,8 @@
 #include "item_icon.h"
 #include "item_use.h"
 #include "item.h"
+#include "overworld.h"
+#include "constants/map_types.h"
 
 struct TestingBar
 {
@@ -2692,41 +2694,65 @@ static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 bool32 CanThrowLastUsedBall(void)
 {
     return (!(CanThrowBall() != 0
-     || ((gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gSaveBlock2Ptr->lastUsedBall != ITEM_THIEF_BALL)
-     || !CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1)));
+     || ((gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gBattleStruct->ballToDisplay != ITEM_THIEF_BALL)
+     || !CheckBagHasItem(gBattleStruct->ballToDisplay, 1)));
 }
 
+static u16 ChoosePreferredBallToDisplay(void)
+{
+    u16 opposingBattlerId = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+    u16 preferredBall = ITEM_NONE;
+    if (gBattleResults.battleTurnCounter == 20)  // After enough turns to make the Timer ball 3x
+        return ITEM_TIMER_BALL;
+    else if (gBattleResults.battleTurnCounter != 0)
+        return ITEM_NONE;
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+     {
+        if (gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_SAFARI | 
+        BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | 
+        BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK))
+            return ITEM_NONE;
+        else
+            preferredBall = ITEM_THIEF_BALL;
+     }
+    else if (GetCurrentMapType() == MAP_TYPE_UNDERWATER)
+        preferredBall = ITEM_DIVE_BALL;
+    else if (IS_BATTLER_OF_TYPE(opposingBattlerId, TYPE_WATER) || IS_BATTLER_OF_TYPE(opposingBattlerId, TYPE_BUG))
+        preferredBall = ITEM_NET_BALL;
+    else if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[opposingBattlerId].species), FLAG_GET_CAUGHT))
+        preferredBall = ITEM_REPEAT_BALL;
+    else if (gBattleMons[opposingBattlerId].level <= 10)
+        preferredBall = ITEM_NEST_BALL;
+    if (preferredBall != ITEM_NONE && CheckBagHasItem(preferredBall, 1))
+        return preferredBall;
+    else
+        return ITEM_NONE;
+}
 
 void TryAddLastUsedBallItemSprites(void)
 {
+    u16 preferredBall = ITEM_NONE;
+    gBattleStruct->ballToDisplay = gSaveBlock2Ptr->lastUsedBall;
+
     if (CanThrowBall() != 0)
         return;
 
-     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
-     {
-        if (!CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1) 
-        || gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_SAFARI | 
-        BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | 
-        BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK)){
-            return;
-        }
-        else{
-            gSaveBlock2Ptr->secondLastUsedBall = gSaveBlock2Ptr->lastUsedBall;
-            gSaveBlock2Ptr->lastUsedBall = ITEM_THIEF_BALL;
-        }
-            
-     }
-     else if (gSaveBlock2Ptr->lastUsedBall == ITEM_THIEF_BALL){
-        gSaveBlock2Ptr->lastUsedBall = gSaveBlock2Ptr->secondLastUsedBall;
-     }
+    #if B_LAST_USED_BALL_SUGGESTIONS == TRUE
+    preferredBall = ChoosePreferredBallToDisplay();
+    #endif
+
+    if (preferredBall != ITEM_NONE && preferredBall != gBattleStruct->ballToDisplay)
+        gBattleStruct->ballToDisplay = preferredBall;
+    else if (!CheckBagHasItem(gBattleStruct->ballToDisplay, 1))
+        return;
     
-    if (!CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1))
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && gBattleStruct->ballToDisplay != ITEM_THIEF_BALL)
         return;
 
     // ball
     if (gBattleStruct->ballSpriteIds[0] == MAX_SPRITES)
     {
-        gBattleStruct->ballSpriteIds[0] = AddItemIconSprite(102, 102, gSaveBlock2Ptr->lastUsedBall);
+        gBattleStruct->ballSpriteIds[0] = AddItemIconSprite(102, 102, gBattleStruct->ballToDisplay);
         gSprites[gBattleStruct->ballSpriteIds[0]].x = LAST_USED_BALL_X_0;
         gSprites[gBattleStruct->ballSpriteIds[0]].y = LAST_USED_BALL_Y;
         gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore

@@ -386,6 +386,7 @@
 // Last Used Ball
 #define B_LAST_USED_BALL              TRUE        // If TRUE, the "last used ball" feature from Gen 7 will be implemented
 #define B_LAST_USED_BALL_BUTTON       R_BUTTON    // If last used ball is implemented, this button (or button combo) will trigger throwing the last used ball.
+#define B_LAST_USED_BALL_SUGGESTIONS  TRUE
 #define B_DESCRIPTION_SUBMENU         TRUE
 #define B_DESCRIPTION_SUBMENU_BUTTON  START_BUTTON
 
