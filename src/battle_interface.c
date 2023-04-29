@@ -2711,6 +2711,7 @@ void TryAddLastUsedBallItemSprites(void)
         gSprites[gBattleStruct->ballSpriteIds[0]].x = LAST_USED_BALL_X_0;
         gSprites[gBattleStruct->ballSpriteIds[0]].y = LAST_USED_BALL_Y;
         gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
+        gBattleStruct->LastUsedBallMenuPresent = TRUE;
         gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBall;
     }
 
@@ -2725,6 +2726,7 @@ void TryAddLastUsedBallItemSprites(void)
            LAST_BALL_WIN_X_0,
            LAST_USED_WIN_Y, 5);
         gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
+        gBattleStruct->LastUsedBallMenuPresent = TRUE;
     }
 }
 
@@ -2786,12 +2788,14 @@ static void TryHideOrRestoreLastUsedBall(u8 caseId)
     switch (caseId)
     {
     case 0: // hide
+        gBattleStruct->LastUsedBallMenuPresent = FALSE;
         if (gBattleStruct->ballSpriteIds[0] != MAX_SPRITES)
             gSprites[gBattleStruct->ballSpriteIds[0]].sHide = TRUE;   // hide
         if (gBattleStruct->ballSpriteIds[1] != MAX_SPRITES)
             gSprites[gBattleStruct->ballSpriteIds[1]].sHide = TRUE;   // hide
         break;
     case 1: // restore
+        gBattleStruct->LastUsedBallMenuPresent = TRUE;
         if (gBattleStruct->ballSpriteIds[0] != MAX_SPRITES)
             gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
         if (gBattleStruct->ballSpriteIds[1] != MAX_SPRITES)

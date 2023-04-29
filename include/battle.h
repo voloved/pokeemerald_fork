@@ -440,6 +440,7 @@ struct BattleStruct
     u8 arenaLostOpponentMons;
     u8 alreadyStatusedMoveAttempt; // As bits for battlers; For example when using Thunder Wave on an already paralyzed pokemon.
     u8 ballSpriteIds[2];    // item gfx, window gfx
+    bool8 LastUsedBallMenuPresent;
 };
 
 #define F_DYNAMIC_TYPE_1 (1 << 6)

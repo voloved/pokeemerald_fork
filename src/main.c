@@ -290,7 +290,8 @@ static void ReadKeys(void)
             gMain.heldKeys |= A_BUTTON;
             gMain.newKeys ^= A_BUTTON;
         }
-        if(JOY_HELD(R_BUTTON) && (gMain.callback2 != CB2_ViewWallClock && gMain.callback2 != CB2_UnionRoomChatMain && gMain.callback2 != CB2_SlotMachine)){
+        if(JOY_HELD(R_BUTTON) && (gMain.callback2 != CB2_ViewWallClock && gMain.callback2 != CB2_UnionRoomChatMain 
+        && gMain.callback2 != CB2_SlotMachine && (!gBattleStruct->LastUsedBallMenuPresent || !gMain.inBattle))){
             gMain.newKeys ^= B_BUTTON;
         }
     }
