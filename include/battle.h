@@ -38,6 +38,7 @@
 #define B_ACTION_FINISHED               12
 #define B_ACTION_CANCEL_PARTNER         12 // when choosing an action
 #define B_ACTION_NOTHING_FAINTED        13 // when choosing an action
+#define B_ACTION_THROW_BALL             21 // R to throw last used ball
 #define B_ACTION_NONE                   0xFF
 
 #define MOVE_TARGET_SELECTED            0
@@ -438,6 +439,7 @@ struct BattleStruct
     u8 arenaLostPlayerMons; // Bits for party member, lost as in referee's decision, not by fainting.
     u8 arenaLostOpponentMons;
     u8 alreadyStatusedMoveAttempt; // As bits for battlers; For example when using Thunder Wave on an already paralyzed pokemon.
+    u8 ballSpriteIds[2];    // item gfx, window gfx
 };
 
 #define F_DYNAMIC_TYPE_1 (1 << 6)

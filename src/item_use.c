@@ -944,32 +944,61 @@ void ItemUseOutOfBattle_EvolutionStone(u8 taskId)
     SetUpItemUseCallback(taskId);
 }
 
+u32 CanThrowBall(void)
+{
+    if ((TX_DEBUG_SYSTEM_ENABLE == TRUE || gShowDebugMenu) && FlagGet(FLAG_SYS_NO_CATCHING))
+        return 1;   // Debug setting doesn't allow
+    else if (gNuzlockeCannotCatch == 1)
+        return 2;   // Cannot catch due to Nuzlocke
+    if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE) 
+        return 3;   // There are two present pokemon.
+    else if (IsPlayerPartyAndPokemonStorageFull() == TRUE)
+        return 4;   // No room for mon
+    return 0;   // usable 
+}
+
+static const u8 sText_CantThrowPokeBall_TwoMons[] = _("Cannot throw a ball!\nThere are two pokemon out there!\p");
+static const u8 sText_CantThrowPokeBall[] = _("Cannot throw a ball!\p");
+static const u8 sText_BallsCannotBeUsed[] = _("Poké Balls cannot be used\nright now!\p");
+
 void ItemUseInBattle_PokeBall(u8 taskId)
 {
-    if ((TX_DEBUG_SYSTEM_ENABLE == TRUE || gShowDebugMenu) && FlagGet(FLAG_SYS_NO_CATCHING)){
-        static const u8 sText_BallsCannotBeUsed[] = _("Poké Balls cannot be used\nright now!\p");
-        DisplayItemMessage(taskId, 1, sText_BallsCannotBeUsed, CloseItemMessage);
-        return;
-    }
-    if (gNuzlockeCannotCatch == 1){
-        GetMapNameHandleAquaHideout(gStringVar1, currLocConvertForNuzlocke(GetCurrentRegionMapSectionId()));
-        DisplayItemMessage(taskId, FONT_NORMAL, gText_BallsCannotBeUsedNuz, CloseItemMessage);
-        return;
-    }
-    if (IsPlayerPartyAndPokemonStorageFull() == FALSE) // have room for mon?
+    switch (CanThrowBall())
     {
+    case 0: // usable
+    default:
         RemoveBagItem(gSpecialVar_ItemId, 1);
         if (!InBattlePyramid())
             Task_FadeAndCloseBagMenu(taskId);
         else
             CloseBattlePyramidBag(taskId);
+        break;
+    case 1:
+        if (!InBattlePyramid())
+            DisplayItemMessage(taskId, FONT_NORMAL, sText_BallsCannotBeUsed, CloseItemMessage);
+        else
+            DisplayItemMessageInBattlePyramid(taskId, sText_BallsCannotBeUsed, Task_CloseBattlePyramidBagMessage);
+        break;
+    case 2:
+        GetMapNameHandleAquaHideout(gStringVar1, currLocConvertForNuzlocke(GetCurrentRegionMapSectionId()));
+        if (!InBattlePyramid())
+            DisplayItemMessage(taskId, FONT_NORMAL, gText_BallsCannotBeUsedNuz, CloseItemMessage);
+        else
+            DisplayItemMessageInBattlePyramid(taskId, gText_BallsCannotBeUsedNuz, Task_CloseBattlePyramidBagMessage);
+        break;
+    case 3:  // There are two present pokemon.
+        if (!InBattlePyramid())
+            DisplayItemMessage(taskId, FONT_NORMAL, sText_CantThrowPokeBall_TwoMons, CloseItemMessage);
+        else
+            DisplayItemMessageInBattlePyramid(taskId, sText_CantThrowPokeBall_TwoMons, Task_CloseBattlePyramidBagMessage);
+        break;
+    case 4: // No room for mon
+        if (!InBattlePyramid())
+            DisplayItemMessage(taskId, FONT_NORMAL, gText_BoxFull, CloseItemMessage);
+        else
+            DisplayItemMessageInBattlePyramid(taskId, gText_BoxFull, Task_CloseBattlePyramidBagMessage);
+        break;
     }
-    else if (!InBattlePyramid())
-    {
-        DisplayItemMessage(taskId, FONT_NORMAL, gText_BoxFull, CloseItemMessage);
-    }
-    else
-        DisplayItemMessageInBattlePyramid(taskId, gText_BoxFull, Task_CloseBattlePyramidBagMessage);
 }
 
 static void Task_CloseStatIncreaseMessage(u8 taskId)
