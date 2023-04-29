@@ -664,11 +664,13 @@ static void HandleInputChooseMove(void)
             gBattlerControllerFuncs[gActiveBattler] = HandleMoveSwitching;
         }
     }
-    else if (JOY_NEW(START_BUTTON)) //AdditionalBattleInfo
+    #if B_DESCRIPTION_SUBMENU == TRUE
+    else if (JOY_NEW(B_DESCRIPTION_SUBMENU_BUTTON)) //AdditionalBattleInfo
     {
         sDescriptionSubmenu = TRUE;
         MoveSelectionDisplayMoveDescription();
     }
+    #endif
 }
 
 static u32 HandleMoveInputUnused(void)
