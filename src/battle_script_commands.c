@@ -582,7 +582,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_finishaction,                            //0xF6
     Cmd_finishturn,                              //0xF7
     Cmd_trainerslideout,                         //0xF8
-    Cmd_ballthrowend                         //0xF9
+    Cmd_ballthrowend                             //0xF9
 };
 
 struct StatFractions
@@ -10108,7 +10108,7 @@ static void Cmd_trysetcaughtmondexflags(void)
     {
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
     }
-    else if (!FlagGet(FLAG_SYS_POKEDEX_GET))
+    else if (!FlagGet(FLAG_SYS_POKEDEX_GET) || gUsingThiefBall == THIEF_BALL_CAUGHT)
     {
         HandleSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_SET_CAUGHT, personality);
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);

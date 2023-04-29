@@ -93,6 +93,7 @@ BattleScript_SuccessBallThrowEndThief::
 	printstring STRINGID_GOTCHAPKMNCAUGHTNOBGM
 	givecaughtmon
 	cleareffectsonfaint BS_TARGET
+	trysetcaughtmondexflags BattleScript_HandleFaintedMon
 	goto BattleScript_HandleFaintedMon
 
 BattleScript_WallyBallThrow::
