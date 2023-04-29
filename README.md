@@ -10,11 +10,14 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
 ## Not Yet Versioned
+ - [Added last used ball in battle menu.](https://github.com/rh-hideout/pokeemerald-expansion/commit/c06029bc721119b0efd6e26c24a3f77772dfd77b) [Credit: Ghoulslash]
+   - This defaults to a Thief ball if in a trainer battle.
  - Entering the Konami Code at the Main Menu Screen Allows for the Debug Menu in the Start Menu.
  - Truck That Player Comes To Hometown In Is Now A UHaul.
  - Added 'Add All HMs' To Debug Menu.
  - Wally opens correct pocket for Poké Ball.
  - A trainer you've already battled can no longer reset FLAG_RAN_FROM_TRAINER.
+ - Bug fix to allow stolen Pokémon to count towards Pokédex.
 
 ## v2.0.0
  - Secret Bases Able to Have 36 Decorations (Was 16), But Only a Max Base count of 16 (Was 20).
