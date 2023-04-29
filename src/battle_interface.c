@@ -2692,16 +2692,35 @@ static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 bool32 CanThrowLastUsedBall(void)
 {
     return (!(CanThrowBall() != 0
-     || (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+     || ((gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gSaveBlock2Ptr->lastUsedBall != ITEM_THIEF_BALL)
      || !CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1)));
 }
 
 
 void TryAddLastUsedBallItemSprites(void)
 {
-    if (CanThrowBall() != 0
-     || (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
-     || !CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1))
+    if (CanThrowBall() != 0)
+        return;
+
+     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+     {
+        if (!CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1) 
+        || gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_SAFARI | 
+        BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | 
+        BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK)){
+            return;
+        }
+        else{
+            gSaveBlock2Ptr->secondLastUsedBall = gSaveBlock2Ptr->lastUsedBall;
+            gSaveBlock2Ptr->lastUsedBall = ITEM_THIEF_BALL;
+        }
+            
+     }
+     else if (gSaveBlock2Ptr->lastUsedBall == ITEM_THIEF_BALL){
+        gSaveBlock2Ptr->lastUsedBall = gSaveBlock2Ptr->secondLastUsedBall;
+     }
+    
+    if (!CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1))
         return;
 
     // ball
