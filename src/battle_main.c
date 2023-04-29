@@ -4302,7 +4302,7 @@ u8 IsTrainerCantRunFrom(void){
     u8 trainerClass;
     if (FlagGet(FLAG_NUZLOCKE))
         return BATTLE_RUN_FORBIDDEN;
-    if (gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_TRAINER_HILL))
+    if (gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_TRAINER_HILL))
         return BATTLE_RUN_FORBIDDEN;
     trainerClass = gTrainers[gTrainerBattleOpponent_A].trainerClass;
     switch (trainerClass)

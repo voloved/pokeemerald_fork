@@ -2708,12 +2708,11 @@ static u16 ChoosePreferredBallToDisplay(void)
         return ITEM_NONE;
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
      {
-        if (gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_SAFARI | 
-        BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | 
-        BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK))
-            return ITEM_NONE;
-        else
+        if (BattleCanUseThiefBall())
             preferredBall = ITEM_THIEF_BALL;
+        else
+            return ITEM_NONE;
+            
      }
     else if (GetCurrentMapType() == MAP_TYPE_UNDERWATER)
         preferredBall = ITEM_DIVE_BALL;
@@ -2746,7 +2745,7 @@ void TryAddLastUsedBallItemSprites(void)
     else if (!CheckBagHasItem(gBattleStruct->ballToDisplay, 1))
         return;
     
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && gBattleStruct->ballToDisplay != ITEM_THIEF_BALL)
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gBattleStruct->ballToDisplay != ITEM_THIEF_BALL || !BattleCanUseThiefBall()))
         return;
 
     // ball
