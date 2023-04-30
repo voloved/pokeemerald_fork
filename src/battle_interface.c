@@ -2748,10 +2748,10 @@ static u16 ChoosePreferredBallToDisplay(void)
     u32 catchOddsBeforeBallMod = (catchRate) * (gBattleMons[opposingBattlerId].maxHP * 3 - gBattleMons[opposingBattlerId].hp * 2) 
                                 / (3 * gBattleMons[opposingBattlerId].maxHP);
     u8 minOddsToConsiderBall, minOddsToConsiderLuxuryBall;
-    u8 minOddsToConsiderBallFirstTurn = 81;
-    u8 minOddsToConsiderBallOtherTurns = 208;
-    u8 minOddsToConsiderBallFirstTurnLuxuryBall = 33;
-    u8 minOddsToConsiderBallOtherTurnsLuxuryBall = 168;
+    u8 minOddsToConsiderBallFirstTurn = 174;
+    u8 minOddsToConsiderBallOtherTurns = 238;
+    u8 minOddsToConsiderBallFirstTurnLuxuryBall = 129;
+    u8 minOddsToConsiderBallOtherTurnsLuxuryBall = 189;
     if (gBattleResults.battleTurnCounter == 0){
         minOddsToConsiderBall = minOddsToConsiderBallFirstTurn;
         minOddsToConsiderLuxuryBall = minOddsToConsiderBallFirstTurnLuxuryBall;
@@ -2763,7 +2763,8 @@ static u16 ChoosePreferredBallToDisplay(void)
     // Odds that a shake will be successful (Need 3 shakes for a success)
     // This is out of 255. This also is based on the random odds recalculation.
     // The curve of this number to odds a shake will work is logarithmic. Below are values that are worth noting:
-    // 255 is 100%, 208 is 95%, 168 is 90%, 104 is 80%, 81 is 75%, 61 is 70%, 33 is 60%, 16 is 50%, 7 is 40%, 2 is 30%, 1 is 25%
+    // 255 is 100%, 208 is 95%, 168 is 90%, 104 is 80%, 81 is 75%, 61 is 70%, 33 is 60%, 16 is 50%, 7 is 40%, 2 is 30%, 1 is 25% for at least one successful shake
+    // 255 is 100%, 238 is 95%, 222 is 90%, 189 is 80%, 174 is 75%, 159 is 70%, 129 is 60%, 101 is 50%, 75 is 40%, 51 is 30%, 40 is 25%,1 is 1.6% for all 3 successful shakes
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
      {
         if (BattleCanUseThiefBall() && CheckBagHasItem(ITEM_THIEF_BALL, 1))
