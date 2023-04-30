@@ -35,6 +35,8 @@
 #include "overworld.h"
 #include "constants/map_types.h"
 
+extern const struct Evolution gEvolutionTable[][EVOS_PER_MON];
+
 struct TestingBar
 {
     s32 maxValue;
@@ -2698,51 +2700,124 @@ bool32 CanThrowLastUsedBall(void)
      || !CheckBagHasItem(gBattleStruct->ballToDisplay, 1)));
 }
 
+static bool8 EvolvesViaFriendship(u16 species){
+    int i;
+    for (i = 0; i < EVOS_PER_MON; i++){
+        if (gEvolutionTable[species][i].method == EVO_FRIENDSHIP
+         || gEvolutionTable[species][i].method == EVO_FRIENDSHIP_DAY
+         || gEvolutionTable[species][i].method == EVO_FRIENDSHIP_NIGHT)
+         return TRUE;
+    }
+    return FALSE;
+}
+
+
+static const u8 sBallModTable[] = 
+{
+	[ITEM_POKE_BALL] = 10,
+	[ITEM_GREAT_BALL] = 15,
+	[ITEM_ULTRA_BALL] = 20,
+	[ITEM_NET_BALL] = 35,
+	[ITEM_DIVE_BALL] = 35,
+	[ITEM_REPEAT_BALL] = 35,
+	[ITEM_LUXURY_BALL] = 10,
+	[ITEM_THIEF_BALL] = 25,
+	[ITEM_SAFARI_BALL] = 15,
+};
+
+/* Order for Ball:
+* Thief ball if in valid trainer battle
+* Luxury Ball for Pokemon that can evolve via friendship
+* Pokeball 
+* Great Ball
+* Timer Ball if better than or equal to Repeat Ball (as easy to obtain as Repeat ball)
+* Repeat Ball
+* Nest Ball if odds are better than or equal to Dive Ball
+* Dive Ball
+* Net Ball
+* Timer Ball if better than or equal to Ultra Ball
+* Nest Ball if better than or equal to Ultra Ball
+* Ultra Ball
+*/
 static u16 ChoosePreferredBallToDisplay(void)
 {
-    u16 opposingBattlerId = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
     u16 preferredBall = ITEM_NONE;
-    if (gBattleResults.battleTurnCounter == 20)  // After enough turns to make the Timer ball 3x
-        return ITEM_TIMER_BALL;
-    else if (gBattleResults.battleTurnCounter != 0)
-        return ITEM_NONE;
+    u16 opposingBattlerId = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+    u16 opposingBattlerSpecies = gBattleMons[opposingBattlerId].species;
+    u8 catchRate = gSpeciesInfo[opposingBattlerSpecies].catchRate;
+    u32 catchOddsBeforeBallMod = (catchRate) * (gBattleMons[opposingBattlerId].maxHP * 3 - gBattleMons[opposingBattlerId].hp * 2) 
+                                / (3 * gBattleMons[opposingBattlerId].maxHP);
+    u8 minOddsToConsiderBall, minOddsToConsiderLuxuryBall;
+    u8 minOddsToConsiderBallFirstTurn = 81;
+    u8 minOddsToConsiderBallOtherTurns = 208;
+    u8 minOddsToConsiderBallFirstTurnLuxuryBall = 33;
+    u8 minOddsToConsiderBallOtherTurnsLuxuryBall = 168;
+    if (gBattleResults.battleTurnCounter == 0){
+        minOddsToConsiderBall = minOddsToConsiderBallFirstTurn;
+        minOddsToConsiderLuxuryBall = minOddsToConsiderBallFirstTurnLuxuryBall;
+    }
+    else{
+        minOddsToConsiderBall = minOddsToConsiderBallOtherTurns;
+        minOddsToConsiderLuxuryBall = minOddsToConsiderBallOtherTurnsLuxuryBall;      
+    }
+    // Odds that a shake will be successful (Need 3 shakes for a success)
+    // This is out of 255. This also is based on the random odds recalculation.
+    // The curve of this number to odds a shake will work is logarithmic. Below are values that are worth noting:
+    // 255 is 100%, 208 is 95%, 168 is 90%, 104 is 80%, 81 is 75%, 61 is 70%, 33 is 60%, 16 is 50%, 7 is 40%, 2 is 30%, 1 is 25%
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
      {
-        if (BattleCanUseThiefBall())
+        if (BattleCanUseThiefBall() && CheckBagHasItem(ITEM_THIEF_BALL, 1))
             preferredBall = ITEM_THIEF_BALL;
-        else
-            return ITEM_NONE;
-            
      }
-    else if (GetCurrentMapType() == MAP_TYPE_UNDERWATER)
-        preferredBall = ITEM_DIVE_BALL;
-    else if (IS_BATTLER_OF_TYPE(opposingBattlerId, TYPE_WATER) || IS_BATTLER_OF_TYPE(opposingBattlerId, TYPE_BUG))
-        preferredBall = ITEM_NET_BALL;
-    else if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[opposingBattlerId].species), FLAG_GET_CAUGHT))
+    else if (catchOddsBeforeBallMod * sBallModTable[ITEM_LUXURY_BALL] / 10 >= minOddsToConsiderLuxuryBall
+            && EvolvesViaFriendship(opposingBattlerSpecies) && CheckBagHasItem(ITEM_LUXURY_BALL, 1))
+        preferredBall = ITEM_LUXURY_BALL;
+    else if (catchOddsBeforeBallMod * sBallModTable[ITEM_POKE_BALL] / 10 >= minOddsToConsiderBall 
+            && CheckBagHasItem(ITEM_POKE_BALL, 1))
+        preferredBall = ITEM_POKE_BALL;
+    else if (catchOddsBeforeBallMod * sBallModTable[ITEM_GREAT_BALL] / 10 >= minOddsToConsiderBall 
+            && CheckBagHasItem(ITEM_GREAT_BALL, 1))
+        preferredBall = ITEM_GREAT_BALL;
+    else if ((3 * gBattleResults.battleTurnCounter + 10) >= sBallModTable[ITEM_REPEAT_BALL] 
+            && CheckBagHasItem(ITEM_TIMER_BALL, 1))
+        return ITEM_TIMER_BALL;
+    else if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(opposingBattlerSpecies), FLAG_GET_CAUGHT)
+            && CheckBagHasItem(ITEM_REPEAT_BALL, 1) && sBallModTable[ITEM_REPEAT_BALL] / 10 >= minOddsToConsiderBall)
         preferredBall = ITEM_REPEAT_BALL;
-    else if (gBattleMons[opposingBattlerId].level <= 10)
+    else if (40 - gBattleMons[opposingBattlerId].level >= sBallModTable[ITEM_DIVE_BALL] && CheckBagHasItem(ITEM_NEST_BALL, 1) )
         preferredBall = ITEM_NEST_BALL;
-    if (preferredBall != ITEM_NONE && CheckBagHasItem(preferredBall, 1))
-        return preferredBall;
-    else
-        return ITEM_NONE;
+    else if ((GetCurrentMapType() == MAP_TYPE_UNDERWATER || gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
+            && CheckBagHasItem(ITEM_DIVE_BALL, 1) && sBallModTable[ITEM_DIVE_BALL] / 10 >= minOddsToConsiderBall)
+        preferredBall = ITEM_DIVE_BALL;
+    else if (IS_BATTLER_OF_TYPE(opposingBattlerId, TYPE_WATER) || IS_BATTLER_OF_TYPE(opposingBattlerId, TYPE_BUG)
+            && CheckBagHasItem(ITEM_NET_BALL, 1) && sBallModTable[ITEM_NET_BALL] / 10 >= minOddsToConsiderBall)
+        preferredBall = ITEM_NET_BALL;
+    else if ((3 * gBattleResults.battleTurnCounter + 10) >= sBallModTable[ITEM_ULTRA_BALL] 
+            && CheckBagHasItem(ITEM_TIMER_BALL, 1))
+        return ITEM_TIMER_BALL;
+    else if (40 - gBattleMons[opposingBattlerId].level >= sBallModTable[ITEM_ULTRA_BALL]
+            && CheckBagHasItem(ITEM_NEST_BALL, 1) )
+        preferredBall = ITEM_NEST_BALL;
+    else if (catchOddsBeforeBallMod * sBallModTable[ITEM_ULTRA_BALL] / 10 >= minOddsToConsiderBall 
+            && CheckBagHasItem(ITEM_ULTRA_BALL, 1))
+        preferredBall = ITEM_ULTRA_BALL;
+    return preferredBall;
 }
 
 void TryAddLastUsedBallItemSprites(void)
 {
     u16 preferredBall = ITEM_NONE;
-    gBattleStruct->ballToDisplay = gSaveBlock2Ptr->lastUsedBall;
-
     if (CanThrowBall() != 0)
         return;
 
     #if B_LAST_USED_BALL_SUGGESTIONS == TRUE
     preferredBall = ChoosePreferredBallToDisplay();
     #endif
-
-    if (preferredBall != ITEM_NONE && preferredBall != gBattleStruct->ballToDisplay)
+    if (preferredBall != ITEM_NONE)
         gBattleStruct->ballToDisplay = preferredBall;
-    else if (!CheckBagHasItem(gBattleStruct->ballToDisplay, 1))
+    else if (CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1))
+        gBattleStruct->ballToDisplay = gSaveBlock2Ptr->lastUsedBall;
+    else
         return;
     
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gBattleStruct->ballToDisplay != ITEM_THIEF_BALL || !BattleCanUseThiefBall()))

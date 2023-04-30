@@ -9981,12 +9981,12 @@ static void Cmd_handleballthrow(void)
             {
             case ITEM_NET_BALL:
                 if (IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_WATER) || IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_BUG))
-                    ballMultiplier = 30;
+                    ballMultiplier = 35;
                 else
                     ballMultiplier = 10;
                 break;
             case ITEM_DIVE_BALL:
-                if (GetCurrentMapType() == MAP_TYPE_UNDERWATER)
+                if (GetCurrentMapType() == MAP_TYPE_UNDERWATER || gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
                     ballMultiplier = 35;
                 else
                     ballMultiplier = 10;
@@ -10005,12 +10005,12 @@ static void Cmd_handleballthrow(void)
                 break;
             case ITEM_REPEAT_BALL:
                 if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[gBattlerTarget].species), FLAG_GET_CAUGHT))
-                    ballMultiplier = 30;
+                    ballMultiplier = 35;
                 else
                     ballMultiplier = 10;
                 break;
             case ITEM_TIMER_BALL:
-                ballMultiplier = gBattleResults.battleTurnCounter + 10;
+                ballMultiplier = (3 * gBattleResults.battleTurnCounter) + 10;
                 if (ballMultiplier > 40)
                     ballMultiplier = 40;
                 break;
