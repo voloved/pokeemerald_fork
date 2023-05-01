@@ -514,20 +514,7 @@ static void HandleInputChooseMove(void)
         gPlayerDpadHoldFrames = 0;
 
 
-    if (sDescriptionSubmenu)
-    {
-        if (JOY_NEW(START_BUTTON) || JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
-        {
-            sDescriptionSubmenu = FALSE;
-            FillWindowPixelBuffer(B_WIN_MOVE_DESCRIPTION, PIXEL_FILL(0));
-            ClearStdWindowAndFrame(B_WIN_MOVE_DESCRIPTION, FALSE);
-            CopyWindowToVram(B_WIN_MOVE_DESCRIPTION, COPYWIN_GFX);
-            PlaySE(SE_SELECT);
-            MoveSelectionDisplayPpNumber();
-            MoveSelectionDisplayMoveType();
-        }
-    }
-    else if (JOY_NEW(A_BUTTON))
+    if (JOY_NEW(A_BUTTON) && !sDescriptionSubmenu)
     {
         u8 moveTarget;
 
@@ -592,7 +579,7 @@ static void HandleInputChooseMove(void)
             gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_ShowAsMoveTarget;
         }
     }
-    else if (JOY_NEW(B_BUTTON) || gPlayerDpadHoldFrames > 59)
+    else if (JOY_NEW(B_BUTTON)  && !sDescriptionSubmenu)
     {
         PlaySE(SE_SELECT);
         BtlController_EmitTwoReturnValues(BUFFER_B, 10, 0xFFFF);
@@ -608,6 +595,8 @@ static void HandleInputChooseMove(void)
             MoveSelectionCreateCursorAt(gMoveSelectionCursor[gActiveBattler], 0);
             MoveSelectionDisplayPpNumber();
             MoveSelectionDisplayMoveType();
+            if (sDescriptionSubmenu)
+                MoveSelectionDisplayMoveDescription();
         }
     }
     else if (JOY_NEW(DPAD_RIGHT))
@@ -621,6 +610,8 @@ static void HandleInputChooseMove(void)
             MoveSelectionCreateCursorAt(gMoveSelectionCursor[gActiveBattler], 0);
             MoveSelectionDisplayPpNumber();
             MoveSelectionDisplayMoveType();
+            if (sDescriptionSubmenu)
+                MoveSelectionDisplayMoveDescription();
         }
     }
     else if (JOY_NEW(DPAD_UP))
@@ -633,6 +624,8 @@ static void HandleInputChooseMove(void)
             MoveSelectionCreateCursorAt(gMoveSelectionCursor[gActiveBattler], 0);
             MoveSelectionDisplayPpNumber();
             MoveSelectionDisplayMoveType();
+            if (sDescriptionSubmenu)
+                MoveSelectionDisplayMoveDescription();
         }
     }
     else if (JOY_NEW(DPAD_DOWN))
@@ -646,9 +639,11 @@ static void HandleInputChooseMove(void)
             MoveSelectionCreateCursorAt(gMoveSelectionCursor[gActiveBattler], 0);
             MoveSelectionDisplayPpNumber();
             MoveSelectionDisplayMoveType();
+            if (sDescriptionSubmenu)
+                MoveSelectionDisplayMoveDescription();
         }
     }
-    else if (JOY_NEW(SELECT_BUTTON))
+    else if (JOY_NEW(SELECT_BUTTON)  && !sDescriptionSubmenu)
     {
         if (gNumberOfMovesToChoose > 1 && !(gBattleTypeFlags & BATTLE_TYPE_LINK))
         {
@@ -662,6 +657,19 @@ static void HandleInputChooseMove(void)
             MoveSelectionCreateCursorAt(gMultiUsePlayerCursor, 27);
             BattlePutTextOnWindow(gText_BattleSwitchWhich, B_WIN_SWITCH_PROMPT);
             gBattlerControllerFuncs[gActiveBattler] = HandleMoveSwitching;
+        }
+    }
+    if (sDescriptionSubmenu)
+    {
+        if (JOY_NEW(START_BUTTON) || JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
+        {
+            sDescriptionSubmenu = FALSE;
+            FillWindowPixelBuffer(B_WIN_MOVE_DESCRIPTION, PIXEL_FILL(0));
+            ClearStdWindowAndFrame(B_WIN_MOVE_DESCRIPTION, FALSE);
+            CopyWindowToVram(B_WIN_MOVE_DESCRIPTION, COPYWIN_GFX);
+            PlaySE(SE_SELECT);
+            MoveSelectionDisplayPpNumber();
+            MoveSelectionDisplayMoveType();
         }
     }
     #if B_DESCRIPTION_SUBMENU == TRUE
