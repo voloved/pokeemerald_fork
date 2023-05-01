@@ -2748,7 +2748,7 @@ static u16 ChoosePreferredBallToDisplay(void)
     u32 catchOddsBeforeBallMod = (catchRate) * (gBattleMons[opposingBattlerId].maxHP * 3 - gBattleMons[opposingBattlerId].hp * 2) 
                                 / (3 * gBattleMons[opposingBattlerId].maxHP);
     u8 minOddsToConsiderBall, minOddsToConsiderLuxuryBall;
-    u8 minOddsToConsiderBallFirstTurn = 174;
+    u8 minOddsToConsiderBallFirstTurn = 189;
     u8 minOddsToConsiderBallOtherTurns = 238;
     u8 minOddsToConsiderBallFirstTurnLuxuryBall = 129;
     u8 minOddsToConsiderBallOtherTurnsLuxuryBall = 189;
@@ -2790,7 +2790,7 @@ static u16 ChoosePreferredBallToDisplay(void)
     else if ((GetCurrentMapType() == MAP_TYPE_UNDERWATER || gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
             && CheckBagHasItem(ITEM_DIVE_BALL, 1) && sBallModTable[ITEM_DIVE_BALL] / 10 >= minOddsToConsiderBall)
         preferredBall = ITEM_DIVE_BALL;
-    else if (IS_BATTLER_OF_TYPE(opposingBattlerId, TYPE_WATER) || IS_BATTLER_OF_TYPE(opposingBattlerId, TYPE_BUG)
+    else if ((IS_BATTLER_OF_TYPE(opposingBattlerId, TYPE_WATER) || IS_BATTLER_OF_TYPE(opposingBattlerId, TYPE_BUG))
             && CheckBagHasItem(ITEM_NET_BALL, 1) && sBallModTable[ITEM_NET_BALL] / 10 >= minOddsToConsiderBall)
         preferredBall = ITEM_NET_BALL;
     else if ((3 * gBattleResults.battleTurnCounter + 10) >= sBallModTable[ITEM_ULTRA_BALL] 

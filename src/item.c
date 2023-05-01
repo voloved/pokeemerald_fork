@@ -1040,7 +1040,7 @@ void ItemId_GetHoldEffectParam_Script()
 void GiveItems_Missingno(void)
 {
     u8 i;
-    static const u8 pockets[] = { ITEMS_POCKET, BALLS_POCKET, TMHM_POCKET, BERRIES_POCKET };
+    static const u8 pockets[] = { ITEMS_POCKET, MEDICINE_POCKET, BALLS_POCKET, BATTLEITEMS_POCKET, TMHM_POCKET, BERRIES_POCKET };
     u8 itemSlot = 6;
     for (i = 0; i < ARRAY_COUNT(pockets); i++)
     {
