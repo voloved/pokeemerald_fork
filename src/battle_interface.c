@@ -170,6 +170,50 @@ enum
     HEALTHBOX_GFX_118, //Nuzlocke indicator
 };
 
+	// - ITEM_ULTRA_BALL skips Master Ball and ITEM_NONE
+static const u8 sBallCatchBonuses[] =
+{
+    [ITEM_ULTRA_BALL - ITEM_ULTRA_BALL]  = 20,
+    [ITEM_GREAT_BALL - ITEM_ULTRA_BALL]  = 15,
+    [ITEM_POKE_BALL - ITEM_ULTRA_BALL]   = 10,
+    [ITEM_SAFARI_BALL - ITEM_ULTRA_BALL] = 15,
+    [ITEM_NET_BALL - ITEM_ULTRA_BALL] = 35,
+    [ITEM_DIVE_BALL - ITEM_ULTRA_BALL] = 35,
+    [ITEM_REPEAT_BALL - ITEM_ULTRA_BALL] = 35,
+    [ITEM_LUXURY_BALL - ITEM_ULTRA_BALL] = 10,
+    [ITEM_THIEF_BALL - ITEM_ULTRA_BALL] = 25,
+};
+
+/* Odds that a shake will be successful (Need 3 shakes for a success)
+This is out of 255. This also is based on the random odds recalculation.
+The curve of this number to odds a shake will work is logarithmic. Below are values that are worth noting:
+255 is 100%, 208 is 95%, 168 is 90%, 104 is 80%, 81 is 75%, 61 is 70%, 33 is 60%, 16 is 50%, 7 is 40%, 2 is 30%, 1 is 25% for at least one successful shake
+255 is 100%, 238 is 95%, 222 is 90%, 189 is 80%, 174 is 75%, 159 is 70%, 129 is 60%, 101 is 50%, 75 is 40%, 51 is 30%, 40 is 25%,1 is 1.6% for all 3 successful shakes
+*/
+static const u8 percentageToCatchOddsLUT[101] = 
+{
+[2]  =   1,  [3] =   2,  [4] =   3,   [5] =   4,  [6] =   5,
+[7]  =   7,  [8] =   8,  [9] =  10,  [10] =  11, [11] =  13,
+[12] =  15, [13] =  16, [14] =  18,  [15] =  20, [16] =  22,
+[17] =  24, [18] =  25, [19] =  27,  [20] =  29, [21] =  31,
+[22] =  33, [23] =  35, [24] =  38,  [25] =  40, [26] =  42,
+[27] =  44, [28] =  46, [29] =  48,  [30] =  51, [31] =  53,
+[32] =  55, [33] =  58, [34] =  60,  [35] =  62, [36] =  65,
+[37] =  67, [38] =  70, [39] =  72,  [40] =  75, [41] =  77,
+[42] =  80, [43] =  82, [44] =  85,  [45] =  87, [46] =  90,
+[47] =  93, [48] =  95, [49] =  98,  [50] = 101, [51] = 103,
+[52] = 106, [53] = 109, [54] = 112,  [55] = 114, [56] = 117,
+[57] = 120, [58] = 123, [59] = 126,  [60] = 129, [61] = 131,
+[62] = 134, [63] = 137, [64] = 140,  [65] = 143, [66] = 146,
+[67] = 149, [68] = 152, [69] = 155,  [70] = 158, [71] = 161,
+[72] = 164, [73] = 167, [74] = 170,  [75] = 173, [76] = 176,
+[77] = 179, [78] = 183, [79] = 186,  [80] = 189, [81] = 192,
+[82] = 195, [83] = 198, [84] = 202,  [85] = 205, [86] = 208,
+[87] = 211, [88] = 215, [89] = 218,  [90] = 221, [91] = 224,
+[92] = 228, [93] = 231, [94] = 234,  [95] = 238, [96] = 241,
+[97] = 244, [98] = 248, [99] = 251, [100] = 255,
+};
+
 static const u8 *GetHealthboxElementGfxPtr(u8);
 static u8 *AddTextPrinterAndCreateWindowOnHealthbox(const u8 *, u32, u32, u32, u32 *);
 
@@ -2711,36 +2755,107 @@ static bool8 EvolvesViaFriendship(u16 species){
     return FALSE;
 }
 
-
-static const u8 sBallModTable[] = 
+u8 OddsToPercentCatchRate(u8 odds)
 {
-	[ITEM_POKE_BALL] = 10,
-	[ITEM_GREAT_BALL] = 15,
-	[ITEM_ULTRA_BALL] = 20,
-	[ITEM_NET_BALL] = 35,
-	[ITEM_DIVE_BALL] = 35,
-	[ITEM_REPEAT_BALL] = 35,
-	[ITEM_LUXURY_BALL] = 10,
-	[ITEM_THIEF_BALL] = 25,
-	[ITEM_SAFARI_BALL] = 15,
-};
+    u32 i;
+    for(i = 100; i > 0; i--)
+    {
+        if (percentageToCatchOddsLUT[i] == odds)
+            return i;
+        else if (percentageToCatchOddsLUT[i] < odds)
+            return odds - percentageToCatchOddsLUT[i] > percentageToCatchOddsLUT[i+1] - odds ? i+1 : i;
+    }
+}
+
+u8 getBallMultiplier(u16 ball)
+{
+    u8 ballMultiplier;
+    switch (ball)
+    {
+    case ITEM_NET_BALL:
+        if (IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_WATER) || IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_BUG))
+            ballMultiplier = sBallCatchBonuses[ITEM_NET_BALL - ITEM_ULTRA_BALL];
+        else
+            ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];;
+        break;
+    case ITEM_DIVE_BALL:
+        if (GetCurrentMapType() == MAP_TYPE_UNDERWATER || gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
+            ballMultiplier = sBallCatchBonuses[ITEM_DIVE_BALL - ITEM_ULTRA_BALL];
+        else
+            ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
+        break;
+    case ITEM_NEST_BALL:
+        if (gBattleMons[gBattlerTarget].level < 40)
+        {
+            ballMultiplier = 40 - gBattleMons[gBattlerTarget].level;
+            if (ballMultiplier <= 9)
+                ballMultiplier = 10;
+        }
+        else
+        {
+            ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
+        }
+        break;
+    case ITEM_REPEAT_BALL:
+        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[gBattlerTarget].species), FLAG_GET_CAUGHT))
+            ballMultiplier = sBallCatchBonuses[ITEM_REPEAT_BALL - ITEM_ULTRA_BALL];
+        else
+            ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
+        break;
+    case ITEM_TIMER_BALL:
+        ballMultiplier = (3 * gBattleResults.battleTurnCounter) + 10;
+        if (ballMultiplier > 40)
+            ballMultiplier = 40;
+        break;
+    case ITEM_LUXURY_BALL:
+        ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
+        break;
+    case ITEM_THIEF_BALL:  // If used on trainer, it's 2.5x; if used on a wild Pokemon, it's 1x
+        if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+            ballMultiplier = sBallCatchBonuses[ITEM_THIEF_BALL - ITEM_ULTRA_BALL];
+        else
+            ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
+        break;
+    default:
+        ballMultiplier = sBallCatchBonuses[ball - ITEM_ULTRA_BALL];
+        break;
+    }
+    return ballMultiplier;
+}
+
+static u16 ChooseBallWithHighestMultiplier(void){
+    u32 i;
+    u16 ballMultiplierHighest, ballMultiplier, ballHighest, ball;
+    for (i = 0; i < gBagPockets[BALLS_POCKET].capacity; i++)
+    {
+        ball = gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
+        ballMultiplier = getBallMultiplier(ball);
+        DebugPrintf("%d %d %d", ballMultiplier,ballMultiplierHighest, ballHighest);
+        if (ball != ITEM_NONE && ballMultiplier > ballMultiplierHighest){
+            ballMultiplierHighest = ballMultiplier;
+            ballHighest = gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
+        }
+    }
+    return ballHighest;
+}
 
 /* Order for Ball:
 * Thief ball if in valid trainer battle
 * Luxury Ball for Pokemon that can evolve via friendship
 * Pokeball 
 * Great Ball
-* Timer Ball if better than or equal to Repeat Ball (as easy to obtain as Repeat ball)
+* Nest Ball
+* Timer Ball
 * Repeat Ball
-* Nest Ball if odds are better than or equal to Dive Ball
 * Dive Ball
 * Net Ball
-* Timer Ball if better than or equal to Ultra Ball
-* Nest Ball if better than or equal to Ultra Ball
 * Ultra Ball
 */
 static u16 ChoosePreferredBallToDisplay(void)
 {
+    static const u8 ballsByValue[] = { ITEM_POKE_BALL, ITEM_GREAT_BALL, ITEM_NEST_BALL, ITEM_TIMER_BALL, ITEM_REPEAT_BALL, 
+                                       ITEM_DIVE_BALL, ITEM_NET_BALL, ITEM_ULTRA_BALL };  //Order to check the balls
+    // Ball value chosen off price, then how early in the game you can get it.
     u16 preferredBall = ITEM_NONE;
     u16 opposingBattlerId = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
     u16 opposingBattlerSpecies = gBattleMons[opposingBattlerId].species;
@@ -2748,60 +2863,46 @@ static u16 ChoosePreferredBallToDisplay(void)
     u32 catchOddsBeforeBallMod = (catchRate) * (gBattleMons[opposingBattlerId].maxHP * 3 - gBattleMons[opposingBattlerId].hp * 2) 
                                 / (3 * gBattleMons[opposingBattlerId].maxHP);
     u8 minOddsToConsiderBall, minOddsToConsiderLuxuryBall;
-    u8 minOddsToConsiderBallFirstTurn = 189;
-    u8 minOddsToConsiderBallOtherTurns = 238;
-    u8 minOddsToConsiderBallFirstTurnLuxuryBall = 129;
-    u8 minOddsToConsiderBallOtherTurnsLuxuryBall = 189;
+
+    u8 minOddsToConsiderBallFirstTurn = 80;
+    u8 minOddsToConsiderBallOtherTurns = 95;
+    u8 minOddsToConsiderBallFirstTurnLuxuryBall = 60;
+    u8 minOddsToConsiderBallOtherTurnsLuxuryBall = 80;
+    u8 additionPerForBetterBall = 3;  // A more valuable ball must be at least this percent higher in catching odds to be used.
+    u32 i;
+
     if (gBattleResults.battleTurnCounter == 0){
-        minOddsToConsiderBall = minOddsToConsiderBallFirstTurn;
-        minOddsToConsiderLuxuryBall = minOddsToConsiderBallFirstTurnLuxuryBall;
+        minOddsToConsiderBall = percentageToCatchOddsLUT[minOddsToConsiderBallFirstTurn];
+        minOddsToConsiderLuxuryBall = percentageToCatchOddsLUT[minOddsToConsiderBallFirstTurnLuxuryBall];
     }
     else{
-        minOddsToConsiderBall = minOddsToConsiderBallOtherTurns;
-        minOddsToConsiderLuxuryBall = minOddsToConsiderBallOtherTurnsLuxuryBall;      
+        minOddsToConsiderBall = percentageToCatchOddsLUT[minOddsToConsiderBallOtherTurns];
+        minOddsToConsiderLuxuryBall = percentageToCatchOddsLUT[minOddsToConsiderBallOtherTurnsLuxuryBall];      
     }
-    // Odds that a shake will be successful (Need 3 shakes for a success)
-    // This is out of 255. This also is based on the random odds recalculation.
-    // The curve of this number to odds a shake will work is logarithmic. Below are values that are worth noting:
-    // 255 is 100%, 208 is 95%, 168 is 90%, 104 is 80%, 81 is 75%, 61 is 70%, 33 is 60%, 16 is 50%, 7 is 40%, 2 is 30%, 1 is 25% for at least one successful shake
-    // 255 is 100%, 238 is 95%, 222 is 90%, 189 is 80%, 174 is 75%, 159 is 70%, 129 is 60%, 101 is 50%, 75 is 40%, 51 is 30%, 40 is 25%,1 is 1.6% for all 3 successful shakes
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
      {
         if (BattleCanUseThiefBall() && CheckBagHasItem(ITEM_THIEF_BALL, 1))
-            preferredBall = ITEM_THIEF_BALL;
+            return ITEM_THIEF_BALL;
+        else
+            return ITEM_NONE;
      }
-    else if (catchOddsBeforeBallMod * sBallModTable[ITEM_LUXURY_BALL] / 10 >= minOddsToConsiderLuxuryBall
+    if (opposingBattlerSpecies == SPECIES_UMBREON && CheckBagHasItem(ITEM_ULTRA_BALL, 1))  // To color coordinate for Nick :)
+        return ITEM_ULTRA_BALL;
+    if (catchOddsBeforeBallMod *  getBallMultiplier(ITEM_LUXURY_BALL) / 10 >= minOddsToConsiderLuxuryBall
             && EvolvesViaFriendship(opposingBattlerSpecies) && CheckBagHasItem(ITEM_LUXURY_BALL, 1))
-        preferredBall = ITEM_LUXURY_BALL;
-    else if (catchOddsBeforeBallMod * sBallModTable[ITEM_POKE_BALL] / 10 >= minOddsToConsiderBall 
-            && CheckBagHasItem(ITEM_POKE_BALL, 1))
-        preferredBall = ITEM_POKE_BALL;
-    else if (catchOddsBeforeBallMod * sBallModTable[ITEM_GREAT_BALL] / 10 >= minOddsToConsiderBall 
-            && CheckBagHasItem(ITEM_GREAT_BALL, 1))
-        preferredBall = ITEM_GREAT_BALL;
-    else if ((3 * gBattleResults.battleTurnCounter + 10) >= sBallModTable[ITEM_REPEAT_BALL] 
-            && CheckBagHasItem(ITEM_TIMER_BALL, 1))
-        return ITEM_TIMER_BALL;
-    else if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(opposingBattlerSpecies), FLAG_GET_CAUGHT)
-            && CheckBagHasItem(ITEM_REPEAT_BALL, 1) && sBallModTable[ITEM_REPEAT_BALL] / 10 >= minOddsToConsiderBall)
-        preferredBall = ITEM_REPEAT_BALL;
-    else if (40 - gBattleMons[opposingBattlerId].level >= sBallModTable[ITEM_DIVE_BALL] && CheckBagHasItem(ITEM_NEST_BALL, 1) )
-        preferredBall = ITEM_NEST_BALL;
-    else if ((GetCurrentMapType() == MAP_TYPE_UNDERWATER || gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
-            && CheckBagHasItem(ITEM_DIVE_BALL, 1) && sBallModTable[ITEM_DIVE_BALL] / 10 >= minOddsToConsiderBall)
-        preferredBall = ITEM_DIVE_BALL;
-    else if ((IS_BATTLER_OF_TYPE(opposingBattlerId, TYPE_WATER) || IS_BATTLER_OF_TYPE(opposingBattlerId, TYPE_BUG))
-            && CheckBagHasItem(ITEM_NET_BALL, 1) && sBallModTable[ITEM_NET_BALL] / 10 >= minOddsToConsiderBall)
-        preferredBall = ITEM_NET_BALL;
-    else if ((3 * gBattleResults.battleTurnCounter + 10) >= sBallModTable[ITEM_ULTRA_BALL] 
-            && CheckBagHasItem(ITEM_TIMER_BALL, 1))
-        return ITEM_TIMER_BALL;
-    else if (40 - gBattleMons[opposingBattlerId].level >= sBallModTable[ITEM_ULTRA_BALL]
-            && CheckBagHasItem(ITEM_NEST_BALL, 1) )
-        preferredBall = ITEM_NEST_BALL;
-    else if (catchOddsBeforeBallMod * sBallModTable[ITEM_ULTRA_BALL] / 10 >= minOddsToConsiderBall 
-            && CheckBagHasItem(ITEM_ULTRA_BALL, 1))
-        preferredBall = ITEM_ULTRA_BALL;
+        return ITEM_LUXURY_BALL;
+    for (i = 0; i < ARRAY_COUNT(ballsByValue); i++){
+        u32 catchOdds = catchOddsBeforeBallMod * getBallMultiplier(ballsByValue[i]) / 10;
+        if (!CheckBagHasItem(ballsByValue[i], 1))
+            continue;
+        else if (catchOdds > 254)
+            return ballsByValue[i];
+        else if (catchOdds >= minOddsToConsiderBall)
+        {
+            preferredBall = ballsByValue[i];
+            minOddsToConsiderBall = percentageToCatchOddsLUT[OddsToPercentCatchRate(catchOdds) + additionPerForBetterBall];
+        }
+    }
     return preferredBall;
 }
 
@@ -2812,6 +2913,7 @@ void TryAddLastUsedBallItemSprites(void)
         return;
 
     #if B_LAST_USED_BALL_SUGGESTIONS == TRUE
+    //preferredBall = ChooseBallWithHighestMultiplier(); // Simple
     preferredBall = ChoosePreferredBallToDisplay();
     #endif
     if (preferredBall != ITEM_NONE)
@@ -2864,6 +2966,23 @@ static void DestroyLastUsedBallGfx(struct Sprite *sprite)
     FreeSpritePaletteByTag(102);
     DestroySprite(sprite);
     gBattleStruct->ballSpriteIds[0] = MAX_SPRITES;
+}
+
+void SwapBallToDisplay(void){
+    FreeSpriteTilesByTag(102);
+    FreeSpritePaletteByTag(102);
+    struct Sprite *sprite = &gSprites[gBattleStruct->ballSpriteIds[0]];
+    DestroySprite(sprite);
+    gBattleStruct->ballSpriteIds[0] = MAX_SPRITES;
+    if (gBattleStruct->ballSpriteIds[0] == MAX_SPRITES)
+    {
+        gBattleStruct->ballSpriteIds[0] = AddItemIconSprite(102, 102, gBattleStruct->ballToDisplay);
+        gSprites[gBattleStruct->ballSpriteIds[0]].x = LAST_USED_BALL_X_0;
+        gSprites[gBattleStruct->ballSpriteIds[0]].y = LAST_USED_BALL_Y;
+        gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
+        gBattleStruct->LastUsedBallMenuPresent = TRUE;
+        gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBall;
+    }
 }
 
 static void SpriteCB_LastUsedBallWin(struct Sprite *sprite)

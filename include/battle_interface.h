@@ -84,5 +84,7 @@ bool32 CanThrowLastUsedBall(void);
 void TryHideLastUsedBall(void);
 void TryRestoreLastUsedBall(void);
 void TryAddLastUsedBallItemSprites(void);
+void SwapBallToDisplay(void);
+u8 getBallMultiplier(u16 ball);
 
 #endif // GUARD_BATTLE_INTERFACE_H
