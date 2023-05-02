@@ -2830,7 +2830,6 @@ static u16 ChooseBallWithHighestMultiplier(void){
     {
         ball = gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
         ballMultiplier = getBallMultiplier(ball);
-        DebugPrintf("%d %d %d", ballMultiplier,ballMultiplierHighest, ballHighest);
         if (ball != ITEM_NONE && ballMultiplier > ballMultiplierHighest){
             ballMultiplierHighest = ballMultiplier;
             ballHighest = gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
@@ -2977,7 +2976,7 @@ void SwapBallToDisplay(void){
     if (gBattleStruct->ballSpriteIds[0] == MAX_SPRITES)
     {
         gBattleStruct->ballSpriteIds[0] = AddItemIconSprite(102, 102, gBattleStruct->ballToDisplay);
-        gSprites[gBattleStruct->ballSpriteIds[0]].x = LAST_USED_BALL_X_0;
+        gSprites[gBattleStruct->ballSpriteIds[0]].x = LAST_BALL_WIN_X_F;
         gSprites[gBattleStruct->ballSpriteIds[0]].y = LAST_USED_BALL_Y;
         gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
         gBattleStruct->LastUsedBallMenuPresent = TRUE;

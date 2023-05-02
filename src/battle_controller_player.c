@@ -239,6 +239,47 @@ static void CompleteOnBankSpritePosX_0(void)
         PlayerBufferExecCompleted();
 }
 
+static u16 GetPrevBall(u16 ballId)
+{
+    u16 ballPrev, lastBall;
+    s8 i, j;
+    for (i = 0; i < gBagPockets[BALLS_POCKET].capacity; i++)
+    {
+        
+        if (ballId == gBagPockets[BALLS_POCKET].itemSlots[i].itemId)
+        {
+            if (i <= 0)
+            {
+                for (j = gBagPockets[BALLS_POCKET].capacity - 1; j >= 0; j--){
+                    ballPrev = gBagPockets[BALLS_POCKET].itemSlots[j].itemId;
+                    if (ballPrev != ITEM_NONE)
+                        return ballPrev;
+                }
+            } 
+            i--;
+            return gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
+        }
+    }
+}
+
+
+static u16 GetNextBall(u16 ballId)
+{
+    u16 ballNext, i;
+    for (i = 0; i < gBagPockets[BALLS_POCKET].capacity; i++)
+    {
+        if (ballId == gBagPockets[BALLS_POCKET].itemSlots[i].itemId)
+        {
+            i++;
+            ballNext = gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
+            if (ballNext == ITEM_NONE)
+                return gBagPockets[BALLS_POCKET].itemSlots[0].itemId; // Zeroth slot
+            else
+                return ballNext;
+        }
+    }
+}
+
 static void HandleInputChooseAction(void)
 {
     u16 itemId = gBattleBufferA[gActiveBattler][2] | (gBattleBufferA[gActiveBattler][3] << 8);
@@ -273,6 +314,20 @@ static void HandleInputChooseAction(void)
         }
         PlayerBufferExecCompleted();
     }
+    #if B_LAST_USED_BALL == TRUE
+    else if (JOY_HELD(START_BUTTON) && (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_RIGHT)) && gBattleStruct->LastUsedBallMenuPresent)
+    {
+        gBattleStruct->ballToDisplay = GetNextBall(gBattleStruct->ballToDisplay);
+        SwapBallToDisplay();
+        PlaySE(SE_SELECT);
+    }
+    else if (JOY_HELD(START_BUTTON) && (JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT)) && gBattleStruct->LastUsedBallMenuPresent)
+    {
+        gBattleStruct->ballToDisplay = GetPrevBall(gBattleStruct->ballToDisplay);
+        SwapBallToDisplay();
+        PlaySE(SE_SELECT);
+    }
+    #endif
     else if (JOY_NEW(DPAD_LEFT))
     {
         if (gActionSelectionCursor[gActiveBattler] & 1) // if is B_ACTION_USE_ITEM or B_ACTION_RUN
