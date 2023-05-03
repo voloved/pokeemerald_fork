@@ -190,6 +190,7 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
 };
 
 static EWRAM_DATA bool8 sDescriptionSubmenu = FALSE;
+static EWRAM_DATA bool8 sSwappedBall = FALSE;
 static const u8 sTargetIdentities[MAX_BATTLERS_COUNT] = {B_POSITION_PLAYER_LEFT, B_POSITION_PLAYER_RIGHT, B_POSITION_OPPONENT_RIGHT, B_POSITION_OPPONENT_LEFT};
 
 // unknown unused data
@@ -315,14 +316,16 @@ static void HandleInputChooseAction(void)
         PlayerBufferExecCompleted();
     }
     #if B_LAST_USED_BALL == TRUE
-    else if (JOY_HELD(START_BUTTON) && (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_RIGHT)) && gBattleStruct->LastUsedBallMenuPresent)
+    else if (JOY_HELD(B_LAST_USED_BALL_BUTTON)  && (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_RIGHT)) && gBattleStruct->LastUsedBallMenuPresent)
     {
+        sSwappedBall = TRUE;
         gBattleStruct->ballToDisplay = GetNextBall(gBattleStruct->ballToDisplay);
         SwapBallToDisplay();
         PlaySE(SE_SELECT);
     }
-    else if (JOY_HELD(START_BUTTON) && (JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT)) && gBattleStruct->LastUsedBallMenuPresent)
+    else if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT)) && gBattleStruct->LastUsedBallMenuPresent)
     {
+        sSwappedBall = TRUE;
         gBattleStruct->ballToDisplay = GetPrevBall(gBattleStruct->ballToDisplay);
         SwapBallToDisplay();
         PlaySE(SE_SELECT);
@@ -403,13 +406,18 @@ static void HandleInputChooseAction(void)
         SwapHpBarsWithHpText();
     }
     #if B_LAST_USED_BALL == TRUE
-    else if (JOY_NEW(B_LAST_USED_BALL_BUTTON) && CanThrowLastUsedBall())
-    {
-        PlaySE(SE_SELECT);
-        TryHideLastUsedBall();
-        BtlController_EmitTwoReturnValues(1, B_ACTION_THROW_BALL, 0);
-        PlayerBufferExecCompleted();
-    }
+    else if (JOY_RELEASED(B_LAST_USED_BALL_BUTTON) && CanThrowLastUsedBall())
+        if (sSwappedBall)
+        {
+            sSwappedBall = FALSE;
+        }
+        else
+        {
+            PlaySE(SE_SELECT);
+            TryHideLastUsedBall();
+            BtlController_EmitTwoReturnValues(1, B_ACTION_THROW_BALL, 0);
+            PlayerBufferExecCompleted();
+        }
     #endif
 }
 
@@ -634,7 +642,7 @@ static void HandleInputChooseMove(void)
             gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_ShowAsMoveTarget;
         }
     }
-    else if (JOY_NEW(B_BUTTON)  && !sDescriptionSubmenu)
+    else if ((JOY_NEW(B_BUTTON) || gPlayerDpadHoldFrames > 59)  && !sDescriptionSubmenu)
     {
         PlaySE(SE_SELECT);
         BtlController_EmitTwoReturnValues(BUFFER_B, 10, 0xFFFF);

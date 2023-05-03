@@ -26,18 +26,19 @@ struct Main
     /*0x02A*/ u16 newKeysRaw;            // newly pressed keys without L=A remapping
     /*0x02C*/ u16 heldKeys;              // held keys with L=A remapping
     /*0x02E*/ u16 newKeys;               // newly pressed keys with L=A remapping
-    /*0x030*/ u16 newAndRepeatedKeys;    // newly pressed keys plus key repeat
-    /*0x032*/ u16 keyRepeatCounter;      // counts down to 0, triggering key repeat
-    /*0x034*/ bool16 watchedKeysPressed; // whether one of the watched keys was pressed
-    /*0x036*/ u16 watchedKeysMask;       // bit mask for watched keys
+    /*0x030*/ u16 newKeysReleased;       // Keys recently released
+    /*0x032*/ u16 newAndRepeatedKeys;    // newly pressed keys plus key repeat
+    /*0x034*/ u16 keyRepeatCounter;      // counts down to 0, triggering key repeat
+    /*0x036*/ bool16 watchedKeysPressed; // whether one of the watched keys was pressed
+    /*0x038*/ u16 watchedKeysMask;       // bit mask for watched keys
 
-    /*0x038*/ struct OamData oamBuffer[128];
+    /*0x03A*/ struct OamData oamBuffer[128];
 
-    /*0x438*/ u8 state;
+    /*0x43A*/ u8 state;
 
-    /*0x439*/ u8 oamLoadDisabled:1;
-    /*0x439*/ u8 inBattle:1;
-    /*0x439*/ u8 anyLinkBattlerHasFrontierPass:1;
+    /*0x43A*/ u8 oamLoadDisabled:1;
+    /*0x43A*/ u8 inBattle:1;
+    /*0x43A*/ u8 anyLinkBattlerHasFrontierPass:1;
 };
 
 #define GAME_CODE_LENGTH 4
