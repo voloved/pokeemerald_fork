@@ -247,12 +247,14 @@ void InitKeys(void)
     gMain.newAndRepeatedKeys = 0;
     gMain.heldKeysRaw = 0;
     gMain.newKeysRaw = 0;
+    gMain.newKeysReleased = 0;
 }
 
 static void ReadKeys(void)
 {
     u16 keyInput = REG_KEYINPUT ^ KEYS_MASK;
     gMain.newKeysRaw = keyInput & ~gMain.heldKeysRaw;
+    gMain.newKeysReleased = ~keyInput & gMain.heldKeysRaw;
     gMain.newKeys = gMain.newKeysRaw;
     gMain.newAndRepeatedKeys = gMain.newKeysRaw;
 
