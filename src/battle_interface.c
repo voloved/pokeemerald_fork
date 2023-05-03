@@ -2727,15 +2727,17 @@ static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
     sLastUsedBallWindowGfx, sizeof(sLastUsedBallWindowGfx), LAST_BALL_WINDOW_TAG
 };
 
-#define LAST_USED_BALL_X_F    15
+#define LAST_USED_BALL_X_F    14
 #define LAST_USED_BALL_X_0    -15
 #define LAST_USED_BALL_Y      68
+#define LAST_USED_BALL_Y_BNC  63
 
 #define LAST_BALL_WIN_X_F       (LAST_USED_BALL_X_F - 1)
 #define LAST_BALL_WIN_X_0       (LAST_USED_BALL_X_0 - 0)
 #define LAST_USED_WIN_Y         (LAST_USED_BALL_Y - 8)
 
-#define sHide  data[0]
+#define sHide   data[0]
+#define sTimer  data[1]
 
 bool32 CanThrowLastUsedBall(void)
 {
@@ -2779,7 +2781,7 @@ u8 getBallMultiplier(u16 ball)
             ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];;
         break;
     case ITEM_DIVE_BALL:
-        if (GetCurrentMapType() == MAP_TYPE_UNDERWATER || gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
+        if (GetCurrentMapType() == MAP_TYPE_UNDERWATER || TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_FISHING))
             ballMultiplier = sBallCatchBonuses[ITEM_DIVE_BALL - ITEM_ULTRA_BALL];
         else
             ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
@@ -2964,24 +2966,50 @@ static void DestroyLastUsedBallGfx(struct Sprite *sprite)
     FreeSpriteTilesByTag(102);
     FreeSpritePaletteByTag(102);
     DestroySprite(sprite);
-    gBattleStruct->ballSpriteIds[0] = MAX_SPRITES;
+}
+
+static void SpriteCB_LastUsedBallBounce(struct Sprite *sprite)
+{
+    if (gBattleStruct->ballSpriteIds[1] == MAX_SPRITES)  // If the window is gone
+        DestroyLastUsedBallGfx(sprite);
+    if ((sprite->sTimer++ % 2) != 0)  // Change the image every % x frame
+        return;
+    if (sprite->sHide)
+    {
+        if (sprite->y != LAST_USED_BALL_Y_BNC)
+            sprite->y--;
+
+        if (sprite->y == LAST_USED_BALL_Y_BNC)
+            DestroyLastUsedBallGfx(sprite);
+    }
+    else
+    {
+        if (sprite->y != LAST_USED_BALL_Y)
+            sprite->y++;
+        if (sprite->y == LAST_USED_BALL_Y)
+            gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBall;
+    }
+}
+
+static void Task_WaitForFade(u8 taskId){
+    struct Sprite *sprite = &gSprites[gBattleStruct->ballSpriteIds[0]];
+    if (!sprite->inUse)
+    {
+        gBattleStruct->ballSpriteIds[0] = AddItemIconSprite(102, 102, gBattleStruct->ballToDisplay);
+        gSprites[gBattleStruct->ballSpriteIds[0]].x = LAST_USED_BALL_X_F;
+        gSprites[gBattleStruct->ballSpriteIds[0]].y = LAST_USED_BALL_Y_BNC;
+        gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
+        gBattleStruct->LastUsedBallMenuPresent = TRUE;
+        gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBallBounce; //Show and bounce down
+        DestroyTask(taskId);
+    }
 }
 
 void SwapBallToDisplay(void){
-    FreeSpriteTilesByTag(102);
-    FreeSpritePaletteByTag(102);
-    struct Sprite *sprite = &gSprites[gBattleStruct->ballSpriteIds[0]];
-    DestroySprite(sprite);
-    gBattleStruct->ballSpriteIds[0] = MAX_SPRITES;
-    if (gBattleStruct->ballSpriteIds[0] == MAX_SPRITES)
-    {
-        gBattleStruct->ballSpriteIds[0] = AddItemIconSprite(102, 102, gBattleStruct->ballToDisplay);
-        gSprites[gBattleStruct->ballSpriteIds[0]].x = LAST_BALL_WIN_X_F;
-        gSprites[gBattleStruct->ballSpriteIds[0]].y = LAST_USED_BALL_Y;
-        gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
-        gBattleStruct->LastUsedBallMenuPresent = TRUE;
-        gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBall;
-    }
+    u8 taskId;
+    gSprites[gBattleStruct->ballSpriteIds[0]].sHide = TRUE;
+    gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBallBounce; // Bounce up and hide
+    taskId = CreateTask(Task_WaitForFade, 10);
 }
 
 static void SpriteCB_LastUsedBallWin(struct Sprite *sprite)
@@ -3008,8 +3036,10 @@ static void SpriteCB_LastUsedBall(struct Sprite *sprite)
         if (sprite->x != LAST_USED_BALL_X_0)
             sprite->x--;
 
-        if (sprite->x == LAST_USED_BALL_X_0)
+        if (sprite->x == LAST_USED_BALL_X_0){
             DestroyLastUsedBallGfx(sprite);
+            gBattleStruct->ballSpriteIds[0] = MAX_SPRITES;
+        }
     }
     else
     {
