@@ -1263,9 +1263,19 @@ u8 TestPlayerAvatarFlags(u8 flag)
     return gPlayerAvatar.flags & flag;
 }
 
+u8 TestPlayerAvatarFlags2(u8 flag)
+{
+    return gPlayerAvatar.flags2 & flag;
+}
+
 u8 GetPlayerAvatarFlags(void)
 {
     return gPlayerAvatar.flags;
+}
+
+u8 GetPlayerAvatarFlags2(void)
+{
+    return gPlayerAvatar.flags2;
 }
 
 u8 GetPlayerAvatarSpriteId(void)
@@ -1400,6 +1410,7 @@ void ClearPlayerAvatarInfo(void)
 void SetPlayerAvatarStateMask(u8 flags)
 {
     gPlayerAvatar.flags &= (PLAYER_AVATAR_FLAG_DASH | PLAYER_AVATAR_FLAG_FORCED_MOVE | PLAYER_AVATAR_FLAG_CONTROLLABLE);
+    gPlayerAvatar.flags2 &= (FALSE);
     gPlayerAvatar.flags |= flags;
 }
 
@@ -1787,7 +1798,7 @@ static bool8 (*const sFishingStateFuncs[])(struct Task *) =
 void StartFishing(u8 rod)
 {
     u8 taskId = CreateTask(Task_Fishing, 0xFF);
-    gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_FISHING;
+    gPlayerAvatar.flags2 |= PLAYER_AVATAR_FLAG_FISHING;
 
     gTasks[taskId].tFishingRod = rod;
     Task_Fishing(taskId);
@@ -2047,7 +2058,7 @@ static bool8 Fishing_NoMon(struct Task *task)
 
 static bool8 Fishing_PutRodAway(struct Task *task)
 {
-    gPlayerAvatar.flags &= ~PLAYER_AVATAR_FLAG_FISHING;
+    gPlayerAvatar.flags2 &= ~PLAYER_AVATAR_FLAG_FISHING;
     AlignFishingAnimationFrames();
     if (gSprites[gPlayerAvatar.spriteId].animEnded)
     {

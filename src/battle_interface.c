@@ -34,6 +34,7 @@
 #include "item.h"
 #include "overworld.h"
 #include "constants/map_types.h"
+#include "field_player_avatar.h"
 
 extern const struct Evolution gEvolutionTable[][EVOS_PER_MON];
 
@@ -2742,8 +2743,8 @@ static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 bool32 CanThrowLastUsedBall(void)
 {
     return (!(CanThrowBall() != 0
-     || ((gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gBattleStruct->ballToDisplay != ITEM_THIEF_BALL)
-     || !CheckBagHasItem(gBattleStruct->ballToDisplay, 1)));
+    || ((gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gBattleStruct->ballToDisplay != ITEM_THIEF_BALL)
+    || !CheckBagHasItem(gBattleStruct->ballToDisplay, 1)));
 }
 
 static bool8 EvolvesViaFriendship(u16 species){
@@ -2772,24 +2773,26 @@ u8 OddsToPercentCatchRate(u8 odds)
 u8 getBallMultiplier(u16 ball)
 {
     u8 ballMultiplier;
+    u8 enemyPosition = BATTLE_OPPOSITE(gBattlerAttacker);
     switch (ball)
-    {
+    { 
     case ITEM_NET_BALL:
-        if (IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_WATER) || IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_BUG))
+        if (IS_BATTLER_OF_TYPE(enemyPosition, TYPE_WATER) || IS_BATTLER_OF_TYPE(enemyPosition, TYPE_BUG))
             ballMultiplier = sBallCatchBonuses[ITEM_NET_BALL - ITEM_ULTRA_BALL];
         else
-            ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];;
+            ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
         break;
     case ITEM_DIVE_BALL:
-        if (GetCurrentMapType() == MAP_TYPE_UNDERWATER || TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_FISHING))
+        if (GetCurrentMapType() == MAP_TYPE_UNDERWATER || TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING)
+            || TestPlayerAvatarFlags2(PLAYER_AVATAR_FLAG_FISHING))
             ballMultiplier = sBallCatchBonuses[ITEM_DIVE_BALL - ITEM_ULTRA_BALL];
         else
             ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
         break;
     case ITEM_NEST_BALL:
-        if (gBattleMons[gBattlerTarget].level < 40)
+        if (gBattleMons[enemyPosition].level < 40)
         {
-            ballMultiplier = 40 - gBattleMons[gBattlerTarget].level;
+            ballMultiplier = 40 - gBattleMons[enemyPosition].level;
             if (ballMultiplier <= 9)
                 ballMultiplier = 10;
         }
@@ -2799,7 +2802,7 @@ u8 getBallMultiplier(u16 ball)
         }
         break;
     case ITEM_REPEAT_BALL:
-        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[gBattlerTarget].species), FLAG_GET_CAUGHT))
+        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[enemyPosition].species), FLAG_GET_CAUGHT))
             ballMultiplier = sBallCatchBonuses[ITEM_REPEAT_BALL - ITEM_ULTRA_BALL];
         else
             ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
@@ -2914,8 +2917,8 @@ void TryAddLastUsedBallItemSprites(void)
         return;
 
     #if B_LAST_USED_BALL_SUGGESTIONS == TRUE
-    //preferredBall = ChooseBallWithHighestMultiplier(); // Simple
-    preferredBall = ChoosePreferredBallToDisplay();
+    preferredBall = ChooseBallWithHighestMultiplier(); // Simple
+    //preferredBall = ChoosePreferredBallToDisplay();
     #endif
     if (preferredBall != ITEM_NONE)
         gBattleStruct->ballToDisplay = preferredBall;
