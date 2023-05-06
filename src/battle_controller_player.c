@@ -190,7 +190,7 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
 };
 
 static EWRAM_DATA bool8 sDescriptionSubmenu = FALSE;
-static EWRAM_DATA u8 sAckBallUseBtn = 0;  //0 = Need to press R button first; 1 = Swapped balls; 2 = Can use this.
+static EWRAM_DATA bool8 sAckBallUseBtn = 0;
 static const u8 sTargetIdentities[MAX_BATTLERS_COUNT] = {B_POSITION_PLAYER_LEFT, B_POSITION_PLAYER_RIGHT, B_POSITION_OPPONENT_RIGHT, B_POSITION_OPPONENT_LEFT};
 
 // unknown unused data
@@ -293,6 +293,13 @@ static void HandleInputChooseAction(void)
     else
         gPlayerDpadHoldFrames = 0;
 
+    #if B_LAST_USED_BALL == TRUE
+        if (JOY_NEW(B_LAST_USED_BALL_BUTTON))
+            sAckBallUseBtn = TRUE;
+        else if (gMain.newKeys != 0)
+            sAckBallUseBtn = FALSE;
+    #endif
+
     if (JOY_NEW(A_BUTTON))
     {
         PlaySE(SE_SELECT);
@@ -318,14 +325,12 @@ static void HandleInputChooseAction(void)
     #if B_LAST_USED_BALL == TRUE
     else if (JOY_HELD(B_LAST_USED_BALL_BUTTON)  && (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_RIGHT)) && gBattleStruct->LastUsedBallMenuPresent)
     {
-        sAckBallUseBtn = 1;
         gBattleStruct->ballToDisplay = GetNextBall(gBattleStruct->ballToDisplay);
         SwapBallToDisplay();
         PlaySE(SE_SELECT);
     }
     else if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT)) && gBattleStruct->LastUsedBallMenuPresent)
     {
-        sAckBallUseBtn = 1;
         gBattleStruct->ballToDisplay = GetPrevBall(gBattleStruct->ballToDisplay);
         SwapBallToDisplay();
         PlaySE(SE_SELECT);
@@ -406,25 +411,12 @@ static void HandleInputChooseAction(void)
         SwapHpBarsWithHpText();
     }
     #if B_LAST_USED_BALL == TRUE
-    else if (JOY_NEW(B_LAST_USED_BALL_BUTTON))
-        sAckBallUseBtn = 2;
-    else if (JOY_RELEASED(B_LAST_USED_BALL_BUTTON) && CanThrowLastUsedBall())
+    else if (JOY_RELEASED(B_LAST_USED_BALL_BUTTON) && CanThrowLastUsedBall() && sAckBallUseBtn)
     {
-        switch (sAckBallUseBtn)
-        {
-            case 0: // B_LAST_USED_BALL_BUTTON wasn't pressed first
-                break;
-            case 1:
-                sAckBallUseBtn = 0;
-                break;
-            default:
-                PlaySE(SE_SELECT);
-                TryHideLastUsedBall();
-                BtlController_EmitTwoReturnValues(1, B_ACTION_THROW_BALL, 0);
-                PlayerBufferExecCompleted();
-                break;
-
-        }
+        PlaySE(SE_SELECT);
+        TryHideLastUsedBall();
+        BtlController_EmitTwoReturnValues(1, B_ACTION_THROW_BALL, 0);
+        PlayerBufferExecCompleted();
     }
     #endif
 }
