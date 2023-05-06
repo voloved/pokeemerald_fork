@@ -334,19 +334,19 @@ static void Task_OptionMenuFadeIn(u8 taskId)
 
 static void Task_OptionMenuProcessInput(u8 taskId)
 {
-    if (JOY_NEW(SELECT_BUTTON))
+    if (JOY_NEW(R_BUTTON))
     {
         FillWindowPixelBuffer(WIN_OPTIONS, PIXEL_FILL(1));
         ClearStdWindowAndFrame(WIN_OPTIONS, FALSE);
         sCurrPage = 1;
         gTasks[taskId].func = Task_ChangePage;
     }
-    if (JOY_NEW(A_BUTTON))
+    else if (JOY_NEW(A_BUTTON) && !JOY_HELD(L_BUTTON))
     {
         if (gTasks[taskId].data[TD_MENUSELECTION] == MENUITEM_CANCEL)
             gTasks[taskId].func = Task_OptionMenuSave;
     }
-    else if (JOY_NEW(B_BUTTON))
+    else if (JOY_NEW(B_BUTTON) && !JOY_HELD(R_BUTTON))
     {
         gTasks[taskId].func = Task_OptionMenuSave;
     }
@@ -435,21 +435,19 @@ static void Task_OptionMenuFadeIn_Pg2(u8 taskId)
 
 static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
 {
-    DebugPrintf("%d", gTasks[taskId].data[TD_MENUSELECTION]);
-    if (JOY_NEW(SELECT_BUTTON))
+    if (JOY_NEW(L_BUTTON))
     {
         FillWindowPixelBuffer(WIN_OPTIONS, PIXEL_FILL(1));
         ClearStdWindowAndFrame(WIN_OPTIONS, FALSE);
         sCurrPage = 0;
         gTasks[taskId].func = Task_ChangePage;
     }
-    
-    if (JOY_NEW(A_BUTTON))
+    else if (JOY_NEW(A_BUTTON) && !JOY_HELD(L_BUTTON))
     {
         if (gTasks[taskId].data[TD_MENUSELECTION] == MENUITEM_CANCEL_PG2)
             gTasks[taskId].func = Task_OptionMenuSave;
     }
-    else if (JOY_NEW(B_BUTTON))
+    else if (JOY_NEW(B_BUTTON) && !JOY_HELD(R_BUTTON))
     {
         gTasks[taskId].func = Task_OptionMenuSave;
     }

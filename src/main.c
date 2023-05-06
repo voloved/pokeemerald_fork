@@ -27,6 +27,7 @@
 #include "wallclock.h"
 #include "union_room_chat.h"
 #include "slot_machine.h"
+#include "option_menu.h"
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -282,7 +283,7 @@ static void ReadKeys(void)
     gMain.heldKeys = gMain.heldKeysRaw;
 
     // Remap L to A if the L=A option is enabled.
-    if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A)
+    if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A && gMain.callback2 != CB2_InitOptionMenu)
     {
         if (JOY_NEW(L_BUTTON))
             gMain.newKeys |= A_BUTTON;
