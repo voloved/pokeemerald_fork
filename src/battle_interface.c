@@ -2729,12 +2729,12 @@ static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 };
 
 #define LAST_USED_BALL_X_F    14
-#define LAST_USED_BALL_X_0    -15
+#define LAST_USED_BALL_X_0   -14
 #define LAST_USED_BALL_Y      68
-#define LAST_USED_BALL_Y_BNC  63
+#define LAST_USED_BALL_Y_BNC  66
 
-#define LAST_BALL_WIN_X_F       (LAST_USED_BALL_X_F - 1)
-#define LAST_BALL_WIN_X_0       (LAST_USED_BALL_X_0 - 0)
+#define LAST_BALL_WIN_X_F       (LAST_USED_BALL_X_F - 0)
+#define LAST_BALL_WIN_X_0       (LAST_USED_BALL_X_0 - 1)
 #define LAST_USED_WIN_Y         (LAST_USED_BALL_Y - 8)
 
 #define sHide   data[0]
@@ -2975,7 +2975,7 @@ static void SpriteCB_LastUsedBallBounce(struct Sprite *sprite)
 {
     if (gBattleStruct->ballSpriteIds[1] == MAX_SPRITES)  // If the window is gone
         DestroyLastUsedBallGfx(sprite);
-    if ((sprite->sTimer++ % 2) != 0)  // Change the image every % x frame
+    if ((sprite->sTimer++ % 4) != 0)  // Change the image every % x frame
         return;
     if (sprite->sHide)
     {
