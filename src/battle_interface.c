@@ -2730,7 +2730,7 @@ static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 
 #define LAST_USED_BALL_X_F    14
 #define LAST_USED_BALL_X_0   -14
-#define LAST_USED_BALL_Y      68
+#define LAST_USED_BALL_Y      ((IsDoubleBattle()) ? 78 : 68)
 #define LAST_USED_BALL_Y_BNC  66
 
 #define LAST_BALL_WIN_X_F       (LAST_USED_BALL_X_F - 0)
@@ -2742,9 +2742,20 @@ static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 
 bool32 CanThrowLastUsedBall(void)
 {
-    return (!(CanThrowBall() != 0
-    || ((gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gBattleStruct->ballToDisplay != ITEM_THIEF_BALL)
-    || !CheckBagHasItem(gBattleStruct->ballToDisplay, 1)));
+#if B_LAST_USED_BALL == FALSE
+    return FALSE;
+#else
+    if (CannotThrowBall() != 0)
+        return FALSE;
+    if (gBattleStruct->ballToDisplay == ITEM_THIEF_BALL && !BattleCanUseThiefBall())
+        return FALSE;
+    if (gBattleStruct->ballToDisplay != ITEM_THIEF_BALL && gBattleTypeFlags & (BATTLE_TYPE_TRAINER | BATTLE_TYPE_FRONTIER))
+        return FALSE;
+    if (!CheckBagHasItem(gBattleStruct->ballToDisplay, 1))
+        return FALSE;
+
+    return TRUE;
+#endif
 }
 
 static bool8 EvolvesViaFriendship(u16 species){
@@ -2831,6 +2842,7 @@ u8 getBallMultiplier(u16 ball)
 static u16 ChooseBallWithHighestMultiplier(void){
     u32 i;
     u16 ballMultiplierHighest, ballMultiplier, ballHighest, ball;
+    CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
     for (i = 0; i < gBagPockets[BALLS_POCKET].capacity; i++)
     {
         ball = gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
@@ -2855,7 +2867,8 @@ static u16 ChooseBallWithHighestMultiplier(void){
 * Net Ball
 * Ultra Ball
 */
-static u16 ChoosePreferredBallToDisplay(void)
+static u16 ChoosePreferredBallToDisplay(u8 minOddsToConsiderBallFirstTurn, u8 minOddsToConsiderBallOtherTurns, u8 minOddsToConsiderBallFirstTurnLuxuryBall,
+                                        u8 minOddsToConsiderBallOtherTurnsLuxuryBall, u8 additionPerForBetterBall)
 {
     static const u8 ballsByValue[] = { ITEM_POKE_BALL, ITEM_GREAT_BALL, ITEM_NEST_BALL, ITEM_TIMER_BALL, ITEM_REPEAT_BALL, 
                                        ITEM_DIVE_BALL, ITEM_NET_BALL, ITEM_ULTRA_BALL };  //Order to check the balls
@@ -2866,15 +2879,11 @@ static u16 ChoosePreferredBallToDisplay(void)
     u8 catchRate = gSpeciesInfo[opposingBattlerSpecies].catchRate;
     u32 catchOddsBeforeBallMod = (catchRate) * (gBattleMons[opposingBattlerId].maxHP * 3 - gBattleMons[opposingBattlerId].hp * 2) 
                                 / (3 * gBattleMons[opposingBattlerId].maxHP);
-    u8 minOddsToConsiderBall, minOddsToConsiderLuxuryBall;
 
-    u8 minOddsToConsiderBallFirstTurn = 80;
-    u8 minOddsToConsiderBallOtherTurns = 95;
-    u8 minOddsToConsiderBallFirstTurnLuxuryBall = 60;
-    u8 minOddsToConsiderBallOtherTurnsLuxuryBall = 80;
-    u8 additionPerForBetterBall = 3;  // A more valuable ball must be at least this percent higher in catching odds to be used.
+    u8 minOddsToConsiderBall, minOddsToConsiderLuxuryBall;
     u32 i;
 
+    CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
     if (gBattleResults.battleTurnCounter == 0){
         minOddsToConsiderBall = percentageToCatchOddsLUT[minOddsToConsiderBallFirstTurn];
         minOddsToConsiderLuxuryBall = percentageToCatchOddsLUT[minOddsToConsiderBallFirstTurnLuxuryBall];
@@ -2913,13 +2922,15 @@ static u16 ChoosePreferredBallToDisplay(void)
 void TryAddLastUsedBallItemSprites(void)
 {
     u16 preferredBall = ITEM_NONE;
-    if (CanThrowBall() != 0)
+    if (CannotThrowBall() != 0)
         return;
 
-    #if B_LAST_USED_BALL_SUGGESTIONS == TRUE
-    preferredBall = ChooseBallWithHighestMultiplier(); // Simple
-    //preferredBall = ChoosePreferredBallToDisplay();
-    #endif
+    if (gSaveBlock2Ptr->lastUsedBall == ITEM_NONE || B_LAST_USED_BALL_SUGGESTIONS == TRUE)
+    {
+        //preferredBall = ChooseBallWithHighestMultiplier(); // Simple
+        preferredBall = ChoosePreferredBallToDisplay(0, 0, 0, 0, 3);
+    }
+
     if (preferredBall != ITEM_NONE)
         gBattleStruct->ballToDisplay = preferredBall;
     else if (CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1))

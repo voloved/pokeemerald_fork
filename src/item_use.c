@@ -944,7 +944,7 @@ void ItemUseOutOfBattle_EvolutionStone(u8 taskId)
     SetUpItemUseCallback(taskId);
 }
 
-u32 CanThrowBall(void)
+u32 CannotThrowBall(void)
 {
     if ((TX_DEBUG_SYSTEM_ENABLE == TRUE || gShowDebugMenu) && FlagGet(FLAG_SYS_NO_CATCHING))
         return 1;   // Debug setting doesn't allow
@@ -958,7 +958,7 @@ u32 CanThrowBall(void)
 void ItemUseInBattle_PokeBall(u8 taskId)
 {
     static const u8 sText_BallsCannotBeUsed[] = _("Poké Balls cannot be used\nright now!\p");
-    switch (CanThrowBall())
+    switch (CannotThrowBall())
     {
     case 0: // usable
     default:
