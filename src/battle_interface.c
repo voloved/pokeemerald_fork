@@ -2837,10 +2837,9 @@ u8 getBallMultiplier(u16 ball)
     return ballMultiplier;
 }
 
-static u16 ChooseBallWithHighestMultiplier(void){
+static u16 ChoosePreferredBallSimple(void){
     u32 i;
     u16 ballMultiplierHighest, ballMultiplier, ballHighest, ball;
-    CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
     for (i = 0; i < gBagPockets[BALLS_POCKET].capacity; i++)
     {
         ball = gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
@@ -2853,24 +2852,12 @@ static u16 ChooseBallWithHighestMultiplier(void){
     return ballHighest;
 }
 
-/* Order for Ball:
-* Thief ball if in valid trainer battle
-* Luxury Ball for Pokemon that can evolve via friendship
-* Pokeball 
-* Great Ball
-* Nest Ball
-* Timer Ball
-* Repeat Ball
-* Dive Ball
-* Net Ball
-* Ultra Ball
-*/
-static u16 ChoosePreferredBallToDisplay(u8 minOddsToConsiderBallFirstTurn, u8 minOddsToConsiderBallOtherTurns, u8 minOddsToConsiderBallFirstTurnLuxuryBall,
-                                        u8 minOddsToConsiderBallOtherTurnsLuxuryBall, u8 additionPerForBetterBall)
+static u16 ChoosePreferredBallComplex(u8 minOddsToConsiderBall, u8 minOddsToConsiderLuxuryBall, u8 additionPerForBetterBall)
 {
     static const u8 ballsByValue[] = { ITEM_POKE_BALL, ITEM_GREAT_BALL, ITEM_NEST_BALL, ITEM_TIMER_BALL, ITEM_REPEAT_BALL, 
                                        ITEM_DIVE_BALL, ITEM_NET_BALL, ITEM_ULTRA_BALL };  //Order to check the balls
     // Ball value chosen off price, then how early in the game you can get it.
+    u32 i;
     u16 preferredBall = ITEM_NONE;
     u16 opposingBattlerId = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
     u16 opposingBattlerSpecies = gBattleMons[opposingBattlerId].species;
@@ -2878,18 +2865,6 @@ static u16 ChoosePreferredBallToDisplay(u8 minOddsToConsiderBallFirstTurn, u8 mi
     u32 catchOddsBeforeBallMod = (catchRate) * (gBattleMons[opposingBattlerId].maxHP * 3 - gBattleMons[opposingBattlerId].hp * 2) 
                                 / (3 * gBattleMons[opposingBattlerId].maxHP);
 
-    u8 minOddsToConsiderBall, minOddsToConsiderLuxuryBall;
-    u32 i;
-
-    CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
-    if (gBattleResults.battleTurnCounter == 0){
-        minOddsToConsiderBall = percentageToCatchOddsLUT[minOddsToConsiderBallFirstTurn];
-        minOddsToConsiderLuxuryBall = percentageToCatchOddsLUT[minOddsToConsiderBallFirstTurnLuxuryBall];
-    }
-    else{
-        minOddsToConsiderBall = percentageToCatchOddsLUT[minOddsToConsiderBallOtherTurns];
-        minOddsToConsiderLuxuryBall = percentageToCatchOddsLUT[minOddsToConsiderBallOtherTurnsLuxuryBall];      
-    }
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
      {
         if (BattleCanUseThiefBall() && CheckBagHasItem(ITEM_THIEF_BALL, 1))
@@ -2933,9 +2908,9 @@ void TryAddLastUsedBallItemSprites(void)
     if (useSimpleOrComplex)
     {
         if (useComplex)
-            preferredBall = ChoosePreferredBallToDisplay(0, 0, 0, 0, 3);  // Complex
+            preferredBall = ChoosePreferredBallComplex(0, 0, 3);  // Complex
         else
-            preferredBall = ChooseBallWithHighestMultiplier(); // Simple
+            preferredBall = ChoosePreferredBallSimple(); // Simple
         if (preferredBall == ITEM_NONE)
             return;
         gBattleStruct->ballToDisplay = preferredBall;
