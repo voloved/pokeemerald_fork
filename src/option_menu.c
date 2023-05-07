@@ -27,6 +27,7 @@ enum
     TD_SOUND,
     TD_BUTTONMODE,
     TD_FRAMETYPE,
+    TD_FOLLOWER,
     TD_TYPEEFFECT,
     TD_SUGGESTBALL,
     TD_SUGGESTIONTYPE,
@@ -48,6 +49,7 @@ enum
 // Menu items Pg2
 enum
 {
+    MENUITEM_FOLLOWER,
     MENUITEM_TYPEEFFECT,
     MENUITEM_SUGGESTBALL,
     MENUITEM_SUGGESTIONTYPE,
@@ -73,6 +75,7 @@ enum
 #define YPOS_FRAMETYPE    (MENUITEM_FRAMETYPE * 16)
 
 //Pg2
+#define YPOS_FOLLOWER        (MENUITEM_FOLLOWER * 16)
 #define YPOS_TYPEEFFECT      (MENUITEM_TYPEEFFECT * 16)
 #define YPOS_SUGGESTBALL     (MENUITEM_SUGGESTBALL * 16)
 #define YPOS_SUGGESTIONTYPE  (MENUITEM_SUGGESTIONTYPE * 16)
@@ -91,6 +94,8 @@ static u8   BattleScene_ProcessInput(u8 selection);
 static void BattleScene_DrawChoices(u8 selection);
 static u8   BattleStyle_ProcessInput(u8 selection);
 static void BattleStyle_DrawChoices(u8 selection);
+static u8   Follower_ProcessInput(u8 selection);
+static void Follower_DrawChoices(u8 selection);
 static u8   TypeEffect_ProcessInput(u8 selection);
 static void TypeEffect_DrawChoices(u8 selection);
 static u8   SuggestBall_ProcessInput(u8 selection);
@@ -127,6 +132,7 @@ static const u8 *const sOptionMenuItemsNames[MENUITEM_COUNT] =
 
 static const u8 *const sOptionMenuItemsNames_Pg2[MENUITEM_COUNT_PG2] =
 {
+    [MENUITEM_FOLLOWER]        = gText_Follower,
     [MENUITEM_TYPEEFFECT]      = gText_TypeEffect,
     [MENUITEM_SUGGESTBALL]     = gText_SuggestBall,
     [MENUITEM_SUGGESTIONTYPE]  = gText_SuggestionType,
@@ -205,6 +211,7 @@ static void ReadAllCurrentSettings(u8 taskId)
     gTasks[taskId].data[TD_SOUND] = gSaveBlock2Ptr->optionsSound;
     gTasks[taskId].data[TD_BUTTONMODE] = gSaveBlock2Ptr->optionsButtonMode;
     gTasks[taskId].data[TD_FRAMETYPE] = gSaveBlock2Ptr->optionsWindowFrameType;
+    gTasks[taskId].data[TD_FOLLOWER] = FlagGet(FLAG_POKEMON_FOLLOWERS);
     gTasks[taskId].data[TD_TYPEEFFECT] = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     gTasks[taskId].data[TD_SUGGESTBALL] = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
     gTasks[taskId].data[TD_SUGGESTIONTYPE] = FlagGet(FLAG_BALL_SUGGEST_NOT_LAST) * (1 + FlagGet(FLAG_BALL_SUGGEST_COMPLEX));  // 0 = Last; 1 = Simple; 2 = Complex
@@ -226,6 +233,7 @@ static void DrawOptionsPg1(u8 taskId)
 static void DrawOptionsPg2(u8 taskId)
 {
     ReadAllCurrentSettings(taskId);
+    Follower_DrawChoices(gTasks[taskId].data[TD_FOLLOWER]);
     TypeEffect_DrawChoices(gTasks[taskId].data[TD_TYPEEFFECT]);
     SuggestBall_DrawChoices(gTasks[taskId].data[TD_SUGGESTBALL]);
     SuggestionType_DrawChoices(gTasks[taskId].data[TD_SUGGESTIONTYPE]);
@@ -516,6 +524,13 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
 
         switch (gTasks[taskId].data[TD_MENUSELECTION])
         {
+        case MENUITEM_FOLLOWER:
+            previousOption = gTasks[taskId].data[TD_FOLLOWER];
+            gTasks[taskId].data[TD_FOLLOWER] = Follower_ProcessInput(gTasks[taskId].data[TD_FOLLOWER]);
+
+            if (previousOption != gTasks[taskId].data[TD_FOLLOWER])
+                Follower_DrawChoices(gTasks[taskId].data[TD_FOLLOWER]);
+            break;
         case MENUITEM_TYPEEFFECT:
             previousOption = gTasks[taskId].data[TD_TYPEEFFECT];
             gTasks[taskId].data[TD_TYPEEFFECT] = TypeEffect_ProcessInput(gTasks[taskId].data[TD_TYPEEFFECT]);
@@ -523,7 +538,6 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
             if (previousOption != gTasks[taskId].data[TD_TYPEEFFECT])
                 TypeEffect_DrawChoices(gTasks[taskId].data[TD_TYPEEFFECT]);
             break;
-        
         case MENUITEM_SUGGESTBALL:
             previousOption = gTasks[taskId].data[TD_SUGGESTBALL];
             gTasks[taskId].data[TD_SUGGESTBALL] = SuggestBall_ProcessInput(gTasks[taskId].data[TD_SUGGESTBALL]);
@@ -558,6 +572,11 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsSound = gTasks[taskId].data[TD_SOUND];
     gSaveBlock2Ptr->optionsButtonMode = gTasks[taskId].data[TD_BUTTONMODE];
     gSaveBlock2Ptr->optionsWindowFrameType = gTasks[taskId].data[TD_FRAMETYPE];
+
+    if (gTasks[taskId].data[TD_FOLLOWER] == 0)
+        FlagClear(FLAG_POKEMON_FOLLOWERS);
+    else
+        FlagSet(FLAG_POKEMON_FOLLOWERS);
 
     if (gTasks[taskId].data[TD_TYPEEFFECT] == 0)
         FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
@@ -716,6 +735,30 @@ static void BattleStyle_DrawChoices(u8 selection)
     DrawOptionMenuChoice(gText_BattleStyleShift, 104, YPOS_BATTLESTYLE, styles[0]);
     DrawOptionMenuChoice(gText_BattleStyleSet, GetStringRightAlignXOffset(FONT_NORMAL, gText_BattleStyleSet, 198), YPOS_BATTLESTYLE, styles[1]);
 }
+
+static u8 Follower_ProcessInput(u8 selection)
+{
+    if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
+    {
+        selection ^= 1;
+        sArrowPressed = TRUE;
+    }
+
+    return selection;
+}
+
+static void Follower_DrawChoices(u8 selection)
+{
+    u8 styles[2];
+
+    styles[0] = 0;
+    styles[1] = 0;
+    styles[selection] = 1;
+
+    DrawOptionMenuChoice(gText_FollowerOff, 104, YPOS_FOLLOWER, styles[0]);
+    DrawOptionMenuChoice(gText_FollowerOn, GetStringRightAlignXOffset(FONT_NORMAL, gText_FollowerOn, 198), YPOS_FOLLOWER, styles[1]);
+}
+
 
 static u8 TypeEffect_ProcessInput(u8 selection)
 {
