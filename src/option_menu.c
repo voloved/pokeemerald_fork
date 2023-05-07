@@ -804,7 +804,7 @@ static u8 Difficulty_ProcessInput(u8 selection)
 static void Difficulty_DrawChoices(u8 selection)
 {
     u8 styles[3];
-    s32 widthEasy, widthNormal, widthHard, xMid;
+    s32 widthNormal, xMid;
 
     styles[0] = 0;
     styles[1] = 0;
@@ -813,14 +813,10 @@ static void Difficulty_DrawChoices(u8 selection)
 
     DrawOptionMenuChoice(gText_DifficultyEasy, 104, YPOS_DIFFICULTY, styles[0]);
 
-    widthEasy = GetStringWidth(FONT_NORMAL, gText_DifficultyEasy, 0);
     widthNormal = GetStringWidth(FONT_NORMAL, gText_DifficultyNormal, 0);
-    widthHard = GetStringWidth(FONT_NORMAL, gText_DifficultyHard, 0);
+    xMid = (94 - widthNormal) / 2 + 104;
 
-    widthNormal -= 94;
-    xMid = (widthEasy - widthNormal - widthHard) / 2 + 104;
     DrawOptionMenuChoice(gText_DifficultyNormal, xMid, YPOS_DIFFICULTY, styles[1]);
-
     DrawOptionMenuChoice(gText_DifficultyHard, GetStringRightAlignXOffset(FONT_NORMAL, gText_DifficultyHard, 198), YPOS_DIFFICULTY, styles[2]);
 }
 
@@ -838,12 +834,16 @@ static u8 TypeEffect_ProcessInput(u8 selection)
 static void TypeEffect_DrawChoices(u8 selection)
 {
     u8 styles[2];
+    s32 widthOff, xMid;
 
     styles[0] = 0;
     styles[1] = 0;
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(gText_TypeEffectOff, 104, YPOS_TYPEEFFECT, styles[0]);
+    widthOff = GetStringWidth(FONT_NORMAL, gText_TypeEffectOff, 0);
+    xMid = (94 - widthOff) / 2 + 104;
+
+    DrawOptionMenuChoice(gText_TypeEffectOff, xMid, YPOS_TYPEEFFECT, styles[0]);
     DrawOptionMenuChoice(gText_TypeEffectOn, GetStringRightAlignXOffset(FONT_NORMAL, gText_TypeEffectOn, 198), YPOS_TYPEEFFECT, styles[1]);
 }
 
@@ -896,7 +896,7 @@ static u8 SuggestionType_ProcessInput(u8 selection)
 static void SuggestionType_DrawChoices(u8 selection)
 {
     u8 styles[3];
-    s32 widthLast, widthSimple, widthComplex, xMid;
+    s32 widthSimple, xMid;
 
     styles[0] = 0;
     styles[1] = 0;
@@ -904,15 +904,11 @@ static void SuggestionType_DrawChoices(u8 selection)
     styles[selection] = 1;
 
     DrawOptionMenuChoice(gText_SuggestionTypeLast, 104, YPOS_SUGGESTIONTYPE, styles[0]);
-
-    widthLast = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeLast, 0);
+    
     widthSimple = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeSimple, 0);
-    widthComplex = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeComplex, 0);
+    xMid = (94 - widthSimple) / 2 + 104;
 
-    widthSimple -= 94;
-    xMid = (widthLast - widthSimple - widthComplex) / 2 + 104;
     DrawOptionMenuChoice(gText_SuggestionTypeSimple, xMid, YPOS_SUGGESTIONTYPE, styles[1]);
-
     DrawOptionMenuChoice(gText_SuggestionTypeComplex, GetStringRightAlignXOffset(FONT_NORMAL, gText_SuggestionTypeComplex, 198), YPOS_SUGGESTIONTYPE, styles[2]);
 }
 
