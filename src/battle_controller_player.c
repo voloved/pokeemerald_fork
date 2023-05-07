@@ -296,7 +296,7 @@ static void HandleInputChooseAction(void)
 
     if (showSuggestion && JOY_NEW(B_LAST_USED_BALL_BUTTON))
         sAckBallUseBtn = TRUE;
-    else if (gMain.newKeys != 0)
+    else if (gMain.newKeys != 0 && !(JOY_NEW(B_BUTTON) && JOY_HELD(B_LAST_USED_BALL_BUTTON)))
         sAckBallUseBtn = FALSE;
 
     if (JOY_NEW(A_BUTTON))
@@ -377,7 +377,7 @@ static void HandleInputChooseAction(void)
             ActionSelectionCreateCursorAt(gActionSelectionCursor[gActiveBattler], 0);
         }
     }
-    else if (JOY_NEW(B_BUTTON) || gPlayerDpadHoldFrames > 59)
+    else if ((JOY_NEW(B_BUTTON) && !(JOY_HELD(B_LAST_USED_BALL_BUTTON) && gBattleStruct->LastUsedBallMenuPresent)) || gPlayerDpadHoldFrames > 59)
     {
         if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
          && GetBattlerPosition(gActiveBattler) == B_POSITION_PLAYER_RIGHT
