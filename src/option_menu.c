@@ -16,6 +16,7 @@
 #include "gba/m4a_internal.h"
 #include "constants/rgb.h"
 #include "event_data.h"
+#include "string_util.h"
 
 // Task data
 enum
@@ -66,7 +67,7 @@ enum
     WIN_OPTIONS
 };
 
-#define PAGE_COUNT  2 
+#define PAGE_COUNT  2
 
 //Pg 1
 #define YPOS_TEXTSPEED    (MENUITEM_TEXTSPEED * 16)
@@ -804,7 +805,7 @@ static u8 Difficulty_ProcessInput(u8 selection)
 static void Difficulty_DrawChoices(u8 selection)
 {
     u8 styles[3];
-    s32 widthEasy, widthNormal, widthHard, xMid;
+    s32  widthNormal, xMid;
 
     styles[0] = 0;
     styles[1] = 0;
@@ -813,12 +814,8 @@ static void Difficulty_DrawChoices(u8 selection)
 
     DrawOptionMenuChoice(gText_DifficultyEasy, 104, YPOS_DIFFICULTY, styles[0]);
 
-    widthEasy = GetStringWidth(FONT_NORMAL, gText_DifficultyEasy, 0);
     widthNormal = GetStringWidth(FONT_NORMAL, gText_DifficultyNormal, 0);
-    widthHard = GetStringWidth(FONT_NORMAL, gText_DifficultyHard, 0);
-
-    widthNormal -= 94;
-    xMid = (widthEasy - widthNormal - widthHard) / 2 + 104;
+    xMid = (94 - widthNormal) / 2 + 104;
     DrawOptionMenuChoice(gText_DifficultyNormal, xMid, YPOS_DIFFICULTY, styles[1]);
 
     DrawOptionMenuChoice(gText_DifficultyHard, GetStringRightAlignXOffset(FONT_NORMAL, gText_DifficultyHard, 198), YPOS_DIFFICULTY, styles[2]);
@@ -896,7 +893,7 @@ static u8 SuggestionType_ProcessInput(u8 selection)
 static void SuggestionType_DrawChoices(u8 selection)
 {
     u8 styles[3];
-    s32 widthLast, widthSimple, widthComplex, xMid;
+    s32 widthSimple, xMid;
 
     styles[0] = 0;
     styles[1] = 0;
@@ -905,12 +902,8 @@ static void SuggestionType_DrawChoices(u8 selection)
 
     DrawOptionMenuChoice(gText_SuggestionTypeLast, 104, YPOS_SUGGESTIONTYPE, styles[0]);
 
-    widthLast = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeLast, 0);
     widthSimple = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeSimple, 0);
-    widthComplex = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeComplex, 0);
-
-    widthSimple -= 94;
-    xMid = (widthLast - widthSimple - widthComplex) / 2 + 104;
+    xMid = (94 - widthSimple) / 2 + 104;
     DrawOptionMenuChoice(gText_SuggestionTypeSimple, xMid, YPOS_SUGGESTIONTYPE, styles[1]);
 
     DrawOptionMenuChoice(gText_SuggestionTypeComplex, GetStringRightAlignXOffset(FONT_NORMAL, gText_SuggestionTypeComplex, 198), YPOS_SUGGESTIONTYPE, styles[2]);
@@ -1048,21 +1041,28 @@ static void ButtonMode_DrawChoices(u8 selection)
 
 static void DrawTextOption(void)
 {
-    const u8 *str = NULL;
-    switch(sCurrPage)
-        {
-        case 0:
-            str = gText_Option_Pg1;
-            break;
-        case 1:
-             str = gText_Option_Pg2;
-            break; 
-        default:
-            str = gText_Option;
-            break;           
-        }
+    u32 i;
+    u8 OptionsWithPage[40];
+    u8 spacerLong[] = _("{CLEAR 0x05}");
+    u8 spacerShort[] = _(" ");
+    u8 smallDot[] = _("·");
+    u8 largeDot[] = _("{EMOJI_CIRCLE}");
+    u8 pageNav[] = _("{CLEAR_TO 0x83}{L_BUTTON}{R_BUTTON} PAGE");
+
+    StringCopy(OptionsWithPage, gText_Option);
+    StringAppend(OptionsWithPage, spacerLong);
+    for (i = 0; i < PAGE_COUNT; i++)
+    {
+        if (i == sCurrPage)
+            StringAppend(OptionsWithPage, largeDot);
+        else
+            StringAppend(OptionsWithPage, smallDot);
+        if (i < PAGE_COUNT - 1)
+            StringAppend(OptionsWithPage, spacerShort);            
+    }
+    StringAppend(OptionsWithPage, pageNav);
     FillWindowPixelBuffer(WIN_TEXT_OPTION, PIXEL_FILL(1));
-    AddTextPrinterParameterized(WIN_TEXT_OPTION, FONT_NORMAL, str, 8, 1, TEXT_SKIP_DRAW, NULL);
+    AddTextPrinterParameterized(WIN_TEXT_OPTION, FONT_NORMAL, OptionsWithPage, 8, 1, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(WIN_TEXT_OPTION, COPYWIN_FULL);
 }
 

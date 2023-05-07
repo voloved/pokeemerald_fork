@@ -329,8 +329,6 @@ extern const u8 gText_SuggestionTypeLast[];
 extern const u8 gText_SuggestionTypeSimple[];
 extern const u8 gText_SuggestionTypeComplex[];
 extern const u8 gText_Option[];
-extern const u8 gText_Option_Pg1[];
-extern const u8 gText_Option_Pg2[];
 extern const u8 gText_OptionMenu[];
 extern const u8 gText_TextSpeed[];
 extern const u8 gText_BattleScene[];
