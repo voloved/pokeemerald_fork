@@ -284,6 +284,7 @@ static u16 GetNextBall(u16 ballId)
 static void HandleInputChooseAction(void)
 {
     u16 itemId = gBattleBufferA[gActiveBattler][2] | (gBattleBufferA[gActiveBattler][3] << 8);
+    bool8 showSuggestion = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
 
     DoBounceEffect(gActiveBattler, BOUNCE_HEALTHBOX, 7, 1);
     DoBounceEffect(gActiveBattler, BOUNCE_MON, 7, 1);
@@ -293,12 +294,10 @@ static void HandleInputChooseAction(void)
     else
         gPlayerDpadHoldFrames = 0;
 
-    #if B_LAST_USED_BALL == TRUE
-        if (JOY_NEW(B_LAST_USED_BALL_BUTTON))
-            sAckBallUseBtn = TRUE;
-        else if (gMain.newKeys != 0)
-            sAckBallUseBtn = FALSE;
-    #endif
+    if (showSuggestion && JOY_NEW(B_LAST_USED_BALL_BUTTON))
+        sAckBallUseBtn = TRUE;
+    else if (gMain.newKeys != 0)
+        sAckBallUseBtn = FALSE;
 
     if (JOY_NEW(A_BUTTON))
     {
@@ -322,20 +321,22 @@ static void HandleInputChooseAction(void)
         }
         PlayerBufferExecCompleted();
     }
-    #if B_LAST_USED_BALL == TRUE
-    else if (JOY_HELD(B_LAST_USED_BALL_BUTTON)  && (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_RIGHT)) && gBattleStruct->LastUsedBallMenuPresent)
+
+    else if (showSuggestion && gBattleStruct->LastUsedBallMenuPresent 
+             && JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_RIGHT)))
     {
         gBattleStruct->ballToDisplay = GetNextBall(gBattleStruct->ballToDisplay);
         SwapBallToDisplay();
         PlaySE(SE_SELECT);
     }
-    else if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT)) && gBattleStruct->LastUsedBallMenuPresent)
+    else if (showSuggestion && gBattleStruct->LastUsedBallMenuPresent
+             && JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT)))
     {
         gBattleStruct->ballToDisplay = GetPrevBall(gBattleStruct->ballToDisplay);
         SwapBallToDisplay();
         PlaySE(SE_SELECT);
     }
-    #endif
+
     else if (JOY_NEW(DPAD_LEFT))
     {
         if (gActionSelectionCursor[gActiveBattler] & 1) // if is B_ACTION_USE_ITEM or B_ACTION_RUN
@@ -410,15 +411,13 @@ static void HandleInputChooseAction(void)
     {
         SwapHpBarsWithHpText();
     }
-    #if B_LAST_USED_BALL == TRUE
-    else if (JOY_RELEASED(B_LAST_USED_BALL_BUTTON) && CanThrowLastUsedBall() && sAckBallUseBtn)
+    else if (showSuggestion && JOY_RELEASED(B_LAST_USED_BALL_BUTTON) && CanThrowLastUsedBall() && sAckBallUseBtn)
     {
         PlaySE(SE_SELECT);
         TryHideLastUsedBall();
         BtlController_EmitTwoReturnValues(1, B_ACTION_THROW_BALL, 0);
         PlayerBufferExecCompleted();
     }
-    #endif
 }
 
 static void UnusedEndBounceEffect(void)

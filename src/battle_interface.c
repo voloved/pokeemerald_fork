@@ -2742,9 +2742,8 @@ static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 
 bool32 CanThrowLastUsedBall(void)
 {
-#if B_LAST_USED_BALL == FALSE
-    return FALSE;
-#else
+    if (!FlagGet(FLAG_SHOW_BALL_SUGGESTION))
+        return FALSE;
     if (CannotThrowBall() != 0)
         return FALSE;
     if (gBattleStruct->ballToDisplay == ITEM_THIEF_BALL && !BattleCanUseThiefBall())
@@ -2755,7 +2754,6 @@ bool32 CanThrowLastUsedBall(void)
         return FALSE;
 
     return TRUE;
-#endif
 }
 
 static bool8 EvolvesViaFriendship(u16 species){
@@ -2922,21 +2920,39 @@ static u16 ChoosePreferredBallToDisplay(u8 minOddsToConsiderBallFirstTurn, u8 mi
 void TryAddLastUsedBallItemSprites(void)
 {
     u16 preferredBall = ITEM_NONE;
+    bool8 useSimpleOrComplex = FlagGet(FLAG_BALL_SUGGEST_NOT_LAST);
+    bool8 useComplex = FlagGet(FLAG_BALL_SUGGEST_COMPLEX);
+    bool8 showSuggestion = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
+
+    if (!showSuggestion)
+        return;
+    
     if (CannotThrowBall() != 0)
         return;
 
-    if (gSaveBlock2Ptr->lastUsedBall == ITEM_NONE || B_LAST_USED_BALL_SUGGESTIONS == TRUE)
+    if (useSimpleOrComplex)
     {
-        //preferredBall = ChooseBallWithHighestMultiplier(); // Simple
-        preferredBall = ChoosePreferredBallToDisplay(0, 0, 0, 0, 3);
-    }
-
-    if (preferredBall != ITEM_NONE)
+        if (useComplex)
+            preferredBall = ChoosePreferredBallToDisplay(0, 0, 0, 0, 3);  // Complex
+        else
+            preferredBall = ChooseBallWithHighestMultiplier(); // Simple
+        if (preferredBall == ITEM_NONE)
+            return;
         gBattleStruct->ballToDisplay = preferredBall;
-    else if (CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1))
-        gBattleStruct->ballToDisplay = gSaveBlock2Ptr->lastUsedBall;
+    }
     else
-        return;
+    {
+        if (gSaveBlock2Ptr->lastUsedBall == 0
+        || (gSaveBlock2Ptr->lastUsedBall != 0 && !CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1)))
+        {
+            CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
+            gBattleStruct->ballToDisplay = gBagPockets[BALLS_POCKET].itemSlots[0].itemId;
+        }
+        else
+        {
+            gBattleStruct->ballToDisplay = gSaveBlock2Ptr->lastUsedBall;
+        }
+    }
     
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gBattleStruct->ballToDisplay != ITEM_THIEF_BALL || !BattleCanUseThiefBall()))
         return;
@@ -3064,6 +3080,8 @@ static void SpriteCB_LastUsedBall(struct Sprite *sprite)
 
 static void TryHideOrRestoreLastUsedBall(u8 caseId)
 {
+    if (!FlagGet(FLAG_SHOW_BALL_SUGGESTION))
+        return;
     if (gBattleStruct->ballSpriteIds[0] == MAX_SPRITES)
         return;
 
@@ -3088,11 +3106,15 @@ static void TryHideOrRestoreLastUsedBall(u8 caseId)
 
 void TryHideLastUsedBall(void)
 {
+    if (!FlagGet(FLAG_SHOW_BALL_SUGGESTION))
+        return;
     TryHideOrRestoreLastUsedBall(0);
 }
 
 void TryRestoreLastUsedBall(void)
 {
+    if (!FlagGet(FLAG_SHOW_BALL_SUGGESTION))
+        return;
     if (gBattleStruct->ballSpriteIds[0] != MAX_SPRITES)
         TryHideOrRestoreLastUsedBall(1);
     else

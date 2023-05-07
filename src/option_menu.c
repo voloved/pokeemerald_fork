@@ -28,9 +28,11 @@ enum
     TD_BUTTONMODE,
     TD_FRAMETYPE,
     TD_TYPEEFFECT,
+    TD_SUGGESTBALL,
+    TD_SUGGESTIONTYPE,
 };
 
-// Menu items
+// Menu items Pg1
 enum
 {
     MENUITEM_TEXTSPEED,
@@ -40,12 +42,18 @@ enum
     MENUITEM_BUTTONMODE,
     MENUITEM_FRAMETYPE,
     MENUITEM_CANCEL,
-    MENUITEM_TYPEEFFECT,
-    MENUITEM_CANCEL_PG2,
+    MENUITEM_COUNT,
 };
 
-#define MENUITEM_COUNT       (MENUITEM_CANCEL + 1)
-#define MENUITEM_COUNT_PG2   (MENUITEM_CANCEL_PG2 - MENUITEM_COUNT + 1)
+// Menu items Pg2
+enum
+{
+    MENUITEM_TYPEEFFECT,
+    MENUITEM_SUGGESTBALL,
+    MENUITEM_SUGGESTIONTYPE,
+    MENUITEM_CANCEL_PG2,
+    MENUITEM_COUNT_PG2,
+};
 
 // Window Ids
 enum
@@ -53,6 +61,8 @@ enum
     WIN_TEXT_OPTION,
     WIN_OPTIONS
 };
+
+#define PAGE_COUNT  2 
 
 //Pg 1
 #define YPOS_TEXTSPEED    (MENUITEM_TEXTSPEED * 16)
@@ -63,7 +73,9 @@ enum
 #define YPOS_FRAMETYPE    (MENUITEM_FRAMETYPE * 16)
 
 //Pg2
-#define YPOS_TYPEEFFECT   ((MENUITEM_TYPEEFFECT - MENUITEM_COUNT) * 16)
+#define YPOS_TYPEEFFECT      (MENUITEM_TYPEEFFECT * 16)
+#define YPOS_SUGGESTBALL     (MENUITEM_SUGGESTBALL * 16)
+#define YPOS_SUGGESTIONTYPE  (MENUITEM_SUGGESTIONTYPE * 16)
 
 // this file's functions
 static void Task_OptionMenuFadeIn(u8 taskId);
@@ -81,6 +93,10 @@ static u8   BattleStyle_ProcessInput(u8 selection);
 static void BattleStyle_DrawChoices(u8 selection);
 static u8   TypeEffect_ProcessInput(u8 selection);
 static void TypeEffect_DrawChoices(u8 selection);
+static u8   SuggestBall_ProcessInput(u8 selection);
+static void SuggestBall_DrawChoices(u8 selection);
+static u8   SuggestionType_ProcessInput(u8 selection);
+static void SuggestionType_DrawChoices(u8 selection);
 static u8   Sound_ProcessInput(u8 selection);
 static void Sound_DrawChoices(u8 selection);
 static u8   FrameType_ProcessInput(u8 selection);
@@ -111,8 +127,10 @@ static const u8 *const sOptionMenuItemsNames[MENUITEM_COUNT] =
 
 static const u8 *const sOptionMenuItemsNames_Pg2[MENUITEM_COUNT_PG2] =
 {
-    [MENUITEM_TYPEEFFECT - MENUITEM_COUNT]  = gText_TypeEffect,
-    [MENUITEM_CANCEL_PG2 - MENUITEM_COUNT]  = gText_OptionMenuCancel,
+    [MENUITEM_TYPEEFFECT]      = gText_TypeEffect,
+    [MENUITEM_SUGGESTBALL]     = gText_SuggestBall,
+    [MENUITEM_SUGGESTIONTYPE]  = gText_SuggestionType,
+    [MENUITEM_CANCEL_PG2]      = gText_OptionMenuCancel,
 };
 
 static const struct WindowTemplate sOptionMenuWinTemplates[] =
@@ -178,8 +196,8 @@ static void VBlankCB(void)
     TransferPlttBuffer();
 }
 
-static void DrawOptionsPg1(u8 taskId)
-{   
+static void ReadAllCurrentSettings(u8 taskId)
+{
     gTasks[taskId].data[TD_MENUSELECTION] = 0;
     gTasks[taskId].data[TD_TEXTSPEED] = gSaveBlock2Ptr->optionsTextSpeed;
     gTasks[taskId].data[TD_BATTLESCENE] = gSaveBlock2Ptr->optionsBattleSceneOff;
@@ -187,7 +205,14 @@ static void DrawOptionsPg1(u8 taskId)
     gTasks[taskId].data[TD_SOUND] = gSaveBlock2Ptr->optionsSound;
     gTasks[taskId].data[TD_BUTTONMODE] = gSaveBlock2Ptr->optionsButtonMode;
     gTasks[taskId].data[TD_FRAMETYPE] = gSaveBlock2Ptr->optionsWindowFrameType;
+    gTasks[taskId].data[TD_TYPEEFFECT] = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
+    gTasks[taskId].data[TD_SUGGESTBALL] = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
+    gTasks[taskId].data[TD_SUGGESTIONTYPE] = FlagGet(FLAG_BALL_SUGGEST_NOT_LAST) * (1 + FlagGet(FLAG_BALL_SUGGEST_COMPLEX));  // 0 = Last; 1 = Simple; 2 = Complex
+}
 
+static void DrawOptionsPg1(u8 taskId)
+{   
+    ReadAllCurrentSettings(taskId);
     TextSpeed_DrawChoices(gTasks[taskId].data[TD_TEXTSPEED]);
     BattleScene_DrawChoices(gTasks[taskId].data[TD_BATTLESCENE]);
     BattleStyle_DrawChoices(gTasks[taskId].data[TD_BATTLESTYLE]);
@@ -200,17 +225,16 @@ static void DrawOptionsPg1(u8 taskId)
 
 static void DrawOptionsPg2(u8 taskId)
 {
-    gTasks[taskId].data[TD_MENUSELECTION] = 0;
-    gTasks[taskId].data[TD_TYPEEFFECT] = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
-
+    ReadAllCurrentSettings(taskId);
     TypeEffect_DrawChoices(gTasks[taskId].data[TD_TYPEEFFECT]);
+    SuggestBall_DrawChoices(gTasks[taskId].data[TD_SUGGESTBALL]);
+    SuggestionType_DrawChoices(gTasks[taskId].data[TD_SUGGESTIONTYPE]);
     HighlightOptionMenuItem(gTasks[taskId].data[TD_MENUSELECTION]);
     CopyWindowToVram(WIN_OPTIONS, COPYWIN_FULL);
 }
 
 void CB2_InitOptionMenu(void)
 {
-    sCurrPage = 1;
     u8 taskId;  
     switch (gMain.state)
     {
@@ -308,6 +332,25 @@ void CB2_InitOptionMenu(void)
     }
 }
 
+static u8 Process_ChangePage(u8 CurrentPage)
+{
+    if (JOY_NEW(R_BUTTON))
+    {
+        if (CurrentPage < PAGE_COUNT - 1)
+            CurrentPage++;
+        else
+            CurrentPage = 0;
+    }
+    if (JOY_NEW(L_BUTTON))
+    {
+        if (CurrentPage != 0)
+            CurrentPage--;
+        else
+            CurrentPage = PAGE_COUNT - 1;
+    }
+    return CurrentPage;
+}
+
 static void Task_ChangePage(u8 taskId)
 {
     DrawTextOption();
@@ -334,11 +377,11 @@ static void Task_OptionMenuFadeIn(u8 taskId)
 
 static void Task_OptionMenuProcessInput(u8 taskId)
 {
-    if (JOY_NEW(R_BUTTON))
+    if (JOY_NEW(L_BUTTON) || JOY_NEW(R_BUTTON))
     {
         FillWindowPixelBuffer(WIN_OPTIONS, PIXEL_FILL(1));
         ClearStdWindowAndFrame(WIN_OPTIONS, FALSE);
-        sCurrPage = 1;
+        sCurrPage = Process_ChangePage(sCurrPage);
         gTasks[taskId].func = Task_ChangePage;
     }
     else if (JOY_NEW(A_BUTTON) && !JOY_HELD(L_BUTTON))
@@ -435,11 +478,11 @@ static void Task_OptionMenuFadeIn_Pg2(u8 taskId)
 
 static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
 {
-    if (JOY_NEW(L_BUTTON))
+    if (JOY_NEW(L_BUTTON) || JOY_NEW(R_BUTTON))
     {
         FillWindowPixelBuffer(WIN_OPTIONS, PIXEL_FILL(1));
         ClearStdWindowAndFrame(WIN_OPTIONS, FALSE);
-        sCurrPage = 0;
+        sCurrPage = Process_ChangePage(sCurrPage);
         gTasks[taskId].func = Task_ChangePage;
     }
     else if (JOY_NEW(A_BUTTON) && !JOY_HELD(L_BUTTON))
@@ -456,12 +499,12 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
         if (gTasks[taskId].data[TD_MENUSELECTION] > 0)
             gTasks[taskId].data[TD_MENUSELECTION]--;
         else
-            gTasks[taskId].data[TD_MENUSELECTION] = MENUITEM_CANCEL_PG2 - MENUITEM_COUNT - 1;
+            gTasks[taskId].data[TD_MENUSELECTION] = MENUITEM_CANCEL_PG2;
         HighlightOptionMenuItem(gTasks[taskId].data[TD_MENUSELECTION]);
     }
     else if (JOY_NEW(DPAD_DOWN))
     {
-        if (gTasks[taskId].data[TD_MENUSELECTION] < (MENUITEM_COUNT_PG2 - 1))
+        if (gTasks[taskId].data[TD_MENUSELECTION] < MENUITEM_CANCEL_PG2)
             gTasks[taskId].data[TD_MENUSELECTION]++;
         else
             gTasks[taskId].data[TD_MENUSELECTION] = 0;
@@ -473,15 +516,27 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
 
         switch (gTasks[taskId].data[TD_MENUSELECTION])
         {
-        case MENUITEM_TYPEEFFECT - MENUITEM_COUNT:
+        case MENUITEM_TYPEEFFECT:
             previousOption = gTasks[taskId].data[TD_TYPEEFFECT];
             gTasks[taskId].data[TD_TYPEEFFECT] = TypeEffect_ProcessInput(gTasks[taskId].data[TD_TYPEEFFECT]);
 
             if (previousOption != gTasks[taskId].data[TD_TYPEEFFECT])
                 TypeEffect_DrawChoices(gTasks[taskId].data[TD_TYPEEFFECT]);
             break;
-            if (previousOption != gTasks[taskId].data[TD_FRAMETYPE])
-                FrameType_DrawChoices(gTasks[taskId].data[TD_FRAMETYPE]);
+        
+        case MENUITEM_SUGGESTBALL:
+            previousOption = gTasks[taskId].data[TD_SUGGESTBALL];
+            gTasks[taskId].data[TD_SUGGESTBALL] = SuggestBall_ProcessInput(gTasks[taskId].data[TD_SUGGESTBALL]);
+
+            if (previousOption != gTasks[taskId].data[TD_SUGGESTBALL])
+                SuggestBall_DrawChoices(gTasks[taskId].data[TD_SUGGESTBALL]);
+            break;
+        case MENUITEM_SUGGESTIONTYPE:
+            previousOption = gTasks[taskId].data[TD_SUGGESTIONTYPE];
+            gTasks[taskId].data[TD_SUGGESTIONTYPE] = SuggestionType_ProcessInput(gTasks[taskId].data[TD_SUGGESTIONTYPE]);
+
+            if (previousOption != gTasks[taskId].data[TD_SUGGESTIONTYPE])
+                SuggestionType_DrawChoices(gTasks[taskId].data[TD_SUGGESTIONTYPE]);
             break;
         default:
             return;
@@ -494,10 +549,6 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
         }
     }
 }
-
-
-
-
 
 static void Task_OptionMenuSave(u8 taskId)
 {
@@ -513,6 +564,23 @@ static void Task_OptionMenuSave(u8 taskId)
     else
         FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
 
+    if (gTasks[taskId].data[TD_SUGGESTBALL] == 0)
+        FlagClear(FLAG_SHOW_BALL_SUGGESTION);
+    else
+        FlagSet(FLAG_SHOW_BALL_SUGGESTION);
+    
+    if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 0){  // Last{
+        FlagClear(FLAG_BALL_SUGGEST_NOT_LAST);
+        FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
+    }
+    else if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 1){  // Simple
+        FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
+        FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
+    }
+    else if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 2){  // Simple
+        FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
+        FlagSet(FLAG_BALL_SUGGEST_COMPLEX);
+    }
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
     gTasks[taskId].func = Task_OptionMenuFadeOut;
 }
@@ -649,10 +717,6 @@ static void BattleStyle_DrawChoices(u8 selection)
     DrawOptionMenuChoice(gText_BattleStyleSet, GetStringRightAlignXOffset(FONT_NORMAL, gText_BattleStyleSet, 198), YPOS_BATTLESTYLE, styles[1]);
 }
 
-
-
-
-
 static u8 TypeEffect_ProcessInput(u8 selection)
 {
     if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
@@ -673,7 +737,76 @@ static void TypeEffect_DrawChoices(u8 selection)
     styles[selection] = 1;
 
     DrawOptionMenuChoice(gText_TypeEffectOff, 104, YPOS_TYPEEFFECT, styles[0]);
-    DrawOptionMenuChoice(gText_TypeEffectOn, GetStringRightAlignXOffset(FONT_NORMAL, gText_BattleStyleSet, 198), YPOS_TYPEEFFECT, styles[1]);
+    DrawOptionMenuChoice(gText_TypeEffectOn, GetStringRightAlignXOffset(FONT_NORMAL, gText_TypeEffectOn, 198), YPOS_TYPEEFFECT, styles[1]);
+}
+
+static u8 SuggestBall_ProcessInput(u8 selection)
+{
+    if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
+    {
+        selection ^= 1;
+        sArrowPressed = TRUE;
+    }
+
+    return selection;
+}
+
+static void SuggestBall_DrawChoices(u8 selection)
+{
+    u8 styles[2];
+
+    styles[0] = 0;
+    styles[1] = 0;
+    styles[selection] = 1;
+
+    DrawOptionMenuChoice(gText_SuggestBallOff, 104, YPOS_SUGGESTBALL, styles[0]);
+    DrawOptionMenuChoice(gText_SuggestBallOn, GetStringRightAlignXOffset(FONT_NORMAL, gText_SuggestBallOn, 198), YPOS_SUGGESTBALL, styles[1]);
+}
+
+static u8 SuggestionType_ProcessInput(u8 selection)
+{
+    if (JOY_NEW(DPAD_RIGHT))
+    {
+        if (selection <= 1)
+            selection++;
+        else
+            selection = 0;
+
+        sArrowPressed = TRUE;
+    }
+    if (JOY_NEW(DPAD_LEFT))
+    {
+        if (selection != 0)
+            selection--;
+        else
+            selection = 2;
+
+        sArrowPressed = TRUE;
+    }
+    return selection;
+}
+
+static void SuggestionType_DrawChoices(u8 selection)
+{
+    u8 styles[3];
+    s32 widthSlow, widthMid, widthFast, xMid;
+
+    styles[0] = 0;
+    styles[1] = 0;
+    styles[2] = 0;
+    styles[selection] = 1;
+
+    DrawOptionMenuChoice(gText_SuggestionTypeLast, 104, YPOS_SUGGESTIONTYPE, styles[0]);
+
+    widthSlow = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeLast, 0);
+    widthMid = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeSimple, 0);
+    widthFast = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeComplex, 0);
+
+    widthMid -= 94;
+    xMid = (widthSlow - widthMid - widthFast) / 2 + 104;
+    DrawOptionMenuChoice(gText_SuggestionTypeSimple, xMid, YPOS_SUGGESTIONTYPE, styles[1]);
+
+    DrawOptionMenuChoice(gText_SuggestionTypeComplex, GetStringRightAlignXOffset(FONT_NORMAL, gText_SuggestionTypeComplex, 198), YPOS_SUGGESTIONTYPE, styles[2]);
 }
 
 

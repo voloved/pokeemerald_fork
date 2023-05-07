@@ -1244,9 +1244,9 @@
 #define FLAG_RELEARN_IN_PARTY_MENU                                  0x4AB
 #define FLAG_RAN_FROM_TRAINER                                       0x4AC
 #define FLAG_POKE_DOLL                                              0x4AD
-#define FLAG_UNUSED_0x4AE                                           0x4AE // Unused Flag
-#define FLAG_UNUSED_0x4AF                                           0x4AF // Unused Flag
-#define FLAG_UNUSED_0x4B0                                           0x4B0 // Unused Flag
+#define FLAG_SHOW_BALL_SUGGESTION                                   0x4AE
+#define FLAG_BALL_SUGGEST_NOT_LAST                                  0x4AF // Will Suggest the last ball if set.
+#define FLAG_BALL_SUGGEST_COMPLEX                                   0x4B0 // Will show Simple option if not set
 #define FLAG_UNUSED_0x4B1                                           0x4B1 // Unused Flag
 #define FLAG_UNUSED_0x4B2                                           0x4B2 // Unused Flag
 #define FLAG_UNUSED_0x4B3                                           0x4B3 // Unused Flag
