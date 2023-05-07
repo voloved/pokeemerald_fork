@@ -43,7 +43,7 @@ Debug_CheatStart::
 	end
 
 Debug_Script_1::
-	call LittlerootTown_ProfessorBirchsLab_EventScript_Challenge
+	call LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
 Debug_Script_2::

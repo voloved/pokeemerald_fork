@@ -28,6 +28,7 @@ enum
     TD_BUTTONMODE,
     TD_FRAMETYPE,
     TD_FOLLOWER,
+    TD_DIFFICULTY,
     TD_TYPEEFFECT,
     TD_SUGGESTBALL,
     TD_SUGGESTIONTYPE,
@@ -50,6 +51,7 @@ enum
 enum
 {
     MENUITEM_FOLLOWER,
+    MENUITEM_DIFFICULTY,
     MENUITEM_TYPEEFFECT,
     MENUITEM_SUGGESTBALL,
     MENUITEM_SUGGESTIONTYPE,
@@ -76,6 +78,7 @@ enum
 
 //Pg2
 #define YPOS_FOLLOWER        (MENUITEM_FOLLOWER * 16)
+#define YPOS_DIFFICULTY      (MENUITEM_DIFFICULTY * 16)
 #define YPOS_TYPEEFFECT      (MENUITEM_TYPEEFFECT * 16)
 #define YPOS_SUGGESTBALL     (MENUITEM_SUGGESTBALL * 16)
 #define YPOS_SUGGESTIONTYPE  (MENUITEM_SUGGESTIONTYPE * 16)
@@ -96,6 +99,8 @@ static u8   BattleStyle_ProcessInput(u8 selection);
 static void BattleStyle_DrawChoices(u8 selection);
 static u8   Follower_ProcessInput(u8 selection);
 static void Follower_DrawChoices(u8 selection);
+static u8   Difficulty_ProcessInput(u8 selection);
+static void Difficulty_DrawChoices(u8 selection);
 static u8   TypeEffect_ProcessInput(u8 selection);
 static void TypeEffect_DrawChoices(u8 selection);
 static u8   SuggestBall_ProcessInput(u8 selection);
@@ -111,6 +116,8 @@ static void ButtonMode_DrawChoices(u8 selection);
 static void DrawTextOption(void);
 static void DrawOptionMenuTexts(void);
 static void DrawBgWindowFrames(void);
+static u16 GetDifficulty(void);
+static void SetDifficulty(u16 difficulty);
 
 EWRAM_DATA static bool8 sArrowPressed = FALSE;
 EWRAM_DATA static u8 sCurrPage = 0;
@@ -133,6 +140,7 @@ static const u8 *const sOptionMenuItemsNames[MENUITEM_COUNT] =
 static const u8 *const sOptionMenuItemsNames_Pg2[MENUITEM_COUNT_PG2] =
 {
     [MENUITEM_FOLLOWER]        = gText_Follower,
+    [MENUITEM_DIFFICULTY]      = gText_Difficulty,
     [MENUITEM_TYPEEFFECT]      = gText_TypeEffect,
     [MENUITEM_SUGGESTBALL]     = gText_SuggestBall,
     [MENUITEM_SUGGESTIONTYPE]  = gText_SuggestionType,
@@ -212,6 +220,7 @@ static void ReadAllCurrentSettings(u8 taskId)
     gTasks[taskId].data[TD_BUTTONMODE] = gSaveBlock2Ptr->optionsButtonMode;
     gTasks[taskId].data[TD_FRAMETYPE] = gSaveBlock2Ptr->optionsWindowFrameType;
     gTasks[taskId].data[TD_FOLLOWER] = FlagGet(FLAG_POKEMON_FOLLOWERS);
+    gTasks[taskId].data[TD_DIFFICULTY] = GetDifficulty();
     gTasks[taskId].data[TD_TYPEEFFECT] = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     gTasks[taskId].data[TD_SUGGESTBALL] = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
     gTasks[taskId].data[TD_SUGGESTIONTYPE] = FlagGet(FLAG_BALL_SUGGEST_NOT_LAST) * (1 + FlagGet(FLAG_BALL_SUGGEST_COMPLEX));  // 0 = Last; 1 = Simple; 2 = Complex
@@ -234,6 +243,7 @@ static void DrawOptionsPg2(u8 taskId)
 {
     ReadAllCurrentSettings(taskId);
     Follower_DrawChoices(gTasks[taskId].data[TD_FOLLOWER]);
+    Difficulty_DrawChoices(gTasks[taskId].data[TD_DIFFICULTY]);
     TypeEffect_DrawChoices(gTasks[taskId].data[TD_TYPEEFFECT]);
     SuggestBall_DrawChoices(gTasks[taskId].data[TD_SUGGESTBALL]);
     SuggestionType_DrawChoices(gTasks[taskId].data[TD_SUGGESTIONTYPE]);
@@ -531,6 +541,13 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
             if (previousOption != gTasks[taskId].data[TD_FOLLOWER])
                 Follower_DrawChoices(gTasks[taskId].data[TD_FOLLOWER]);
             break;
+        case MENUITEM_DIFFICULTY:
+            previousOption = gTasks[taskId].data[TD_DIFFICULTY];
+            gTasks[taskId].data[TD_DIFFICULTY] = Difficulty_ProcessInput(gTasks[taskId].data[TD_DIFFICULTY]);
+
+            if (previousOption != gTasks[taskId].data[TD_DIFFICULTY])
+                Difficulty_DrawChoices(gTasks[taskId].data[TD_DIFFICULTY]);
+            break;
         case MENUITEM_TYPEEFFECT:
             previousOption = gTasks[taskId].data[TD_TYPEEFFECT];
             gTasks[taskId].data[TD_TYPEEFFECT] = TypeEffect_ProcessInput(gTasks[taskId].data[TD_TYPEEFFECT]);
@@ -577,6 +594,8 @@ static void Task_OptionMenuSave(u8 taskId)
         FlagClear(FLAG_POKEMON_FOLLOWERS);
     else
         FlagSet(FLAG_POKEMON_FOLLOWERS);
+
+    SetDifficulty(gTasks[taskId].data[TD_DIFFICULTY]);
 
     if (gTasks[taskId].data[TD_TYPEEFFECT] == 0)
         FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
@@ -759,6 +778,51 @@ static void Follower_DrawChoices(u8 selection)
     DrawOptionMenuChoice(gText_FollowerOn, GetStringRightAlignXOffset(FONT_NORMAL, gText_FollowerOn, 198), YPOS_FOLLOWER, styles[1]);
 }
 
+static u8 Difficulty_ProcessInput(u8 selection)
+{
+    if (JOY_NEW(DPAD_RIGHT))
+    {
+        if (selection <= 1)
+            selection++;
+        else
+            selection = 0;
+
+        sArrowPressed = TRUE;
+    }
+    if (JOY_NEW(DPAD_LEFT))
+    {
+        if (selection != 0)
+            selection--;
+        else
+            selection = 2;
+
+        sArrowPressed = TRUE;
+    }
+    return selection;
+}
+
+static void Difficulty_DrawChoices(u8 selection)
+{
+    u8 styles[3];
+    s32 widthEasy, widthNormal, widthHard, xMid;
+
+    styles[0] = 0;
+    styles[1] = 0;
+    styles[2] = 0;
+    styles[selection] = 1;
+
+    DrawOptionMenuChoice(gText_DifficultyEasy, 104, YPOS_DIFFICULTY, styles[0]);
+
+    widthEasy = GetStringWidth(FONT_NORMAL, gText_DifficultyEasy, 0);
+    widthNormal = GetStringWidth(FONT_NORMAL, gText_DifficultyNormal, 0);
+    widthHard = GetStringWidth(FONT_NORMAL, gText_DifficultyHard, 0);
+
+    widthNormal -= 94;
+    xMid = (widthEasy - widthNormal - widthHard) / 2 + 104;
+    DrawOptionMenuChoice(gText_DifficultyNormal, xMid, YPOS_DIFFICULTY, styles[1]);
+
+    DrawOptionMenuChoice(gText_DifficultyHard, GetStringRightAlignXOffset(FONT_NORMAL, gText_DifficultyHard, 198), YPOS_DIFFICULTY, styles[2]);
+}
 
 static u8 TypeEffect_ProcessInput(u8 selection)
 {
@@ -832,7 +896,7 @@ static u8 SuggestionType_ProcessInput(u8 selection)
 static void SuggestionType_DrawChoices(u8 selection)
 {
     u8 styles[3];
-    s32 widthSlow, widthMid, widthFast, xMid;
+    s32 widthLast, widthSimple, widthComplex, xMid;
 
     styles[0] = 0;
     styles[1] = 0;
@@ -841,12 +905,12 @@ static void SuggestionType_DrawChoices(u8 selection)
 
     DrawOptionMenuChoice(gText_SuggestionTypeLast, 104, YPOS_SUGGESTIONTYPE, styles[0]);
 
-    widthSlow = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeLast, 0);
-    widthMid = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeSimple, 0);
-    widthFast = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeComplex, 0);
+    widthLast = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeLast, 0);
+    widthSimple = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeSimple, 0);
+    widthComplex = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeComplex, 0);
 
-    widthMid -= 94;
-    xMid = (widthSlow - widthMid - widthFast) / 2 + 104;
+    widthSimple -= 94;
+    xMid = (widthLast - widthSimple - widthComplex) / 2 + 104;
     DrawOptionMenuChoice(gText_SuggestionTypeSimple, xMid, YPOS_SUGGESTIONTYPE, styles[1]);
 
     DrawOptionMenuChoice(gText_SuggestionTypeComplex, GetStringRightAlignXOffset(FONT_NORMAL, gText_SuggestionTypeComplex, 198), YPOS_SUGGESTIONTYPE, styles[2]);
@@ -1057,4 +1121,40 @@ static void DrawBgWindowFrames(void)
     FillBgTilemapBufferRect(1, TILE_BOT_CORNER_R, 28, 19,  1,  1,  7);
 
     CopyBgTilemapBufferToVram(1);
+}
+
+static u16 GetDifficulty(void)  // Returns 0 if easy, 1 if normal, 2 if hard
+{
+    switch(VarGet(VAR_DIFFICULTY))
+    {
+    case DIFFICULTY_EASY:
+        return 0;
+    case DIFFICULTY_NORMAL:
+        return 1;
+    case DIFFICULTY_HARD:
+        return 2; 
+    default:
+        return 1;
+    }
+}
+
+static void SetDifficulty(u16 difficulty)
+{
+    u16 difficultyConverted;
+    switch(difficulty)
+    {
+    case 0:
+        difficultyConverted = DIFFICULTY_EASY;
+        break;
+    case 1:
+        difficultyConverted = DIFFICULTY_NORMAL;
+        break;
+    case 2:
+        difficultyConverted = DIFFICULTY_HARD;
+        break;
+    default:
+        difficultyConverted = DIFFICULTY_NORMAL;
+        break;
+    }
+    VarSet(VAR_DIFFICULTY, difficultyConverted);
 }

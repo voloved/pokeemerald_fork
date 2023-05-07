@@ -676,14 +676,13 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	call EventScript_Multichoice_BirchPCOptions
 	switch VAR_RESULT
 	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro
-	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_Challenge
-	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMult
-	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun
-	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
-	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit
-	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu
-	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
-	case 8, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMult
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit
+	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu
+	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
 	return
@@ -692,22 +691,21 @@ EventScript_Multichoice_BirchPCOptions::
 	goto_if_set FLAG_SKIP_INTRO, EventScript_Multichoice_BirchPCOptions_2
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_1, 0
 EventScript_Multichoice_BirchPCOptions_1:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_2, 1
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_3, 2
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_3, 1
 	goto_if_set FLAG_GRINDRUN, EventScript_Multichoice_BirchPCOptions_6
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_5, 3
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_5, 2
 EventScript_Multichoice_BirchPCOptions_5:
 	goto_if_set FLAG_NO_LOW_HEALTH_BEEP, EventScript_Multichoice_BirchPCOptions_10
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_7, 4
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_7, 3
 EventScript_Multichoice_BirchPCOptions_9:
 	goto_if_set FLAG_MOVE_SPLIT_USE_ORIGINAL, EventScript_Multichoice_BirchPCOptions_12
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_8, 5
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_8, 4
 EventScript_Multichoice_BirchPCOptions_15:
 	goto_if_set FLAG_RELEARN_IN_PARTY_MENU, EventScript_Multichoice_BirchPCOptions_16
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_14, 6	
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_14, 5	
 EventScript_Multichoice_BirchPCOptions_13:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 7
-	dynmultipush EventScript_Multichoice_Exit, 9
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 6
+	dynmultipush EventScript_Multichoice_Exit, 7
 	dynmultistack 0, 0, TRUE, 8, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	return
 
@@ -716,19 +714,19 @@ EventScript_Multichoice_BirchPCOptions_2:
 	goto EventScript_Multichoice_BirchPCOptions_1
 
 EventScript_Multichoice_BirchPCOptions_6:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_4, 3
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_4, 2
 	goto EventScript_Multichoice_BirchPCOptions_5
 
 EventScript_Multichoice_BirchPCOptions_10:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_6, 4
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_6, 3
 	goto EventScript_Multichoice_BirchPCOptions_9
 
 EventScript_Multichoice_BirchPCOptions_12:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_9, 5
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_9, 4
 	goto EventScript_Multichoice_BirchPCOptions_15
 
 EventScript_Multichoice_BirchPCOptions_16:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_13, 6
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_13, 5
 	goto EventScript_Multichoice_BirchPCOptions_13
 
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
@@ -1039,55 +1037,6 @@ LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClauseNo::
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
 	end
 
-LittlerootTown_ProfessorBirchsLab_EventScript_Challenge::
-	message LittlerootTown_ProfessorBirchsLab_Text_Challenge
-	waitmessage
-	switch VAR_DIFFICULTY
-	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_DefaultNormal
-	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_DefaultHard
-	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_DefaultEasy
-
-LittlerootTown_ProfessorBirchsLab_EventScript_DefaultNormal:
-	multichoicedefault 21, 6, MULTI_TAG_DIFFICULTY, 1, FALSE
-	goto LittlerootTown_ProfessorBirchsLab_EventScript_ChallengeSelect
-
-LittlerootTown_ProfessorBirchsLab_EventScript_DefaultHard:
-	multichoicedefault 21, 6, MULTI_TAG_DIFFICULTY, 2, FALSE
-	goto LittlerootTown_ProfessorBirchsLab_EventScript_ChallengeSelect
-
-LittlerootTown_ProfessorBirchsLab_EventScript_DefaultEasy:
-	multichoicedefault 21, 6, MULTI_TAG_DIFFICULTY, 0, FALSE
-	goto LittlerootTown_ProfessorBirchsLab_EventScript_ChallengeSelect
-
-LittlerootTown_ProfessorBirchsLab_EventScript_ChallengeSelect:
-	switch VAR_RESULT
-	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedEasy
-	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedNormal
-	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedHard
-	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
-	end
-
-LittlerootTown_ProfessorBirchsLab_EventScript_SelectedNormal:
-	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedNormal, MSGBOX_DEFAULT
-	setvar VAR_DIFFICULTY, 0
-	closemessage
-	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
-	end
-
-LittlerootTown_ProfessorBirchsLab_EventScript_SelectedHard:
-	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedHard, MSGBOX_DEFAULT
-	setvar VAR_DIFFICULTY, 1
-	closemessage
-	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
-	end
-
-LittlerootTown_ProfessorBirchsLab_EventScript_SelectedEasy:
-	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedEasy, MSGBOX_DEFAULT
-	setvar VAR_DIFFICULTY, 2
-	closemessage
-	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
-	end
-
 LittlerootTown_ProfessorBirchsLab_EventScript_ExpMult::
 	message LittlerootTown_ProfessorBirchsLab_Text_ExpMult
 	waitmessage
@@ -1293,9 +1242,6 @@ EventScript_Multichoice_BirchPCOptions_Text_0:
 EventScript_Multichoice_BirchPCOptions_Text_1:
 	.string "{COLOR RED}SKIP INTRO$"
 
-EventScript_Multichoice_BirchPCOptions_Text_2:
-	.string "DIFFICULTY$"
-
 EventScript_Multichoice_BirchPCOptions_Text_3:
 	.string "EXP MULTIPLIER$"
 
@@ -1427,22 +1373,6 @@ LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainerYes:
 LittlerootTown_ProfessorBirchsLab_Text_KrabbyTrainerNo:
 	.string "All trainers' POKéMON\n"
 	.string "will be normal.$"
-
-LittlerootTown_ProfessorBirchsLab_Text_Challenge:
-	.string "What difficulty would\n"
-	.string "you like to play at?$"
-
-LittlerootTown_ProfessorBirchsLab_Text_SelectedEasy:
-	.string "Easy difficulty\n"
-	.string "was chosen.$"
-
-LittlerootTown_ProfessorBirchsLab_Text_SelectedNormal:
-	.string "Normal difficulty\n"
-	.string "was chosen.$"
-
-LittlerootTown_ProfessorBirchsLab_Text_SelectedHard:
-	.string "Hard difficulty\n"
-	.string "was chosen.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_ExpMult:
 	.string "What would you like to\n"
