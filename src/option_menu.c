@@ -488,7 +488,6 @@ static void Task_OptionMenuProcessInput(u8 taskId)
     }
 }
 
-
 static void Task_OptionMenuFadeIn_Pg2(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -805,7 +804,13 @@ static u8 Difficulty_ProcessInput(u8 selection)
 static void Difficulty_DrawChoices(u8 selection)
 {
     u8 styles[3];
-    s32  widthNormal, xMid;
+    /* FALSE = Have the middle text be exactly in between where the first text ends and second text begins.
+       TRUE = Have the mid text be in the middle of the frame, ignoring the first and last text size. 
+    Setting it to FALSE is how vanilla code does it for the TEST SPEED, but the layout looks off-center if there's
+    multiple three-item options in one page and the length of characters for the first and last choices
+    of one of the options mismatch.*/
+    bool8 centerMid = TRUE;
+    s32 widthEasy, widthNormal, widthHard, xMid;
 
     styles[0] = 0;
     styles[1] = 0;
@@ -815,9 +820,17 @@ static void Difficulty_DrawChoices(u8 selection)
     DrawOptionMenuChoice(gText_DifficultyEasy, 104, YPOS_DIFFICULTY, styles[0]);
 
     widthNormal = GetStringWidth(FONT_NORMAL, gText_DifficultyNormal, 0);
-    xMid = (94 - widthNormal) / 2 + 104;
-    DrawOptionMenuChoice(gText_DifficultyNormal, xMid, YPOS_DIFFICULTY, styles[1]);
+    if (centerMid){
+        xMid = (94 - widthNormal) / 2 + 104;
+    }
+    else{
+        widthEasy = GetStringWidth(FONT_NORMAL, gText_DifficultyEasy, 0);
+        widthHard = GetStringWidth(FONT_NORMAL, gText_DifficultyHard, 0);
+        widthNormal -= 94;
+        xMid = (widthEasy - widthNormal - widthHard) / 2 + 104;
+     }
 
+    DrawOptionMenuChoice(gText_DifficultyNormal, xMid, YPOS_DIFFICULTY, styles[1]);
     DrawOptionMenuChoice(gText_DifficultyHard, GetStringRightAlignXOffset(FONT_NORMAL, gText_DifficultyHard, 198), YPOS_DIFFICULTY, styles[2]);
 }
 
@@ -893,7 +906,13 @@ static u8 SuggestionType_ProcessInput(u8 selection)
 static void SuggestionType_DrawChoices(u8 selection)
 {
     u8 styles[3];
-    s32 widthSimple, xMid;
+    /* FALSE = Have the middle text be exactly in between where the first text ends and second text begins.
+       TRUE = Have the mid text be in the middle of the frame, ignoring the first and last text size. 
+    Setting it to FALSE is how vanilla code does it for the TEST SPEED, but the layout looks off-center if there's
+    multiple three-item options in one page and the length of characters for the first and last choices
+    of one of the options mismatch.*/
+    bool8 centerMid = TRUE;
+    s32 widthLast, widthSimple, widthComplex, xMid;
 
     styles[0] = 0;
     styles[1] = 0;
@@ -903,7 +922,15 @@ static void SuggestionType_DrawChoices(u8 selection)
     DrawOptionMenuChoice(gText_SuggestionTypeLast, 104, YPOS_SUGGESTIONTYPE, styles[0]);
 
     widthSimple = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeSimple, 0);
-    xMid = (94 - widthSimple) / 2 + 104;
+    if (centerMid){
+        xMid = (94 - widthSimple) / 2 + 104;
+    }
+    else{
+        widthLast = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeLast, 0);
+        widthComplex = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeComplex, 0);
+        widthSimple -= 94;
+        xMid = (widthLast - widthSimple - widthComplex) / 2 + 104;
+    }
     DrawOptionMenuChoice(gText_SuggestionTypeSimple, xMid, YPOS_SUGGESTIONTYPE, styles[1]);
 
     DrawOptionMenuChoice(gText_SuggestionTypeComplex, GetStringRightAlignXOffset(FONT_NORMAL, gText_SuggestionTypeComplex, 198), YPOS_SUGGESTIONTYPE, styles[2]);

@@ -2865,6 +2865,8 @@ static u16 ChoosePreferredBallComplex(u8 minOddsToConsiderBall, u8 minOddsToCons
     u32 catchOddsBeforeBallMod = (catchRate) * (gBattleMons[opposingBattlerId].maxHP * 3 - gBattleMons[opposingBattlerId].hp * 2) 
                                 / (3 * gBattleMons[opposingBattlerId].maxHP);
 
+    minOddsToConsiderBall = percentageToCatchOddsLUT[minOddsToConsiderBall];
+    minOddsToConsiderLuxuryBall = percentageToCatchOddsLUT[minOddsToConsiderLuxuryBall];
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
      {
         if (BattleCanUseThiefBall() && CheckBagHasItem(ITEM_THIEF_BALL, 1))
