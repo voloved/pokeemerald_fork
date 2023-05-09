@@ -1068,28 +1068,24 @@ static void ButtonMode_DrawChoices(u8 selection)
 
 static void DrawTextOption(void)
 {
-    u32 i;
-    u8 OptionsWithPage[40];
-    u8 spacerLong[] = _("{CLEAR 0x05}");
-    u8 spacerShort[] = _(" ");
-    u8 smallDot[] = _("·");
-    u8 largeDot[] = _("{EMOJI_CIRCLE}");
-    u8 pageNav[] = _("{CLEAR_TO 0x83}{L_BUTTON}{R_BUTTON} PAGE");
+    u32 i, widthOptions, xMid;
+    u8 pageDots[9] = _("");  // You'll need to make this larger for more than 5 pages
+    widthOptions = GetStringWidth(FONT_NORMAL, gText_Option, 0);
 
-    StringCopy(OptionsWithPage, gText_Option);
-    StringAppend(OptionsWithPage, spacerLong);
     for (i = 0; i < PAGE_COUNT; i++)
     {
         if (i == sCurrPage)
-            StringAppend(OptionsWithPage, largeDot);
+            StringAppend(pageDots, gText_LargeDot);
         else
-            StringAppend(OptionsWithPage, smallDot);
+            StringAppend(pageDots, gText_SmallDot);
         if (i < PAGE_COUNT - 1)
-            StringAppend(OptionsWithPage, spacerShort);            
+            StringAppend(pageDots, gText_Space);            
     }
-    StringAppend(OptionsWithPage, pageNav);
+    xMid = (8 + widthOptions + 6);
     FillWindowPixelBuffer(WIN_TEXT_OPTION, PIXEL_FILL(1));
-    AddTextPrinterParameterized(WIN_TEXT_OPTION, FONT_NORMAL, OptionsWithPage, 8, 1, TEXT_SKIP_DRAW, NULL);
+    AddTextPrinterParameterized(WIN_TEXT_OPTION, FONT_NORMAL, gText_Option, 8, 1, TEXT_SKIP_DRAW, NULL);
+    AddTextPrinterParameterized(WIN_TEXT_OPTION, FONT_NORMAL, pageDots, xMid, 1, TEXT_SKIP_DRAW, NULL);
+    AddTextPrinterParameterized(WIN_TEXT_OPTION, FONT_NORMAL, gText_PageNav, GetStringRightAlignXOffset(FONT_NORMAL, gText_PageNav, 198), 1, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(WIN_TEXT_OPTION, COPYWIN_FULL);
 }
 

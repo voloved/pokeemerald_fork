@@ -273,9 +273,6 @@ extern const u8 gText_Peak[];
 extern const u8 gText_SafariBallStock[];
 extern const u8 gText_BattlePyramidFloor[];
 
-extern const u8 gText_Easy[];
-extern const u8 gText_Hard[];
-
 extern const u8 gText_MenuOptionPokedex[];
 extern const u8 gText_MenuOptionPokemon[];
 extern const u8 gText_MenuOptionBag[];
@@ -330,6 +327,9 @@ extern const u8 gText_SuggestionTypeSimple[];
 extern const u8 gText_SuggestionTypeComplex[];
 extern const u8 gText_Option[];
 extern const u8 gText_OptionMenu[];
+extern const u8 gText_SmallDot[];
+extern const u8 gText_LargeDot[];
+extern const u8 gText_PageNav[];
 extern const u8 gText_TextSpeed[];
 extern const u8 gText_BattleScene[];
 extern const u8 gText_BattleStyle[];

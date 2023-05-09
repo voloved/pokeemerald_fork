@@ -771,13 +771,6 @@ static const struct MenuAction MultichoiceList_TagMatchType[] =
     {gText_Exit},
 };
 
-static const struct MenuAction MultichoiceList_TagChallenge[] =
-{
-    {gText_Easy},
-    {gText_Normal},
-    {gText_Hard},
-};
-
 static const struct MenuAction MultichoiceList_TagCarcinisation[] =
 {
     {(const u8[])_("ALL KRABBY")},
@@ -923,7 +916,6 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_SLATEPORT_TENT_RULES]       = MULTICHOICE(MultichoiceList_SlateportTentRules),
     [MULTI_FALLARBOR_TENT_RULES]       = MULTICHOICE(MultichoiceList_FallarborTentRules),
     [MULTI_TAG_MATCH_TYPE]             = MULTICHOICE(MultichoiceList_TagMatchType),
-    [MULTI_TAG_DIFFICULTY]             = MULTICHOICE(MultichoiceList_TagChallenge),
     [MULTI_TAG_CARCINISATION]          = MULTICHOICE(MultichoiceList_TagCarcinisation),
     [MULTI_TAG_EXP_MULT]               = MULTICHOICE(MultichoiceList_TagExpMult),    
 };
