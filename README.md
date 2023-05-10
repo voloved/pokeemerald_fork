@@ -15,11 +15,13 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
    - Gives suggested ball on the first turn (and the Timer Ball aftewr enough turns)
  - [Added Second Page to Options Menu.](https://github.com/pret/pokeemerald/wiki/Multipage-Options-Menu)
    - Includes: Show Follower, Show Ball Suggestion, Ball Suggestion Preferences, Difficulty.
+ - [Holding Select Allows For A Second Register Item](https://github.com/pret/pokeemerald/wiki/Holding-Select-Allows-For-A-Second-Register-Item)
  - Entering the Konami Code at the Main Menu Screen Allows for the Debug Menu in the Start Menu.
  - Truck That Player Comes To Hometown In Is Now A UHaul.
  - Added 'Add All HMs' To Debug Menu.
  - Wally opens correct pocket for Poké Ball.
  - A trainer you've already battled can no longer reset FLAG_RAN_FROM_TRAINER.
+ - Cleanse Tag and Poké Doll can be registered in place of being tossed.
  - Cannot run from Double Battles.
  - Bug fix to allow stolen Pokémon to count towards Pokédex.
 

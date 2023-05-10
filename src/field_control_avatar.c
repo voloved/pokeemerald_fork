@@ -116,16 +116,14 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
 
             if (sPlayerSelectHoldFrames == 60)
                 input->input_field_1_7 = TRUE;
-            else if (JOY_RELEASED(SELECT_BUTTON)){
-                if (sPlayerSelectHoldFrames >= 60)
-                    sPlayerSelectHoldFrames = 0;
-                else
-                    input->input_field_1_6 = TRUE;
-            }
             if (JOY_HELD(SELECT_BUTTON))
                 sPlayerSelectHoldFrames = sPlayerSelectHoldFrames < 0xFF ? sPlayerSelectHoldFrames + 1 : 0xFF;
-            else
+            else if (sPlayerSelectHoldFrames != 0)
+            {
+               if (sPlayerSelectHoldFrames < 60)
+                    input->input_field_1_6 = TRUE;
                 sPlayerSelectHoldFrames = 0;
+            }
         }
 
         if (heldKeys & (DPAD_UP | DPAD_DOWN | DPAD_LEFT | DPAD_RIGHT))
