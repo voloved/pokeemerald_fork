@@ -278,7 +278,7 @@ static const struct ListMenuTemplate sItemListMenu =
     .itemPrintFunc = BagMenu_ItemPrintCallback,
     .totalItems = 0,
     .maxShowed = 0,
-    .windowId = 0,
+    .windowId = WIN_ITEM_LIST,
     .header_X = 0,
     .item_X = 8,
     .cursor_X = 0,
@@ -990,7 +990,7 @@ static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u8 y)
 {
     u16 itemId;
     u16 itemQuantity;
-    int offset;
+    int offset, selOff;
 
     if (itemIndex != LIST_CANCEL)
     {
@@ -1025,6 +1025,10 @@ static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u8 y)
             StringExpandPlaceholders(gStringVar4, gText_xVar1);
             offset = GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, 119);
             BagMenu_Print(windowId, FONT_NARROW, gStringVar4, offset, y, 0, 0, TEXT_SKIP_DRAW, COLORID_NORMAL);
+            if (gSaveBlock1Ptr->registeredItem && gSaveBlock1Ptr->registeredItem == itemId){
+                selOff = (GetStringWidth(FONT_NORMAL, ItemId_GetName(itemId), 0)) + 2;
+                BlitBitmapToWindow(windowId, sRegisteredSelect_Gfx, selOff, y - 1, 24, 16);
+            }
         }
         else
         {
