@@ -105,7 +105,6 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
     {
         if (GetPlayerSpeed() != PLAYER_SPEED_FASTEST)
         {
-            DebugPrintf("%d %d %d", sPlayerSelectHoldFrames, input->input_field_1_6, input->input_field_1_7);
             if (newKeys & START_BUTTON)
                 input->pressedStartButton = TRUE;
             if (newKeys & SELECT_BUTTON)
@@ -114,17 +113,19 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
                 input->pressedAButton = TRUE;
             if (newKeys & B_BUTTON)
                 input->pressedBButton = TRUE;
+
+            if (sPlayerSelectHoldFrames == 60)
+                input->input_field_1_7 = TRUE;
+            else if (JOY_RELEASED(SELECT_BUTTON)){
+                if (sPlayerSelectHoldFrames >= 60)
+                    sPlayerSelectHoldFrames = 0;
+                else
+                    input->input_field_1_6 = TRUE;
+            }
             if (JOY_HELD(SELECT_BUTTON))
-                sPlayerSelectHoldFrames++;
+                sPlayerSelectHoldFrames = sPlayerSelectHoldFrames < 0xFF ? sPlayerSelectHoldFrames + 1 : 0xFF;
             else
                 sPlayerSelectHoldFrames = 0;
-            if (sPlayerSelectHoldFrames > 59)
-            {
-                sPlayerSelectHoldFrames = 0;
-                input->input_field_1_7 = TRUE;
-            }
-            else if (JOY_RELEASED(SELECT_BUTTON)) 
-                input->input_field_1_6 = TRUE;
         }
 
         if (heldKeys & (DPAD_UP | DPAD_DOWN | DPAD_LEFT | DPAD_RIGHT))
@@ -213,10 +214,10 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
         ShowStartMenu();
         return TRUE;
     }
-    if (input->input_field_1_6 && UseRegisteredKeyItemOnField(gSaveBlock1Ptr->registeredItem) == TRUE)
+    if (input->input_field_1_6 && UseRegisteredKeyItemOnField(FALSE) == TRUE)
         return TRUE;
     
-    if (input->input_field_1_7 && UseRegisteredKeyItemOnField(gSaveBlock1Ptr->registeredLongItem) == TRUE)
+    if (input->input_field_1_7 && UseRegisteredKeyItemOnField(TRUE) == TRUE)
         return TRUE;
 
     if(TX_DEBUG_SYSTEM_ENABLE == TRUE && TX_DEBUG_SYSTEM_IN_MENU == FALSE && input->input_field_1_2)
