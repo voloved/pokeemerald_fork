@@ -96,8 +96,6 @@ enum {
     ACTION_BY_TYPE,
     ACTION_BY_AMOUNT,
     ACTION_BY_NUMBER,
-    ACTION_REGISTERLONG,
-    ACTION_DESELECTLONG,
     ACTION_DUMMY,
 };
 
@@ -171,6 +169,7 @@ static void PrintContextMenuItems(u8);
 static void PrintContextMenuItemGrid(u8, u8, u8);
 static void Task_ItemContext_SingleRow(u8);
 static void Task_ItemContext_MultipleRows(u8);
+static void Task_CheckWhichRegister(u8);
 static bool8 IsValidContextMenuPos(s8);
 static void BagMenu_RemoveWindow(u8);
 static void PrintThereIsNoPokemon(u8);
@@ -207,6 +206,7 @@ static void ItemMenu_UseOutOfBattle(u8);
 static void ItemMenu_Toss(u8);
 static void ItemMenu_Register(u8);
 static void ItemMenu_RegisterLong(u8);
+static void ItemMenu_CheckWhichRegister(u8);
 static void ItemMenu_Give(u8);
 static void ItemMenu_Cancel(u8);
 static void ItemMenu_UseInBattle(u8);
@@ -301,13 +301,13 @@ static const u8 sText_NothingToSort[] = _("There's nothing to sort!");
 static const struct MenuAction sItemMenuActions[] = {
     [ACTION_USE]               = {gMenuText_Use,      ItemMenu_UseOutOfBattle},
     [ACTION_TOSS]              = {gMenuText_Toss,     ItemMenu_Toss},
-    [ACTION_REGISTER]          = {gMenuText_Register, ItemMenu_Register},
+    [ACTION_REGISTER]          = {gMenuText_Register, ItemMenu_CheckWhichRegister},
     [ACTION_GIVE]              = {gMenuText_Give,     ItemMenu_Give},
     [ACTION_CANCEL]            = {gText_Cancel2,      ItemMenu_Cancel},
     [ACTION_BATTLE_USE]        = {gMenuText_Use,      ItemMenu_UseInBattle},
     [ACTION_CHECK]             = {gMenuText_Check,    ItemMenu_UseOutOfBattle},
     [ACTION_WALK]              = {gMenuText_Walk,     ItemMenu_UseOutOfBattle},
-    [ACTION_DESELECT]          = {gMenuText_Deselect, ItemMenu_Register},
+    [ACTION_DESELECT]          = {gMenuText_Deselect, ItemMenu_CheckWhichRegister},
     [ACTION_CHECK_TAG]         = {gMenuText_CheckTag, ItemMenu_CheckTag},
     [ACTION_CONFIRM]           = {gMenuText_Confirm,  Task_FadeAndCloseBagMenu},
     [ACTION_SHOW]              = {gMenuText_Show,     ItemMenu_Show},
@@ -317,8 +317,6 @@ static const struct MenuAction sItemMenuActions[] = {
     [ACTION_BY_TYPE]           = {sMenuText_ByType,   ItemMenu_SortByType},
     [ACTION_BY_NUMBER]         = {sMenuText_ByNumber, ItemMenu_SortByID},
     [ACTION_BY_AMOUNT]         = {sMenuText_ByAmount, ItemMenu_SortByAmount},
-    [ACTION_REGISTERLONG]      = {gMenuText_RegisterLong, ItemMenu_RegisterLong},
-    [ACTION_DESELECTLONG]      = {gMenuText_DeselectLong, ItemMenu_RegisterLong},
     [ACTION_DUMMY]             = {gText_EmptyString2, NULL}
 };
 
@@ -331,7 +329,7 @@ static const u8 sContextMenuItems_ItemsPocket[] = {
 
 static const u8 sContextMenuItems_KeyItemsPocket[] = {
     ACTION_USE,         ACTION_REGISTER,
-    ACTION_REGISTERLONG, ACTION_CANCEL
+    ACTION_DUMMY,       ACTION_CANCEL
 };
 
 static const u8 sContextMenuItems_BallsPocket[] = {
@@ -703,6 +701,7 @@ void VBlankCB_BagMenuRun(void)
 #define tQuantity          data[2]
 #define tNeverRead         data[3]
 #define tIsRegisterLong    data[4]
+#define tSelHeldCount      data[5]
 #define tItemCount         data[8]
 #define tMsgWindowId       data[10]
 #define tPocketSwitchDir   data[11]
@@ -1703,10 +1702,8 @@ static void OpenContextMenu(u8 taskId)
                     gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_KeyItemsPocket);
                     memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_KeyItemsPocket, sizeof(sContextMenuItems_KeyItemsPocket));
                 }
-                if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
+                if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId || gSaveBlock1Ptr->registeredLongItem == gSpecialVar_ItemId)
                     gBagMenu->contextMenuItemsBuffer[1] = ACTION_DESELECT;
-                if (gSaveBlock1Ptr->registeredLongItem == gSpecialVar_ItemId)
-                    gBagMenu->contextMenuItemsBuffer[2] = ACTION_DESELECTLONG;
                 if (gSpecialVar_ItemId == ITEM_MACH_BIKE || gSpecialVar_ItemId == ITEM_ACRO_BIKE)
                 {
                     if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
@@ -1999,13 +1996,9 @@ static void ItemMenu_Register(u8 taskId)
     s16 *data = gTasks[taskId].data;
     u16 *scrollPos = &gBagPosition.scrollPosition[gBagPosition.pocket];
     u16 *cursorPos = &gBagPosition.cursorPosition[gBagPosition.pocket];
-    u16 *registerSlot, *registerSlotOther;
+    u16 *registerSlot;
 
     registerSlot = tIsRegisterLong ? &gSaveBlock1Ptr->registeredLongItem : &gSaveBlock1Ptr->registeredItem;
-    registerSlotOther = tIsRegisterLong ? &gSaveBlock1Ptr->registeredItem : &gSaveBlock1Ptr->registeredLongItem;
-
-    if (*registerSlotOther == gSpecialVar_ItemId)
-        *registerSlotOther = 0;
     if (*registerSlot == gSpecialVar_ItemId)
         *registerSlot = 0;
     else
@@ -2022,6 +2015,36 @@ static void ItemMenu_RegisterLong(u8 taskId)
 {
     gTasks[taskId].tIsRegisterLong = TRUE;
     gTasks[taskId].func = ItemMenu_Register;
+}
+
+static void ItemMenu_CheckWhichRegister(u8 taskId)
+{
+    gTasks[taskId].func = Task_CheckWhichRegister;
+}
+
+static void Task_CheckWhichRegister(u8 taskId)
+{
+    if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId){
+        // If the item is already registered, then deselect it.
+        gTasks[taskId].tSelHeldCount = 0;
+        gTasks[taskId].func = ItemMenu_Register;
+    }
+    else if (gSaveBlock1Ptr->registeredLongItem == gSpecialVar_ItemId){
+        // If the item is already registered, then deselect it.
+        gTasks[taskId].tSelHeldCount = 0;
+        gTasks[taskId].func = ItemMenu_RegisterLong;
+    }
+    else if (gTasks[taskId].tSelHeldCount > 60){
+        gTasks[taskId].tSelHeldCount = 0;
+        gTasks[taskId].func = ItemMenu_RegisterLong;        
+    }
+    if (JOY_HELD(A_BUTTON) && gTasks[taskId].tSelHeldCount < 0xFF){
+        gTasks[taskId].tSelHeldCount++;
+    }
+    else{
+        gTasks[taskId].tSelHeldCount = 0;
+        gTasks[taskId].func = ItemMenu_Register;
+    }
 }
 
 static void ItemMenu_Give(u8 taskId)
