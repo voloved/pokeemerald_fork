@@ -1681,6 +1681,13 @@ static void OpenContextMenu(u8 taskId)
                 memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_ItemsPocket, sizeof(sContextMenuItems_ItemsPocket));
                 if (ItemIsMail(gSpecialVar_ItemId) == TRUE)
                     gBagMenu->contextMenuItemsBuffer[0] = ACTION_CHECK;
+                if (gSpecialVar_ItemId == ITEM_CLEANSE_TAG || gSpecialVar_ItemId == ITEM_POKE_DOLL)
+                {
+                    if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
+                        gBagMenu->contextMenuItemsBuffer[2] = ACTION_DESELECT;
+                    else
+                        gBagMenu->contextMenuItemsBuffer[2] = ACTION_REGISTER;
+                }
                 break;
             case KEYITEMS_POCKET:
                 gBagMenu->contextMenuItemsPtr = gBagMenu->contextMenuItemsBuffer;
@@ -1989,7 +1996,6 @@ static void ItemMenu_Register(u8 taskId)
     u16 *scrollPos = &gBagPosition.scrollPosition[gBagPosition.pocket];
     u16 *cursorPos = &gBagPosition.cursorPosition[gBagPosition.pocket];
     u16 *registerSlot, *registerSlotOther;
-    DebugPrintf("%d", tIsRegisterLong);
 
     registerSlot = tIsRegisterLong ? &gSaveBlock1Ptr->registeredLongItem : &gSaveBlock1Ptr->registeredItem;
     registerSlotOther = tIsRegisterLong ? &gSaveBlock1Ptr->registeredItem : &gSaveBlock1Ptr->registeredLongItem;
