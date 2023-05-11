@@ -96,7 +96,7 @@ enum {
     ACTION_BY_TYPE,
     ACTION_BY_AMOUNT,
     ACTION_BY_NUMBER,
-    ACTION_REGISTER_CLICK,
+    ACTION_REGISTER_TAP,
     ACTION_REGISTER_HOLD,
     ACTION_DUMMY,
 };
@@ -299,9 +299,9 @@ static const u8 sMenuText_ByType[] = _("Type");
 static const u8 sMenuText_ByAmount[] = _("Amount");
 static const u8 sMenuText_ByNumber[] = _("Number");
 static const u8 sText_NothingToSort[] = _("There's nothing to sort!");
-static const u8 sMenuText_Click[] = _("Click");
+static const u8 sMenuText_Tap[] = _("Tap");
 static const u8 sMenuText_Hold[] = _("Hold");
-static const u8 sText_RegisterHow[] = _("Register this item\nby clicking or\nholding SELECT?");
+static const u8 sText_RegisterHow[] = _("Register this\nitem by tapping or\nholding SELECT?");
 static const struct MenuAction sItemMenuActions[] = {
     [ACTION_USE]               = {gMenuText_Use,      ItemMenu_UseOutOfBattle},
     [ACTION_TOSS]              = {gMenuText_Toss,     ItemMenu_Toss},
@@ -321,7 +321,7 @@ static const struct MenuAction sItemMenuActions[] = {
     [ACTION_BY_TYPE]           = {sMenuText_ByType,   ItemMenu_SortByType},
     [ACTION_BY_NUMBER]         = {sMenuText_ByNumber, ItemMenu_SortByID},
     [ACTION_BY_AMOUNT]         = {sMenuText_ByAmount, ItemMenu_SortByAmount},
-    [ACTION_REGISTER_CLICK]    = {sMenuText_Click,    ItemMenu_Register},
+    [ACTION_REGISTER_TAP]      = {sMenuText_Tap,      ItemMenu_Register},
     [ACTION_REGISTER_HOLD]     = {sMenuText_Hold,     ItemMenu_RegisterHold},
     [ACTION_DUMMY]             = {gText_EmptyString2, NULL}
 };
@@ -385,8 +385,8 @@ static const u8 sContextMenuItems_QuizLady[] = {
 
 static const u8 sRegisterOptions[] =
 {
-    ACTION_REGISTER_CLICK,
-    ACTION_REGISTER_HOLD,
+    ACTION_REGISTER_TAP, ACTION_REGISTER_HOLD,
+    ACTION_DUMMY,        ACTION_CANCEL
 };
 
 static const TaskFunc sContextMenuFuncs[] = {
@@ -423,7 +423,7 @@ static const struct ScrollArrowsTemplate sBagScrollArrowsTemplate = {
 };
 
 static const u8 sRegisteredSelect_Gfx[] = INCBIN_U8("graphics/bag/select_button.4bpp");
-static const u8 sRegisteredSelectLong_Gfx[] = INCBIN_U8("graphics/bag/select_button_long.4bpp");
+static const u8 sRegisteredSelectLong_Gfx[] = INCBIN_U8("graphics/bag/select_button_hold.4bpp");
 
 enum {
     COLORID_NORMAL,
@@ -2036,7 +2036,7 @@ static void AddRegisterSubMenu(void)
     StringExpandPlaceholders(gStringVar4, sText_RegisterHow);
     FillWindowPixelBuffer(1, PIXEL_FILL(0));
     BagMenu_Print(1, 1, gStringVar4, 3, 1, 0, 0, 0, 0);
-    PrintContextMenuItems(BagMenu_AddWindow(ITEMWIN_1x2));
+    PrintContextMenuItemGrid(BagMenu_AddWindow(ITEMWIN_2x2), 2, 2);
 }
 
 static void Task_LoadRegisterOptions(u8 taskId)
@@ -2054,7 +2054,7 @@ static void Task_LoadRegisterOptions(u8 taskId)
         BagDestroyPocketScrollArrowPair();
         RemoveContextWindow();
         AddRegisterSubMenu();
-        gTasks[taskId].func = Task_ItemContext_SingleRow;
+        gTasks[taskId].func = Task_ItemContext_MultipleRows;
     }
 }
 
