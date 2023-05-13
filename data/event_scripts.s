@@ -864,7 +864,7 @@ gText_SelectWithoutRegisteredItem::
 
 gText_SelectWithoutRegisteredLongItem::
 	.string "A second item in the BAG can be\n"
-	.string "registered by holding SELECT.$"
+	.string "registered to holding SELECT.$"
 
 gText_PokemonTrainerSchoolEmail::
 	.string "There's an e-mail from POKéMON TRAINER\n"

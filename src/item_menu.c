@@ -1039,6 +1039,10 @@ static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u8 y)
                 selOff = (GetStringWidth(FONT_NORMAL, ItemId_GetName(itemId), 0)) + 2;
                 BlitBitmapToWindow(windowId, sRegisteredSelect_Gfx, selOff, y - 1, 24, 16);
             }
+            else if (gSaveBlock1Ptr->registeredLongItem && gSaveBlock1Ptr->registeredLongItem == itemId){
+                selOff = (GetStringWidth(FONT_NORMAL, ItemId_GetName(itemId), 0)) + 2;
+                BlitBitmapToWindow(windowId, sRegisteredSelectLong_Gfx, selOff, y - 1, 24, 16);
+            }
         }
         else
         {
