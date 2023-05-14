@@ -47,6 +47,7 @@
 #include "constants/battle_frontier.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "debug.h"
 
 // Menu actions
 enum
@@ -286,11 +287,10 @@ static void BuildStartMenuActions(void)
     }
     else
     {
-    #if defined(TX_DEBUG_SYSTEM_ENABLE) && TX_DEBUG_SYSTEM_IN_MENU
+    if((TX_DEBUG_SYSTEM_ENABLE == TRUE && TX_DEBUG_SYSTEM_IN_MENU == TRUE) || gShowDebugMenu)
         BuildDebugStartMenu();
-    #else
+    else
         BuildNormalStartMenu();
-    #endif
     }
 }
 
@@ -768,12 +768,8 @@ static bool8 StartMenuDebugCallback(void)
 {
     RemoveExtraStartMenuWindows();
     HideStartMenuDebug(); // Hide start menu without enabling movement
-
-#if TX_DEBUG_SYSTEM_ENABLE == TRUE
     FreezeObjectEvents();
     Debug_ShowMainMenu();
-#endif
-
     return TRUE;
 }
 

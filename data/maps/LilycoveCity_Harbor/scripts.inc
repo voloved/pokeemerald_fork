@@ -2,6 +2,8 @@
 .set LOCALID_SS_TIDAL, 2
 .set LOCALID_FERRY_SAILOR, 4
 .set LOCALID_BRINEY, 5
+.set LOCALID_MEW, 6
+.set LOCALID_TRUCK, 7
 
 LilycoveCity_Harbor_MapScripts::
 	map_script MAP_SCRIPT_ON_LOAD, LilycoveCity_Harbor_OnLoad
@@ -9,6 +11,7 @@ LilycoveCity_Harbor_MapScripts::
 	.byte 0
 
 LilycoveCity_Harbor_OnLoad:
+	call_if_set FLAG_LILYCOVE_HARBOR_TRUCK_MOVED, LilycoveCity_Harbor_MovedTruckOnLoad
 	call_if_unset FLAG_HIDE_LILYCOVE_HARBOR_SSTIDAL, LilycoveCity_Harbor_DisallowSurf
 	call_if_set FLAG_NUZLOCKE_LOST, LilycoveCity_Harbor_DisallowSurf
 	call_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_DisallowSurf
@@ -16,6 +19,22 @@ LilycoveCity_Harbor_OnLoad:
 
 LilycoveCity_Harbor_OnTransition:
 	setescapewarp MAP_LILYCOVE_CITY, 12, 33
+	call_if_set FLAG_LILYCOVE_HARBOR_TRUCK_MOVED, LilycoveCity_Harbor_MovedTruckOnTransition
+	call_if_unset FLAG_LILYCOVE_HARBOR_TRUCK_MOVED, LilycoveCity_Harbor_NoMovedTruckOnTransition
+	end
+
+LilycoveCity_Harbor_MovedTruckOnTransition:
+	setobjectxy LOCALID_TRUCK, 21, 14
+	setobjectxyperm LOCALID_TRUCK, 21, 14
+	end
+
+LilycoveCity_Harbor_NoMovedTruckOnTransition:
+	setflag FLAG_ITEM_LILYCOVE_HARBOR_THIEF_BALL
+	end
+
+LilycoveCity_Harbor_MovedTruckOnLoad:
+	setmetatile 22, 13, METATILE_MauvilleGym_RedBeamH3_On, TRUE
+	setmetatile 22, 14, METATILE_MauvilleGym_RedBeamH3_On, TRUE
 	end
 
 LilycoveCity_Harbor_DisallowSurf:
@@ -466,6 +485,10 @@ LilycoveCity_Harbor_EventScript_MoveSailorOutOfWayEast::
 	waitmovement 0
 	return
 
+LilycoveCity_Harbor_Movement_TruckStrength:
+	walk_slow_right
+	step_end
+
 LilycoveCity_Harbor_Movement_SailorOutOfWayNorth:
 	walk_in_place_faster_right
 	lock_facing_direction
@@ -553,29 +576,92 @@ LilycoveCity_Harbor_Movement_SailorBoardWithBrineyEast:
 	set_invisible
 	step_end
 
+LilycoveCity_Harbor_Movement_MewFloatLeft:
+	walk_in_place_left
+	walk_in_place_left
+	step_end
+
+LilycoveCity_Harbor_Movement_MewFloatUp:
+	walk_in_place_up
+	walk_in_place_up
+	step_end
+
 LilycoveCity_Harbor_EventScript_Truck::
-	specialvar VAR_RESULT, GetPlayerFacingDirection
-	goto_if_ne VAR_RESULT, DIR_EAST, LilycoveCity_Harbor_EventScript_NoMew
-	goto_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_EventScript_NoMew
-	goto_if_set FLAG_RECEIVED_OLD_SEA_MAP, LilycoveCity_Harbor_EventScript_NoMew
-	goto_if_set FLAG_CAUGHT_MEW, LilycoveCity_Harbor_EventScript_NoMew
-	checkitem ITEM_OLD_SEA_MAP
-	goto_if_eq VAR_RESULT, TRUE, LilycoveCity_Harbor_EventScript_NoMew
-	checkitemspace ITEM_OLD_SEA_MAP
-	goto_if_eq VAR_RESULT, FALSE, LilycoveCity_Harbor_OldSeaMap_NoBagSpace
-	msgbox LilycoveCity_Harbor_Text_NuzlockeRun, MSGBOX_SIGN
-	giveitem ITEM_OLD_SEA_MAP
-	setflag FLAG_ENABLE_SHIP_FARAWAY_ISLAND
-	setflag FLAG_RECEIVED_OLD_SEA_MAP
-	msgbox LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapUseAtPort, MSGBOX_SIGN
+	goto_if_unset FLAG_NUZLOCKE_LOST, LilycoveCity_Harbor_EventScript_NoMew
+	call_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_EventScript_NoMew
+	goto_if_unset FLAG_LILYCOVE_HARBOR_TRUCK_MOVED, LilycoveCity_Harbor_EventScript_StrengthBoulder
+	goto_if_unset FLAG_LILYCOVE_HARBOR_MEW_SEEN, LilycoveCity_Harbor_EventScript_MewEncounter
+	goto_if_set FLAG_LILYCOVE_HARBOR_MEW_SEEN, LilycoveCity_Harbor_EventScript_NoMew
 	end
 
-LilycoveCity_Harbor_OldSeaMap_NoBagSpace:
-	msgbox LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapBagFull, MSGBOX_SIGN
+LilycoveCity_Harbor_EventScript_MewEncounter:
+	playmoncry SPECIES_MEW, CRY_MODE_ENCOUNTER
+	call_if_eq VAR_FACING, DIR_SOUTH, LilycoveCity_Harbor_EventScript_FoundMewSouth
+	call_if_eq VAR_FACING, DIR_EAST, LilycoveCity_Harbor_EventScript_FoundMewEast
+	waitmoncry
+	seteventmon SPECIES_MEW, 30
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	special BattleSetup_StartLegendaryBattle
+	waitstate
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, FarawayIsland_Interior_EventScript_MewDefeated
+	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, FarawayIsland_Interior_EventScript_PlayerOrMewRan
+	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, FarawayIsland_Interior_EventScript_PlayerOrMewRan
+	goto_if_eq VAR_RESULT, B_OUTCOME_MON_TELEPORTED, FarawayIsland_Interior_EventScript_PlayerOrMewRan
+	setflag FLAG_LILYCOVE_HARBOR_MEW_SEEN
+	release
+	end
+
+LilycoveCity_Harbor_EventScript_FoundMewEast::
+	applymovement LOCALID_MEW, LilycoveCity_Harbor_Movement_MewFloatLeft
+	waitmovement 0
+	return
+
+LilycoveCity_Harbor_EventScript_FoundMewSouth::
+	applymovement LOCALID_MEW, LilycoveCity_Harbor_Movement_MewFloatUp
+	waitmovement 0
+	return
+
+LilycoveCity_Harbor_EventScript_StrengthBoulder::
+	lockall
+	goto_if_set FLAG_SYS_USE_STRENGTH, LilycoveCity_Harbor_EventScript_ActivateStrengthTruck
+	checkpartymove MOVE_STRENGTH
+	goto_if_eq VAR_RESULT, PARTY_SIZE, LilycoveCity_Harbor_EventScript_CantStrengthTruck
+	setfieldeffectargument 0, VAR_RESULT
+	msgbox LilycoveCity_Harbor_Text_WantToStrengthTruck, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, EventScript_CancelStrength
+	closemessage
+	dofieldeffect FLDEFF_USE_STRENGTH
+	waitstate
+	goto LilycoveCity_Harbor_EventScript_ActivateStrengthTruck
+	end
+
+LilycoveCity_Harbor_EventScript_ActivateStrengthTruck::
+	setflag FLAG_SYS_USE_STRENGTH
+	msgbox LilycoveCity_Harbor_Text_MonUsedStrengthTruck, MSGBOX_DEFAULT
+	playse SE_M_STRENGTH
+	setflag FLAG_LILYCOVE_HARBOR_TRUCK_MOVED
+	setmetatile 22, 13, METATILE_MauvilleGym_RedBeamH3_On, TRUE
+	setmetatile 22, 14, METATILE_MauvilleGym_RedBeamH3_On, TRUE
+	applymovement LOCALID_TRUCK, LilycoveCity_Harbor_Movement_TruckStrength
+	waitse
+	msgbox LilycoveCity_Harbor_Text_NuzlockeRun, MSGBOX_SIGN
+	clearflag FLAG_ITEM_LILYCOVE_HARBOR_THIEF_BALL
+	releaseall
+	end
+
+LilycoveCity_Harbor_EventScript_CantStrengthTruck::
+	msgbox LilycoveCity_Harbor_Text_CantStrengthTruck, MSGBOX_DEFAULT
+	releaseall
 	end
 
 LilycoveCity_Harbor_EventScript_NoMew::
 	msgbox LilycoveCity_Harbor_Text_OldTruck, MSGBOX_SIGN
+	end
+
+LilycoveCity_Harbor_EventScript_NoMew_Moved::
+	goto_if_set FLAG_LILYCOVE_HARBOR_TRUCK_MOVED, LilycoveCity_Harbor_EventScript_NoMew
 	end
 
 LilycoveCity_Harbor_Text_FerryUnavailable:
@@ -644,3 +730,17 @@ LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapBagFull::
 	.string "Your BAG's KEY ITEMS POCKET is full.\p"
 	.string "Please store something on your PC,\n"
 	.string "then come back for this.$"
+
+LilycoveCity_Harbor_Text_WantToStrengthTruck:
+	.string "It's an old truck, but a POKéMON\n"
+	.string "may be able to push it aside.\p"
+	.string "Would you like to use STRENGTH?$"
+
+LilycoveCity_Harbor_Text_MonUsedStrengthTruck:
+	.string "{STR_VAR_1} used STRENGTH!\p"
+	.string "{STR_VAR_1}'s STRENGTH moved\n"
+	.string "the old truck!$"
+
+LilycoveCity_Harbor_Text_CantStrengthTruck:
+	.string "It's a big boulder, but a POKéMON\n"
+	.string "may be able to push it aside.$"

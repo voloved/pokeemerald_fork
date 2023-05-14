@@ -29,6 +29,14 @@
 #include "constants/items.h"
 #include "battle_setup.h"
 #include "event_data.h"
+#include "item_icon.h"
+#include "item_use.h"
+#include "item.h"
+#include "overworld.h"
+#include "constants/map_types.h"
+#include "field_player_avatar.h"
+
+extern const struct Evolution gEvolutionTable[][EVOS_PER_MON];
 
 struct TestingBar
 {
@@ -163,6 +171,50 @@ enum
     HEALTHBOX_GFX_118, //Nuzlocke indicator
 };
 
+	// - ITEM_ULTRA_BALL skips Master Ball and ITEM_NONE
+static const u8 sBallCatchBonuses[] =
+{
+    [ITEM_ULTRA_BALL - ITEM_ULTRA_BALL]  = 20,
+    [ITEM_GREAT_BALL - ITEM_ULTRA_BALL]  = 15,
+    [ITEM_POKE_BALL - ITEM_ULTRA_BALL]   = 10,
+    [ITEM_SAFARI_BALL - ITEM_ULTRA_BALL] = 15,
+    [ITEM_NET_BALL - ITEM_ULTRA_BALL] = 35,
+    [ITEM_DIVE_BALL - ITEM_ULTRA_BALL] = 35,
+    [ITEM_REPEAT_BALL - ITEM_ULTRA_BALL] = 35,
+    [ITEM_LUXURY_BALL - ITEM_ULTRA_BALL] = 10,
+    [ITEM_THIEF_BALL - ITEM_ULTRA_BALL] = 25,
+};
+
+/* Odds that a shake will be successful (Need 3 shakes for a success)
+This is out of 255. This also is based on the random odds recalculation.
+The curve of this number to odds a shake will work is logarithmic. Below are values that are worth noting:
+255 is 100%, 208 is 95%, 168 is 90%, 104 is 80%, 81 is 75%, 61 is 70%, 33 is 60%, 16 is 50%, 7 is 40%, 2 is 30%, 1 is 25% for at least one successful shake
+255 is 100%, 238 is 95%, 222 is 90%, 189 is 80%, 174 is 75%, 159 is 70%, 129 is 60%, 101 is 50%, 75 is 40%, 51 is 30%, 40 is 25%,1 is 1.6% for all 3 successful shakes
+*/
+static const u8 percentageToCatchOddsLUT[101] = 
+{
+[2]  =   1,  [3] =   2,  [4] =   3,   [5] =   4,  [6] =   5,
+[7]  =   7,  [8] =   8,  [9] =  10,  [10] =  11, [11] =  13,
+[12] =  15, [13] =  16, [14] =  18,  [15] =  20, [16] =  22,
+[17] =  24, [18] =  25, [19] =  27,  [20] =  29, [21] =  31,
+[22] =  33, [23] =  35, [24] =  38,  [25] =  40, [26] =  42,
+[27] =  44, [28] =  46, [29] =  48,  [30] =  51, [31] =  53,
+[32] =  55, [33] =  58, [34] =  60,  [35] =  62, [36] =  65,
+[37] =  67, [38] =  70, [39] =  72,  [40] =  75, [41] =  77,
+[42] =  80, [43] =  82, [44] =  85,  [45] =  87, [46] =  90,
+[47] =  93, [48] =  95, [49] =  98,  [50] = 101, [51] = 103,
+[52] = 106, [53] = 109, [54] = 112,  [55] = 114, [56] = 117,
+[57] = 120, [58] = 123, [59] = 126,  [60] = 129, [61] = 131,
+[62] = 134, [63] = 137, [64] = 140,  [65] = 143, [66] = 146,
+[67] = 149, [68] = 152, [69] = 155,  [70] = 158, [71] = 161,
+[72] = 164, [73] = 167, [74] = 170,  [75] = 173, [76] = 176,
+[77] = 179, [78] = 183, [79] = 186,  [80] = 189, [81] = 192,
+[82] = 195, [83] = 198, [84] = 202,  [85] = 205, [86] = 208,
+[87] = 211, [88] = 215, [89] = 218,  [90] = 221, [91] = 224,
+[92] = 228, [93] = 231, [94] = 234,  [95] = 238, [96] = 241,
+[97] = 244, [98] = 248, [99] = 251, [100] = 255,
+};
+
 static const u8 *GetHealthboxElementGfxPtr(u8);
 static u8 *AddTextPrinterAndCreateWindowOnHealthbox(const u8 *, u32, u32, u32, u32 *);
 
@@ -193,6 +245,9 @@ static u8 GetScaledExpFraction(s32, s32, s32, u8);
 static void MoveBattleBarGraphically(u8, u8);
 static u8 CalcBarFilledPixels(s32, s32, s32, s32 *, u8 *, u8);
 static void Debug_TestHealthBar_Helper(struct TestingBar *, s32 *, u16 *);
+
+static void SpriteCB_LastUsedBall(struct Sprite *sprite);
+static void SpriteCB_LastUsedBallWin(struct Sprite *sprite);
 
 static const struct OamData sOamData_64x32 =
 {
@@ -952,6 +1007,9 @@ u8 CreateBattlerHealthboxSprites(u8 battlerId)
     healthBarSpritePtr->hBar_HealthBoxSpriteId = healthboxLeftSpriteId;
     healthBarSpritePtr->hBar_Data6 = data6;
     healthBarSpritePtr->invisible = TRUE;
+
+    gBattleStruct->ballSpriteIds[0] = MAX_SPRITES;
+    gBattleStruct->ballSpriteIds[1] = MAX_SPRITES;
 
     return healthboxLeftSpriteId;
 }
@@ -2622,4 +2680,420 @@ static void SafariTextIntoHealthboxObject(void *dest, u8 *windowTileData, u32 wi
 {
     CpuCopy32(windowTileData, dest, windowWidth * TILE_SIZE_4BPP);
     CpuCopy32(windowTileData + 256, dest + 256, windowWidth * TILE_SIZE_4BPP);
+}
+
+#define ABILITY_POP_UP_TAG 0xD720
+
+static const u16 sAbilityPopUpPalette[] = INCBIN_U16("graphics/battle_interface/ability_pop_up.gbapal");
+
+static const struct SpritePalette sSpritePalette_AbilityPopUp =
+{
+    sAbilityPopUpPalette, ABILITY_POP_UP_TAG
+};
+
+// last used ball
+#define LAST_BALL_WINDOW_TAG 0xD721
+
+static const struct OamData sOamData_LastUsedBall =
+{
+	.y = 0,
+	.affineMode = 0,
+	.objMode = 0,
+	.mosaic = 0,
+	.bpp = 0,
+	.shape = SPRITE_SHAPE(32x32),
+	.x = 0,
+	.matrixNum = 0,
+	.size = SPRITE_SIZE(32x32),
+	.tileNum = 0,
+	.priority = 1,
+	.paletteNum = 0,
+	.affineParam = 0,
+};
+
+static const struct SpriteTemplate sSpriteTemplate_LastUsedBallWindow =
+{
+    .tileTag = LAST_BALL_WINDOW_TAG,
+    .paletteTag = ABILITY_POP_UP_TAG,
+    .oam = &sOamData_LastUsedBall,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_LastUsedBallWin
+};
+
+static const u8 sLastUsedBallWindowGfx[] = INCBIN_U8("graphics/battle_interface/last_used_ball.4bpp");
+static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
+{
+    sLastUsedBallWindowGfx, sizeof(sLastUsedBallWindowGfx), LAST_BALL_WINDOW_TAG
+};
+
+#define LAST_USED_BALL_X_F    14
+#define LAST_USED_BALL_X_0   -14
+#define LAST_USED_BALL_Y      ((IsDoubleBattle()) ? 78 : 68)
+#define LAST_USED_BALL_Y_BNC  66
+
+#define LAST_BALL_WIN_X_F       (LAST_USED_BALL_X_F - 0)
+#define LAST_BALL_WIN_X_0       (LAST_USED_BALL_X_0 - 1)
+#define LAST_USED_WIN_Y         (LAST_USED_BALL_Y - 8)
+
+#define sHide   data[0]
+#define sTimer  data[1]
+
+bool32 CanThrowLastUsedBall(void)
+{
+    if (!FlagGet(FLAG_SHOW_BALL_SUGGESTION))
+        return FALSE;
+    if (CannotThrowBall() != 0)
+        return FALSE;
+    if (gBattleStruct->ballToDisplay == ITEM_THIEF_BALL && !BattleCanUseThiefBall())
+        return FALSE;
+    if (gBattleStruct->ballToDisplay != ITEM_THIEF_BALL && gBattleTypeFlags & (BATTLE_TYPE_TRAINER | BATTLE_TYPE_FRONTIER))
+        return FALSE;
+    if (!CheckBagHasItem(gBattleStruct->ballToDisplay, 1))
+        return FALSE;
+
+    return TRUE;
+}
+
+static bool8 EvolvesViaFriendship(u16 species){
+    int i;
+    for (i = 0; i < EVOS_PER_MON; i++){
+        if (gEvolutionTable[species][i].method == EVO_FRIENDSHIP
+         || gEvolutionTable[species][i].method == EVO_FRIENDSHIP_DAY
+         || gEvolutionTable[species][i].method == EVO_FRIENDSHIP_NIGHT)
+         return TRUE;
+    }
+    return FALSE;
+}
+
+u8 OddsToPercentCatchRate(u8 odds)
+{
+    u32 i;
+    for(i = 100; i > 0; i--)
+    {
+        if (percentageToCatchOddsLUT[i] == odds)
+            return i;
+        else if (percentageToCatchOddsLUT[i] < odds)
+            return odds - percentageToCatchOddsLUT[i] > percentageToCatchOddsLUT[i+1] - odds ? i+1 : i;
+    }
+}
+
+u8 getBallMultiplier(u16 ball)
+{
+    u8 ballMultiplier;
+    u8 enemyPosition = BATTLE_OPPOSITE(gBattlerAttacker);
+    switch (ball)
+    { 
+    case ITEM_NET_BALL:
+        if (IS_BATTLER_OF_TYPE(enemyPosition, TYPE_WATER) || IS_BATTLER_OF_TYPE(enemyPosition, TYPE_BUG))
+            ballMultiplier = sBallCatchBonuses[ITEM_NET_BALL - ITEM_ULTRA_BALL];
+        else
+            ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
+        break;
+    case ITEM_DIVE_BALL:
+        if (GetCurrentMapType() == MAP_TYPE_UNDERWATER || TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING)
+            || TestPlayerAvatarFlags2(PLAYER_AVATAR_FLAG_FISHING))
+            ballMultiplier = sBallCatchBonuses[ITEM_DIVE_BALL - ITEM_ULTRA_BALL];
+        else
+            ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
+        break;
+    case ITEM_NEST_BALL:
+        if (gBattleMons[enemyPosition].level < 40)
+        {
+            ballMultiplier = 40 - gBattleMons[enemyPosition].level;
+            if (ballMultiplier <= 9)
+                ballMultiplier = 10;
+        }
+        else
+        {
+            ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
+        }
+        break;
+    case ITEM_REPEAT_BALL:
+        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[enemyPosition].species), FLAG_GET_CAUGHT))
+            ballMultiplier = sBallCatchBonuses[ITEM_REPEAT_BALL - ITEM_ULTRA_BALL];
+        else
+            ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
+        break;
+    case ITEM_TIMER_BALL:
+        ballMultiplier = (3 * gBattleResults.battleTurnCounter) + 10;
+        if (ballMultiplier > 40)
+            ballMultiplier = 40;
+        break;
+    case ITEM_LUXURY_BALL:
+        ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
+        break;
+    case ITEM_THIEF_BALL:  // If used on trainer, it's 2.5x; if used on a wild Pokemon, it's 1x
+        if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+            ballMultiplier = sBallCatchBonuses[ITEM_THIEF_BALL - ITEM_ULTRA_BALL];
+        else
+            ballMultiplier = sBallCatchBonuses[ITEM_POKE_BALL - ITEM_ULTRA_BALL];
+        break;
+    default:
+        ballMultiplier = sBallCatchBonuses[ball - ITEM_ULTRA_BALL];
+        break;
+    }
+    return ballMultiplier;
+}
+
+static u16 ChoosePreferredBallSimple(void){
+    u32 i;
+    u16 ballMultiplierHighest, ballMultiplier, ballHighest, ball;
+    for (i = 0; i < gBagPockets[BALLS_POCKET].capacity; i++)
+    {
+        ball = gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
+        ballMultiplier = getBallMultiplier(ball);
+        if (ball != ITEM_NONE && ballMultiplier > ballMultiplierHighest){
+            ballMultiplierHighest = ballMultiplier;
+            ballHighest = gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
+        }
+    }
+    return ballHighest;
+}
+
+static u16 ChoosePreferredBallComplex(u8 minOddsToConsiderBall, u8 minOddsToConsiderLuxuryBall, u8 additionPerForBetterBall)
+{
+    static const u8 ballsByValue[] = { ITEM_POKE_BALL, ITEM_GREAT_BALL, ITEM_NEST_BALL, ITEM_TIMER_BALL, ITEM_REPEAT_BALL, 
+                                       ITEM_DIVE_BALL, ITEM_NET_BALL, ITEM_ULTRA_BALL };  //Order to check the balls
+    // Ball value chosen off price, then how early in the game you can get it.
+    u32 i;
+    u16 preferredBall = ITEM_NONE;
+    u16 opposingBattlerId = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+    u16 opposingBattlerSpecies = gBattleMons[opposingBattlerId].species;
+    u8 catchRate = gSpeciesInfo[opposingBattlerSpecies].catchRate;
+    u32 catchOddsBeforeBallMod = (catchRate) * (gBattleMons[opposingBattlerId].maxHP * 3 - gBattleMons[opposingBattlerId].hp * 2) 
+                                / (3 * gBattleMons[opposingBattlerId].maxHP);
+
+    minOddsToConsiderBall = percentageToCatchOddsLUT[minOddsToConsiderBall];
+    minOddsToConsiderLuxuryBall = percentageToCatchOddsLUT[minOddsToConsiderLuxuryBall];
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+     {
+        if (BattleCanUseThiefBall() && CheckBagHasItem(ITEM_THIEF_BALL, 1))
+            return ITEM_THIEF_BALL;
+        else
+            return ITEM_NONE;
+     }
+    if (opposingBattlerSpecies == SPECIES_UMBREON && CheckBagHasItem(ITEM_ULTRA_BALL, 1))  // To color coordinate for Nick :)
+        return ITEM_ULTRA_BALL;
+    if (catchOddsBeforeBallMod *  getBallMultiplier(ITEM_LUXURY_BALL) / 10 >= minOddsToConsiderLuxuryBall
+            && EvolvesViaFriendship(opposingBattlerSpecies) && CheckBagHasItem(ITEM_LUXURY_BALL, 1))
+        return ITEM_LUXURY_BALL;
+    for (i = 0; i < ARRAY_COUNT(ballsByValue); i++){
+        u32 catchOdds = catchOddsBeforeBallMod * getBallMultiplier(ballsByValue[i]) / 10;
+        if (!CheckBagHasItem(ballsByValue[i], 1))
+            continue;
+        else if (catchOdds > 254)
+            return ballsByValue[i];
+        else if (catchOdds >= minOddsToConsiderBall)
+        {
+            preferredBall = ballsByValue[i];
+            minOddsToConsiderBall = percentageToCatchOddsLUT[OddsToPercentCatchRate(catchOdds) + additionPerForBetterBall];
+        }
+    }
+    return preferredBall;
+}
+
+void TryAddLastUsedBallItemSprites(void)
+{
+    u16 preferredBall = ITEM_NONE;
+    bool8 useSimpleOrComplex = FlagGet(FLAG_BALL_SUGGEST_NOT_LAST);
+    bool8 useComplex = FlagGet(FLAG_BALL_SUGGEST_COMPLEX);
+    bool8 showSuggestion = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
+
+    if (!showSuggestion)
+        return;
+    
+    if (CannotThrowBall() != 0)
+        return;
+
+    if (useSimpleOrComplex)
+    {
+        if (useComplex)
+            preferredBall = ChoosePreferredBallComplex(0, 0, 3);  // Complex
+        else
+            preferredBall = ChoosePreferredBallSimple(); // Simple
+        if (preferredBall == ITEM_NONE)
+            return;
+        gBattleStruct->ballToDisplay = preferredBall;
+    }
+    else
+    {
+        if (gSaveBlock2Ptr->lastUsedBall == 0
+        || (gSaveBlock2Ptr->lastUsedBall != 0 && !CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1)))
+        {
+            CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
+            gBattleStruct->ballToDisplay = gBagPockets[BALLS_POCKET].itemSlots[0].itemId;
+        }
+        else
+        {
+            gBattleStruct->ballToDisplay = gSaveBlock2Ptr->lastUsedBall;
+        }
+    }
+    
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gBattleStruct->ballToDisplay != ITEM_THIEF_BALL || !BattleCanUseThiefBall()))
+        return;
+
+    // ball
+    if (gBattleStruct->ballSpriteIds[0] == MAX_SPRITES)
+    {
+        gBattleStruct->ballSpriteIds[0] = AddItemIconSprite(102, 102, gBattleStruct->ballToDisplay);
+        gSprites[gBattleStruct->ballSpriteIds[0]].x = LAST_USED_BALL_X_0;
+        gSprites[gBattleStruct->ballSpriteIds[0]].y = LAST_USED_BALL_Y;
+        gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
+        gBattleStruct->LastUsedBallMenuPresent = TRUE;
+        gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBall;
+    }
+
+    // window
+    LoadSpritePalette(&sSpritePalette_AbilityPopUp);
+    if (GetSpriteTileStartByTag(LAST_BALL_WINDOW_TAG) == 0xFFFF)
+        LoadSpriteSheet(&sSpriteSheet_LastUsedBallWindow);
+
+    if (gBattleStruct->ballSpriteIds[1] == MAX_SPRITES)
+    {
+        gBattleStruct->ballSpriteIds[1] = CreateSprite(&sSpriteTemplate_LastUsedBallWindow,
+           LAST_BALL_WIN_X_0,
+           LAST_USED_WIN_Y, 5);
+        gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
+        gBattleStruct->LastUsedBallMenuPresent = TRUE;
+    }
+}
+
+static void DestroyLastUsedBallWinGfx(struct Sprite *sprite)
+{
+    FreeSpriteTilesByTag(LAST_BALL_WINDOW_TAG);
+    FreeSpritePaletteByTag(ABILITY_POP_UP_TAG);
+    DestroySprite(sprite);
+    gBattleStruct->ballSpriteIds[1] = MAX_SPRITES;
+}
+
+static void DestroyLastUsedBallGfx(struct Sprite *sprite)
+{
+    FreeSpriteTilesByTag(102);
+    FreeSpritePaletteByTag(102);
+    DestroySprite(sprite);
+}
+
+static void SpriteCB_LastUsedBallBounce(struct Sprite *sprite)
+{
+    if (gBattleStruct->ballSpriteIds[1] == MAX_SPRITES)  // If the window is gone
+        DestroyLastUsedBallGfx(sprite);
+    if ((sprite->sTimer++ % 4) != 0)  // Change the image every % x frame
+        return;
+    if (sprite->sHide)
+    {
+        if (sprite->y != LAST_USED_BALL_Y_BNC)
+            sprite->y--;
+
+        if (sprite->y == LAST_USED_BALL_Y_BNC)
+            DestroyLastUsedBallGfx(sprite);
+    }
+    else
+    {
+        if (sprite->y != LAST_USED_BALL_Y)
+            sprite->y++;
+        if (sprite->y == LAST_USED_BALL_Y)
+            gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBall;
+    }
+}
+
+static void Task_WaitForFade(u8 taskId){
+    struct Sprite *sprite = &gSprites[gBattleStruct->ballSpriteIds[0]];
+    if (!sprite->inUse)
+    {
+        gBattleStruct->ballSpriteIds[0] = AddItemIconSprite(102, 102, gBattleStruct->ballToDisplay);
+        gSprites[gBattleStruct->ballSpriteIds[0]].x = LAST_USED_BALL_X_F;
+        gSprites[gBattleStruct->ballSpriteIds[0]].y = LAST_USED_BALL_Y_BNC;
+        gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
+        gBattleStruct->LastUsedBallMenuPresent = TRUE;
+        gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBallBounce; //Show and bounce down
+        DestroyTask(taskId);
+    }
+}
+
+void SwapBallToDisplay(void){
+    u8 taskId;
+    gSprites[gBattleStruct->ballSpriteIds[0]].sHide = TRUE;
+    gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBallBounce; // Bounce up and hide
+    taskId = CreateTask(Task_WaitForFade, 10);
+}
+
+static void SpriteCB_LastUsedBallWin(struct Sprite *sprite)
+{    
+    if (sprite->sHide)
+    {
+        if (sprite->x != LAST_BALL_WIN_X_0)
+            sprite->x--;
+
+        if (sprite->x == LAST_BALL_WIN_X_0)
+            DestroyLastUsedBallWinGfx(sprite);
+    }
+    else
+    {
+        if (sprite->x != LAST_BALL_WIN_X_F)
+            sprite->x++;
+    }
+}
+
+static void SpriteCB_LastUsedBall(struct Sprite *sprite)
+{    
+    if (sprite->sHide)
+    {
+        if (sprite->x != LAST_USED_BALL_X_0)
+            sprite->x--;
+
+        if (sprite->x == LAST_USED_BALL_X_0){
+            DestroyLastUsedBallGfx(sprite);
+            gBattleStruct->ballSpriteIds[0] = MAX_SPRITES;
+        }
+    }
+    else
+    {
+        if (sprite->x != LAST_USED_BALL_X_F)
+            sprite->x++;
+    }
+}
+
+static void TryHideOrRestoreLastUsedBall(u8 caseId)
+{
+    if (!FlagGet(FLAG_SHOW_BALL_SUGGESTION))
+        return;
+    if (gBattleStruct->ballSpriteIds[0] == MAX_SPRITES)
+        return;
+
+    switch (caseId)
+    {
+    case 0: // hide
+        gBattleStruct->LastUsedBallMenuPresent = FALSE;
+        if (gBattleStruct->ballSpriteIds[0] != MAX_SPRITES)
+            gSprites[gBattleStruct->ballSpriteIds[0]].sHide = TRUE;   // hide
+        if (gBattleStruct->ballSpriteIds[1] != MAX_SPRITES)
+            gSprites[gBattleStruct->ballSpriteIds[1]].sHide = TRUE;   // hide
+        break;
+    case 1: // restore
+        gBattleStruct->LastUsedBallMenuPresent = TRUE;
+        if (gBattleStruct->ballSpriteIds[0] != MAX_SPRITES)
+            gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
+        if (gBattleStruct->ballSpriteIds[1] != MAX_SPRITES)
+            gSprites[gBattleStruct->ballSpriteIds[1]].sHide = FALSE;   // restore
+        break;
+    }
+}
+
+void TryHideLastUsedBall(void)
+{
+    if (!FlagGet(FLAG_SHOW_BALL_SUGGESTION))
+        return;
+    TryHideOrRestoreLastUsedBall(0);
+}
+
+void TryRestoreLastUsedBall(void)
+{
+    if (!FlagGet(FLAG_SHOW_BALL_SUGGESTION))
+        return;
+    if (gBattleStruct->ballSpriteIds[0] != MAX_SPRITES)
+        TryHideOrRestoreLastUsedBall(1);
+    else
+        TryAddLastUsedBallItemSprites();
 }

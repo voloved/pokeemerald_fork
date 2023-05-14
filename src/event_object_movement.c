@@ -486,6 +486,7 @@ const u8 gInitialMovementTypeFacingDirections[] = {
 #define OBJ_EVENT_PAL_TAG_CASTFORM_SUNNY          0x1125
 #define OBJ_EVENT_PAL_TAG_CASTFORM_RAINY          0x1126
 #define OBJ_EVENT_PAL_TAG_CASTFORM_SNOWY          0x1127
+#define OBJ_EVENT_PAL_TAG_TRUCK_UHAUL             0x1128
 #define OBJ_EVENT_PAL_TAG_EMOTES                  0x8002
 #define OBJ_EVENT_PAL_TAG_NONE 0x11FF
 
@@ -514,6 +515,7 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_QuintyPlump,           OBJ_EVENT_PAL_TAG_QUINTY_PLUMP},
     {gObjectEventPal_QuintyPlumpReflection, OBJ_EVENT_PAL_TAG_QUINTY_PLUMP_REFLECTION},
     {gObjectEventPal_Truck,                 OBJ_EVENT_PAL_TAG_TRUCK},
+    {gObjectEventPal_TruckUhaul,            OBJ_EVENT_PAL_TAG_TRUCK_UHAUL},
     {gObjectEventPal_Vigoroth,              OBJ_EVENT_PAL_TAG_VIGOROTH},
     {gObjectEventPal_EnemyZigzagoon,        OBJ_EVENT_PAL_TAG_ZIGZAGOON},
     {gObjectEventPal_May,                   OBJ_EVENT_PAL_TAG_MAY},
@@ -581,6 +583,13 @@ static const u16 sReflectionPaletteTags_Truck[] = {
     OBJ_EVENT_PAL_TAG_TRUCK,
     OBJ_EVENT_PAL_TAG_TRUCK,
     OBJ_EVENT_PAL_TAG_TRUCK,
+};
+
+static const u16 sReflectionPaletteTags_TruckUhaul[] = {
+    OBJ_EVENT_PAL_TAG_TRUCK_UHAUL,
+    OBJ_EVENT_PAL_TAG_TRUCK_UHAUL,
+    OBJ_EVENT_PAL_TAG_TRUCK_UHAUL,
+    OBJ_EVENT_PAL_TAG_TRUCK_UHAUL,
 };
 
 static const u16 sReflectionPaletteTags_VigorothMover[] = {
@@ -651,6 +660,7 @@ static const struct PairedPalettes sSpecialObjectReflectionPaletteSets[] = {
     {OBJ_EVENT_PAL_TAG_MAY,              sReflectionPaletteTags_May},
     {OBJ_EVENT_PAL_TAG_QUINTY_PLUMP,     sReflectionPaletteTags_QuintyPlump},
     {OBJ_EVENT_PAL_TAG_TRUCK,            sReflectionPaletteTags_Truck},
+    {OBJ_EVENT_PAL_TAG_TRUCK_UHAUL,      sReflectionPaletteTags_TruckUhaul},
     {OBJ_EVENT_PAL_TAG_VIGOROTH,         sReflectionPaletteTags_VigorothMover},
     {OBJ_EVENT_PAL_TAG_MOVING_BOX,       sReflectionPaletteTags_MovingBox},
     {OBJ_EVENT_PAL_TAG_CABLE_CAR,        sReflectionPaletteTags_CableCar},
@@ -5567,10 +5577,8 @@ u8 GetCollisionAtCoords(struct ObjectEvent *objectEvent, s16 x, s16 y, u32 dir)
 {
     u8 direction = dir;
 
-#if TX_DEBUG_SYSTEM_ENABLE == TRUE
-    if (FlagGet(FLAG_SYS_NO_COLLISION))
+    if ((TX_DEBUG_SYSTEM_ENABLE == TRUE || gShowDebugMenu) && FlagGet(FLAG_SYS_NO_COLLISION))
         return COLLISION_NONE;
-#endif
 
     if (IsCoordOutsideObjectEventMovementRange(objectEvent, x, y))
         return COLLISION_OUTSIDE_RANGE;

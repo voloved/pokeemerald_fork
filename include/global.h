@@ -114,6 +114,7 @@
 #define TEST_BUTTON(field, button) ((field) & (button))
 #define JOY_NEW(button) TEST_BUTTON(gMain.newKeys,  button)
 #define JOY_HELD(button)  TEST_BUTTON(gMain.heldKeys, button)
+#define JOY_RELEASED(button)  TEST_BUTTON(gMain.newKeysReleased, button)
 #define JOY_HELD_RAW(button) TEST_BUTTON(gMain.heldKeysRaw, button)
 #define JOY_REPEAT(button) TEST_BUTTON(gMain.newAndRepeatedKeys, button)
 
@@ -495,7 +496,8 @@ struct SaveBlock2
              u16 optionsBattleSceneOff:1; // whether battle animations are disabled
              u16 regionMapZoom:1; // whether the map is zoomed in
     /*0x18*/ struct Pokedex pokedex;
-    /*0x90*/ u8 filler_90[0x8];
+    /*0x90*/ u16 lastUsedBall;
+    /*0x92*/ u8 filler_90[0x6];
     /*0x98*/ struct Time localTimeOffset;
     /*0xA0*/ struct Time lastBerryTreeUpdate;
     /*0xA8*/ u32 gcnLinkFlags; // Read by Pokemon Colosseum/XD
@@ -1018,7 +1020,8 @@ struct SaveBlock1
               struct ItemSlot bagPocket_Medicine[BAG_MEDICINE_COUNT];
               struct ItemSlot bagPocket_BattleItems[BAG_BATTLEITEMS_COUNT];
               struct ItemSlot bagPocket_Treasures[BAG_TREASURES_COUNT];
-    /*0x3598*/ u8 unused_3598[0x48];
+    /*0x3598*/ u16 registeredLongItem; // registered for long press of SELECT button
+    /*0x359A*/ u8 unused_359A[0x46];
     /*0x3718*/ u32 trainerHillTimes[NUM_TRAINER_HILL_MODES];
     /*0x3728*/ struct RamScript ramScript;
     /*0x3B14*/ struct RecordMixingGift recordMixingGift;

@@ -908,6 +908,13 @@ bool8 IsDoubleBattle(void)
     return IS_DOUBLE_BATTLE();
 }
 
+bool8 BattleCanUseThiefBall(void)
+{
+    return !(gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_SAFARI | 
+        BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | 
+        BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK));
+}
+
 #define BG_ANIM_PAL_1        8
 #define BG_ANIM_PAL_2        9
 #define BG_ANIM_PAL_CONTEST 14

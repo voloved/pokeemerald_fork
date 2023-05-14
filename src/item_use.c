@@ -944,34 +944,50 @@ void ItemUseOutOfBattle_EvolutionStone(u8 taskId)
     SetUpItemUseCallback(taskId);
 }
 
+u32 CannotThrowBall(void)
+{
+    if ((TX_DEBUG_SYSTEM_ENABLE == TRUE || gShowDebugMenu) && FlagGet(FLAG_SYS_NO_CATCHING))
+        return 1;   // Debug setting doesn't allow
+    else if (gNuzlockeCannotCatch == 1)
+        return 2;   // Cannot catch due to Nuzlocke
+    else if (IsPlayerPartyAndPokemonStorageFull() == TRUE)
+        return 3;   // No room for mon
+    return 0;   // usable 
+}
+
 void ItemUseInBattle_PokeBall(u8 taskId)
 {
-#if TX_DEBUG_SYSTEM_ENABLE == TRUE
-    if (FlagGet(FLAG_SYS_NO_CATCHING)){
-        static const u8 sText_BallsCannotBeUsed[] = _("Poké Balls cannot be used\nright now!\p");
-        DisplayItemMessage(taskId, 1, sText_BallsCannotBeUsed, CloseItemMessage);
-        return;
-    }
-#endif
-    if (gNuzlockeCannotCatch == 1){
-        GetMapNameHandleAquaHideout(gStringVar1, currLocConvertForNuzlocke(GetCurrentRegionMapSectionId()));
-        DisplayItemMessage(taskId, FONT_NORMAL, gText_BallsCannotBeUsedNuz, CloseItemMessage);
-        return;
-    }
-    if (IsPlayerPartyAndPokemonStorageFull() == FALSE) // have room for mon?
+    static const u8 sText_BallsCannotBeUsed[] = _("Poké Balls cannot be used\nright now!\p");
+    switch (CannotThrowBall())
     {
+    case 0: // usable
+    default:
         RemoveBagItem(gSpecialVar_ItemId, 1);
         if (!InBattlePyramid())
             Task_FadeAndCloseBagMenu(taskId);
         else
             CloseBattlePyramidBag(taskId);
+        break;
+    case 1:
+        if (!InBattlePyramid())
+            DisplayItemMessage(taskId, FONT_NORMAL, sText_BallsCannotBeUsed, CloseItemMessage);
+        else
+            DisplayItemMessageInBattlePyramid(taskId, sText_BallsCannotBeUsed, Task_CloseBattlePyramidBagMessage);
+        break;
+    case 2:
+        GetMapNameHandleAquaHideout(gStringVar1, currLocConvertForNuzlocke(GetCurrentRegionMapSectionId()));
+        if (!InBattlePyramid())
+            DisplayItemMessage(taskId, FONT_NORMAL, gText_BallsCannotBeUsedNuz, CloseItemMessage);
+        else
+            DisplayItemMessageInBattlePyramid(taskId, gText_BallsCannotBeUsedNuz, Task_CloseBattlePyramidBagMessage);
+        break;
+    case 3: // No room for mon
+        if (!InBattlePyramid())
+            DisplayItemMessage(taskId, FONT_NORMAL, gText_BoxFull, CloseItemMessage);
+        else
+            DisplayItemMessageInBattlePyramid(taskId, gText_BoxFull, Task_CloseBattlePyramidBagMessage);
+        break;
     }
-    else if (!InBattlePyramid())
-    {
-        DisplayItemMessage(taskId, FONT_NORMAL, gText_BoxFull, CloseItemMessage);
-    }
-    else
-        DisplayItemMessageInBattlePyramid(taskId, gText_BoxFull, Task_CloseBattlePyramidBagMessage);
 }
 
 static void Task_CloseStatIncreaseMessage(u8 taskId)
@@ -1198,13 +1214,19 @@ void ItemUseOutOfBattle_CleanseTag(u8 taskId)
     {
         FlagSet(FLAG_CLEANSE_TAG);
         PlaySE(SE_EXP_MAX);
-        DisplayItemMessage(taskId, 1, gText_CleanseTagTurnOn, CloseItemMessage);
+	    if (gTasks[taskId].tUsingRegisteredKeyItem) // to account for pressing select in the overworld
+            DisplayItemMessageOnField(taskId, gText_CleanseTagTurnOn, Task_CloseCantUseKeyItemMessage);
+        else
+            DisplayItemMessage(taskId, 1, gText_CleanseTagTurnOn, CloseItemMessage);
     }
     else
     {
         FlagClear(FLAG_CLEANSE_TAG);
         PlaySE(SE_PC_OFF);
-        DisplayItemMessage(taskId, 1, gText_CleanseTagTurnOff, CloseItemMessage);
+        if (gTasks[taskId].tUsingRegisteredKeyItem) // to account for pressing select in the overworld
+            DisplayItemMessageOnField(taskId, gText_CleanseTagTurnOff, Task_CloseCantUseKeyItemMessage);
+        else
+            DisplayItemMessage(taskId, 1, gText_CleanseTagTurnOff, CloseItemMessage);
     }
 }
 
@@ -1215,13 +1237,19 @@ void ItemUseOutOfBattle_PokeDoll(u8 taskId)
     {
         FlagSet(FLAG_POKE_DOLL);
         PlaySE(SE_EXP_MAX);
-        DisplayItemMessage(taskId, 1, gText_PokeDollTurnOn, CloseItemMessage);
+        if (gTasks[taskId].tUsingRegisteredKeyItem) // to account for pressing select in the overworld
+            DisplayItemMessageOnField(taskId, gText_PokeDollTurnOn, Task_CloseCantUseKeyItemMessage);
+        else
+            DisplayItemMessage(taskId, 1, gText_PokeDollTurnOn, CloseItemMessage);
     }
     else
     {
         FlagClear(FLAG_POKE_DOLL);
         PlaySE(SE_PC_OFF);
-        DisplayItemMessage(taskId, 1, gText_PokeDollTurnOff, CloseItemMessage);
+        if (gTasks[taskId].tUsingRegisteredKeyItem) // to account for pressing select in the overworld
+            DisplayItemMessageOnField(taskId, gText_PokeDollTurnOff, Task_CloseCantUseKeyItemMessage);
+        else
+            DisplayItemMessage(taskId, 1, gText_PokeDollTurnOff, CloseItemMessage);
     }
 }
 

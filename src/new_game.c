@@ -47,6 +47,7 @@
 #include "decoration_inventory.h"
 #include "constants/decorations.h"
 #include "constants/flags.h"
+#include "constants/items.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 
@@ -189,6 +190,7 @@ void NewGameInitData(void)
     ClearRoamerData();
     ClearRoamerLocationData();
     gSaveBlock1Ptr->registeredItem = 0;
+    gSaveBlock1Ptr->registeredLongItem = 0;
     ClearBag();
     NewGameInitPCItems();
     ClearPokeblocks();
@@ -212,6 +214,7 @@ void NewGameInitData(void)
     WipeTrainerNameRecords();
     ResetTrainerHillResults();
     ResetContestLinkResults();
+    gSaveBlock2Ptr->lastUsedBall = ITEM_POKE_BALL;
     typeEffectPrev ? FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW) : FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     nuzlockePrev ? FlagSet(FLAG_NUZLOCKE) : FlagClear(FLAG_NUZLOCKE);
     FlagSet(FLAG_RELEARN_IN_PARTY_MENU);  // Always allow relearning by default in a new game.

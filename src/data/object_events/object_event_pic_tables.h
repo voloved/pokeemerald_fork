@@ -925,6 +925,10 @@ static const struct SpriteFrameImage sPicTable_Truck[] = {
     obj_frame_tiles(gObjectEventPic_Truck),
 };
 
+static const struct SpriteFrameImage sPicTable_TruckUhaul[] = {
+    obj_frame_tiles(gObjectEventPic_TruckUhaul),
+};
+
 static const struct SpriteFrameImage sPicTable_VigorothCarryingBox[] = {
     overworld_frame(gObjectEventPic_VigorothMover, 4, 4, 0),
     overworld_frame(gObjectEventPic_VigorothMover, 4, 4, 0),

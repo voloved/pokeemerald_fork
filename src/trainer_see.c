@@ -348,10 +348,8 @@ bool8 CheckForTrainersWantingBattle(void)
 {
     u8 i;
 
-#if TX_DEBUG_SYSTEM_ENABLE == TRUE
-    if (FlagGet(FLAG_SYS_NO_TRAINER_SEE))
+if ((TX_DEBUG_SYSTEM_ENABLE == TRUE || gShowDebugMenu) && FlagGet(FLAG_SYS_NO_TRAINER_SEE))
         return FALSE;
-#endif
 
     if (ignoreIfPokeDoll())
         return FALSE;

@@ -582,7 +582,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_finishaction,                            //0xF6
     Cmd_finishturn,                              //0xF7
     Cmd_trainerslideout,                         //0xF8
-    Cmd_ballthrowend                         //0xF9
+    Cmd_ballthrowend                             //0xF9
 };
 
 struct StatFractions
@@ -1867,13 +1867,14 @@ static void Cmd_waitanimation(void)
 
 static void Cmd_healthbarupdate(void)
 { 
-    #if TX_DEBUG_SYSTEM_ENABLE == TRUE
-    u8 side = GetBattlerSide(gBattlerTarget);
-    if (FlagGet(FLAG_SYS_NO_BATTLE_DMG) && side == B_SIDE_PLAYER)
+    if (TX_DEBUG_SYSTEM_ENABLE == TRUE || gShowDebugMenu)
     {
-        gMoveResultFlags |= MOVE_RESULT_NO_EFFECT;
+        u8 side = GetBattlerSide(gBattlerTarget);
+        if (FlagGet(FLAG_SYS_NO_BATTLE_DMG) && side == B_SIDE_PLAYER)
+        {
+            gMoveResultFlags |= MOVE_RESULT_NO_EFFECT;
+        }
     }
-    #endif
 
     if (gBattleControllerExecFlags)
         return;
@@ -9939,13 +9940,11 @@ static void Cmd_handleballthrow(void)
 
     gBattlerTarget = BATTLE_OPPOSITE(gBattlerAttacker);
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && gLastUsedItem == ITEM_THIEF_BALL){
-        if (gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_SAFARI | 
-        BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | 
-        BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK)){
-            gUsingThiefBall = THIEF_BALL_CANNOT_USE;
+        if (BattleCanUseThiefBall()){
+            gUsingThiefBall = THIEF_BALL_CATCHING;
         }
         else{
-            gUsingThiefBall = THIEF_BALL_CATCHING;
+            gUsingThiefBall = THIEF_BALL_CANNOT_USE;
         }
     }
     else{
@@ -9970,64 +9969,13 @@ static void Cmd_handleballthrow(void)
     {
         u32 odds;
         u8 catchRate;
-
+        gSaveBlock2Ptr->lastUsedBall = gLastUsedItem;
         if (gLastUsedItem == ITEM_SAFARI_BALL)
             catchRate = gBattleStruct->safariCatchFactor * 1275 / 100;
         else
             catchRate = gSpeciesInfo[gBattleMons[gBattlerTarget].species].catchRate;
 
-        if (gLastUsedItem > ITEM_SAFARI_BALL)
-        {
-            switch (gLastUsedItem)
-            {
-            case ITEM_NET_BALL:
-                if (IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_WATER) || IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_BUG))
-                    ballMultiplier = 30;
-                else
-                    ballMultiplier = 10;
-                break;
-            case ITEM_DIVE_BALL:
-                if (GetCurrentMapType() == MAP_TYPE_UNDERWATER)
-                    ballMultiplier = 35;
-                else
-                    ballMultiplier = 10;
-                break;
-            case ITEM_NEST_BALL:
-                if (gBattleMons[gBattlerTarget].level < 40)
-                {
-                    ballMultiplier = 40 - gBattleMons[gBattlerTarget].level;
-                    if (ballMultiplier <= 9)
-                        ballMultiplier = 10;
-                }
-                else
-                {
-                    ballMultiplier = 10;
-                }
-                break;
-            case ITEM_REPEAT_BALL:
-                if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[gBattlerTarget].species), FLAG_GET_CAUGHT))
-                    ballMultiplier = 30;
-                else
-                    ballMultiplier = 10;
-                break;
-            case ITEM_TIMER_BALL:
-                ballMultiplier = gBattleResults.battleTurnCounter + 10;
-                if (ballMultiplier > 40)
-                    ballMultiplier = 40;
-                break;
-            case ITEM_LUXURY_BALL:
-                ballMultiplier = 10;
-                break;
-            case ITEM_THIEF_BALL:  // If used on trainer, it's 2.5x; if used on a wild Pokemon, it's 1x
-                if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
-                    ballMultiplier = 25;
-                else
-                    ballMultiplier = 10;
-                break;
-            }
-        }
-        else
-            ballMultiplier = sBallCatchBonuses[gLastUsedItem - ITEM_ULTRA_BALL];
+        ballMultiplier = getBallMultiplier(gLastUsedItem);
 
         odds = (catchRate * ballMultiplier / 10)
             * (gBattleMons[gBattlerTarget].maxHP * 3 - gBattleMons[gBattlerTarget].hp * 2)
@@ -10107,7 +10055,7 @@ static void Cmd_trysetcaughtmondexflags(void)
     {
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
     }
-    else if (!FlagGet(FLAG_SYS_POKEDEX_GET))
+    else if (!FlagGet(FLAG_SYS_POKEDEX_GET) || gUsingThiefBall == THIEF_BALL_CAUGHT)
     {
         HandleSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_SET_CAUGHT, personality);
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);

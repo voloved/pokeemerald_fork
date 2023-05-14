@@ -1273,11 +1273,12 @@ void SetUpTwoTrainersBattle(void)
 bool32 GetTrainerFlagFromScriptPointer(const u8 *data)
 {
     u32 flag = TrainerBattleLoadArg16(data + 2);
-    if (flag != sPrevTrainerSeeing){
+    bool8 trainerFlagValue = FlagGet(TRAINER_FLAGS_START + flag);
+    if (flag != sPrevTrainerSeeing && !trainerFlagValue){
         sPrevTrainerSeeing = flag;
         FlagClear(FLAG_RAN_FROM_TRAINER);
     }
-    return (FlagGet(TRAINER_FLAGS_START + flag) || FlagGet(FLAG_RAN_FROM_TRAINER));
+    return (trainerFlagValue || FlagGet(FLAG_RAN_FROM_TRAINER));
 }
 
 // Set trainer's movement type so they stop and remain facing that direction

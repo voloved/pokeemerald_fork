@@ -383,4 +383,10 @@
 // Indicator for the party summary bar to display an empty slot.
 #define HP_EMPTY_SLOT 0xFFFF
 
+// Last Used Ball
+#define B_LAST_USED_BALL_BUTTON       R_BUTTON    // If last used ball is implemented, this button (or button combo) will trigger throwing the last used ball.
+#define B_LAST_USED_BALL_SUGGESTIONS  TRUE
+#define B_DESCRIPTION_SUBMENU         TRUE
+#define B_DESCRIPTION_SUBMENU_BUTTON  START_BUTTON
+
 #endif // GUARD_CONSTANTS_BATTLE_H

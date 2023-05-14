@@ -24,9 +24,6 @@
 #include "main.h"
 #include "trainer_hill.h"
 #include "constants/rgb.h"
-#include "wallclock.h"
-#include "union_room_chat.h"
-#include "slot_machine.h"
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -247,12 +244,14 @@ void InitKeys(void)
     gMain.newAndRepeatedKeys = 0;
     gMain.heldKeysRaw = 0;
     gMain.newKeysRaw = 0;
+    gMain.newKeysReleased = 0;
 }
 
 static void ReadKeys(void)
 {
     u16 keyInput = REG_KEYINPUT ^ KEYS_MASK;
     gMain.newKeysRaw = keyInput & ~gMain.heldKeysRaw;
+    gMain.newKeysReleased = ~keyInput & gMain.heldKeysRaw;
     gMain.newKeys = gMain.newKeysRaw;
     gMain.newAndRepeatedKeys = gMain.newKeysRaw;
 
@@ -290,7 +289,7 @@ static void ReadKeys(void)
             gMain.heldKeys |= A_BUTTON;
             gMain.newKeys ^= A_BUTTON;
         }
-        if(JOY_HELD(R_BUTTON) && (gMain.callback2 != CB2_ViewWallClock && gMain.callback2 != CB2_UnionRoomChatMain && gMain.callback2 != CB2_SlotMachine)){
+        if(JOY_HELD(R_BUTTON)){
             gMain.newKeys ^= B_BUTTON;
         }
     }
