@@ -2,8 +2,8 @@
 .set LOCALID_SS_TIDAL, 2
 .set LOCALID_FERRY_SAILOR, 4
 .set LOCALID_BRINEY, 5
-.set LOCALID_TRUCK, 6
-.set LOCALID_MEW, 7
+.set LOCALID_MEW, 6
+.set LOCALID_TRUCK, 7
 
 LilycoveCity_Harbor_MapScripts::
 	map_script MAP_SCRIPT_ON_LOAD, LilycoveCity_Harbor_OnLoad
@@ -11,10 +11,11 @@ LilycoveCity_Harbor_MapScripts::
 	.byte 0
 
 LilycoveCity_Harbor_OnLoad:
+	setflag FLAG_HIDE_LILYCOVE_HARBOR_SSTIDAL
 	call_if_set FLAG_LILYCOVE_HARBOR_TRUCK_MOVED, LilycoveCity_Harbor_MovedTruckOnLoad
 	call_if_unset FLAG_HIDE_LILYCOVE_HARBOR_SSTIDAL, LilycoveCity_Harbor_DisallowSurf
-	call_if_set FLAG_NUZLOCKE_LOST, LilycoveCity_Harbor_DisallowSurf
-	call_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_DisallowSurf
+	@call_if_set FLAG_NUZLOCKE_LOST, LilycoveCity_Harbor_DisallowSurf
+	@call_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_DisallowSurf
 	end
 
 LilycoveCity_Harbor_OnTransition:
@@ -582,7 +583,8 @@ LilycoveCity_Harbor_Movement_MewFloatUp:
 	step_end
 
 LilycoveCity_Harbor_EventScript_Truck::
-	goto_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_EventScript_NoMew
+	@goto_if_unset FLAG_NUZLOCKE_LOST, LilycoveCity_Harbor_EventScript_NoMew
+	@call_if_unset FLAG_NUZLOCKE, LilycoveCity_Harbor_EventScript_NoMew
 	goto_if_unset FLAG_LILYCOVE_HARBOR_TRUCK_MOVED, LilycoveCity_Harbor_EventScript_StrengthBoulder
 	goto_if_unset FLAG_LILYCOVE_HARBOR_MEW_SEEN, LilycoveCity_Harbor_EventScript_MewEncounter
 	goto_if_set FLAG_LILYCOVE_HARBOR_MEW_SEEN, LilycoveCity_Harbor_EventScript_NoMew
@@ -619,6 +621,7 @@ LilycoveCity_Harbor_EventScript_FoundMewSouth::
 
 LilycoveCity_Harbor_EventScript_StrengthBoulder::
 	lockall
+	goto_if_set FLAG_SYS_USE_STRENGTH, LilycoveCity_Harbor_EventScript_ActivateStrengthTruck
 	checkpartymove MOVE_STRENGTH
 	goto_if_eq VAR_RESULT, PARTY_SIZE, LilycoveCity_Harbor_EventScript_CantStrengthTruck
 	setfieldeffectargument 0, VAR_RESULT

@@ -80,6 +80,19 @@
       "flag": "FLAG_HIDE_LILYCOVE_HARBOR_EVENT_TICKET_TAKER"
     },
     {
+      "graphics_id": "OBJ_EVENT_GFX_MEW",
+      "x": 19,
+      "y": 14,
+      "elevation": 2,
+      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "LilycoveCity_Harbor_EventScript_Truck",
+      "flag": "FLAG_LILYCOVE_HARBOR_MEW_SEEN"
+    },
+    {
       "graphics_id": "OBJ_EVENT_GFX_TRUCK",
       "x": 20,
       "y": 14,
@@ -91,19 +104,6 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "NULL",
       "flag": "0"
-    },
-    {
-      "graphics_id": "OBJ_EVENT_GFX_MEW",
-      "x": 19,
-      "y": 14,
-      "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_NONE",
-      "movement_range_x": 0,
-      "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "LilycoveCity_Harbor_EventScript_Truck",
-      "flag": "FLAG_LILYCOVE_HARBOR_MEW_SEEN"
     }
   ],
   "warp_events": [

@@ -7,8 +7,10 @@
 #include "script.h"
 #include "string_util.h"
 #include "task.h"
+#include "overworld.h"
 #include "constants/event_objects.h"
 #include "constants/field_effects.h"
+#include "constants/region_map_sections.h"
 
 // static functions
 static void FieldCallback_Strength(void);
@@ -17,7 +19,8 @@ static void StartStrengthFieldEffect(void);
 // text
 bool8 SetUpFieldMove_Strength(void)
 {
-    if (CheckObjectGraphicsInFrontOfPlayer(OBJ_EVENT_GFX_PUSHABLE_BOULDER) == TRUE)
+    if (CheckObjectGraphicsInFrontOfPlayer(OBJ_EVENT_GFX_PUSHABLE_BOULDER) == TRUE
+    || (CheckObjectGraphicsInFrontOfPlayer(OBJ_EVENT_GFX_MEW) == TRUE && GetCurrentRegionMapSectionId() == MAPSEC_LILYCOVE_CITY)) // If using strength in front of Mew in Lilycove
     {
         gSpecialVar_Result = GetCursorSelectionMonId();
         gFieldCallback2 = FieldCallback_PrepareFadeInFromMenu;
