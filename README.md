@@ -9,7 +9,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
-## Not Yet Versioned
+## v2.1.0
  - [Added last used ball in battle menu.](https://github.com/rh-hideout/pokeemerald-expansion/commit/c06029bc721119b0efd6e26c24a3f77772dfd77b) [Credit: Ghoulslash]
    - This defaults to a Thief ball if in a trainer battle.
    - Gives suggested ball on the first turn (and the Timer Ball aftewr enough turns)
@@ -23,6 +23,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - A trainer you've already battled can no longer reset FLAG_RAN_FROM_TRAINER.
  - Cleanse Tag and Poké Doll can be registered in place of being tossed.
  - Cannot run from Double Battles.
+ - Added a Mew under the truck in Lilycove, where Strength is needed to move the truck.
+   - After it's moved, there is a Thief Ball in the back of the Truck.
  - Bug fix to allow stolen Pokémon to count towards Pokédex.
 
 ## v2.0.0
