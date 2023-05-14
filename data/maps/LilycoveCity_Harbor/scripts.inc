@@ -21,11 +21,16 @@ LilycoveCity_Harbor_OnLoad:
 LilycoveCity_Harbor_OnTransition:
 	setescapewarp MAP_LILYCOVE_CITY, 12, 33
 	call_if_set FLAG_LILYCOVE_HARBOR_TRUCK_MOVED, LilycoveCity_Harbor_MovedTruckOnTransition
+	call_if_unset FLAG_LILYCOVE_HARBOR_TRUCK_MOVED, LilycoveCity_Harbor_NoMovedTruckOnTransition
 	end
 
 LilycoveCity_Harbor_MovedTruckOnTransition:
 	setobjectxy LOCALID_TRUCK, 21, 14
 	setobjectxyperm LOCALID_TRUCK, 21, 14
+	end
+
+LilycoveCity_Harbor_NoMovedTruckOnTransition:
+	setflag FLAG_ITEM_LILYCOVE_HARBOR_THIEF_BALL
 	end
 
 LilycoveCity_Harbor_MovedTruckOnLoad:
@@ -643,6 +648,7 @@ LilycoveCity_Harbor_EventScript_ActivateStrengthTruck::
 	applymovement LOCALID_TRUCK, LilycoveCity_Harbor_Movement_TruckStrength
 	waitse
 	msgbox LilycoveCity_Harbor_Text_NuzlockeRun, MSGBOX_SIGN
+	clearflag FLAG_ITEM_LILYCOVE_HARBOR_THIEF_BALL
 	releaseall
 	end
 
