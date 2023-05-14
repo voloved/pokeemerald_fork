@@ -287,7 +287,7 @@ static void BuildStartMenuActions(void)
     }
     else
     {
-    if((TX_DEBUG_SYSTEM_ENABLE == TRUE && TX_DEBUG_SYSTEM_IN_MENU == FALSE) || gShowDebugMenu)
+    if((TX_DEBUG_SYSTEM_ENABLE == TRUE && TX_DEBUG_SYSTEM_IN_MENU == TRUE) || gShowDebugMenu)
         BuildDebugStartMenu();
     else
         BuildNormalStartMenu();
