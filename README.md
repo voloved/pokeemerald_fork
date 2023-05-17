@@ -9,6 +9,10 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## Not Yet Versioned
+ - [Added Ability to See Zigzagoon on Cable Car](https://www.youtube.com/watch?v=7xdcbbfwEto) [Credit: Goppier]
+ - Sped up slow and medium text speed.
+
 ## v2.1.0
  - [Added last used ball in battle menu.](https://github.com/rh-hideout/pokeemerald-expansion/commit/c06029bc721119b0efd6e26c24a3f77772dfd77b) [Credit: Ghoulslash]
    - This defaults to a Thief ball if in a trainer battle.
