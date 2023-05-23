@@ -40,6 +40,7 @@ LilycoveCity_Harbor_MovedTruckOnLoad:
 LilycoveCity_Harbor_DisallowSurf:
 	setmetatile 7, 9, METATILE_General_CalmWater, TRUE
 	setmetatile 8, 9, METATILE_General_CalmWater, TRUE
+	setflag FLAG_LILYCOVE_HARBOR_MEW_SEEN
 	end
 
 LilycoveCity_Harbor_EventScript_FerryAttendant::
