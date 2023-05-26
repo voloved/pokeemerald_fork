@@ -3043,12 +3043,16 @@ static void SurfFieldEffect_Init(struct Task *task)
 
 static void SurfFieldEffect_FieldMovePose(struct Task *task)
 {
+    u16 partyIndex = gFieldEffectArguments[0];
     struct ObjectEvent *objectEvent;
     objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
     if (!ObjectEventIsMovementOverridden(objectEvent) || ObjectEventClearHeldMovementIfFinished(objectEvent))
     {
-        SetPlayerAvatarFieldMove();
-        ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        if(partyIndex <= PARTY_SIZE)
+        {
+            SetPlayerAvatarFieldMove();
+            ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        }
         task->tState++;
     }
 }
@@ -3214,14 +3218,18 @@ static void Task_FlyOut(u8 taskId)
 
 static void FlyOutFieldEffect_FieldMovePose(struct Task *task)
 {
+    u16 partyIndex = gFieldEffectArguments[0];
     struct ObjectEvent *objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
     if (!ObjectEventIsMovementOverridden(objectEvent) || ObjectEventClearHeldMovementIfFinished(objectEvent))
     {
         task->tAvatarFlags = gPlayerAvatar.flags;
         gPlayerAvatar.preventStep = TRUE;
         SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_ON_FOOT);
-        SetPlayerAvatarFieldMove();
-        ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        if(partyIndex <= PARTY_SIZE)
+        {
+            SetPlayerAvatarFieldMove();
+            ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        }
         task->tState++;
     }
 }
@@ -3575,6 +3583,7 @@ static void FlyInFieldEffect_JumpOffBird(struct Task *task)
 
 static void FlyInFieldEffect_FieldMovePose(struct Task *task)
 {
+    u16 partyIndex = gFieldEffectArguments[0];
     struct ObjectEvent *objectEvent;
     struct Sprite *sprite;
     if (GetFlyBirdAnimCompleted(task->tBirdSpriteId))
@@ -3586,8 +3595,11 @@ static void FlyInFieldEffect_FieldMovePose(struct Task *task)
         sprite->x2 = 0;
         sprite->y2 = 0;
         sprite->coordOffsetEnabled = TRUE;
-        SetPlayerAvatarFieldMove();
-        ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        if(partyIndex <= PARTY_SIZE)
+        {
+            SetPlayerAvatarFieldMove();
+            ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        }
         task->tState++;
     }
 }
