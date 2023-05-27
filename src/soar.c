@@ -179,22 +179,10 @@ void CB2_InitSoar(void)
 	switch (gMain.state)
 	{
 	case 0:
-		StringExpandPlaceholders(gStringVar4, sEonFluteUseMessage);
-
-		DrawDialogueFrame(0, 0);
-		AddTextPrinterParameterized(0, 1, gStringVar4, 0, 0, GetPlayerTextSpeed(), NULL);
-		CopyWindowToVram(0, 3);
-
+		BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, 0);
 		gMain.state++;
 		break;
 	case 1:
-		if (RunTextPrintersAndIsPrinter0Active() != 1)
-		{
-			BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, 0);
-			gMain.state++;
-		}
-		break;
-	case 2:
 		if (!UpdatePaletteFade())
 		{
 			u16 cursorX, cursorY;
@@ -226,9 +214,30 @@ void CB2_InitSoar(void)
 
 void ItemUseOnFieldCB_EonFlute(u8 taskId)
 {
-	LockPlayerFieldControls();
-	FreezeObjectEvents();
-	SetMainCallback2(CB2_InitSoar);
+	struct Task *task;
+    task = &gTasks[taskId];
+    switch(task->data[0])
+    {
+    case 0:
+		LockPlayerFieldControls();
+		FreezeObjectEvents();
+        task->data[0]++;
+        break;
+    case 1:
+		StringExpandPlaceholders(gStringVar4, sEonFluteUseMessage);
+		DrawDialogueFrame(0, 0);
+		AddTextPrinterParameterized(0, 1, gStringVar4, 0, 0, GetPlayerTextSpeed(), NULL);
+		CopyWindowToVram(0, 3);
+		task->data[0]++;
+		break;
+	case 2:
+		if (RunTextPrintersAndIsPrinter0Active() != 1)
+		{
+			task->data[0] = 0;
+			gTasks[taskId].func = Task_EonFlute;
+			break;
+		}
+	}
 }
 
 static void LoadEonGraphics(void)

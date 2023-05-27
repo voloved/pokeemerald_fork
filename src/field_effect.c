@@ -32,6 +32,7 @@
 #include "constants/metatile_behaviors.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "soar.h"
 
 #define subsprite_table(ptr) {.subsprites = ptr, .subspriteCount = (sizeof ptr) / (sizeof(struct Subsprite))}
 
@@ -3949,3 +3950,43 @@ static void Task_MoveDeoxysRock(u8 taskId)
             break;
     }
 }
+
+#define tState data[0]
+#define tTimer data[1]
+void Task_EonFlute(u8 taskId)
+{
+    struct Task *task;
+    struct ObjectEvent *objectEvent;
+    objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    task = &gTasks[taskId];
+    switch(task->tState)
+    {
+    case 0:
+        task->tTimer = 0;
+        HideFollowerForFieldEffect();
+        ObjectEventTurn(objectEvent, DIR_WEST);
+        gFieldEffectArguments[0] = GetPlayerAvatarSpriteId();
+        FieldEffectStart(FLDEFF_NPCFLY_OUT);
+        task->tState++;
+        break;
+    case 1:
+        task->tTimer++;
+        if (task->tTimer > 17){
+            if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
+                DestroySprite(&gSprites[objectEvent->fieldEffectSpriteId]);
+            ObjectEventSetGraphicsId(objectEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_SURFING));
+            gObjectEvents[gPlayerAvatar.objectEventId].invisible = TRUE;
+            task->tState++;
+        }
+        break; 
+    case 2:
+        if (!FieldEffectActiveListContains(FLDEFF_NPCFLY_OUT))
+        {
+            SetMainCallback2(CB2_InitSoar);
+            DestroyTask(taskId);
+        } 
+        break;
+    }
+}
+#undef tState
+#undef tTimer
