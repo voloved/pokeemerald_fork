@@ -226,7 +226,7 @@ void CB2_InitSoar(void)
 
 void ItemUseOnFieldCB_EonFlute(u8 taskId)
 {
-	ScriptContext2_Enable();
+	LockPlayerFieldControls();
 	FreezeObjectEvents();
 	SetMainCallback2(CB2_InitSoar);
 }
@@ -492,7 +492,7 @@ static void UpdateMapSectionPopup(void)
 		{
 			GetMapName(gStringVar4, mapSection, 50);
 			DrawStdFrameWithCustomTileAndPalette(windid, 0, 1, 14);
-			AddTextPrinterParameterized(windid, 1, gStringVar4, 4, 0, TEXT_SPEED_FF, NULL);
+			AddTextPrinterParameterized(windid, 1, gStringVar4, 4, 0, TEXT_SKIP_DRAW, NULL);
 
 			CopyWindowToVram(windid, 3);
 			REG_DISPCNT |= DISPCNT_BG0_ON;
@@ -528,7 +528,7 @@ static void CB2_HandleInput(void)
 		PlaySE(SE_SELECT);
 
 		DrawDialogFrameWithCustomTileAndPalette(windid2, 0, 10, 15);
-		AddTextPrinterParameterized(windid2, 1, sText_LandHere, 0, 0, TEXT_SPEED_FF, NULL);
+		AddTextPrinterParameterized(windid2, 1, sText_LandHere, 0, 0, TEXT_SKIP_DRAW, NULL);
 		CopyWindowToVram(windid2, 3);
 
 		SetMainCallback2(PromptLandCB2);
