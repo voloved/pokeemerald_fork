@@ -45,6 +45,8 @@
 #include "battle_setup.h"
 #include "region_map.h"
 #include "script_pokemon_util.h"
+#include "constants/vars.h"
+#include "soar.h"
 
 static void SetUpItemUseCallback(u8);
 static void FieldCB_UseItemOnField(void);
@@ -1257,6 +1259,20 @@ void ItemUseOutOfBattle_PokeBall(u8 taskId)
 {
     gItemUseCB = ItemUseCB_PokeBall;
     SetUpItemUseCallback(taskId);
+}
+
+void ItemUseOutOfBattle_EonFlute(u8 taskId)
+{
+	s16* data = gTasks[taskId].data;
+	
+	if (Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
+	{
+        sItemUseOnFieldCB = ItemUseOnFieldCB_EonFlute;
+		SetUpItemUseOnFieldCallback(taskId);
+	}
+	else {
+		DisplayDadsAdviceCannotUseItemMessage(taskId, data[3]);
+	}
 }
 
 #undef tUsingRegisteredKeyItem
