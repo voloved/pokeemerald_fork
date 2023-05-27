@@ -236,7 +236,7 @@ static void LoadEonGraphics(void)
 	struct CompressedSpriteSheet sEonSpriteSheet = { .size = 1024,.tag = GFX_TAG_EON };
 	struct CompressedSpritePalette sEonSpritePalette = { .tag = GFX_TAG_EON };
 
-	if (FlagGet(FLAG_EON_LATI)) {
+	if (VarGet(VAR_ROAMER_POKEMON) == 0) {
 		sEonSpriteSheet.data = sEonBrendanSpriteTiles;
 		sEonSpritePalette.data = sEonBrendanSpritePaletteData;
 
