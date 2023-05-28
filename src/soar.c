@@ -244,8 +244,8 @@ static void LoadEonGraphics(void)
 {
 	struct CompressedSpriteSheet sEonSpriteSheet = { .size = 1024,.tag = GFX_TAG_EON };
 	struct CompressedSpritePalette sEonSpritePalette = { .tag = GFX_TAG_EON };
-
-	if (VarGet(VAR_ROAMER_POKEMON) == 0) {
+    // Defaults to Latios until the roamer is set and then uses the roamer selected.
+	if (FlagGet(FLAG_LATIOS_OR_LATIAS_ROAMING) && VarGet(VAR_ROAMER_POKEMON) == 0) {
 		sEonSpriteSheet.data = sEonBrendanSpriteTiles;
 		sEonSpritePalette.data = sEonBrendanSpritePaletteData;
 
@@ -515,6 +515,7 @@ static const u8 sText_LandHere[] = _("Would you like to land here?");
 static void ExitSoar(void)
 {
 	PlaySE(SE_PC_OFF);
+	gObjectEvents[gPlayerAvatar.objectEventId].invisible = FALSE;
 	BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, 0);
 	SetMainCallback2(CB2_FadeOut);
 }

@@ -3974,7 +3974,6 @@ void Task_EonFlute(u8 taskId)
         if (task->tTimer > 17){
             if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
                 DestroySprite(&gSprites[objectEvent->fieldEffectSpriteId]);
-            ObjectEventSetGraphicsId(objectEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_SURFING));
             gObjectEvents[gPlayerAvatar.objectEventId].invisible = TRUE;
             task->tState++;
         }

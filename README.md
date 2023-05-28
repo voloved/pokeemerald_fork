@@ -10,6 +10,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
 ## Not Yet Versioned
+ - [Added Eon Flute](https://www.pokecommunity.com/showthread.php?t=422107) [Credit: camthesaxman and paccy for the Emerald port]
  - [Added Ability to See Zigzagoon on Cable Car](https://www.youtube.com/watch?v=7xdcbbfwEto) [Credit: Goppier]
  - Player's icon shown and them raising their Poké Ball not shown when performing a field move that the party does not known.
  - Sped up slow and medium text speed.
