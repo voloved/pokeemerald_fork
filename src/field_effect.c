@@ -32,6 +32,7 @@
 #include "constants/metatile_behaviors.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "soar.h"
 
 #define subsprite_table(ptr) {.subsprites = ptr, .subspriteCount = (sizeof ptr) / (sizeof(struct Subsprite))}
 
@@ -70,7 +71,7 @@ static void SpriteCB_PokeballGlow(struct Sprite *);
 static void Task_UseFly(u8);
 static void FieldCallback_FlyIntoMap(void);
 static void Task_FlyIntoMap(u8);
-
+static void FieldCallback_Fly_2(void);
 static void Task_FallWarpFieldEffect(u8);
 static bool8 FallWarpEffect_Init(struct Task *);
 static bool8 FallWarpEffect_WaitWeather(struct Task *);
@@ -270,6 +271,12 @@ static const u8 sRockFragment_TopLeft[] = INCBIN_U8("graphics/field_effects/pics
 static const u8 sRockFragment_TopRight[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_top_right.4bpp");
 static const u8 sRockFragment_BottomLeft[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_bottom_left.4bpp");
 static const u8 sRockFragment_BottomRight[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_bottom_right.4bpp");
+
+void Fldeff_FlyLand(void)
+{
+	SetMainCallback2(CB2_ReturnToField);
+	gFieldCallback = FieldCallback_Fly_2;
+}
 
 bool8 (*const gFieldEffectScriptFuncs[])(u8 **, u32 *) =
 {
@@ -1356,6 +1363,17 @@ void FieldCallback_Fly(void)
     LockPlayerFieldControls();
     FreezeObjectEvents();
     gFieldCallback = NULL;
+}
+
+static void FieldCallback_Fly_2(void)
+{
+	u8 taskId;
+    FadeInFromBlack();
+	taskId = CreateTask(Task_UseFly, 0);
+	gTasks[taskId].data[0] = 1; //do landing anim only
+	LockPlayerFieldControls();
+    FreezeObjectEvents();
+	gFieldCallback = NULL;
 }
 
 static void Task_UseFly(u8 taskId)
@@ -3932,3 +3950,42 @@ static void Task_MoveDeoxysRock(u8 taskId)
             break;
     }
 }
+
+#define tState data[0]
+#define tTimer data[1]
+void Task_EonFlute(u8 taskId)
+{
+    struct Task *task;
+    struct ObjectEvent *objectEvent;
+    objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    task = &gTasks[taskId];
+    switch(task->tState)
+    {
+    case 0:
+        task->tTimer = 0;
+        HideFollowerForFieldEffect();
+        ObjectEventTurn(objectEvent, DIR_WEST);
+        gFieldEffectArguments[0] = GetPlayerAvatarSpriteId();
+        FieldEffectStart(FLDEFF_NPCFLY_OUT);
+        task->tState++;
+        break;
+    case 1:
+        task->tTimer++;
+        if (task->tTimer > 17){
+            if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
+                DestroySprite(&gSprites[objectEvent->fieldEffectSpriteId]);
+            gObjectEvents[gPlayerAvatar.objectEventId].invisible = TRUE;
+            task->tState++;
+        }
+        break; 
+    case 2:
+        if (!FieldEffectActiveListContains(FLDEFF_NPCFLY_OUT))
+        {
+            SetMainCallback2(CB2_InitSoar);
+            DestroyTask(taskId);
+        } 
+        break;
+    }
+}
+#undef tState
+#undef tTimer

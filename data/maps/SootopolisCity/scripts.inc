@@ -55,6 +55,7 @@ SootopolisCity_OnTransition:
 	call_if_eq VAR_SKY_PILLAR_STATE, 1, SootopolisCity_EventScript_HideMapNamePopup
 	call SootopolisCity_EventScript_SetWeather
 	call SootopolisCity_EventScript_SetLayout
+	call SootopolisCity_CheckIfHideSteven
 	call_if_eq VAR_SOOTOPOLIS_CITY_STATE, 1, SootopolisCity_EventScript_SetBattleSpectators
 	call_if_eq VAR_SOOTOPOLIS_CITY_STATE, 2, SootopolisCity_EventScript_SetBattleSpectators
 	call_if_eq VAR_SOOTOPOLIS_CITY_STATE, 3, SootopolisCity_EventScript_SetBattleSpectators
@@ -69,6 +70,12 @@ SootopolisCity_OnTransition:
 
 SootopolisCity_EventScript_HideMapNamePopup::
 	setflag FLAG_HIDE_MAP_NAME_POPUP
+	return
+
+SootopolisCity_CheckIfHideSteven::
+	goto_if_unset FLAG_HIDE_SOOTOPOLIS_CITY_WALLACE, Common_EventScript_NopReturn
+	goto_if_unset FLAG_RECEIVED_EON_FLUTE, Common_EventScript_NopReturn
+	setflag FLAG_HIDE_SOOTOPOLIS_CITY_STEVEN
 	return
 
 SootopolisCity_EventScript_SetBattleSpectators::
@@ -913,8 +920,17 @@ SootopolisCity_EventScript_StevenHelpWallace::
 	end
 
 SootopolisCity_EventScript_StevenMaxieArchieLeft::
+	goto_if_unset FLAG_RECEIVED_EON_FLUTE, SootopolisCity_EventScript_StevenGiveEonFlute
 	msgbox SootopolisCity_Text_MaxieArchieLeft, MSGBOX_DEFAULT
 	releaseall
+	end
+
+SootopolisCity_EventScript_StevenGiveEonFlute::
+	msgbox SootopolisCity_Text_GiveEonFlute, MSGBOX_DEFAULT
+	giveitem ITEM_EON_FLUTE
+	setflag FLAG_RECEIVED_EON_FLUTE
+	msgbox SootopolisCity_Text_ExplainEonFlute, MSGBOX_DEFAULT
+	closemessage
 	end
 
 SootopolisCity_EventScript_StevenHelpedWallace::
@@ -1683,6 +1699,20 @@ SootopolisCity_Text_MaxieArchieLeft:
 	.string "ARCHIE have gone away somewhere.\p"
 	.string "Perhaps they've gone to MT. PYRE to\n"
 	.string "return those ORBS…$"
+
+SootopolisCity_Text_GiveEonFlute:
+	.string "STEVEN: Thank you.\p"
+	.string "When you travel the world,\n"
+	.string "you should try to use this.\p"
+	.string "This flute is one of my favorite items.$"
+
+SootopolisCity_Text_ExplainEonFlute:
+	.string "This Eon Flute is proof of the bond\n"
+	.string "between you and your Latios or Latias.\p"
+	.string "No matter how far you may be from them,\n"
+	.string "play that flute and they will fly to you.\p"
+	.string "Then it can take to the sky, \n"
+	.string "soaring above the land upon its back.$"
 
 SootopolisCity_Text_HaventYouScaledSkyPillar:
 	.string "WALLACE: Oh?\n"
