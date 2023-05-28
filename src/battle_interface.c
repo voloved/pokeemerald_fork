@@ -3058,7 +3058,7 @@ static void SpriteCB_LastUsedBallWin(struct Sprite *sprite)
 {    
     if (sprite->sHide)
     {
-        if (sprite->x != LAST_BALL_WIN_X_0)
+        if (sprite->x > LAST_BALL_WIN_X_0)
             sprite->x--;
 
         if (sprite->x == LAST_BALL_WIN_X_0)
@@ -3066,7 +3066,7 @@ static void SpriteCB_LastUsedBallWin(struct Sprite *sprite)
     }
     else
     {
-        if (sprite->x != LAST_BALL_WIN_X_F)
+        if (sprite->x < LAST_BALL_WIN_X_F)
             sprite->x++;
     }
 }
@@ -3075,7 +3075,10 @@ static void SpriteCB_LastUsedBall(struct Sprite *sprite)
 {    
     if (sprite->sHide)
     {
-        if (sprite->x != LAST_USED_BALL_X_0)
+        if (sprite->y < LAST_USED_BALL_Y) // Used to recover from an incomplete bounce before hiding the window
+            sprite->y++;
+        
+        if (sprite->x > LAST_USED_BALL_X_0)
             sprite->x--;
 
         if (sprite->x == LAST_USED_BALL_X_0){
@@ -3085,7 +3088,7 @@ static void SpriteCB_LastUsedBall(struct Sprite *sprite)
     }
     else
     {
-        if (sprite->x != LAST_USED_BALL_X_F)
+        if (sprite->x < LAST_USED_BALL_X_F)
             sprite->x++;
     }
 }
