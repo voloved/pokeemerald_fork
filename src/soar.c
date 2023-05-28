@@ -228,10 +228,11 @@ void ItemUseOnFieldCB_EonFlute(u8 taskId)
 		DrawDialogueFrame(0, 0);
 		AddTextPrinterParameterized(0, 1, gStringVar4, 0, 0, GetPlayerTextSpeed(), NULL);
 		CopyWindowToVram(0, 3);
+		PlaySE(SE_M_GRASSWHISTLE);
 		task->data[0]++;
 		break;
 	case 2:
-		if (RunTextPrintersAndIsPrinter0Active() != 1)
+		if (RunTextPrintersAndIsPrinter0Active() != 1 && !IsSEPlaying())
 		{
 			task->data[0] = 0;
 			gTasks[taskId].func = Task_EonFlute;
@@ -687,6 +688,6 @@ static void CB2_FadeOut(void)
 		REG_DISPSTAT &= ~(DISPSTAT_HBLANK_INTR);
 
 		SetHBlankCallback(NULL);
-		SetMainCallback2(CB2_ReturnToFieldWithOpenMenu);
+		SetMainCallback2(CB2_ReturnToField);
 	}
 }
