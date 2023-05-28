@@ -408,7 +408,7 @@ static void Task_OptionMenuProcessInput(u8 taskId)
         if (gTasks[taskId].data[TD_MENUSELECTION] == MENUITEM_CANCEL)
             gTasks[taskId].func = Task_OptionMenuSave;
     }
-    else if (JOY_NEW(B_BUTTON) && !JOY_HELD(R_BUTTON))
+    else if (JOY_NEW_RAW(B_BUTTON))
     {
         gTasks[taskId].func = Task_OptionMenuSave;
     }
@@ -508,7 +508,7 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
         if (gTasks[taskId].data[TD_MENUSELECTION] == MENUITEM_CANCEL_PG2)
             gTasks[taskId].func = Task_OptionMenuSave;
     }
-    else if (JOY_NEW(B_BUTTON) && !JOY_HELD(R_BUTTON))
+    else if (JOY_NEW_RAW(B_BUTTON))
     {
         gTasks[taskId].func = Task_OptionMenuSave;
     }
