@@ -242,8 +242,8 @@ static void CompleteOnBankSpritePosX_0(void)
 
 static u16 GetPrevBall(u16 ballId)
 {
-    u16 ballPrev, lastBall;
-    s8 i, j;
+    u16 ballPrev, i, j;
+    CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
     for (i = 0; i < gBagPockets[BALLS_POCKET].capacity; i++)
     {
         
@@ -267,6 +267,7 @@ static u16 GetPrevBall(u16 ballId)
 static u16 GetNextBall(u16 ballId)
 {
     u16 ballNext, i;
+    CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
     for (i = 0; i < gBagPockets[BALLS_POCKET].capacity; i++)
     {
         if (ballId == gBagPockets[BALLS_POCKET].itemSlots[i].itemId)
@@ -297,7 +298,7 @@ static void HandleInputChooseAction(void)
         sAckBallUseBtn = FALSE;
     else if(JOY_NEW(B_LAST_USED_BALL_BUTTON))
         sAckBallUseBtn = TRUE;
-    else if (sAckBallUseBtn && ((gMain.newKeysRaw & ~DPAD_ANY) != 0)){
+    else if (sAckBallUseBtn && JOY_NEW_RAW(B_BUTTON)){
         sAckBallUseBtn = FALSE;
         PlaySE(SE_PC_OFF);
     }
