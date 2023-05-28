@@ -306,14 +306,24 @@ static void HandleInputChooseAction(void)
     if(sAckBallUseBtn){
         if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_RIGHT)))
         {
-            gBattleStruct->ballToDisplay = GetNextBall(gBattleStruct->ballToDisplay);
-            SwapBallToDisplay();
+            bool8 sameBall = FALSE;
+            u16 nextBall = GetNextBall(gBattleStruct->ballToDisplay);
+            if (gBattleStruct->ballToDisplay == nextBall)
+                sameBall = TRUE;
+            else
+                gBattleStruct->ballToDisplay = nextBall;
+            SwapBallToDisplay(sameBall);
             PlaySE(SE_SELECT);
         }
         else if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT)))
         {
-            gBattleStruct->ballToDisplay = GetPrevBall(gBattleStruct->ballToDisplay);
-            SwapBallToDisplay();
+            bool8 sameBall = FALSE;
+            u16 prevBall = GetPrevBall(gBattleStruct->ballToDisplay);
+            if (gBattleStruct->ballToDisplay == prevBall)
+                sameBall = TRUE;
+            else
+                gBattleStruct->ballToDisplay = prevBall;
+            SwapBallToDisplay(sameBall);
             PlaySE(SE_SELECT);
         }
         else if (JOY_RELEASED(B_LAST_USED_BALL_BUTTON) && CanThrowLastUsedBall())
