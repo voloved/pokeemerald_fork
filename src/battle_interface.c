@@ -2701,10 +2701,18 @@ static const struct OamData sOamData_LastUsedBall =
 	.objMode = 0,
 	.mosaic = 0,
 	.bpp = 0,
+#if LAST_BALL_MENU_SHOW_ARROWS == TRUE
+	.shape = SPRITE_SHAPE(32x64),
+#else
 	.shape = SPRITE_SHAPE(32x32),
+#endif
 	.x = 0,
 	.matrixNum = 0,
+#if LAST_BALL_MENU_SHOW_ARROWS == TRUE
+	.size = SPRITE_SIZE(32x64),
+#else
 	.size = SPRITE_SIZE(32x32),
+#endif
 	.tileNum = 0,
 	.priority = 1,
 	.paletteNum = 0,
@@ -2722,7 +2730,11 @@ static const struct SpriteTemplate sSpriteTemplate_LastUsedBallWindow =
     .callback = SpriteCB_LastUsedBallWin
 };
 
+#if LAST_BALL_MENU_SHOW_ARROWS == TRUE
+static const u8 sLastUsedBallWindowGfx[] = INCBIN_U8("graphics/battle_interface/last_used_ball_arrow.4bpp");
+#else
 static const u8 sLastUsedBallWindowGfx[] = INCBIN_U8("graphics/battle_interface/last_used_ball.4bpp");
+#endif
 static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 {
     sLastUsedBallWindowGfx, sizeof(sLastUsedBallWindowGfx), LAST_BALL_WINDOW_TAG
@@ -3055,56 +3067,45 @@ void SwapBallToDisplay(bool8 sameBall){
 
 void ArrowsChangeColorLastBallCycle(u8 color)
 {
+#if LAST_BALL_MENU_SHOW_ARROWS == TRUE
     u16 paletteNum = 16 + gSprites[gBattleStruct->ballSpriteIds[1]].oam.paletteNum;
     struct PlttData *defaultPlttArrow;
     struct PlttData *defaultPlttOutline;
     struct PlttData *pltArrow;
     struct PlttData *pltOutline;
-    struct PlttData visibleColorArrow;
-    struct PlttData visibleColorArrowOutline;
     paletteNum *= 16;
-    CpuCopy32(&gPlttBufferUnfaded[paletteNum], &gPlttBufferFaded[paletteNum], 32);  //Check if needed
-    pltArrow = (struct PlttData *)&gPlttBufferFaded[paletteNum + 9];
-    pltOutline = (struct PlttData *)&gPlttBufferFaded[paletteNum + 8];
-    // Arrow color is in idx 9
-    // Arrow outline is in idx 8
-    // Background color is idx 13
-    // Grey color is idx 11
-    //Light grey color for outline is idx 10
+    pltArrow = (struct PlttData *)&gPlttBufferFaded[paletteNum + 9];  // Arrow color is in idx 9
+    pltOutline = (struct PlttData *)&gPlttBufferFaded[paletteNum + 8];  // Arrow outline is in idx 8
     switch(color){
     case 0: //Make invisible
-        defaultPlttArrow = (struct PlttData *)&gPlttBufferUnfaded[paletteNum + 13];
-        visibleColorArrow.r = defaultPlttArrow->r;
-        visibleColorArrow.g = defaultPlttArrow->g;
-        visibleColorArrow.b = defaultPlttArrow->b;
-        visibleColorArrowOutline.r = defaultPlttArrow->r;
-        visibleColorArrowOutline.g = defaultPlttArrow->g;
-        visibleColorArrowOutline.b = defaultPlttArrow->b;
-        break;   
+        defaultPlttArrow = (struct PlttData *)&gPlttBufferFaded[paletteNum + 13];  // Background color is idx 13
+        pltArrow->r = defaultPlttArrow->r;
+        pltArrow->g = defaultPlttArrow->g;
+        pltArrow->b = defaultPlttArrow->b;
+        pltOutline->r = defaultPlttArrow->r;
+        pltOutline->g = defaultPlttArrow->g;
+        pltOutline->b = defaultPlttArrow->b;
+        break; 
     case 1:  // Make gray
-        defaultPlttArrow = (struct PlttData *)&gPlttBufferUnfaded[paletteNum + 11];
-        defaultPlttOutline = (struct PlttData *)&gPlttBufferUnfaded[paletteNum + 10];
-        visibleColorArrow.r = defaultPlttArrow->r;
-        visibleColorArrow.g = defaultPlttArrow->g;
-        visibleColorArrow.b = defaultPlttArrow->b;
-        visibleColorArrowOutline.r = defaultPlttOutline->r;
-        visibleColorArrowOutline.g = defaultPlttOutline->g;
-        visibleColorArrowOutline.b = defaultPlttOutline->b;
+        defaultPlttArrow = (struct PlttData *)&gPlttBufferFaded[paletteNum + 11];  // Grey color is idx 11
+        defaultPlttOutline = (struct PlttData *)&gPlttBufferFaded[paletteNum + 10];  //Light grey color for outline is idx 10
+        pltArrow->r = defaultPlttArrow->r;
+        pltArrow->g = defaultPlttArrow->g;
+        pltArrow->b = defaultPlttArrow->b;
+        pltOutline->r = defaultPlttOutline->r;
+        pltOutline->g = defaultPlttOutline->g;
+        pltOutline->b = defaultPlttOutline->b;
         break;
     case 2: // Make red (using hardcoded color values)
-        visibleColorArrow.r = 128 >> 3;
-        visibleColorArrow.g = 0 >> 3;
-        visibleColorArrow.b = 0 >> 3;
-        visibleColorArrowOutline.r = 232 >> 3;
-        visibleColorArrowOutline.g = 0 >> 3;
-        visibleColorArrowOutline.b = 0 >> 3;
+        pltArrow->r = 128 >> 3;
+        pltArrow->g = 0 >> 3;
+        pltArrow->b = 0 >> 3;
+        pltOutline->r = 232 >> 3;
+        pltOutline->g = 0 >> 3;
+        pltOutline->b = 0 >> 3;
+        break;
     }
-    pltArrow->r = visibleColorArrow.r;
-    pltArrow->g = visibleColorArrow.g;
-    pltArrow->b = visibleColorArrow.b;
-    pltOutline->r = visibleColorArrowOutline.r;
-    pltOutline->g = visibleColorArrowOutline.g;
-    pltOutline->b = visibleColorArrowOutline.b;
+#endif
 }
 
 static void SpriteCB_LastUsedBallWin(struct Sprite *sprite)
