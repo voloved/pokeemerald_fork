@@ -2982,8 +2982,6 @@ static void DestroyLastUsedBallGfx(struct Sprite *sprite)
 
 static void SpriteCB_LastUsedBallBounce(struct Sprite *sprite)
 {
-    if (gBattleStruct->ballSpriteIds[1] == MAX_SPRITES)  // If the window is gone
-        DestroyLastUsedBallGfx(sprite);
     if ((sprite->sTimer++ % 4) != 0)  // Change the image every % x frame
         return;
     if (sprite->sBounce)

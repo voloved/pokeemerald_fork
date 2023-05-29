@@ -242,7 +242,8 @@ static void CompleteOnBankSpritePosX_0(void)
 
 static u16 GetPrevBall(u16 ballId)
 {
-    u16 ballPrev, i, j;
+    u16 ballPrev;
+    u32 i, j;
     CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
     for (i = 0; i < gBagPockets[BALLS_POCKET].capacity; i++)
     {
@@ -266,7 +267,8 @@ static u16 GetPrevBall(u16 ballId)
 
 static u16 GetNextBall(u16 ballId)
 {
-    u16 ballNext, i;
+    u16 ballNext;
+    u32 i;
     CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
     for (i = 0; i < gBagPockets[BALLS_POCKET].capacity; i++)
     {
