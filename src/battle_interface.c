@@ -2963,6 +2963,7 @@ void TryAddLastUsedBallItemSprites(void)
         gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
         gBattleStruct->LastUsedBallMenuPresent = TRUE;
     }
+    ArrowsChangeColorLastBallCycle(0); //Default the arrows to be invisible
 }
 
 static void DestroyLastUsedBallWinGfx(struct Sprite *sprite)
@@ -3052,6 +3053,60 @@ void SwapBallToDisplay(bool8 sameBall){
     gTasks[taskId].sSameBall = sameBall;
 }
 
+void ArrowsChangeColorLastBallCycle(u8 color)
+{
+    u16 paletteNum = 16 + gSprites[gBattleStruct->ballSpriteIds[1]].oam.paletteNum;
+    struct PlttData *defaultPlttArrow;
+    struct PlttData *defaultPlttOutline;
+    struct PlttData *pltArrow;
+    struct PlttData *pltOutline;
+    struct PlttData visibleColorArrow;
+    struct PlttData visibleColorArrowOutline;
+    paletteNum *= 16;
+    CpuCopy32(&gPlttBufferUnfaded[paletteNum], &gPlttBufferFaded[paletteNum], 32);  //Check if needed
+    pltArrow = (struct PlttData *)&gPlttBufferFaded[paletteNum + 9];
+    pltOutline = (struct PlttData *)&gPlttBufferFaded[paletteNum + 8];
+    // Arrow color is in idx 9
+    // Arrow outline is in idx 8
+    // Background color is idx 13
+    // Grey color is idx 11
+    //Light grey color for outline is idx 10
+    switch(color){
+    case 0: //Make invisible
+        defaultPlttArrow = (struct PlttData *)&gPlttBufferUnfaded[paletteNum + 13];
+        visibleColorArrow.r = defaultPlttArrow->r;
+        visibleColorArrow.g = defaultPlttArrow->g;
+        visibleColorArrow.b = defaultPlttArrow->b;
+        visibleColorArrowOutline.r = defaultPlttArrow->r;
+        visibleColorArrowOutline.g = defaultPlttArrow->g;
+        visibleColorArrowOutline.b = defaultPlttArrow->b;
+        break;   
+    case 1:  // Make gray
+        defaultPlttArrow = (struct PlttData *)&gPlttBufferUnfaded[paletteNum + 11];
+        defaultPlttOutline = (struct PlttData *)&gPlttBufferUnfaded[paletteNum + 10];
+        visibleColorArrow.r = defaultPlttArrow->r;
+        visibleColorArrow.g = defaultPlttArrow->g;
+        visibleColorArrow.b = defaultPlttArrow->b;
+        visibleColorArrowOutline.r = defaultPlttOutline->r;
+        visibleColorArrowOutline.g = defaultPlttOutline->g;
+        visibleColorArrowOutline.b = defaultPlttOutline->b;
+        break;
+    case 2: // Make red (using hardcoded color values)
+        visibleColorArrow.r = 128 >> 3;
+        visibleColorArrow.g = 0 >> 3;
+        visibleColorArrow.b = 0 >> 3;
+        visibleColorArrowOutline.r = 232 >> 3;
+        visibleColorArrowOutline.g = 0 >> 3;
+        visibleColorArrowOutline.b = 0 >> 3;
+    }
+    pltArrow->r = visibleColorArrow.r;
+    pltArrow->g = visibleColorArrow.g;
+    pltArrow->b = visibleColorArrow.b;
+    pltOutline->r = visibleColorArrowOutline.r;
+    pltOutline->g = visibleColorArrowOutline.g;
+    pltOutline->b = visibleColorArrowOutline.b;
+}
+
 static void SpriteCB_LastUsedBallWin(struct Sprite *sprite)
 {    
     if (sprite->sHide)
@@ -3115,6 +3170,7 @@ static void TryHideOrRestoreLastUsedBall(u8 caseId)
             gSprites[gBattleStruct->ballSpriteIds[1]].sHide = FALSE;   // restore
         break;
     }
+    ArrowsChangeColorLastBallCycle(0);
 }
 
 void TryHideLastUsedBall(void)
