@@ -315,9 +315,10 @@
 #define BATTLE_TERRAIN_BUILDING     8
 #define BATTLE_TERRAIN_PLAIN        9
 
-#define B_WAIT_TIME_LONG  64
-#define B_WAIT_TIME_MED   48
-#define B_WAIT_TIME_SHORT 32
+#define B_WAIT_TIME_MULTIPLIER      14    // This determines how long text pauses in battle last. Vanilla is 16. Lower values result in faster battles.
+#define B_WAIT_TIME_LONG  (B_WAIT_TIME_MULTIPLIER * 4)
+#define B_WAIT_TIME_MED   (B_WAIT_TIME_MULTIPLIER * 3)
+#define B_WAIT_TIME_SHORT (B_WAIT_TIME_MULTIPLIER * 2)
 
 #define CASTFORM_NORMAL     0
 #define CASTFORM_FIRE       1
@@ -388,5 +389,6 @@
 #define B_LAST_USED_BALL_SUGGESTIONS  TRUE
 #define B_DESCRIPTION_SUBMENU         TRUE
 #define B_DESCRIPTION_SUBMENU_BUTTON  START_BUTTON
+#define LAST_BALL_MENU_SHOW_ARROWS    TRUE
 
 #endif // GUARD_CONSTANTS_BATTLE_H
