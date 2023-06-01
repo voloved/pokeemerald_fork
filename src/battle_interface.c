@@ -2746,7 +2746,7 @@ static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 #define LAST_USED_BALL_Y_BNC  ((IsDoubleBattle()) ? 76 : 66)
 
 #define LAST_BALL_WIN_X_F       (LAST_USED_BALL_X_F - 0)
-#define LAST_BALL_WIN_X_0       (LAST_USED_BALL_X_0 - 1)
+#define LAST_BALL_WIN_X_0       (LAST_USED_BALL_X_0 - 0)
 #define LAST_USED_WIN_Y         (LAST_USED_BALL_Y - 8)
 
 #define sHide   data[0]
@@ -2972,7 +2972,7 @@ void TryAddLastUsedBallItemSprites(void)
         gBattleStruct->ballSpriteIds[1] = CreateSprite(&sSpriteTemplate_LastUsedBallWindow,
            LAST_BALL_WIN_X_0,
            LAST_USED_WIN_Y, 5);
-        gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
+        gSprites[gBattleStruct->ballSpriteIds[1]].sHide = FALSE;   // restore
         gBattleStruct->LastUsedBallMenuPresent = TRUE;
     }
     ArrowsChangeColorLastBallCycle(0); //Default the arrows to be invisible
@@ -3073,6 +3073,8 @@ void ArrowsChangeColorLastBallCycle(u8 color)
     struct PlttData *defaultPlttOutline;
     struct PlttData *pltArrow;
     struct PlttData *pltOutline;
+    if (gBattleStruct->ballSpriteIds[1] == MAX_SPRITES)
+        return;
     paletteNum *= 16;
     pltArrow = (struct PlttData *)&gPlttBufferFaded[paletteNum + 9];  // Arrow color is in idx 9
     pltOutline = (struct PlttData *)&gPlttBufferFaded[paletteNum + 8];  // Arrow outline is in idx 8

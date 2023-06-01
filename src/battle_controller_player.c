@@ -298,7 +298,6 @@ static void HandleInputChooseAction(void)
     
     if (!gBattleStruct->LastUsedBallMenuPresent){
         sAckBallUseBtn = FALSE;
-        ArrowsChangeColorLastBallCycle(0);
     }
     else if(JOY_NEW(B_LAST_USED_BALL_BUTTON)){
         sAckBallUseBtn = TRUE;
@@ -337,6 +336,7 @@ static void HandleInputChooseAction(void)
         {
             sAckBallUseBtn = FALSE;
             PlaySE(SE_SELECT);
+            ArrowsChangeColorLastBallCycle(0);
             TryHideLastUsedBall();
             BtlController_EmitTwoReturnValues(1, B_ACTION_THROW_BALL, 0);
             PlayerBufferExecCompleted();
