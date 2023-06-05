@@ -314,7 +314,8 @@ static void HandleInputChooseAction(void)
         {
             bool8 sameBall = FALSE;
             u16 nextBall = GetNextBall(gBattleStruct->ballToDisplay);
-            if (gBattleStruct->ballToDisplay == nextBall)
+            if (gBattleStruct->ballToDisplay == nextBall
+            || (gBattleTypeFlags & BATTLE_TYPE_TRAINER && gBattleStruct->ballToDisplay == ITEM_THIEF_BALL))
                 sameBall = TRUE;
             else
                 gBattleStruct->ballToDisplay = nextBall;
@@ -325,7 +326,8 @@ static void HandleInputChooseAction(void)
         {
             bool8 sameBall = FALSE;
             u16 prevBall = GetPrevBall(gBattleStruct->ballToDisplay);
-            if (gBattleStruct->ballToDisplay == prevBall)
+            if (gBattleStruct->ballToDisplay == prevBall
+            || (gBattleTypeFlags & BATTLE_TYPE_TRAINER && gBattleStruct->ballToDisplay == ITEM_THIEF_BALL))
                 sameBall = TRUE;
             else
                 gBattleStruct->ballToDisplay = prevBall;
