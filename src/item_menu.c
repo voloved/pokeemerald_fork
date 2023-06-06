@@ -1036,11 +1036,11 @@ static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u8 y)
             offset = GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, 119);
             BagMenu_Print(windowId, FONT_NARROW, gStringVar4, offset, y, 0, 0, TEXT_SKIP_DRAW, COLORID_NORMAL);
             if (gSaveBlock1Ptr->registeredItem && gSaveBlock1Ptr->registeredItem == itemId){
-                selOff = (GetStringWidth(FONT_NORMAL, ItemId_GetName(itemId), 0)) + 2;
+                selOff = GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, offset) - 7;
                 BlitBitmapToWindow(windowId, sRegisteredSelect_Gfx, selOff, y - 1, 24, 16);
             }
             else if (gSaveBlock1Ptr->registeredLongItem && gSaveBlock1Ptr->registeredLongItem == itemId){
-                selOff = (GetStringWidth(FONT_NORMAL, ItemId_GetName(itemId), 0)) + 2;
+                selOff = GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, offset) - 7;
                 BlitBitmapToWindow(windowId, sRegisteredSelectLong_Gfx, selOff, y - 1, 24, 16);
             }
         }
