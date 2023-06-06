@@ -2620,7 +2620,8 @@ bool8 FldEff_FieldMoveShowMonInit(void)
 {
     struct Pokemon *pokemon;
     bool32 noDucking = gFieldEffectArguments[0] & SHOW_MON_CRY_NO_DUCKING;
-    if (gFieldEffectArguments[0] > PARTY_SIZE){
+    s32 monId = gFieldEffectArguments[0] &= ~SHOW_MON_CRY_NO_DUCKING;
+    if (monId > PARTY_SIZE){
         gFieldEffectArguments[0] = SPECIES_NONE;
         gFieldEffectArguments[1] = OT_ID_PLAYER_ID;
         gFieldEffectArguments[2] = 0;
