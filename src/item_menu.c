@@ -1032,17 +1032,13 @@ static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u8 y)
         {
             // Print item quantity
             ConvertIntToDecimalStringN(gStringVar1, itemQuantity, STR_CONV_MODE_RIGHT_ALIGN, BAG_ITEM_CAPACITY_DIGITS);
-            if ((gSaveBlock1Ptr->registeredItem && gSaveBlock1Ptr->registeredItem == itemId)
-            || (gSaveBlock1Ptr->registeredLongItem && gSaveBlock1Ptr->registeredLongItem == itemId))
-                StringExpandPlaceholders(gStringVar4, gText_StrVar1);
-            else
-                StringExpandPlaceholders(gStringVar4, gText_xVar1);
+            StringExpandPlaceholders(gStringVar4, gText_xVar1);
             offset = GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, 119);
             BagMenu_Print(windowId, FONT_NARROW, gStringVar4, offset, y, 0, 0, TEXT_SKIP_DRAW, COLORID_NORMAL);
             if (gSaveBlock1Ptr->registeredItem && gSaveBlock1Ptr->registeredItem == itemId)
-                BlitBitmapToWindow(windowId, sRegisteredSelect_Gfx, 80, y - 1, 24, 16);
+                BlitBitmapToWindow(windowId, sRegisteredSelect_Gfx, 71, y - 1, 24, 16);
             else if (gSaveBlock1Ptr->registeredLongItem && gSaveBlock1Ptr->registeredLongItem == itemId)
-                BlitBitmapToWindow(windowId, sRegisteredSelectLong_Gfx, 80, y - 1, 24, 16);
+                BlitBitmapToWindow(windowId, sRegisteredSelectLong_Gfx, 71, y - 1, 24, 16);
         }
         else
         {
