@@ -906,14 +906,17 @@ void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size,
             LoadCompressedPalette((const u32 *)tileset->palettes, destOffset, size);
             ApplyGlobalTintToPaletteEntries(destOffset, size >> 1);
         }
-        if (tileset->isSecondary == FALSE || tileset->isSecondary == TRUE) {
-            u32 i;
+        // convert legacy light palette system to current
+        if (tileset->lightPalettes) {
+            u32 i, j, color;
             for (i = low; i < high; i++) {
-                if (tileset->lightPalettes & (1 << (i - low))) { // Mark as light palette
-                    u32 index = i * 16;
-                    gPlttBufferFaded[index] = gPlttBufferUnfaded[index] |= 0x8000;
-                    if (tileset->customLightColor & (1 << (i - low))) // Mark as custom light color
-                        gPlttBufferFaded[index+15] = gPlttBufferUnfaded[index+15] |= 0x8000;
+                if (tileset->lightPalettes & (1 << (i - low))) { // Mark light colors
+                    for (j = 1, color = gPlttBufferUnfaded[(i * 16)]; j < 16 && color; j++, color >>= 1) {
+                        if (color & 1)
+                            gPlttBufferFaded[(i * 16)+j] = gPlttBufferUnfaded[(i * 16)+j] |= RGB_ALPHA;
+                    }
+                    if (tileset->customLightColor & (1 << (i - low))) // Copy old custom light color to index 0
+                        gPlttBufferFaded[(i * 16)] = gPlttBufferUnfaded[(i * 16)] = gPlttBufferUnfaded[(i * 16)+15] | RGB_ALPHA;
                 }
             }
         }
