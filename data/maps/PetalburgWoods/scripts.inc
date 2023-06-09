@@ -2,7 +2,18 @@
 .set LOCALID_DEVON_EMPLOYEE, 4
 
 PetalburgWoods_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, PetalburgWoods_OnResume
 	.byte 0
+
+PetalburgWoods_OnResume:
+	call_if_set FLAG_SYS_CTRL_OBJ_DELETE, PetalburgWoods_EventScript_TryRemoveMeanZigzagoon
+	end
+
+PetalburgWoods_EventScript_TryRemoveMeanZigzagoon::
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
+	removeobject VAR_LAST_TALKED
+	return
 
 PetalburgWoods_EventScript_DevonResearcherLeft::
 	lockall
@@ -317,6 +328,28 @@ PetalburgWoods_EventScript_JamesRematch::
 	trainerbattle_rematch TRAINER_JAMES_1, PetalburgWoods_Text_MyPokemonHaveGrown, PetalburgWoods_Text_CantBePopularIfLose
 	msgbox PetalburgWoods_Text_IveBeenTrainingHard, MSGBOX_AUTOCLOSE
 	end
+
+PetalburgWoods_EventScript_MeanZigzagoon::
+	setflag FLAG_FIGHT_MEAN_ZIGZAGOON
+	lock
+	faceplayer
+	setwildbattle SPECIES_ZIGZAGOON, 1
+	waitse
+	playmoncry SPECIES_ZIGZAGOON, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	dowildbattle
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	clearflag FLAG_FIGHT_MEAN_ZIGZAGOON
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, PetalburgWoods_EventScript_TryRemoveMeanZigzagoon
+	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, PetalburgWoods_EventScript_TryRemoveMeanZigzagoon
+	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, PetalburgWoods_EventScript_TryRemoveMeanZigzagoon
+	setflag FLAG_HIDE_MEAN_ZIGZAGOON
+	release
+	end
+
 
 PetalburgWoods_Text_NotAOneToBeFound:
 	.string "Hmmm…\n"

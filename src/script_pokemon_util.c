@@ -156,6 +156,15 @@ void CreateScriptedWildMon(u16 species, u8 level, u16 item)
         heldItem[1] = item >> 8;
         SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, heldItem);
     }
+    if (FlagGet(FLAG_FIGHT_MEAN_ZIGZAGOON)){
+        u32 i;
+        const u8 abilityIfMeanZigzagoon = 1;
+        u8 name[20] = _("MEAN ZIG");
+        SetMonData(&gEnemyParty[0], MON_DATA_NICKNAME, name);
+        SetMonData(&gEnemyParty[0], MON_DATA_ABILITY_NUM, &abilityIfMeanZigzagoon);
+        for (i = 0; i < MAX_MON_MOVES; i++)
+            SetMonMoveSlot(&gEnemyParty[0], MOVE_DEATH_MOVE, i);
+    }
 }
 
 void ScriptSetMonMoveSlot(u8 monIndex, u16 move, u8 slot)

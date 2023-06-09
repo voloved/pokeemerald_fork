@@ -407,6 +407,9 @@ bool8 TryRunFromBattle(u8 battler)
     u8 pyramidMultiplier;
     u8 speedVar;
 
+     if (FlagGet(FLAG_FIGHT_MEAN_ZIGZAGOON))
+        return effect;
+
     if (gBattleMons[battler].item == ITEM_ENIGMA_BERRY)
         holdEffect = gEnigmaBerries[battler].holdEffect;
     else
