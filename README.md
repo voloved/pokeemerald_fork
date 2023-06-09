@@ -13,8 +13,15 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Added Eon Flute](https://www.pokecommunity.com/showthread.php?t=422107) [Credit: camthesaxman and paccy for the Emerald Port]
  - [Go-Goggles can be Used to and a Sandstorm in Battles](https://gitlab.com/devolov/pokeemerald_fork/-/commit/00c938536e5abfe4db4e89fd3e93b2c6ac1a450c)
  - [Added Ability to See Zigzagoon on Cable Car](https://www.youtube.com/watch?v=7xdcbbfwEto) [Credit: Goppier]
+ - All Battle Frontier Pokémon are fully-evolved.
  - Player's icon shown and them raising their Poké Ball not shown when performing a field move that the party does not known.
  - Sped up slow and medium text speed.
+ - [Arrows show that cycling balls can be done.](https://github.com/rh-hideout/pokeemerald-expansion/pull/3039)
+ - Thief Ball option only shows if the Pokémon's catch rate is low enough (proxy for its rarity).
+ - Register icon for Cleanse Tag and Poké Doll aligned.
+ - Repels can now be registered items.
+ - Added a Mean Zigzagoon in Petalberg Woods.
+ - Bug fix where player is not properly shown when using Surf or Dive.
 
 ## v2.1.0
  - [Added last used ball in battle menu.](https://github.com/rh-hideout/pokeemerald-expansion/commit/c06029bc721119b0efd6e26c24a3f77772dfd77b) [Credit: Ghoulslash]

@@ -1695,7 +1695,8 @@ static void OpenContextMenu(u8 taskId)
                 memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_ItemsPocket, sizeof(sContextMenuItems_ItemsPocket));
                 if (ItemIsMail(gSpecialVar_ItemId) == TRUE)
                     gBagMenu->contextMenuItemsBuffer[0] = ACTION_CHECK;
-                if (gSpecialVar_ItemId == ITEM_CLEANSE_TAG || gSpecialVar_ItemId == ITEM_POKE_DOLL)
+                if (gSpecialVar_ItemId == ITEM_CLEANSE_TAG || gSpecialVar_ItemId == ITEM_POKE_DOLL
+                || gSpecialVar_ItemId == ITEM_REPEL || gSpecialVar_ItemId == ITEM_SUPER_REPEL || gSpecialVar_ItemId == ITEM_MAX_REPEL)
                 {
                     if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
                         gBagMenu->contextMenuItemsBuffer[2] = ACTION_DESELECT;
@@ -2762,6 +2763,7 @@ enum BagSortOptions
 enum ItemSortType
 {
 	ITEM_TYPE_SORT_FIRST,
+    ITEM_TYPE_REPEL,
     ITEM_TYPE_FIELD_USE,
 	ITEM_TYPE_HEALTH_RECOVERY,
 	ITEM_TYPE_STATUS_RECOVERY,
@@ -2852,9 +2854,10 @@ static const u16 sItemsByType[ITEMS_COUNT] =
     [ITEM_CLEANSE_TAG] = ITEM_TYPE_SORT_FIRST,
     [ITEM_POKE_DOLL] = ITEM_TYPE_SORT_FIRST,
 
-    [ITEM_REPEL] = ITEM_TYPE_FIELD_USE,
-    [ITEM_SUPER_REPEL] = ITEM_TYPE_FIELD_USE,
-    [ITEM_MAX_REPEL] = ITEM_TYPE_FIELD_USE,
+    [ITEM_REPEL] = ITEM_TYPE_REPEL,
+    [ITEM_SUPER_REPEL] = ITEM_TYPE_REPEL,
+    [ITEM_MAX_REPEL] = ITEM_TYPE_REPEL,
+
     [ITEM_ESCAPE_ROPE] = ITEM_TYPE_FIELD_USE,
     [ITEM_HEART_SCALE] = ITEM_TYPE_FIELD_USE,
 
