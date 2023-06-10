@@ -349,6 +349,7 @@ PetalburgWoods_EventScript_MeanZigzagoonDefeated::
 	end
 
 PetalburgWoods_EventScript_MeanZigzagoonNuzlocke::
+	removemoney 2, 2
 	msgbox PetalburgWoods_Text_TalkToMeanZigzagoonNuzlocke, MSGBOX_DEFAULT
 	waitmessage
 	turnobject LOCALID_DEVON_MEANZIGZAGOON, DIR_NORTH
@@ -517,7 +518,9 @@ PetalburgWoods_Text_TalkToMeanZigzagoon:
 PetalburgWoods_Text_TalkToMeanZigzagoonNuzlocke:
 	.string "Hang on, you're doing the Nuzlocke\n"
 	.string "challenge.\p"
-	.string "This troll isn't worth ruining your run.$"
+	.string "This troll isn't worth ruining your run.\p"
+	.string "Half of your money has been\n"
+	.string "taken though.$"
 
 PetalburgWoods_Text_SomethingForYourTroubles:
 	.string "Here's a POTION for your troubles.$"

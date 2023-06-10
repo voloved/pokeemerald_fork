@@ -146,7 +146,7 @@ bool8 DoesPartyHaveEnigmaBerry(void)
 
 static void SetMeanZigzagoonData(void){
     const u8 abilityIfMeanZigzagoon = 1;
-    u8 name[20] = _("MEAN ZIG");
+    u8 name[10] = _("MEAN ZIG");
     SetMonData(&gEnemyParty[0], MON_DATA_NICKNAME, name);
     SetMonData(&gEnemyParty[0], MON_DATA_ABILITY_NUM, &abilityIfMeanZigzagoon);
     SetMonMoveSlot(&gEnemyParty[0], MOVE_DEATH_MOVE, 0);

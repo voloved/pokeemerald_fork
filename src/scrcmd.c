@@ -1912,9 +1912,11 @@ bool8 ScrCmd_addmoney(struct ScriptContext *ctx)
 bool8 ScrCmd_removemoney(struct ScriptContext *ctx)
 {
     u32 amount = ScriptReadWord(ctx);
-    u8 ignore = ScriptReadByte(ctx);
+    u8 setting = ScriptReadByte(ctx);
+    if (setting == 2)
+        amount = SAFE_DIV(GetMoney(&gSaveBlock1Ptr->money), amount);
 
-    if (!ignore)
+    if (setting != 1)
         RemoveMoney(&gSaveBlock1Ptr->money, amount);
     return FALSE;
 }
