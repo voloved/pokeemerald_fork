@@ -2243,7 +2243,7 @@ void BufferStringBattle(u16 stringID)
                 stringPtr = sText_TwoWildPkmnAppeared;
             else if (gBattleTypeFlags & BATTLE_TYPE_WALLY_TUTORIAL)
                 stringPtr = sText_WildPkmnAppearedPause;
-            else if (FlagGet(FLAG_FIGHT_MEAN_ZIGZAGOON))
+            else if (FlagGet(FLAG_TEMP_MEAN_ZIGZAGOON))
                 stringPtr = sText_AMeanZigzagoonAppeared;
             else
                 stringPtr = sText_WildPkmnAppeared;

@@ -2924,7 +2924,7 @@ void TryAddLastUsedBallItemSprites(void)
     if (!showSuggestion)
         return;
 
-    if (FlagGet(FLAG_FIGHT_MEAN_ZIGZAGOON))
+    if (FlagGet(FLAG_TEMP_MEAN_ZIGZAGOON))
         return;
     
     if (CannotThrowBall() != 0)

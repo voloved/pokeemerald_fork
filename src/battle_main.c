@@ -4239,7 +4239,7 @@ u8 IsRunningFromBattleImpossible(void)
     u8 side;
     s32 i;
 
-    if (FlagGet(FLAG_FIGHT_MEAN_ZIGZAGOON))
+    if (FlagGet(FLAG_TEMP_MEAN_ZIGZAGOON))
         return BATTLE_RUN_FAILURE;
 
     if (gBattleMons[gActiveBattler].item == ITEM_ENIGMA_BERRY)

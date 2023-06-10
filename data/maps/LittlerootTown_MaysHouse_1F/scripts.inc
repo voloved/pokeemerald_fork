@@ -373,6 +373,8 @@ RivalsHouse_1F_Text_MayWhoAreYou:
 	.string "with POKéMON all over the world.\p"
 	.string "I… I heard about you, {PLAYER}{KUN}, from\n"
 	.string "my dad, PROF. BIRCH.\p"
+	.string "Don't talk to the Zigzagoon\n"
+	.string "in the PETALBURG WOODS.\p"
 	.string "I was hoping that you would be nice,\n"
 	.string "{PLAYER}{KUN}, and that we could be friends.\p"
 	.string "Oh, this is silly, isn't it?\n"
