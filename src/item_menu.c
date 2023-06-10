@@ -1696,7 +1696,7 @@ static void OpenContextMenu(u8 taskId)
                 if (ItemIsMail(gSpecialVar_ItemId) == TRUE)
                     gBagMenu->contextMenuItemsBuffer[0] = ACTION_CHECK;
                 if (gSpecialVar_ItemId == ITEM_CLEANSE_TAG || gSpecialVar_ItemId == ITEM_POKE_DOLL
-                || gSpecialVar_ItemId == ITEM_REPEL || gSpecialVar_ItemId == ITEM_SUPER_REPEL || gSpecialVar_ItemId == ITEM_MAX_REPEL)
+                || ItemId_GetFieldFunc(gSpecialVar_ItemId) == ItemUseOutOfBattle_Repel)
                 {
                     if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
                         gBagMenu->contextMenuItemsBuffer[2] = ACTION_DESELECT;
