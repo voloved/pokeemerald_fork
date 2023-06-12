@@ -2037,16 +2037,7 @@ static void TryAddPokeballIconToHealthbox(u8 healthboxSpriteId, bool8 noStatus)
 
     if (gBattleTypeFlags & BATTLE_TYPE_WALLY_TUTORIAL)
         return;
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER){
-        if (!CheckBagHasItem(ITEM_THIEF_BALL, 1))
-            return;
-        if (gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_EREADER_TRAINER |
-        BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK))
-            return;
-    }
-    
-    if (gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_EREADER_TRAINER |
-    BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK))
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (!BattleCanUseThiefBall() || !CheckBagHasItem(ITEM_THIEF_BALL, 1)))
         return;
 
     battlerId = gSprites[healthboxSpriteId].hMain_Battler;
