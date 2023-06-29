@@ -324,7 +324,10 @@ PetalburgWoods_EventScript_MeanZigzagoon::
 	faceplayer
 	msgbox PetalburgWoods_Text_TalkToMeanZigzagoon, MSGBOX_DEFAULT
 	waitmessage
-	call_if_set FLAG_NUZLOCKE PetalburgWoods_EventScript_MeanZigzagoonNuzlocke
+	goto_if_set FLAG_NUZLOCKE PetalburgWoods_EventScript_MeanZigzagoonNuzlocke
+	removemoney 2, 2
+	msgbox PetalburgWoods_Text_TalkToMeanZigzagoonLostHalfMoney, MSGBOX_DEFAULT
+	waitmessage
 	setflag FLAG_TEMP_MEAN_ZIGZAGOON
 	setwildbattle SPECIES_ZIGZAGOON, 1
 	waitse
@@ -514,6 +517,9 @@ PetalburgWoods_Text_TrainerTipsPP:
 
 PetalburgWoods_Text_TalkToMeanZigzagoon:
 	.string "Big Mistake, {PLAYER}.$"
+
+PetalburgWoods_Text_TalkToMeanZigzagoonLostHalfMoney:
+	.string "You just lost half your money.$"
 
 PetalburgWoods_Text_TalkToMeanZigzagoonNuzlocke:
 	.string "Hang on, you're doing the Nuzlocke\n"
