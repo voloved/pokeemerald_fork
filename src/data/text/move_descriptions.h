@@ -31,7 +31,11 @@ static const u8 sFirePunchDescription[] = _(
 
 static const u8 sIcePunchDescription[] = _(
     "An icy punch that may\n"
+#if B_USE_FROSTBITE == TRUE
+    "leave the foe with frostbite.");
+#else
     "freeze the foe.");
+#endif
 
 static const u8 sThunderPunchDescription[] = _(
     "An electrified punch that\n"
@@ -231,11 +235,19 @@ static const u8 sSurfDescription[] = _(
 
 static const u8 sIceBeamDescription[] = _(
     "Blasts the foe with an icy\n"
+#if B_USE_FROSTBITE == TRUE
+    "beam. May cause frostbite.");
+#else
     "beam that may freeze it.");
+#endif
 
 static const u8 sBlizzardDescription[] = _(
     "Hits the foe with an icy\n"
+#if B_USE_FROSTBITE == TRUE
+    "storm. May cause frostbite.");
+#else
     "storm that may freeze it.");
+#endif
 
 static const u8 sPsybeamDescription[] = _(
     "Fires a peculiar ray that\n"

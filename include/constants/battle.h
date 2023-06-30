@@ -117,8 +117,9 @@
 #define STATUS1_TOXIC_POISON     (1 << 7)
 #define STATUS1_TOXIC_COUNTER    (1 << 8 | 1 << 9 | 1 << 10 | 1 << 11)
 #define STATUS1_TOXIC_TURN(num)  ((num) << 8)
+#define STATUS1_FROSTBITE        (1 << 12)
 #define STATUS1_PSN_ANY          (STATUS1_POISON | STATUS1_TOXIC_POISON)
-#define STATUS1_ANY              (STATUS1_SLEEP | STATUS1_POISON | STATUS1_BURN | STATUS1_FREEZE | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON)
+#define STATUS1_ANY              (STATUS1_SLEEP | STATUS1_POISON | STATUS1_BURN | STATUS1_FREEZE | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON | STATUS1_FROSTBITE)
 
 // Volatile status ailments
 // These are removed after exiting the battle or switching out
@@ -244,61 +245,62 @@
 #define MOVE_EFFECT_FREEZE              4
 #define MOVE_EFFECT_PARALYSIS           5
 #define MOVE_EFFECT_TOXIC               6
-#define PRIMARY_STATUS_MOVE_EFFECT      MOVE_EFFECT_TOXIC // All above move effects apply primary status
-#define MOVE_EFFECT_CONFUSION           7
-#define MOVE_EFFECT_FLINCH              8
-#define MOVE_EFFECT_TRI_ATTACK          9
-#define MOVE_EFFECT_UPROAR              10
-#define MOVE_EFFECT_PAYDAY              11
-#define MOVE_EFFECT_CHARGING            12
-#define MOVE_EFFECT_WRAP                13
-#define MOVE_EFFECT_RECOIL_25           14
-#define MOVE_EFFECT_ATK_PLUS_1          15
-#define MOVE_EFFECT_DEF_PLUS_1          16
-#define MOVE_EFFECT_SPD_PLUS_1          17
-#define MOVE_EFFECT_SP_ATK_PLUS_1       18
-#define MOVE_EFFECT_SP_DEF_PLUS_1       19
-#define MOVE_EFFECT_ACC_PLUS_1          20
-#define MOVE_EFFECT_EVS_PLUS_1          21
-#define MOVE_EFFECT_ATK_MINUS_1         22
-#define MOVE_EFFECT_DEF_MINUS_1         23
-#define MOVE_EFFECT_SPD_MINUS_1         24
-#define MOVE_EFFECT_SP_ATK_MINUS_1      25
-#define MOVE_EFFECT_SP_DEF_MINUS_1      26
-#define MOVE_EFFECT_ACC_MINUS_1         27
-#define MOVE_EFFECT_EVS_MINUS_1         28
-#define MOVE_EFFECT_RECHARGE            29
-#define MOVE_EFFECT_RAGE                30
-#define MOVE_EFFECT_STEAL_ITEM          31
-#define MOVE_EFFECT_PREVENT_ESCAPE      32
-#define MOVE_EFFECT_NIGHTMARE           33
-#define MOVE_EFFECT_ALL_STATS_UP        34
-#define MOVE_EFFECT_RAPIDSPIN           35
-#define MOVE_EFFECT_REMOVE_PARALYSIS    36
-#define MOVE_EFFECT_ATK_DEF_DOWN        37
-#define MOVE_EFFECT_RECOIL_33           38
-#define MOVE_EFFECT_ATK_PLUS_2          39
-#define MOVE_EFFECT_DEF_PLUS_2          40
-#define MOVE_EFFECT_SPD_PLUS_2          41
-#define MOVE_EFFECT_SP_ATK_PLUS_2       42
-#define MOVE_EFFECT_SP_DEF_PLUS_2       43
-#define MOVE_EFFECT_ACC_PLUS_2          44
-#define MOVE_EFFECT_EVS_PLUS_2          45
-#define MOVE_EFFECT_ATK_MINUS_2         46
-#define MOVE_EFFECT_DEF_MINUS_2         47
-#define MOVE_EFFECT_SPD_MINUS_2         48
-#define MOVE_EFFECT_SP_ATK_MINUS_2      49
-#define MOVE_EFFECT_SP_DEF_MINUS_2      50
-#define MOVE_EFFECT_ACC_MINUS_2         51
-#define MOVE_EFFECT_EVS_MINUS_2         52
-#define MOVE_EFFECT_THRASH              53
-#define MOVE_EFFECT_KNOCK_OFF           54
-#define MOVE_EFFECT_NOTHING_37          55
-#define MOVE_EFFECT_NOTHING_38          56
-#define MOVE_EFFECT_NOTHING_39          57
-#define MOVE_EFFECT_NOTHING_3A          58
-#define MOVE_EFFECT_SP_ATK_TWO_DOWN     59
-#define NUM_MOVE_EFFECTS                60
+#define MOVE_EFFECT_FROSTBITE           7
+#define PRIMARY_STATUS_MOVE_EFFECT      MOVE_EFFECT_FROSTBITE // All above move effects apply primary status
+#define MOVE_EFFECT_CONFUSION           8
+#define MOVE_EFFECT_FLINCH              9
+#define MOVE_EFFECT_TRI_ATTACK          10
+#define MOVE_EFFECT_UPROAR              11
+#define MOVE_EFFECT_PAYDAY              12
+#define MOVE_EFFECT_CHARGING            13
+#define MOVE_EFFECT_WRAP                14
+#define MOVE_EFFECT_RECOIL_25           15
+#define MOVE_EFFECT_ATK_PLUS_1          16
+#define MOVE_EFFECT_DEF_PLUS_1          17
+#define MOVE_EFFECT_SPD_PLUS_1          18
+#define MOVE_EFFECT_SP_ATK_PLUS_1       19
+#define MOVE_EFFECT_SP_DEF_PLUS_1       20
+#define MOVE_EFFECT_ACC_PLUS_1          21
+#define MOVE_EFFECT_EVS_PLUS_1          22
+#define MOVE_EFFECT_ATK_MINUS_1         23
+#define MOVE_EFFECT_DEF_MINUS_1         24
+#define MOVE_EFFECT_SPD_MINUS_1         25
+#define MOVE_EFFECT_SP_ATK_MINUS_1      26
+#define MOVE_EFFECT_SP_DEF_MINUS_1      27
+#define MOVE_EFFECT_ACC_MINUS_1         28
+#define MOVE_EFFECT_EVS_MINUS_1         29
+#define MOVE_EFFECT_RECHARGE            30
+#define MOVE_EFFECT_RAGE                31
+#define MOVE_EFFECT_STEAL_ITEM          32
+#define MOVE_EFFECT_PREVENT_ESCAPE      33
+#define MOVE_EFFECT_NIGHTMARE           34
+#define MOVE_EFFECT_ALL_STATS_UP        35
+#define MOVE_EFFECT_RAPIDSPIN           36
+#define MOVE_EFFECT_REMOVE_PARALYSIS    37
+#define MOVE_EFFECT_ATK_DEF_DOWN        38
+#define MOVE_EFFECT_RECOIL_33           39
+#define MOVE_EFFECT_ATK_PLUS_2          40
+#define MOVE_EFFECT_DEF_PLUS_2          41
+#define MOVE_EFFECT_SPD_PLUS_2          42
+#define MOVE_EFFECT_SP_ATK_PLUS_2       43
+#define MOVE_EFFECT_SP_DEF_PLUS_2       44
+#define MOVE_EFFECT_ACC_PLUS_2          45
+#define MOVE_EFFECT_EVS_PLUS_2          46
+#define MOVE_EFFECT_ATK_MINUS_2         47
+#define MOVE_EFFECT_DEF_MINUS_2         48
+#define MOVE_EFFECT_SPD_MINUS_2         49
+#define MOVE_EFFECT_SP_ATK_MINUS_2      50
+#define MOVE_EFFECT_SP_DEF_MINUS_2      51
+#define MOVE_EFFECT_ACC_MINUS_2         52
+#define MOVE_EFFECT_EVS_MINUS_2         53
+#define MOVE_EFFECT_THRASH              54
+#define MOVE_EFFECT_KNOCK_OFF           55
+#define MOVE_EFFECT_NOTHING_37          56
+#define MOVE_EFFECT_NOTHING_38          57
+#define MOVE_EFFECT_NOTHING_39          58
+#define MOVE_EFFECT_NOTHING_3A          59
+#define MOVE_EFFECT_SP_ATK_TWO_DOWN     60
+#define NUM_MOVE_EFFECTS                61
 
 #define MOVE_EFFECT_AFFECTS_USER        (1 << 6) // 64
 #define MOVE_EFFECT_CERTAIN             (1 << 7) // 128
@@ -390,5 +392,7 @@
 #define B_DESCRIPTION_SUBMENU         TRUE
 #define B_DESCRIPTION_SUBMENU_BUTTON  START_BUTTON
 #define LAST_BALL_MENU_SHOW_ARROWS    TRUE
+
+#define B_USE_FROSTBITE               TRUE      // In PLA, Frostbite replaces Freeze. Enabling this flag does the same here. Moves can still be cherry-picked to either Freeze or Frostbite. Freeze-Dry, Secret Power & Tri Attack depend on this config.
 
 #endif // GUARD_CONSTANTS_BATTLE_H

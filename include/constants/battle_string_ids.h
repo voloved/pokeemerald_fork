@@ -388,8 +388,15 @@
 #define STRINGID_CANTWITHNUZLOCKE           386
 #define STRINGID_PKMNGAINEDEXPALL           387
 #define STRINGID_NORUNNINGNUZLOCKE          388
+#define STRINGID_PKMNHURTBYFROSTBITE        389
+#define STRINGID_PKMNGOTFROSTBITE           390
+#define STRINGID_PKMNSITEMHEALEDFROSTBITE   391
+#define STRINGID_ATTACKERHEALEDITSFROSTBITE 392
+#define STRINGID_PKMNFROSTBITEHEALED        393
+#define STRINGID_PKMNFROSTBITEHEALED2       394
+#define STRINGID_PKMNFROSTBITEHEALEDBY      395
 
-#define BATTLESTRINGS_COUNT                 389
+#define BATTLESTRINGS_COUNT                 396
 
 // This is the string id that gBattleStringsTable starts with.
 // String ids before this (e.g. STRINGID_INTROMSG) are not in the table,
@@ -591,6 +598,10 @@
 // gGotDefrostedStringIds
 #define B_MSG_DEFROSTED         0
 #define B_MSG_DEFROSTED_BY_MOVE 1
+
+// gFrostbiteHealedStringIds
+#define B_MSG_FROSTBITE_HEALED         0
+#define B_MSG_FROSTBITE_HEALED_BY_MOVE 1
 
 // gBattlePalaceFlavorTextTable
 #define B_MSG_GLINT_IN_EYE   0

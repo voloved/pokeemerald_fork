@@ -23,7 +23,11 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectPoisonHit              @ EFFECT_POISON_HIT
 	.4byte BattleScript_EffectAbsorb                 @ EFFECT_ABSORB
 	.4byte BattleScript_EffectBurnHit                @ EFFECT_BURN_HIT
+#if B_USE_FROSTBITE == TRUE
+	.4byte BattleScript_EffectFrostbiteHit           @ EFFECT_FREEZE_HIT
+#else
 	.4byte BattleScript_EffectFreezeHit              @ EFFECT_FREEZE_HIT
+#endif
 	.4byte BattleScript_EffectParalyzeHit            @ EFFECT_PARALYZE_HIT
 	.4byte BattleScript_EffectExplosion              @ EFFECT_EXPLOSION
 	.4byte BattleScript_EffectDreamEater             @ EFFECT_DREAM_EATER
@@ -233,6 +237,7 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectDragonDance            @ EFFECT_DRAGON_DANCE
 	.4byte BattleScript_EffectCamouflage             @ EFFECT_CAMOUFLAGE
 	.4byte BattleScript_EffectOHKO                   @ EFFECT_DEATH_MOVE
+	.4byte BattleScript_EffectFrostbiteHit           @ EFFECT_FROSTBITE_HIT
 
 BattleScript_EffectHit::
 	jumpifnotmove MOVE_SURF, BattleScript_HitFromAtkCanceler
@@ -362,6 +367,10 @@ BattleScript_AbsorbTryFainting::
 
 BattleScript_EffectBurnHit::
 	setmoveeffect MOVE_EFFECT_BURN
+	goto BattleScript_EffectHit
+
+BattleScript_EffectFrostbiteHit::
+	setmoveeffect MOVE_EFFECT_FROSTBITE
 	goto BattleScript_EffectHit
 
 BattleScript_EffectFreezeHit::
@@ -3763,6 +3772,11 @@ BattleScript_BurnTurnDmg::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_DoStatusTurnDmg
 
+BattleScript_FrostbiteTurnDmg::
+	printstring STRINGID_PKMNHURTBYFROSTBITE
+	waitmessage B_WAIT_TIME_LONG
+	goto BattleScript_DoStatusTurnDmg
+
 BattleScript_MoveUsedIsFrozen::
 	printstring STRINGID_PKMNISFROZEN
 	waitmessage B_WAIT_TIME_LONG
@@ -3775,8 +3789,20 @@ BattleScript_MoveUsedUnfroze::
 	updatestatusicon BS_ATTACKER
 	return
 
+BattleScript_MoveUsedUnfrostbite::
+	printfromtable gFrostbiteHealedStringIds
+	waitmessage B_WAIT_TIME_LONG
+	updatestatusicon BS_ATTACKER
+	return
+
 BattleScript_DefrostedViaFireMove::
 	printstring STRINGID_PKMNWASDEFROSTED
+	waitmessage B_WAIT_TIME_LONG
+	updatestatusicon BS_TARGET
+	return
+
+BattleScript_FrostbiteHealedViaFireMove::
+	printstring STRINGID_PKMNFROSTBITEHEALED
 	waitmessage B_WAIT_TIME_LONG
 	updatestatusicon BS_TARGET
 	return
@@ -3904,6 +3930,12 @@ BattleScript_MoveEffectPoison::
 BattleScript_MoveEffectBurn::
 	statusanimation BS_EFFECT_BATTLER
 	printfromtable gGotBurnedStringIds
+	waitmessage B_WAIT_TIME_LONG
+	goto BattleScript_UpdateEffectStatusIconRet
+
+BattleScript_MoveEffectFrostbite::
+	statusanimation BS_EFFECT_BATTLER
+	printfromtable gGotFrostbiteStringIds
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_UpdateEffectStatusIconRet
 
@@ -4313,6 +4345,18 @@ BattleScript_BerryCureFrzEnd2::
 BattleScript_BerryCureFrzRet::
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
 	printstring STRINGID_PKMNSITEMDEFROSTEDIT
+	waitmessage B_WAIT_TIME_LONG
+	updatestatusicon BS_SCRIPTING
+	removeitem BS_SCRIPTING
+	return
+
+BattleScript_BerryCureFsbEnd2::
+	call BattleScript_BerryCureFrzRet
+	end2
+
+BattleScript_BerryCureFsbRet::
+	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
+	printstring STRINGID_PKMNSITEMHEALEDFROSTBITE
 	waitmessage B_WAIT_TIME_LONG
 	updatestatusicon BS_SCRIPTING
 	removeitem BS_SCRIPTING
