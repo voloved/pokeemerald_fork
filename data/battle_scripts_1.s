@@ -23,11 +23,11 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectPoisonHit              @ EFFECT_POISON_HIT
 	.4byte BattleScript_EffectAbsorb                 @ EFFECT_ABSORB
 	.4byte BattleScript_EffectBurnHit                @ EFFECT_BURN_HIT
-#if B_USE_FROSTBITE == TRUE
+.if B_USE_FROSTBITE == TRUE
 	.4byte BattleScript_EffectFrostbiteHit           @ EFFECT_FREEZE_HIT
-#else
+.else
 	.4byte BattleScript_EffectFreezeHit              @ EFFECT_FREEZE_HIT
-#endif
+.endif
 	.4byte BattleScript_EffectParalyzeHit            @ EFFECT_PARALYZE_HIT
 	.4byte BattleScript_EffectExplosion              @ EFFECT_EXPLOSION
 	.4byte BattleScript_EffectDreamEater             @ EFFECT_DREAM_EATER
@@ -238,6 +238,7 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectCamouflage             @ EFFECT_CAMOUFLAGE
 	.4byte BattleScript_EffectOHKO                   @ EFFECT_DEATH_MOVE
 	.4byte BattleScript_EffectFrostbiteHit           @ EFFECT_FROSTBITE_HIT
+	.4byte BattleScript_EffectChillOWisp             @ EFFECT_ChILL_O_WISP
 
 BattleScript_EffectHit::
 	jumpifnotmove MOVE_SURF, BattleScript_HitFromAtkCanceler
@@ -2198,6 +2199,24 @@ BattleScript_EffectWillOWisp::
 	seteffectprimary
 	goto BattleScript_MoveEnd
 
+BattleScript_EffectChillOWisp::
+	attackcanceler
+	attackstring
+	ppreduce
+.if B_USE_FROSTBITE != TRUE
+	goto BattleScript_ButItFailed
+.endif
+	jumpifstatus2 BS_TARGET, STATUS2_SUBSTITUTE, BattleScript_ButItFailed
+	jumpifstatus BS_TARGET, STATUS1_FROSTBITE, BattleScript_AlreadyFrostBitten
+	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
+	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
+	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
+	attackanimation
+	waitanimation
+	setmoveeffect MOVE_EFFECT_FROSTBITE
+	seteffectprimary
+	goto BattleScript_MoveEnd
+
 BattleScript_WaterVeilPrevents::
 	copybyte gEffectBattler, gBattlerTarget
 	setbyte cMULTISTRING_CHOOSER, B_MSG_ABILITY_PREVENTS_MOVE_STATUS
@@ -2208,6 +2227,13 @@ BattleScript_AlreadyBurned::
 	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_SHORT
 	printstring STRINGID_PKMNALREADYHASBURN
+	waitmessage B_WAIT_TIME_LONG
+	goto BattleScript_MoveEnd
+
+BattleScript_AlreadyFrostBitten::
+	setalreadystatusedmoveattempt BS_ATTACKER
+	pause B_WAIT_TIME_SHORT
+	printstring STRINGID_PKMNALREADYHASFROSTBITE
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 

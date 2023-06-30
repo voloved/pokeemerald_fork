@@ -395,8 +395,9 @@
 #define STRINGID_PKMNFROSTBITEHEALED        393
 #define STRINGID_PKMNFROSTBITEHEALED2       394
 #define STRINGID_PKMNFROSTBITEHEALEDBY      395
+#define STRINGID_PKMNALREADYHASFROSTBITE    396
 
-#define BATTLESTRINGS_COUNT                 396
+#define BATTLESTRINGS_COUNT                 397
 
 // This is the string id that gBattleStringsTable starts with.
 // String ids before this (e.g. STRINGID_INTROMSG) are not in the table,

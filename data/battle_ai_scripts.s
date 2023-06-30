@@ -190,6 +190,7 @@ AI_CheckBadMove_CheckEffect:
 	if_effect EFFECT_TORMENT, AI_CBM_Torment
 	if_effect EFFECT_FLATTER, AI_CBM_Confuse
 	if_effect EFFECT_WILL_O_WISP, AI_CBM_WillOWisp
+	if_effect EFFECT_CHILL_O_WISP, AI_CBM_ChillOWisp
 	if_effect EFFECT_MEMENTO, AI_CBM_Memento
 	if_effect EFFECT_FOCUS_PUNCH, AI_CBM_HighRiskForDamage
 	if_effect EFFECT_HELPING_HAND, AI_CBM_HelpingHand
@@ -527,6 +528,16 @@ AI_CBM_Torment:
 	end
 
 AI_CBM_WillOWisp:
+	get_ability AI_TARGET
+	if_equal ABILITY_WATER_VEIL, Score_Minus10
+	if_status AI_TARGET, STATUS1_ANY, Score_Minus10
+	if_type_effectiveness AI_EFFECTIVENESS_x0, Score_Minus10
+	if_type_effectiveness AI_EFFECTIVENESS_x0_5, Score_Minus10
+	if_type_effectiveness AI_EFFECTIVENESS_x0_25, Score_Minus10
+	if_side_affecting AI_TARGET, SIDE_STATUS_SAFEGUARD, Score_Minus10
+	end
+
+AI_CBM_ChillOWisp:
 	get_ability AI_TARGET
 	if_equal ABILITY_WATER_VEIL, Score_Minus10
 	if_status AI_TARGET, STATUS1_ANY, Score_Minus10
@@ -1560,6 +1571,7 @@ AI_CV_Substitute4:
 	if_equal EFFECT_POISON, AI_CV_Substitute5
 	if_equal EFFECT_PARALYZE, AI_CV_Substitute5
 	if_equal EFFECT_WILL_O_WISP, AI_CV_Substitute5
+	if_equal EFFECT_CHILL_O_WISP, AI_CV_Substitute5
 	if_equal EFFECT_CONFUSE, AI_CV_Substitute6
 	if_equal EFFECT_LEECH_SEED, AI_CV_Substitute7
 	goto AI_CV_Substitute_End
@@ -1747,6 +1759,7 @@ AI_CV_Encore_EncouragedMovesToEncore:
 	.byte EFFECT_WATER_SPORT
 	.byte EFFECT_DRAGON_DANCE
 	.byte EFFECT_CAMOUFLAGE
+	.byte EFFECT_CHILL_O_WISP
 	.byte -1
 
 AI_CV_PainSplit:
@@ -2675,6 +2688,7 @@ AI_SetupFirstTurn_SetupEffectsToEncourage:
 	.byte EFFECT_BULK_UP
 	.byte EFFECT_CALM_MIND
 	.byte EFFECT_CAMOUFLAGE
+	.byte EFFECT_CHILL_O_WISP
 	.byte -1
 
 @ ~60% chance to prefer moves that do 0 or 1 damage, or are in sIgnoredPowerfulMoveEffects
@@ -3165,6 +3179,7 @@ AI_HPAware_DiscouragedEffectsWhenTargetLowHP:
 	.byte EFFECT_BULK_UP
 	.byte EFFECT_CALM_MIND
 	.byte EFFECT_DRAGON_DANCE
+	.byte EFFECT_CHILL_O_WISP
 	.byte -1
 
 @ Given the AI_TryOnAlly at the beginning it's possible that this was the start of a more

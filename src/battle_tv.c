@@ -300,7 +300,8 @@ static const u16 sPoints_MoveEffect[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_CALM_MIND] = 1,
     [EFFECT_DRAGON_DANCE] = 1,
     [EFFECT_CAMOUFLAGE] = 3,
-    [EFFECT_FROSTBITE_HIT] = 1
+    [EFFECT_FROSTBITE_HIT] = 1,
+    [EFFECT_CHILL_O_WISP] = 5
 };
 
 static const u16 sPoints_Effectiveness[] =
