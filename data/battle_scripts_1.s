@@ -2203,17 +2203,22 @@ BattleScript_EffectChillOWisp::
 	attackcanceler
 	attackstring
 	ppreduce
-.if B_USE_FROSTBITE != TRUE
-	goto BattleScript_ButItFailed
-.endif
 	jumpifstatus2 BS_TARGET, STATUS2_SUBSTITUTE, BattleScript_ButItFailed
+.if B_USE_FROSTBITE == TRUE
 	jumpifstatus BS_TARGET, STATUS1_FROSTBITE, BattleScript_AlreadyFrostBitten
+.else
+	jumpifstatus BS_TARGET, STATUS1_FREEZE, BattleScript_AlreadyFrozen
+.endif
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
 	attackanimation
 	waitanimation
+.if B_USE_FROSTBITE == TRUE
 	setmoveeffect MOVE_EFFECT_FROSTBITE
+.else
+	setmoveeffect MOVE_EFFECT_FREEZE
+.endif
 	seteffectprimary
 	goto BattleScript_MoveEnd
 
@@ -2234,6 +2239,13 @@ BattleScript_AlreadyFrostBitten::
 	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_SHORT
 	printstring STRINGID_PKMNALREADYHASFROSTBITE
+	waitmessage B_WAIT_TIME_LONG
+	goto BattleScript_MoveEnd
+
+BattleScript_AlreadyFrozen::
+	setalreadystatusedmoveattempt BS_ATTACKER
+	pause B_WAIT_TIME_SHORT
+	printstring STRINGID_PKMNALREADYFROZEN
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 

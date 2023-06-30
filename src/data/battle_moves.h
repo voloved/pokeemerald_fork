@@ -5076,7 +5076,11 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .effect = EFFECT_CHILL_O_WISP,
         .power = 0,
         .type = TYPE_ICE,
+    #if B_USE_FROSTBITE == TRUE
         .accuracy = 75,
+    #else
+        .accuracy = 35,
+    #endif
         .pp = 15,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,

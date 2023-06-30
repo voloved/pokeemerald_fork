@@ -1454,12 +1454,11 @@ static const u8 sDeathMoveDescription[] = _(
     "goes first. Doesn't miss.");
 
 static const u8 sChillOWispDescription[] = _(
-#if B_USE_FROSTBITE == TRUE
     "Inflicts a frostbite on the\n"
+#if B_USE_FROSTBITE == TRUE
     "foe with intense frost.");
 #else
-    "Frostbite is turned off\n"
-    "so this always fails.");
+    "foe that will freeze them.");
 #endif
 
 // MOVE_NONE is ignored in this table. Make sure to always subtract 1 before getting the right pointer.
