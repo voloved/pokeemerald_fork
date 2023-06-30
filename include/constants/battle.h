@@ -393,6 +393,4 @@
 #define B_DESCRIPTION_SUBMENU_BUTTON  START_BUTTON
 #define LAST_BALL_MENU_SHOW_ARROWS    TRUE
 
-#define B_USE_FROSTBITE               TRUE      // In PLA, Frostbite replaces Freeze. Enabling this flag does the same here. Moves can still be cherry-picked to either Freeze or Frostbite. Freeze-Dry, Secret Power & Tri Attack depend on this config.
-
 #endif // GUARD_CONSTANTS_BATTLE_H

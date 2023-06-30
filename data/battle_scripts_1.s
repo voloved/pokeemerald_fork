@@ -10,6 +10,7 @@
 #include "constants/songs.h"
 #include "constants/game_stat.h"
 #include "constants/trainers.h"
+#include "constants/flags.h"
 	.include "asm/macros.inc"
 	.include "asm/macros/battle_script.inc"
 	.include "constants/constants.inc"
@@ -23,11 +24,7 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectPoisonHit              @ EFFECT_POISON_HIT
 	.4byte BattleScript_EffectAbsorb                 @ EFFECT_ABSORB
 	.4byte BattleScript_EffectBurnHit                @ EFFECT_BURN_HIT
-.if B_USE_FROSTBITE == TRUE
-	.4byte BattleScript_EffectFrostbiteHit           @ EFFECT_FREEZE_HIT
-.else
-	.4byte BattleScript_EffectFreezeHit              @ EFFECT_FREEZE_HIT
-.endif
+	.4byte BattleScript_EffectFreezeFrostbiteHit     @ EFFECT_FREEZE_FROSTBITE_HIT
 	.4byte BattleScript_EffectParalyzeHit            @ EFFECT_PARALYZE_HIT
 	.4byte BattleScript_EffectExplosion              @ EFFECT_EXPLOSION
 	.4byte BattleScript_EffectDreamEater             @ EFFECT_DREAM_EATER
@@ -237,8 +234,7 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectDragonDance            @ EFFECT_DRAGON_DANCE
 	.4byte BattleScript_EffectCamouflage             @ EFFECT_CAMOUFLAGE
 	.4byte BattleScript_EffectOHKO                   @ EFFECT_DEATH_MOVE
-	.4byte BattleScript_EffectFrostbiteHit           @ EFFECT_FROSTBITE_HIT
-	.4byte BattleScript_EffectChillOWisp             @ EFFECT_ChILL_O_WISP
+	.4byte BattleScript_EffectChillOWisp             @ EFFECT_CHILL_O_WISP
 
 BattleScript_EffectHit::
 	jumpifnotmove MOVE_SURF, BattleScript_HitFromAtkCanceler
@@ -369,6 +365,10 @@ BattleScript_AbsorbTryFainting::
 BattleScript_EffectBurnHit::
 	setmoveeffect MOVE_EFFECT_BURN
 	goto BattleScript_EffectHit
+
+BattleScript_EffectFreezeFrostbiteHit::
+	jumpifset FLAG_USE_FROSTBITE, BattleScript_EffectFrostbiteHit
+	goto BattleScript_EffectFreezeHit
 
 BattleScript_EffectFrostbiteHit::
 	setmoveeffect MOVE_EFFECT_FROSTBITE
@@ -2204,21 +2204,23 @@ BattleScript_EffectChillOWisp::
 	attackstring
 	ppreduce
 	jumpifstatus2 BS_TARGET, STATUS2_SUBSTITUTE, BattleScript_ButItFailed
-.if B_USE_FROSTBITE == TRUE
-	jumpifstatus BS_TARGET, STATUS1_FROSTBITE, BattleScript_AlreadyFrostBitten
-.else
+	jumpifset FLAG_USE_FROSTBITE, BattleScript_EffectChillOWisp_AlreadyFrostBitten
 	jumpifstatus BS_TARGET, STATUS1_FREEZE, BattleScript_AlreadyFrozen
-.endif
+	goto BattleScript_EffectChillOWisp_Cont1
+BattleScript_EffectChillOWisp_AlreadyFrostBitten::
+	jumpifstatus BS_TARGET, STATUS1_FROSTBITE, BattleScript_AlreadyFrostBitten
+BattleScript_EffectChillOWisp_Cont1::
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
 	attackanimation
 	waitanimation
-.if B_USE_FROSTBITE == TRUE
-	setmoveeffect MOVE_EFFECT_FROSTBITE
-.else
+	jumpifset FLAG_USE_FROSTBITE, BattleScript_EffectChillOWisp_FrostBite
 	setmoveeffect MOVE_EFFECT_FREEZE
-.endif
+	goto BattleScript_EffectChillOWisp_Cont2
+BattleScript_EffectChillOWisp_FrostBite::
+	setmoveeffect MOVE_EFFECT_FROSTBITE
+BattleScript_EffectChillOWisp_Cont2::
 	seteffectprimary
 	goto BattleScript_MoveEnd
 

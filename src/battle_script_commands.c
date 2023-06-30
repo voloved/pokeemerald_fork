@@ -1152,8 +1152,10 @@ static void Cmd_accuracycheck(void)
             buff = MIN_STAT_STAGE;
         if (buff > MAX_STAT_STAGE)
             buff = MAX_STAT_STAGE;
-
-        moveAcc = gBattleMoves[move].accuracy;
+        if (move ==  MOVE_CHILL_O_WISP && !FlagGet(FLAG_USE_FROSTBITE))
+            moveAcc = gBattleMoves[move].secondaryEffectChance;
+        else
+            moveAcc = gBattleMoves[move].accuracy;
         // check Thunder on sunny weather
         if (WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_SUN && gBattleMoves[move].effect == EFFECT_THUNDER)
             moveAcc = 50;
@@ -6599,6 +6601,12 @@ static void Cmd_various(void)
         BtlController_EmitPlayFanfareOrBGM(BUFFER_A, MUS_VICTORY_TRAINER, TRUE);
         MarkBattlerForControllerExec(gActiveBattler);
         break;
+    case VARIOUS_JUMP_IF_SET:
+        if (FlagGet(T1_READ_16(gBattlescriptCurrInstr + 3)))
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 5);
+        else
+            gBattlescriptCurrInstr += 9;
+        return;
     }
 
     gBattlescriptCurrInstr += 3;

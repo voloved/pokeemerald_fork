@@ -1247,7 +1247,7 @@
 #define FLAG_SHOW_BALL_SUGGESTION                                   0x4AE
 #define FLAG_BALL_SUGGEST_NOT_LAST                                  0x4AF // Will Suggest the last ball if set.
 #define FLAG_BALL_SUGGEST_COMPLEX                                   0x4B0 // Will show Simple option if not set
-#define FLAG_UNUSED_0x4B1                                           0x4B1 // Unused Flag
+#define FLAG_USE_FROSTBITE                                          0x4B1
 #define FLAG_UNUSED_0x4B2                                           0x4B2 // Unused Flag
 #define FLAG_UNUSED_0x4B3                                           0x4B3 // Unused Flag
 #define FLAG_UNUSED_0x4B4                                           0x4B4 // Unused Flag

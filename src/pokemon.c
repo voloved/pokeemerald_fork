@@ -3345,7 +3345,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         damage /= 50;
 
         // Frostbite cuts sp attack in half
-        if ((attacker->status1 & STATUS1_FROSTBITE) && attacker->ability != ABILITY_THICK_FAT)
+        if ((attacker->status1 & STATUS1_FROSTBITE) && attacker->ability != ABILITY_GUTS)
             damage /= 2;
 
         // Apply Lightscreen
