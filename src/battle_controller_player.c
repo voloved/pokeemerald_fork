@@ -1720,6 +1720,8 @@ static void MoveSelectionDisplayMoveDescription(void)
     u8 pwr_start[] = _("{CLEAR_TO 0x03}");
     u8 acc_start[] = _("{CLEAR_TO 0x38}");
     u8 pri_start[] = _("{CLEAR_TO 0x6D}");
+    if (move ==  MOVE_CHILL_O_WISP && !FlagGet(FLAG_USE_FROSTBITE))
+        acc = gBattleMoves[move].secondaryEffectChance;
     LoadMessageBoxAndBorderGfx();
     DrawStdWindowFrame(B_WIN_MOVE_DESCRIPTION, FALSE);
     if (pwr < 2)

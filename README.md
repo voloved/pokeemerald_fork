@@ -21,6 +21,12 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Thief Ball option only shows if the Pokémon's catch rate is low enough (proxy for its rarity).
  - Register icon for Cleanse Tag and Poké Doll aligned.
  - Repels can now be registered items.
+ - [Added Frostbite](https://github.com/rh-hideout/pokeemerald-expansion/pull/2942) [Credit: Bassoonian]
+   - Option for using Frostbite as an ailment over Frozen is possible in the Special PC Menu.
+ - Added Chill-O-Wisp (Which behaves like Will-O-Wisp, but causes Frostbite).
+   - Misdreavus, the Spheal line, and the Snorunt can learn this via level-up.
+   - Drowsee, Sneasel, and Swinub can learn this as an egg move.
+ - Hidden Thief Ball Added in Rival's House When Selecting Their Ball After First Talking to Thyem at Their House.
  - Added a Mean Zigzagoon in Petalberg Woods.
  - Bug fix where player is not properly shown when using Surf or Dive.
 

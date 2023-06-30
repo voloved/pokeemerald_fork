@@ -826,10 +826,10 @@ LittlerootTown_ProfessorBirchsLab_EventScript_FrostBite::
 	message LittlerootTown_ProfessorBirchsLab_Text_FrostBite
 	waitmessage
 	goto_if_unset FLAG_USE_FROSTBITE, LittlerootTown_ProfessorBirchsLab_EventScript_Frostbite_Unset
-	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_Frostbite_Cont
 LittlerootTown_ProfessorBirchsLab_EventScript_Frostbite_Unset:
-	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
 LittlerootTown_ProfessorBirchsLab_EventScript_Frostbite_Cont:
 	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_FrostbiteNo
 	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
