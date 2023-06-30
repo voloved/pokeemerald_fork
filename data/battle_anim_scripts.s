@@ -377,7 +377,7 @@ gBattleAnims_Moves::
 	.4byte Move_DRAINING_KISS
 	.4byte Move_FAIRY_WIND
 	.4byte Move_DEATH_MOVE
-	.4byte MOVE_CHILL_O_WISP
+	.4byte Move_CHILL_O_WISP
 	.4byte Move_COUNT @ cannot be reached, because last move is Psycho Boost
 
 	.align 2
@@ -2234,6 +2234,7 @@ BulbblebeamCreateBubbles:
 	return
 
 Move_ICY_WIND:
+Move_CHILL_O_WISP:
 	loadspritegfx ANIM_TAG_ICE_CRYSTALS
 	loadspritegfx ANIM_TAG_ICE_SPIKES
 	monbg ANIM_DEF_PARTNER
@@ -8078,7 +8079,6 @@ Move_TRI_ATTACK:
 	end
 
 Move_WILL_O_WISP:
-MOVE_CHILL_O_WISP:
 	loadspritegfx ANIM_TAG_WISP_FIRE
 	loadspritegfx ANIM_TAG_WISP_ORB
 	monbg ANIM_DEF_PARTNER
