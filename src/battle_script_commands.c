@@ -1369,7 +1369,7 @@ static void ModulateDmgByType(u8 multiplier)
 static s32 GetMultiplierTriAttack(s32 mult1, s32 mult2, s32 mult3){
     s32 mults[3] = {mult1, mult2, mult3};
     u32 i = 0, SupEffCount = 0, NotEffCount = 0, NoEffCount = 0;
-    for (int i = 0; i < ARRAY_COUNT(mults); i++){
+    for (i = 0; i < ARRAY_COUNT(mults); i++){
         if (mults[i] == TYPE_MUL_SUPER_EFFECTIVE)
             SupEffCount++;
         else if (mults[i] == TYPE_MUL_NOT_EFFECTIVE)

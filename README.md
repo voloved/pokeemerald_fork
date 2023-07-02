@@ -9,7 +9,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
-## Not Yet Versioned
+## v2.2.0
  - [Added Eon Flute](https://www.pokecommunity.com/showthread.php?t=422107) [Credit: camthesaxman and paccy for the Emerald Port]
  - [Go-Goggles can be Used to and a Sandstorm in Battles](https://gitlab.com/devolov/pokeemerald_fork/-/commit/00c938536e5abfe4db4e89fd3e93b2c6ac1a450c)
  - [Added Ability to See Zigzagoon on Cable Car](https://www.youtube.com/watch?v=7xdcbbfwEto) [Credit: Goppier]
