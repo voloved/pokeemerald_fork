@@ -1377,9 +1377,19 @@ static s32 GetMultiplierTriAttack(s32 mult1, s32 mult2, s32 mult3){
         else if (mults[i]== TYPE_MUL_NO_EFFECT)
             NoEffCount++;
     }
-    if (NoEffCount > 0)
-        return TYPE_MUL_NO_EFFECT_TRI_ATTACK;
-    if (SupEffCount == NotEffCount) // Either they're both zero, or they balance out
+    if (SupEffCount == 0 && NotEffCount ==  0 && NoEffCount == 0)
+        return TYPE_MUL_NORMAL_TRI_ATTACK;
+    if (NoEffCount > 0){  // If there's a SE when also being NoEff, allow some damage to pass
+        if (SupEffCount > 1)
+            return TYPE_MUL_SE_NE_SAME_TRI_ATTACK;
+        else if (SupEffCount == 1)
+            return TYPE_MUL_NORMAL_TRI_ATTACK;
+        else
+            return TYPE_MUL_NO_EFFECT_TRI_ATTACK;
+    }
+    if (SupEffCount == NotEffCount)  // To buff Tri Attack, if there's one NE and one SE, then give SE more weight
+        return TYPE_MUL_SE_NE_SAME_TRI_ATTACK;
+    if (SupEffCount == 1 && NotEffCount ==  2)
         return TYPE_MUL_NORMAL_TRI_ATTACK;
     if (SupEffCount > NotEffCount)
     {
