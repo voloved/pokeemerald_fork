@@ -53,12 +53,13 @@ ballShakesArray: 76543210
 #define TYPE_MUL_SUPER_EFFECTIVE    20
 
 // defines for the gTypeEffectiveness multipliers for Tri-Attack
-#define TYPE_MUL_NO_EFFECT_TRI_ATTACK               TYPE_MUL_NO_EFFECT
-#define TYPE_MUL_NOT_EFFECTIVE_TRI_ATTACK           3
-#define TYPE_MUL_NORMAL_TRI_ATTACK                  TYPE_MUL_NORMAL
-#define TYPE_MUL_SUPER_EFFECTIVE_TRI_ATTACK         TYPE_MUL_SUPER_EFFECTIVE
-#define TYPE_MUL_NOT_EFFECTIVE_CUTOFF_TRI_ATTACK    8
-#define TYPE_MUL_SUPER_EFFECTIVE_CUTOFF_TRI_ATTACK  12
+#define DIVISOR_TRI_ATTACK                          100
+#define TYPE_MUL_NO_EFFECT_TRI_ATTACK               TYPE_MUL_NO_EFFECT * DIVISOR_TRI_ATTACK / 10
+#define TYPE_MUL_NOT_EFFECTIVE_TRI_ATTACK           15 // Using a multiplier of 0.5 is too high for not very, this changes it to 0.15
+#define TYPE_MUL_NORMAL_TRI_ATTACK                  TYPE_MUL_NORMAL * DIVISOR_TRI_ATTACK / 10
+#define TYPE_MUL_SUPER_EFFECTIVE_TRI_ATTACK         TYPE_MUL_SUPER_EFFECTIVE * DIVISOR_TRI_ATTACK / 10
+#define TYPE_MUL_NOT_EFFECTIVE_CUTOFF_TRI_ATTACK    8 * DIVISOR_TRI_ATTACK / 10
+#define TYPE_MUL_SUPER_EFFECTIVE_CUTOFF_TRI_ATTACK  12 * DIVISOR_TRI_ATTACK / 10
 #define TYPE_MUL_BLANK                              0xFF
 
 // special type table Ids

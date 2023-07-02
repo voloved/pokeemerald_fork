@@ -1368,7 +1368,7 @@ static void ModulateDmgByType(u8 multiplier)
 
 static void ModulateDmgByTypeTriAttack(u16 multiplier)
 {
-    gBattleMoveDamage = gBattleMoveDamage * multiplier / 10;
+    gBattleMoveDamage = gBattleMoveDamage * multiplier / DIVISOR_TRI_ATTACK;
     if (gBattleMoveDamage == 0 && multiplier != 0)
         gBattleMoveDamage = 1;
     if (multiplier == TYPE_MUL_NO_EFFECT){
@@ -1428,7 +1428,7 @@ static u8 ModulateDmgByTypeTriAttack3(u8 currMult, u8 prevMult)
 
 static void ModulateDmgByTypeTriAttack2(u8 multiplier, u16 move, u8 *flags)
 {
-    gBattleMoveDamage = gBattleMoveDamage * multiplier / 10;
+    gBattleMoveDamage = gBattleMoveDamage * multiplier / DIVISOR_TRI_ATTACK;
     if (gBattleMoveDamage == 0 && multiplier != 0)
         gBattleMoveDamage = 1;
     if (multiplier == TYPE_MUL_NO_EFFECT){
