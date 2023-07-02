@@ -1368,19 +1368,15 @@ static void ModulateDmgByType(u8 multiplier)
 
 static void ModulateDmgByTypeTriAttack(u16 multiplier)
 {
-    DebugPrintf("pre damage: %d mult: %d" , gBattleMoveDamage, multiplier);
     gBattleMoveDamage = gBattleMoveDamage * multiplier / 10;
     if (gBattleMoveDamage == 0 && multiplier != 0)
         gBattleMoveDamage = 1;
-    DebugPrintf("post damage: %d mult: %d" , gBattleMoveDamage, multiplier);
     if (multiplier == TYPE_MUL_NO_EFFECT){
-        DebugPrintf("TYPE_MUL_NO_EFFECT_TRI_ATTACK",multiplier);
         gMoveResultFlags |= MOVE_RESULT_DOESNT_AFFECT_FOE;
         gMoveResultFlags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE;
         gMoveResultFlags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
     }
     else if (multiplier <= TYPE_MUL_NOT_EFFECTIVE_CUTOFF_TRI_ATTACK){
-        DebugPrintf("TYPE_MUL_NOT_EFFECTIVE_TRI_ATTACK",multiplier);
         if (gBattleMoves[gCurrentMove].power && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
         {
             if (gMoveResultFlags & MOVE_RESULT_SUPER_EFFECTIVE)
@@ -1390,7 +1386,6 @@ static void ModulateDmgByTypeTriAttack(u16 multiplier)
         }
     }
     else if (multiplier >= TYPE_MUL_SUPER_EFFECTIVE_CUTOFF_TRI_ATTACK){
-        DebugPrintf("TYPE_MUL_SUPER_EFFECTIVE_TRI_ATTACK",multiplier);
         if (gBattleMoves[gCurrentMove].power && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
         {
             if (gMoveResultFlags & MOVE_RESULT_NOT_VERY_EFFECTIVE)
@@ -1404,7 +1399,6 @@ static void ModulateDmgByTypeTriAttack(u16 multiplier)
 static u8 ModulateDmgByTypeTriAttack3(u8 currMult, u8 prevMult)
 // Used to account for both types for Tri Attack
 {
-    DebugPrintf("crr %d prev %d", currMult, prevMult);
     if (prevMult == TYPE_MUL_BLANK)
         return currMult;
     if (prevMult == TYPE_MUL_NO_EFFECT)
@@ -1434,19 +1428,15 @@ static u8 ModulateDmgByTypeTriAttack3(u8 currMult, u8 prevMult)
 
 static void ModulateDmgByTypeTriAttack2(u8 multiplier, u16 move, u8 *flags)
 {
-    DebugPrintf("pre damage: %d mult: %d" , gBattleMoveDamage, multiplier);
     gBattleMoveDamage = gBattleMoveDamage * multiplier / 10;
     if (gBattleMoveDamage == 0 && multiplier != 0)
         gBattleMoveDamage = 1;
-    DebugPrintf("post damage: %d mult: %d" , gBattleMoveDamage, multiplier);
     if (multiplier == TYPE_MUL_NO_EFFECT){
-        DebugPrintf("TYPE_MUL_NO_EFFECT_TRI_ATTACK",multiplier);
         *flags |= MOVE_RESULT_DOESNT_AFFECT_FOE;
         *flags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE;
         *flags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
     }
     else if (multiplier <= TYPE_MUL_NOT_EFFECTIVE_CUTOFF_TRI_ATTACK){
-        DebugPrintf("TYPE_MUL_NOT_EFFECTIVE_TRI_ATTACK",multiplier);
         if (gBattleMoves[move].power && !(*flags & MOVE_RESULT_NO_EFFECT))
         {
             if (*flags & MOVE_RESULT_SUPER_EFFECTIVE)
@@ -1456,7 +1446,6 @@ static void ModulateDmgByTypeTriAttack2(u8 multiplier, u16 move, u8 *flags)
         }
     }
     else if (multiplier >= TYPE_MUL_SUPER_EFFECTIVE_CUTOFF_TRI_ATTACK){
-        DebugPrintf("TYPE_MUL_SUPER_EFFECTIVE_TRI_ATTACK",multiplier);
         // MOVE_TRI_ATTACK is being fed in as `move` so that other moves can also trigger this offEFECT_TRI_ATTACK. Not that it will though
         if (gBattleMoves[move].power && !(*flags & MOVE_RESULT_NO_EFFECT))
         {
@@ -1543,15 +1532,11 @@ static u8 TypeCalcTriAttack(u8 defender, u16 move, u8 flags){
             {
                 // check type1
                 if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[defender].type1)
-                    {DebugPrintf("before both types: %d", typeTemp);
                     typeTemp = ModulateDmgByTypeTriAttack3(TYPE_EFFECT_MULTIPLIER(i), typeTemp);
-                    DebugPrintf("after both types: %d", typeTemp);}
                 // check type2
                 if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[defender].type2 &&
-                    gBattleMons[defender].type1 != gBattleMons[defender].type2){
-                    DebugPrintf("before both types: %d", typeTemp);
+                    gBattleMons[defender].type1 != gBattleMons[defender].type2)
                     typeTemp = ModulateDmgByTypeTriAttack3(TYPE_EFFECT_MULTIPLIER(i), typeTemp);
-                    DebugPrintf("after both types: %d", typeTemp);}
             }
             i += 3;
         }
@@ -1582,12 +1567,10 @@ static u8 TypeCalcTriAttack(u8 defender, u16 move, u8 flags){
             multIce = typeTemp;
             break;
         }
-        DebugPrintf("TypeCalcTriAttack  fire: %d   elec: %d, ice: %d", multFire, multElec, multIce);
         i = 0;
         typeTemp = TYPE_MUL_BLANK;
     }
     multTotal = DIV_ROUND((multFire + multElec + multIce), ARRAY_COUNT(typesToCheck));
-    DebugPrintf("before sending multTotal %d", multTotal);
     ModulateDmgByTypeTriAttack2(multTotal, move, &flags);
     return flags;
 }
@@ -1608,14 +1591,10 @@ static u8 AI_TypeCalcTriAttack(u8 type1, u8 type2, u16 move, u8 flags){
             {
                 // check type1
                 if (TYPE_EFFECT_DEF_TYPE(i) == type1)
-                    {DebugPrintf("before both types: %d", typeTemp);
                     typeTemp = ModulateDmgByTypeTriAttack3(TYPE_EFFECT_MULTIPLIER(i), typeTemp);
-                    DebugPrintf("after both types: %d", typeTemp);}
                 // check type2
                 if (TYPE_EFFECT_DEF_TYPE(i) == type2 && type1 != type2)
-                    {DebugPrintf("before both types: %d", typeTemp);
                     typeTemp = ModulateDmgByTypeTriAttack3(TYPE_EFFECT_MULTIPLIER(i), typeTemp);
-                    DebugPrintf("after both types: %d", typeTemp);}
             }
             i += 3;
         }
@@ -1646,12 +1625,10 @@ static u8 AI_TypeCalcTriAttack(u8 type1, u8 type2, u16 move, u8 flags){
             multIce = typeTemp;
             break;
         }
-        DebugPrintf("TypeCalcTriAttack  fire: %d   elec: %d, ice: %d", multFire, multElec, multIce);
         i = 0;
         typeTemp = TYPE_MUL_BLANK;
     }
     multTotal = DIV_ROUND((multFire + multElec + multIce), ARRAY_COUNT(typesToCheck));
-    DebugPrintf("before sending multTotal %d", multTotal);
     ModulateDmgByTypeTriAttack2(multTotal, move, &flags);
     return flags;
 }
@@ -1709,12 +1686,10 @@ static void TypeCalcTriAttackForCmd(){
             multIce = typeTemp;
             break;
         }
-        DebugPrintf("fire: %d   elec: %d, ice: %d", multFire, multElec, multIce);
         i = 0;
         typeTemp = TYPE_MUL_BLANK;
     }
     multTotal = DIV_ROUND((multFire + multElec + multIce), ARRAY_COUNT(typesToCheck));
-    DebugPrintf("before sending multTotal %d", multTotal);
     ModulateDmgByTypeTriAttack(multTotal);
 }
 
