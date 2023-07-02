@@ -26,7 +26,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Added Chill-O-Wisp (Which behaves like Will-O-Wisp, but causes Frostbite).
    - Misdreavus, the Spheal line, and the Snorunt can learn this via level-up.
    - Drowsee, Sneasel, and Swinub can learn this as an egg move.
- - [Made Tri Attach's Type Effectiveness Change Based on the Defender's Strength Against Fire, Electric, and Ice Types.](https://gitlab.com/devolov/pokeemerald_fork/-/compare/2e8fed6549949ac5e9b96936ef9fcde61b4e7a07...4fa77e08dcdb53245393e06f3f4c59d0b503b37f?from_project_id=41747019&straight=false)
+ - [Made Tri Attach's Type Effectiveness Change Based on the Defender's Strength Against Fire, Electric, and Ice Types.](https://gitlab.com/devolov/pokeemerald_fork/-/wikis/Make-Tri-Attack's-power-be-based-off-how-Fire,-Ice,-and-Electric-moves-affect-the-defender)
  - Hidden Thief Ball Added in Rival's House When Selecting Their Ball After First Talking to Thyem at Their House.
  - Added a Mean Zigzagoon in Petalberg Woods.
  - Bug fix where player is not properly shown when using Surf or Dive.
