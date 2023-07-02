@@ -59,6 +59,7 @@ ballShakesArray: 76543210
 #define TYPE_MUL_SUPER_EFFECTIVE_TRI_ATTACK         TYPE_MUL_SUPER_EFFECTIVE
 #define TYPE_MUL_NOT_EFFECTIVE_CUTOFF_TRI_ATTACK    8
 #define TYPE_MUL_SUPER_EFFECTIVE_CUTOFF_TRI_ATTACK  12
+#define TYPE_MUL_BLANK                              0xFF
 
 // special type table Ids
 #define TYPE_FORESIGHT  0xFE

@@ -128,6 +128,7 @@
 })
 
 #define DIV_ROUND_UP(val, roundBy)(((val) / (roundBy)) + (((val) % (roundBy)) ? 1 : 0))
+#define DIV_ROUND(val, roundBy)(((val) / (roundBy)) + (((10 * ((val) % (roundBy))) / (roundBy)) >= 5 ? 1 : 0))
 
 #define ROUND_BITS_TO_BYTES(numBits) DIV_ROUND_UP(numBits, 8)
 
