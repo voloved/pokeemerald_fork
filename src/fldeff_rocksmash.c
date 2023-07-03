@@ -54,6 +54,7 @@ u8 CreateFieldMoveTask(void)
 static void Task_DoFieldMove_Init(u8 taskId)
 {
     u8 objEventId;
+    u16 partyIndex = gFieldEffectArguments[0];
 
     LockPlayerFieldControls();
     gPlayerAvatar.preventStep = TRUE;
@@ -61,7 +62,7 @@ static void Task_DoFieldMove_Init(u8 taskId)
     if (!ObjectEventIsMovementOverridden(&gObjectEvents[objEventId])
      || ObjectEventClearHeldMovementIfFinished(&gObjectEvents[objEventId]))
     {
-        if (gMapHeader.mapType == MAP_TYPE_UNDERWATER || gFieldEffectArguments[3])
+        if (gMapHeader.mapType == MAP_TYPE_UNDERWATER || gFieldEffectArguments[3] || partyIndex > PARTY_SIZE)
         {
             // Skip field move pose underwater, or if arg3 is nonzero
             if (gFieldEffectArguments[3])

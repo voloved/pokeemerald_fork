@@ -86,6 +86,9 @@ enum
     HEALTHBOX_GFX_STATUS_BRN_BATTLER0,  //status brn
     HEALTHBOX_GFX_34,
     HEALTHBOX_GFX_35,
+    HEALTHBOX_GFX_STATUS_FSB_BATTLER0,  //status fsb
+    HEALTHBOX_GFX_116,
+    HEALTHBOX_GFX_117,
     HEALTHBOX_GFX_36, //misc [Black section]
     HEALTHBOX_GFX_37, //misc [Black section]
     HEALTHBOX_GFX_38, //misc [Black section]
@@ -136,6 +139,9 @@ enum
     HEALTHBOX_GFX_STATUS_BRN_BATTLER1, //status2 "BRN"
     HEALTHBOX_GFX_84,
     HEALTHBOX_GFX_85,
+    HEALTHBOX_GFX_STATUS_FSB_BATTLER1, //status2 "FSB"
+    HEALTHBOX_GFX_118,
+    HEALTHBOX_GFX_119,
     HEALTHBOX_GFX_STATUS_PSN_BATTLER2, //status3 "PSN"
     HEALTHBOX_GFX_87,
     HEALTHBOX_GFX_88,
@@ -151,6 +157,9 @@ enum
     HEALTHBOX_GFX_STATUS_BRN_BATTLER2, //status3 "BRN"
     HEALTHBOX_GFX_99,
     HEALTHBOX_GFX_100,
+    HEALTHBOX_GFX_STATUS_FSB_BATTLER2, //status3 "FSB"
+    HEALTHBOX_GFX_120,
+    HEALTHBOX_GFX_121,
     HEALTHBOX_GFX_STATUS_PSN_BATTLER3, //status4 "PSN"
     HEALTHBOX_GFX_102,
     HEALTHBOX_GFX_103,
@@ -166,9 +175,12 @@ enum
     HEALTHBOX_GFX_STATUS_BRN_BATTLER3, //status4 "BRN"
     HEALTHBOX_GFX_114,
     HEALTHBOX_GFX_115,
+    HEALTHBOX_GFX_STATUS_FSB_BATTLER3, //status4 "FSB"
+    HEALTHBOX_GFX_122,
+    HEALTHBOX_GFX_123,
     HEALTHBOX_GFX_FRAME_END,
     HEALTHBOX_GFX_FRAME_END_BAR,
-    HEALTHBOX_GFX_118, //Nuzlocke indicator
+    HEALTHBOX_GFX_124, //Nuzlocke indicator
 };
 
 	// - ITEM_ULTRA_BALL skips Master Ball and ITEM_NONE
@@ -2037,16 +2049,7 @@ static void TryAddPokeballIconToHealthbox(u8 healthboxSpriteId, bool8 noStatus)
 
     if (gBattleTypeFlags & BATTLE_TYPE_WALLY_TUTORIAL)
         return;
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER){
-        if (!CheckBagHasItem(ITEM_THIEF_BALL, 1))
-            return;
-        if (gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_EREADER_TRAINER |
-        BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK))
-            return;
-    }
-    
-    if (gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK | BATTLE_TYPE_EREADER_TRAINER |
-    BATTLE_TYPE_SECRET_BASE | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED_LINK))
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (!BattleCanUseThiefBall() || !CheckBagHasItem(ITEM_THIEF_BALL, 1)))
         return;
 
     battlerId = gSprites[healthboxSpriteId].hMain_Battler;
@@ -2111,6 +2114,11 @@ static void UpdateStatusIconInHealthbox(u8 healthboxSpriteId)
     else if (status & STATUS1_FREEZE)
     {
         statusGfxPtr = GetHealthboxElementGfxPtr(GetStatusIconForBattlerId(HEALTHBOX_GFX_STATUS_FRZ_BATTLER0, battlerId));
+        statusPalId = PAL_STATUS_FRZ;
+    }
+    else if (status & STATUS1_FROSTBITE)
+    {
+        statusGfxPtr = GetHealthboxElementGfxPtr(GetStatusIconForBattlerId(HEALTHBOX_GFX_STATUS_FSB_BATTLER0, battlerId));
         statusPalId = PAL_STATUS_FRZ;
     }
     else if (status & STATUS1_PARALYSIS)
@@ -2194,6 +2202,16 @@ static u8 GetStatusIconForBattlerId(u8 statusElementId, u8 battlerId)
             ret = HEALTHBOX_GFX_STATUS_FRZ_BATTLER2;
         else
             ret = HEALTHBOX_GFX_STATUS_FRZ_BATTLER3;
+        break;
+    case HEALTHBOX_GFX_STATUS_FSB_BATTLER0:
+        if (battlerId == 0)
+            ret = HEALTHBOX_GFX_STATUS_FSB_BATTLER0;
+        else if (battlerId == 1)
+            ret = HEALTHBOX_GFX_STATUS_FSB_BATTLER1;
+        else if (battlerId == 2)
+            ret = HEALTHBOX_GFX_STATUS_FSB_BATTLER2;
+        else
+            ret = HEALTHBOX_GFX_STATUS_FSB_BATTLER3;
         break;
     case HEALTHBOX_GFX_STATUS_BRN_BATTLER0:
         if (battlerId == 0)
@@ -2701,10 +2719,18 @@ static const struct OamData sOamData_LastUsedBall =
 	.objMode = 0,
 	.mosaic = 0,
 	.bpp = 0,
+#if LAST_BALL_MENU_SHOW_ARROWS == TRUE
+	.shape = SPRITE_SHAPE(32x64),
+#else
 	.shape = SPRITE_SHAPE(32x32),
+#endif
 	.x = 0,
 	.matrixNum = 0,
+#if LAST_BALL_MENU_SHOW_ARROWS == TRUE
+	.size = SPRITE_SIZE(32x64),
+#else
 	.size = SPRITE_SIZE(32x32),
+#endif
 	.tileNum = 0,
 	.priority = 1,
 	.paletteNum = 0,
@@ -2722,7 +2748,11 @@ static const struct SpriteTemplate sSpriteTemplate_LastUsedBallWindow =
     .callback = SpriteCB_LastUsedBallWin
 };
 
+#if LAST_BALL_MENU_SHOW_ARROWS == TRUE
+static const u8 sLastUsedBallWindowGfx[] = INCBIN_U8("graphics/battle_interface/last_used_ball_arrow.4bpp");
+#else
 static const u8 sLastUsedBallWindowGfx[] = INCBIN_U8("graphics/battle_interface/last_used_ball.4bpp");
+#endif
 static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 {
     sLastUsedBallWindowGfx, sizeof(sLastUsedBallWindowGfx), LAST_BALL_WINDOW_TAG
@@ -2731,14 +2761,19 @@ static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 #define LAST_USED_BALL_X_F    14
 #define LAST_USED_BALL_X_0   -14
 #define LAST_USED_BALL_Y      ((IsDoubleBattle()) ? 78 : 68)
-#define LAST_USED_BALL_Y_BNC  66
+#define LAST_USED_BALL_Y_BNC  ((IsDoubleBattle()) ? 76 : 66)
 
 #define LAST_BALL_WIN_X_F       (LAST_USED_BALL_X_F - 0)
-#define LAST_BALL_WIN_X_0       (LAST_USED_BALL_X_0 - 1)
+#define LAST_BALL_WIN_X_0       (LAST_USED_BALL_X_0 - 0)
 #define LAST_USED_WIN_Y         (LAST_USED_BALL_Y - 8)
 
 #define sHide   data[0]
 #define sTimer  data[1]
+#define sMoving data[2]
+#define sBounce data[3] // 0 = Bounce down; 1 = Bounce up
+
+#define sState     data[0]
+#define sSameBall  data[1]
 
 bool32 CanThrowLastUsedBall(void)
 {
@@ -2852,7 +2887,7 @@ static u16 ChoosePreferredBallSimple(void){
     return ballHighest;
 }
 
-static u16 ChoosePreferredBallComplex(u8 minOddsToConsiderBall, u8 minOddsToConsiderLuxuryBall, u8 additionPerForBetterBall)
+static u16 ChoosePreferredBallComplex(u8 minOddsToConsiderBall, u8 minOddsToConsiderLuxuryBall, u8 additionPerForBetterBall, u16 minRarityMonThiefBall)
 {
     static const u8 ballsByValue[] = { ITEM_POKE_BALL, ITEM_GREAT_BALL, ITEM_NEST_BALL, ITEM_TIMER_BALL, ITEM_REPEAT_BALL, 
                                        ITEM_DIVE_BALL, ITEM_NET_BALL, ITEM_ULTRA_BALL };  //Order to check the balls
@@ -2862,6 +2897,7 @@ static u16 ChoosePreferredBallComplex(u8 minOddsToConsiderBall, u8 minOddsToCons
     u16 opposingBattlerId = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
     u16 opposingBattlerSpecies = gBattleMons[opposingBattlerId].species;
     u8 catchRate = gSpeciesInfo[opposingBattlerSpecies].catchRate;
+    u8 minCatchRateThiefBall = gSpeciesInfo[minRarityMonThiefBall].catchRate;
     u32 catchOddsBeforeBallMod = (catchRate) * (gBattleMons[opposingBattlerId].maxHP * 3 - gBattleMons[opposingBattlerId].hp * 2) 
                                 / (3 * gBattleMons[opposingBattlerId].maxHP);
 
@@ -2869,7 +2905,9 @@ static u16 ChoosePreferredBallComplex(u8 minOddsToConsiderBall, u8 minOddsToCons
     minOddsToConsiderLuxuryBall = percentageToCatchOddsLUT[minOddsToConsiderLuxuryBall];
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
      {
-        if (BattleCanUseThiefBall() && CheckBagHasItem(ITEM_THIEF_BALL, 1))
+        if (BattleCanUseThiefBall() && CheckBagHasItem(ITEM_THIEF_BALL, 1) 
+        && catchOddsBeforeBallMod * getBallMultiplier(ITEM_THIEF_BALL) / 10 >= minOddsToConsiderBall
+        && catchRate <= minCatchRateThiefBall)  // minCatchRateThiefBall used as proxy for rarity of mon
             return ITEM_THIEF_BALL;
         else
             return ITEM_NONE;
@@ -2903,6 +2941,9 @@ void TryAddLastUsedBallItemSprites(void)
 
     if (!showSuggestion)
         return;
+
+    if (FlagGet(FLAG_TEMP_MEAN_ZIGZAGOON))
+        return;
     
     if (CannotThrowBall() != 0)
         return;
@@ -2910,7 +2951,7 @@ void TryAddLastUsedBallItemSprites(void)
     if (useSimpleOrComplex)
     {
         if (useComplex)
-            preferredBall = ChoosePreferredBallComplex(0, 0, 3);  // Complex
+            preferredBall = ChoosePreferredBallComplex(0, 0, 3, SPECIES_BULBASAUR);  // Complex
         else
             preferredBall = ChoosePreferredBallSimple(); // Simple
         if (preferredBall == ITEM_NONE)
@@ -2932,6 +2973,7 @@ void TryAddLastUsedBallItemSprites(void)
     }
     
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && (gBattleStruct->ballToDisplay != ITEM_THIEF_BALL || !BattleCanUseThiefBall()))
+    // Modify to if (gBattleTypeFlags & BATTLE_TYPE_TRAINER) if you want no Theif Balls to be displayed in trainer battles
         return;
 
     // ball
@@ -2955,9 +2997,10 @@ void TryAddLastUsedBallItemSprites(void)
         gBattleStruct->ballSpriteIds[1] = CreateSprite(&sSpriteTemplate_LastUsedBallWindow,
            LAST_BALL_WIN_X_0,
            LAST_USED_WIN_Y, 5);
-        gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
+        gSprites[gBattleStruct->ballSpriteIds[1]].sHide = FALSE;   // restore
         gBattleStruct->LastUsedBallMenuPresent = TRUE;
     }
+    ArrowsChangeColorLastBallCycle(0); //Default the arrows to be invisible
 }
 
 static void DestroyLastUsedBallWinGfx(struct Sprite *sprite)
@@ -2977,53 +3020,126 @@ static void DestroyLastUsedBallGfx(struct Sprite *sprite)
 
 static void SpriteCB_LastUsedBallBounce(struct Sprite *sprite)
 {
-    if (gBattleStruct->ballSpriteIds[1] == MAX_SPRITES)  // If the window is gone
-        DestroyLastUsedBallGfx(sprite);
     if ((sprite->sTimer++ % 4) != 0)  // Change the image every % x frame
         return;
-    if (sprite->sHide)
+    if (sprite->sBounce)
     {
-        if (sprite->y != LAST_USED_BALL_Y_BNC)
+        if (sprite->y > LAST_USED_BALL_Y_BNC)
             sprite->y--;
-
-        if (sprite->y == LAST_USED_BALL_Y_BNC)
-            DestroyLastUsedBallGfx(sprite);
+        else
+            sprite->sMoving = FALSE;
     }
     else
     {
-        if (sprite->y != LAST_USED_BALL_Y)
+        if (sprite->y < LAST_USED_BALL_Y)
             sprite->y++;
-        if (sprite->y == LAST_USED_BALL_Y)
-            gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBall;
+        else
+            sprite->sMoving = FALSE;
     }
 }
 
-static void Task_WaitForFade(u8 taskId){
+static void Task_BounceBall(u8 taskId){
     struct Sprite *sprite = &gSprites[gBattleStruct->ballSpriteIds[0]];
-    if (!sprite->inUse)
+    struct Task *task = &gTasks[taskId];
+    switch(task->sState)
     {
-        gBattleStruct->ballSpriteIds[0] = AddItemIconSprite(102, 102, gBattleStruct->ballToDisplay);
-        gSprites[gBattleStruct->ballSpriteIds[0]].x = LAST_USED_BALL_X_F;
-        gSprites[gBattleStruct->ballSpriteIds[0]].y = LAST_USED_BALL_Y_BNC;
-        gSprites[gBattleStruct->ballSpriteIds[0]].sHide = FALSE;   // restore
-        gBattleStruct->LastUsedBallMenuPresent = TRUE;
-        gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBallBounce; //Show and bounce down
+    case 0:  // Bounce up
+        sprite->sBounce = TRUE;
+        sprite->sMoving = TRUE;
+        sprite->callback = SpriteCB_LastUsedBallBounce;
+        if (task->sSameBall)
+            task->sState = 3;
+        else
+            task->sState = 1;
+        break;
+    case 1:  // Destroy Icon
+        if (!sprite->sMoving){
+            DestroyLastUsedBallGfx(sprite);
+            task->sState++;
+        }  // Passthrough
+    case 2: //Create New Icon
+        if (!sprite->inUse){
+            gBattleStruct->ballSpriteIds[0] = AddItemIconSprite(102, 102, gBattleStruct->ballToDisplay);
+            gSprites[gBattleStruct->ballSpriteIds[0]].x = LAST_USED_BALL_X_F;
+            gSprites[gBattleStruct->ballSpriteIds[0]].y = LAST_USED_BALL_Y_BNC;
+            task->sState++;
+        }  // Passthrough
+    case 3: // Bounce Down
+        if (!sprite->sMoving){
+            sprite->sBounce = FALSE;
+            sprite->sMoving = TRUE;
+            sprite->callback = SpriteCB_LastUsedBallBounce; //Show and bounce down
+            task->sState++;
+        }
+        break;     
+    case 4:  // Destroy Task
+        if(!sprite->sMoving){
+            sprite->callback = SpriteCB_LastUsedBall;
+            DestroyTask(taskId);
+        }        
+    }
+    if (!gBattleStruct->LastUsedBallMenuPresent){  // Used to check if the R button was released before the animation was complete
+        sprite->callback = SpriteCB_LastUsedBall;
         DestroyTask(taskId);
     }
 }
 
-void SwapBallToDisplay(void){
+void SwapBallToDisplay(bool8 sameBall){
     u8 taskId;
-    gSprites[gBattleStruct->ballSpriteIds[0]].sHide = TRUE;
-    gSprites[gBattleStruct->ballSpriteIds[0]].callback = SpriteCB_LastUsedBallBounce; // Bounce up and hide
-    taskId = CreateTask(Task_WaitForFade, 10);
+    taskId = CreateTask(Task_BounceBall, 10);
+    gTasks[taskId].sSameBall = sameBall;
+}
+
+void ArrowsChangeColorLastBallCycle(u8 color)
+{
+#if LAST_BALL_MENU_SHOW_ARROWS == TRUE
+    u16 paletteNum = 16 + gSprites[gBattleStruct->ballSpriteIds[1]].oam.paletteNum;
+    struct PlttData *defaultPlttArrow;
+    struct PlttData *defaultPlttOutline;
+    struct PlttData *pltArrow;
+    struct PlttData *pltOutline;
+    if (gBattleStruct->ballSpriteIds[1] == MAX_SPRITES)
+        return;
+    paletteNum *= 16;
+    pltArrow = (struct PlttData *)&gPlttBufferFaded[paletteNum + 9];  // Arrow color is in idx 9
+    pltOutline = (struct PlttData *)&gPlttBufferFaded[paletteNum + 8];  // Arrow outline is in idx 8
+    switch(color){
+    case 0: //Make invisible
+        defaultPlttArrow = (struct PlttData *)&gPlttBufferFaded[paletteNum + 13];  // Background color is idx 13
+        pltArrow->r = defaultPlttArrow->r;
+        pltArrow->g = defaultPlttArrow->g;
+        pltArrow->b = defaultPlttArrow->b;
+        pltOutline->r = defaultPlttArrow->r;
+        pltOutline->g = defaultPlttArrow->g;
+        pltOutline->b = defaultPlttArrow->b;
+        break; 
+    case 1:  // Make gray
+        defaultPlttArrow = (struct PlttData *)&gPlttBufferFaded[paletteNum + 11];  // Grey color is idx 11
+        defaultPlttOutline = (struct PlttData *)&gPlttBufferFaded[paletteNum + 10];  //Light grey color for outline is idx 10
+        pltArrow->r = defaultPlttArrow->r;
+        pltArrow->g = defaultPlttArrow->g;
+        pltArrow->b = defaultPlttArrow->b;
+        pltOutline->r = defaultPlttOutline->r;
+        pltOutline->g = defaultPlttOutline->g;
+        pltOutline->b = defaultPlttOutline->b;
+        break;
+    case 2: // Make red (using hardcoded color values)
+        pltArrow->r = 128 >> 3;
+        pltArrow->g = 0 >> 3;
+        pltArrow->b = 0 >> 3;
+        pltOutline->r = 232 >> 3;
+        pltOutline->g = 0 >> 3;
+        pltOutline->b = 0 >> 3;
+        break;
+    }
+#endif
 }
 
 static void SpriteCB_LastUsedBallWin(struct Sprite *sprite)
 {    
     if (sprite->sHide)
     {
-        if (sprite->x != LAST_BALL_WIN_X_0)
+        if (sprite->x > LAST_BALL_WIN_X_0)
             sprite->x--;
 
         if (sprite->x == LAST_BALL_WIN_X_0)
@@ -3031,7 +3147,7 @@ static void SpriteCB_LastUsedBallWin(struct Sprite *sprite)
     }
     else
     {
-        if (sprite->x != LAST_BALL_WIN_X_F)
+        if (sprite->x < LAST_BALL_WIN_X_F)
             sprite->x++;
     }
 }
@@ -3040,7 +3156,10 @@ static void SpriteCB_LastUsedBall(struct Sprite *sprite)
 {    
     if (sprite->sHide)
     {
-        if (sprite->x != LAST_USED_BALL_X_0)
+        if (sprite->y < LAST_USED_BALL_Y) // Used to recover from an incomplete bounce before hiding the window
+            sprite->y++;
+        
+        if (sprite->x > LAST_USED_BALL_X_0)
             sprite->x--;
 
         if (sprite->x == LAST_USED_BALL_X_0){
@@ -3050,7 +3169,7 @@ static void SpriteCB_LastUsedBall(struct Sprite *sprite)
     }
     else
     {
-        if (sprite->x != LAST_USED_BALL_X_F)
+        if (sprite->x < LAST_USED_BALL_X_F)
             sprite->x++;
     }
 }
@@ -3079,6 +3198,7 @@ static void TryHideOrRestoreLastUsedBall(u8 caseId)
             gSprites[gBattleStruct->ballSpriteIds[1]].sHide = FALSE;   // restore
         break;
     }
+    ArrowsChangeColorLastBallCycle(0);
 }
 
 void TryHideLastUsedBall(void)

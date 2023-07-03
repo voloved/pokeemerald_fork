@@ -5,8 +5,10 @@
 #include "battle_interface.h"
 #include "decompress.h"
 #include "dma3.h"
+#include "event_data.h"
 #include "gpu_regs.h"
 #include "graphics.h"
+#include "item.h"
 #include "m4a.h"
 #include "main.h"
 #include "palette.h"
@@ -2263,7 +2265,15 @@ void TryShinyAnimation(u8 battler, struct Pokemon *mon)
     {
         shinyValue = GET_SHINY_VALUE(otId, personality);
         if (shinyValue < SHINY_ODDS)
-            isShiny = TRUE;
+        {
+            if (FlagGet(FLAG_SYS_POKEDEX_GET))
+                isShiny = TRUE;
+            else{ // If the player did not yet get a Pokedex and has no balls, then don't let them know they're missing out on a shiny.
+                CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
+                if (gBagPockets[BALLS_POCKET].itemSlots[0].itemId != ITEM_NONE)
+                    isShiny = TRUE;
+            }
+        }
 
         if (isShiny)
         {

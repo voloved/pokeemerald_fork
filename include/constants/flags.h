@@ -20,7 +20,7 @@
 #define FLAG_TEMP_A      (TEMP_FLAGS_START + 0xA)  // Unused Flag
 #define FLAG_TEMP_B      (TEMP_FLAGS_START + 0xB)  // Unused Flag
 #define FLAG_TEMP_C      (TEMP_FLAGS_START + 0xC)  // Unused Flag
-#define FLAG_TEMP_D      (TEMP_FLAGS_START + 0xD)  // Unused Flag
+#define FLAG_TEMP_MEAN_ZIGZAGOON     (TEMP_FLAGS_START + 0xD)  // Unused for the Mean Zigzagoon battle
 #define FLAG_TEMP_HIDE_FOLLOWER      (TEMP_FLAGS_START + 0xE)  // When set, follower pokemon won't be spawned
 #define FLAG_TEMP_F      (TEMP_FLAGS_START + 0xF)  // Unused Flag
 #define FLAG_TEMP_10     (TEMP_FLAGS_START + 0x10) // Unused Flag
@@ -505,7 +505,7 @@
 #define FLAG_ENABLE_TATE_AND_LIZA_MATCH_CALL 0x1D8
 #define FLAG_ENABLE_JUAN_MATCH_CALL          0x1D9
 
-#define FLAG_UNUSED_0x1DA                    0x1DA // Unused Flag
+#define FLAG_HIDE_MEAN_ZIGZAGOON             0x1DA
 
 #define FLAG_SHOWN_MYSTIC_TICKET             0x1DB
 #define FLAG_DEFEATED_HO_OH                  0x1DC
@@ -650,8 +650,8 @@
 #define FLAG_HIDDEN_ITEM_NAVEL_ROCK_TOP_SACRED_ASH           (FLAG_HIDDEN_ITEMS_START + 0x6D)
 #define FLAG_HIDDEN_ITEM_ROUTE_123_RARE_CANDY                (FLAG_HIDDEN_ITEMS_START + 0x6E)
 #define FLAG_HIDDEN_ITEM_ROUTE_105_BIG_PEARL                 (FLAG_HIDDEN_ITEMS_START + 0x6F)
+#define FLAG_HIDDEN_ITEM_RIVALS_HOUSE_2F_THIEF_BALL          (FLAG_HIDDEN_ITEMS_START + 0x70)
 
-#define FLAG_UNUSED_0x264  0x264 // Unused Flag
 #define FLAG_UNUSED_0x265  0x265 // Unused Flag
 #define FLAG_UNUSED_0x266  0x266 // Unused Flag
 #define FLAG_UNUSED_0x267  0x267 // Unused Flag
@@ -1247,7 +1247,7 @@
 #define FLAG_SHOW_BALL_SUGGESTION                                   0x4AE
 #define FLAG_BALL_SUGGEST_NOT_LAST                                  0x4AF // Will Suggest the last ball if set.
 #define FLAG_BALL_SUGGEST_COMPLEX                                   0x4B0 // Will show Simple option if not set
-#define FLAG_UNUSED_0x4B1                                           0x4B1 // Unused Flag
+#define FLAG_USE_FROSTBITE                                          0x4B1
 #define FLAG_UNUSED_0x4B2                                           0x4B2 // Unused Flag
 #define FLAG_UNUSED_0x4B3                                           0x4B3 // Unused Flag
 #define FLAG_UNUSED_0x4B4                                           0x4B4 // Unused Flag
@@ -1382,7 +1382,7 @@
 #define FLAG_IS_CHAMPION                            (SYSTEM_FLAGS + 0x1F) // Seems to be related to linking.
 #define FLAG_NURSE_UNION_ROOM_REMINDER              (SYSTEM_FLAGS + 0x20)
 
-#define FLAG_UNUSED_0x881                           (SYSTEM_FLAGS + 0x21) // Unused Flag
+#define FLAG_RECEIVED_EON_FLUTE                     (SYSTEM_FLAGS + 0x21)
 #define FLAG_UNUSED_0x882                           (SYSTEM_FLAGS + 0x22) // Unused Flag
 #define FLAG_UNUSED_0x883                           (SYSTEM_FLAGS + 0x23) // Unused Flag
 #define FLAG_UNUSED_0x884                           (SYSTEM_FLAGS + 0x24) // Unused Flag
@@ -1522,41 +1522,41 @@
 #define FLAG_SECRET_BASE_OWNED_18                   (SYSTEM_FLAGS + 0x97) // Unused Flag
 #define FLAG_SECRET_BASE_OWNED_19                   (SYSTEM_FLAGS + 0x98) // Unused Flag
 
-#define FLAG_UNUSED_0x8F9                           (SYSTEM_FLAGS + 0x99) // Unused Flag
-#define FLAG_UNUSED_0x8FA                           (SYSTEM_FLAGS + 0x9A) // Unused Flag
-#define FLAG_UNUSED_0x8FB                           (SYSTEM_FLAGS + 0x9B) // Unused Flag
-#define FLAG_UNUSED_0x8FC                           (SYSTEM_FLAGS + 0x9C) // Unused Flag
-#define FLAG_UNUSED_0x8FD                           (SYSTEM_FLAGS + 0x9D) // Unused Flag
-#define FLAG_UNUSED_0x8FE                           (SYSTEM_FLAGS + 0x9E) // Unused Flag
-#define FLAG_UNUSED_0x8FF                           (SYSTEM_FLAGS + 0x9F) // Unused Flag
-#define FLAG_UNUSED_0x900                           (SYSTEM_FLAGS + 0xA0) // Unused Flag
-#define FLAG_UNUSED_0x901                           (SYSTEM_FLAGS + 0xA1) // Unused Flag
-#define FLAG_UNUSED_0x902                           (SYSTEM_FLAGS + 0xA2) // Unused Flag
-#define FLAG_UNUSED_0x903                           (SYSTEM_FLAGS + 0xA3) // Unused Flag
-#define FLAG_UNUSED_0x904                           (SYSTEM_FLAGS + 0xA4) // Unused Flag
-#define FLAG_UNUSED_0x905                           (SYSTEM_FLAGS + 0xA5) // Unused Flag
-#define FLAG_UNUSED_0x906                           (SYSTEM_FLAGS + 0xA6) // Unused Flag
-#define FLAG_UNUSED_0x907                           (SYSTEM_FLAGS + 0xA7) // Unused Flag
-#define FLAG_UNUSED_0x908                           (SYSTEM_FLAGS + 0xA8) // Unused Flag
-#define FLAG_UNUSED_0x909                           (SYSTEM_FLAGS + 0xA9) // Unused Flag
-#define FLAG_UNUSED_0x90A                           (SYSTEM_FLAGS + 0xAA) // Unused Flag
-#define FLAG_UNUSED_0x90B                           (SYSTEM_FLAGS + 0xAB) // Unused Flag
-#define FLAG_UNUSED_0x90C                           (SYSTEM_FLAGS + 0xAC) // Unused Flag
-#define FLAG_UNUSED_0x90D                           (SYSTEM_FLAGS + 0xAD) // Unused Flag
-#define FLAG_UNUSED_0x90E                           (SYSTEM_FLAGS + 0xAE) // Unused Flag
-#define FLAG_UNUSED_0x90F                           (SYSTEM_FLAGS + 0xAF) // Unused Flag
-#define FLAG_UNUSED_0x910                           (SYSTEM_FLAGS + 0xB0) // Unused Flag
-#define FLAG_UNUSED_0x911                           (SYSTEM_FLAGS + 0xB1) // Unused Flag
-#define FLAG_UNUSED_0x912                           (SYSTEM_FLAGS + 0xB2) // Unused Flag
-#define FLAG_UNUSED_0x913                           (SYSTEM_FLAGS + 0xB3) // Unused Flag
-#define FLAG_UNUSED_0x914                           (SYSTEM_FLAGS + 0xB4) // Unused Flag
-#define FLAG_UNUSED_0x915                           (SYSTEM_FLAGS + 0xB5) // Unused Flag
-#define FLAG_UNUSED_0x916                           (SYSTEM_FLAGS + 0xB6) // Unused Flag
-#define FLAG_UNUSED_0x917                           (SYSTEM_FLAGS + 0xB7) // Unused Flag
-#define FLAG_UNUSED_0x918                           (SYSTEM_FLAGS + 0xB8) // Unused Flag
-#define FLAG_UNUSED_0x919                           (SYSTEM_FLAGS + 0xB9) // Unused Flag
-#define FLAG_UNUSED_0x91A                           (SYSTEM_FLAGS + 0xBA) // Unused Flag
-#define FLAG_UNUSED_0x91B                           (SYSTEM_FLAGS + 0xBB) // Unused Flag
+#define FLAG_VISITED_ROUTE101                       (SYSTEM_FLAGS + 0x99) 
+#define FLAG_VISITED_ROUTE102                       (SYSTEM_FLAGS + 0x9A)
+#define FLAG_VISITED_ROUTE103                       (SYSTEM_FLAGS + 0x9B) 
+#define FLAG_VISITED_ROUTE104                       (SYSTEM_FLAGS + 0x9C) 
+#define FLAG_VISITED_ROUTE105                       (SYSTEM_FLAGS + 0x9D) 
+#define FLAG_VISITED_ROUTE106                       (SYSTEM_FLAGS + 0x9E) 
+#define FLAG_VISITED_ROUTE107                       (SYSTEM_FLAGS + 0x9F)
+#define FLAG_VISITED_ROUTE108                       (SYSTEM_FLAGS + 0xA0)
+#define FLAG_VISITED_ROUTE109                       (SYSTEM_FLAGS + 0xA1)
+#define FLAG_VISITED_ROUTE110                       (SYSTEM_FLAGS + 0xA2) 
+#define FLAG_VISITED_ROUTE111                       (SYSTEM_FLAGS + 0xA3) 
+#define FLAG_VISITED_ROUTE112                       (SYSTEM_FLAGS + 0xA4) 
+#define FLAG_VISITED_ROUTE113                       (SYSTEM_FLAGS + 0xA5) 
+#define FLAG_VISITED_ROUTE114                       (SYSTEM_FLAGS + 0xA6) 
+#define FLAG_VISITED_ROUTE115                       (SYSTEM_FLAGS + 0xA7) 
+#define FLAG_VISITED_ROUTE116                       (SYSTEM_FLAGS + 0xA8) 
+#define FLAG_VISITED_ROUTE117                       (SYSTEM_FLAGS + 0xA9)
+#define FLAG_VISITED_ROUTE118                       (SYSTEM_FLAGS + 0xAA) 
+#define FLAG_VISITED_ROUTE119                       (SYSTEM_FLAGS + 0xAB)
+#define FLAG_VISITED_ROUTE120                       (SYSTEM_FLAGS + 0xAC) 
+#define FLAG_VISITED_ROUTE121                       (SYSTEM_FLAGS + 0xAD)
+#define FLAG_VISITED_ROUTE122                       (SYSTEM_FLAGS + 0xAE)
+#define FLAG_VISITED_ROUTE123                       (SYSTEM_FLAGS + 0xAF)
+#define FLAG_VISITED_ROUTE124                       (SYSTEM_FLAGS + 0xB0) 
+#define FLAG_VISITED_ROUTE125                       (SYSTEM_FLAGS + 0xB1) 
+#define FLAG_VISITED_ROUTE126                       (SYSTEM_FLAGS + 0xB2)
+#define FLAG_VISITED_ROUTE127                       (SYSTEM_FLAGS + 0xB3) 
+#define FLAG_VISITED_ROUTE128                       (SYSTEM_FLAGS + 0xB4) 
+#define FLAG_VISITED_ROUTE129                       (SYSTEM_FLAGS + 0xB5) 
+#define FLAG_VISITED_ROUTE130                       (SYSTEM_FLAGS + 0xB6) 
+#define FLAG_VISITED_ROUTE131                       (SYSTEM_FLAGS + 0xB7) 
+#define FLAG_VISITED_ROUTE132                       (SYSTEM_FLAGS + 0xB8) 
+#define FLAG_VISITED_ROUTE133                       (SYSTEM_FLAGS + 0xB9)
+#define FLAG_VISITED_ROUTE134                       (SYSTEM_FLAGS + 0xBA) 
+#define FLAG_VISITED_MT_CHIMNEY                     (SYSTEM_FLAGS + 0xBB)
 #define FLAG_UNUSED_0x91C                           (SYSTEM_FLAGS + 0xBC) // Unused Flag
 #define FLAG_UNUSED_0x91D                           (SYSTEM_FLAGS + 0xBD) // Unused Flag
 #define FLAG_UNUSED_0x91E                           (SYSTEM_FLAGS + 0xBE) // Unused Flag

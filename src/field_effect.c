@@ -32,6 +32,7 @@
 #include "constants/metatile_behaviors.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "soar.h"
 
 #define subsprite_table(ptr) {.subsprites = ptr, .subspriteCount = (sizeof ptr) / (sizeof(struct Subsprite))}
 
@@ -70,7 +71,7 @@ static void SpriteCB_PokeballGlow(struct Sprite *);
 static void Task_UseFly(u8);
 static void FieldCallback_FlyIntoMap(void);
 static void Task_FlyIntoMap(u8);
-
+static void FieldCallback_Fly_2(void);
 static void Task_FallWarpFieldEffect(u8);
 static bool8 FallWarpEffect_Init(struct Task *);
 static bool8 FallWarpEffect_WaitWeather(struct Task *);
@@ -270,6 +271,12 @@ static const u8 sRockFragment_TopLeft[] = INCBIN_U8("graphics/field_effects/pics
 static const u8 sRockFragment_TopRight[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_top_right.4bpp");
 static const u8 sRockFragment_BottomLeft[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_bottom_left.4bpp");
 static const u8 sRockFragment_BottomRight[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_bottom_right.4bpp");
+
+void Fldeff_FlyLand(void)
+{
+	SetMainCallback2(CB2_ReturnToField);
+	gFieldCallback = FieldCallback_Fly_2;
+}
 
 bool8 (*const gFieldEffectScriptFuncs[])(u8 **, u32 *) =
 {
@@ -925,7 +932,11 @@ u8 CreateMonSprite_PicBox(u16 species, s16 x, s16 y, u8 subpriority)
 u8 CreateMonSprite_FieldMove(u16 species, u32 otId, u32 personality, s16 x, s16 y, u8 subpriority)
 {
     const struct CompressedSpritePalette *spritePalette = GetMonSpritePalStructFromOtIdPersonality(species, otId, personality);
-    u16 spriteId = CreateMonPicSprite_HandleDeoxys(species, otId, personality, TRUE, x, y, 0, spritePalette->tag);
+    u16 spriteId;
+    if(species == SPECIES_NONE)
+        spriteId = CreateTrainerPicSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->playerGender), TRUE, x, y, 0, TAG_NONE);
+    else
+        spriteId = CreateMonPicSprite_HandleDeoxys(species, otId, personality, TRUE, x, y, 0, spritePalette->tag);
     PreservePaletteInWeather(IndexOfSpritePaletteTag(spritePalette->tag) + 0x10);
     if (spriteId == 0xFFFF)
         return MAX_SPRITES;
@@ -1352,6 +1363,17 @@ void FieldCallback_Fly(void)
     LockPlayerFieldControls();
     FreezeObjectEvents();
     gFieldCallback = NULL;
+}
+
+static void FieldCallback_Fly_2(void)
+{
+	u8 taskId;
+    FadeInFromBlack();
+	taskId = CreateTask(Task_UseFly, 0);
+	gTasks[taskId].data[0] = 1; //do landing anim only
+	LockPlayerFieldControls();
+    FreezeObjectEvents();
+	gFieldCallback = NULL;
 }
 
 static void Task_UseFly(u8 taskId)
@@ -2598,11 +2620,19 @@ bool8 FldEff_FieldMoveShowMonInit(void)
 {
     struct Pokemon *pokemon;
     bool32 noDucking = gFieldEffectArguments[0] & SHOW_MON_CRY_NO_DUCKING;
-    pokemon = &gPlayerParty[(u8)gFieldEffectArguments[0]];
-    gFieldEffectArguments[0] = GetMonData(pokemon, MON_DATA_SPECIES);
-    gFieldEffectArguments[1] = GetMonData(pokemon, MON_DATA_OT_ID);
-    gFieldEffectArguments[2] = GetMonData(pokemon, MON_DATA_PERSONALITY);
-    gFieldEffectArguments[0] |= noDucking;
+    s32 monId = gFieldEffectArguments[0] &= ~SHOW_MON_CRY_NO_DUCKING;
+    if (monId > PARTY_SIZE){
+        gFieldEffectArguments[0] = SPECIES_NONE;
+        gFieldEffectArguments[1] = OT_ID_PLAYER_ID;
+        gFieldEffectArguments[2] = 0;
+    }
+    else{
+        pokemon = &gPlayerParty[(u8)gFieldEffectArguments[0]];
+        gFieldEffectArguments[0] = GetMonData(pokemon, MON_DATA_SPECIES);
+        gFieldEffectArguments[1] = GetMonData(pokemon, MON_DATA_OT_ID);
+        gFieldEffectArguments[2] = GetMonData(pokemon, MON_DATA_PERSONALITY);
+        gFieldEffectArguments[0] |= noDucking;
+    }
     FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON);
     FieldEffectActiveListRemove(FLDEFF_FIELD_MOVE_SHOW_MON_INIT);
     return FALSE;
@@ -3032,12 +3062,16 @@ static void SurfFieldEffect_Init(struct Task *task)
 
 static void SurfFieldEffect_FieldMovePose(struct Task *task)
 {
+    u16 partyIndex = gFieldEffectArguments[0];
     struct ObjectEvent *objectEvent;
     objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
     if (!ObjectEventIsMovementOverridden(objectEvent) || ObjectEventClearHeldMovementIfFinished(objectEvent))
     {
-        SetPlayerAvatarFieldMove();
-        ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        if(partyIndex <= PARTY_SIZE)
+        {
+            SetPlayerAvatarFieldMove();
+            ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        }
         task->tState++;
     }
 }
@@ -3203,14 +3237,18 @@ static void Task_FlyOut(u8 taskId)
 
 static void FlyOutFieldEffect_FieldMovePose(struct Task *task)
 {
+    u16 partyIndex = gFieldEffectArguments[0];
     struct ObjectEvent *objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
     if (!ObjectEventIsMovementOverridden(objectEvent) || ObjectEventClearHeldMovementIfFinished(objectEvent))
     {
         task->tAvatarFlags = gPlayerAvatar.flags;
         gPlayerAvatar.preventStep = TRUE;
         SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_ON_FOOT);
-        SetPlayerAvatarFieldMove();
-        ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        if(partyIndex <= PARTY_SIZE)
+        {
+            SetPlayerAvatarFieldMove();
+            ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        }
         task->tState++;
     }
 }
@@ -3564,6 +3602,7 @@ static void FlyInFieldEffect_JumpOffBird(struct Task *task)
 
 static void FlyInFieldEffect_FieldMovePose(struct Task *task)
 {
+    u16 partyIndex = gFieldEffectArguments[0];
     struct ObjectEvent *objectEvent;
     struct Sprite *sprite;
     if (GetFlyBirdAnimCompleted(task->tBirdSpriteId))
@@ -3575,8 +3614,11 @@ static void FlyInFieldEffect_FieldMovePose(struct Task *task)
         sprite->x2 = 0;
         sprite->y2 = 0;
         sprite->coordOffsetEnabled = TRUE;
-        SetPlayerAvatarFieldMove();
-        ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        if(partyIndex <= PARTY_SIZE)
+        {
+            SetPlayerAvatarFieldMove();
+            ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        }
         task->tState++;
     }
 }
@@ -3909,3 +3951,42 @@ static void Task_MoveDeoxysRock(u8 taskId)
             break;
     }
 }
+
+#define tState data[0]
+#define tTimer data[1]
+void Task_EonFlute(u8 taskId)
+{
+    struct Task *task;
+    struct ObjectEvent *objectEvent;
+    objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    task = &gTasks[taskId];
+    switch(task->tState)
+    {
+    case 0:
+        task->tTimer = 0;
+        HideFollowerForFieldEffect();
+        ObjectEventTurn(objectEvent, DIR_WEST);
+        gFieldEffectArguments[0] = GetPlayerAvatarSpriteId();
+        FieldEffectStart(FLDEFF_NPCFLY_OUT);
+        task->tState++;
+        break;
+    case 1:
+        task->tTimer++;
+        if (task->tTimer > 17){
+            if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
+                DestroySprite(&gSprites[objectEvent->fieldEffectSpriteId]);
+            gObjectEvents[gPlayerAvatar.objectEventId].invisible = TRUE;
+            task->tState++;
+        }
+        break; 
+    case 2:
+        if (!FieldEffectActiveListContains(FLDEFF_NPCFLY_OUT))
+        {
+            SetMainCallback2(CB2_InitSoar);
+            DestroyTask(taskId);
+        } 
+        break;
+    }
+}
+#undef tState
+#undef tTimer

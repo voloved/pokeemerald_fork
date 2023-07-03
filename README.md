@@ -9,6 +9,28 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v2.2.0
+ - [Added Eon Flute](https://www.pokecommunity.com/showthread.php?t=422107) [Credit: camthesaxman and paccy for the Emerald Port]
+ - [Go-Goggles can be Used to and a Sandstorm in Battles](https://gitlab.com/devolov/pokeemerald_fork/-/commit/00c938536e5abfe4db4e89fd3e93b2c6ac1a450c)
+ - [Added Ability to See Zigzagoon on Cable Car](https://www.youtube.com/watch?v=7xdcbbfwEto) [Credit: Goppier]
+ - [Added Party Members Icons in the Main Menu for Existing Save Files.](https://github.com/AsparagusEduardo/pokeemerald/commit/5a638b567cfa8bb8f5a27cf96b3d1bc92a4df572) [Credit: Sangetsuki and Lunos]
+ - All Battle Frontier Pokémon are fully-evolved.
+ - Player's icon shown and them raising their Poké Ball not shown when performing a field move that the party does not known.
+ - Sped up slow and medium text speed.
+ - [Arrows show that cycling balls can be done.](https://github.com/rh-hideout/pokeemerald-expansion/pull/3039)
+ - Thief Ball option only shows if the Pokémon's catch rate is low enough (proxy for its rarity).
+ - Register icon for Cleanse Tag and Poké Doll aligned.
+ - Repels can now be registered items.
+ - [Added Frostbite](https://github.com/rh-hideout/pokeemerald-expansion/pull/2942) [Credit: Bassoonian]
+   - Option for using Frostbite as an ailment over Frozen is possible in the Special PC Menu.
+ - Added Chill-O-Wisp (Which behaves like Will-O-Wisp, but causes Frostbite).
+   - Misdreavus, the Spheal line, and the Snorunt can learn this via level-up.
+   - Drowsee, Sneasel, and Swinub can learn this as an egg move.
+ - [Made Tri Attach's Type Effectiveness Change Based on the Defender's Strength Against Fire, Electric, and Ice Types.](https://gitlab.com/devolov/pokeemerald_fork/-/wikis/Make-Tri-Attack's-power-be-based-off-how-Fire,-Ice,-and-Electric-moves-affect-the-defender)
+ - Hidden Thief Ball Added in Rival's House When Selecting Their Ball After First Talking to Thyem at Their House.
+ - Added a Mean Zigzagoon in Petalberg Woods.
+ - Bug fix where player is not properly shown when using Surf or Dive.
+
 ## v2.1.0
  - [Added last used ball in battle menu.](https://github.com/rh-hideout/pokeemerald-expansion/commit/c06029bc721119b0efd6e26c24a3f77772dfd77b) [Credit: Ghoulslash]
    - This defaults to a Thief ball if in a trainer battle.

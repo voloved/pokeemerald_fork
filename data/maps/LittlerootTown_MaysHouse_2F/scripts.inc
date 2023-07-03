@@ -50,6 +50,14 @@ LittlerootTown_MaysHouse_2F_EventScript_CheckInitDecor::
 LittlerootTown_MaysHouse_2F_EventScript_RivalsPokeBall::
 	lockall
 	goto_if_eq VAR_LITTLEROOT_RIVAL_STATE, 2, LittlerootTown_MaysHouse_2F_EventScript_MeetMay
+LittlerootTown_Rival_2F_EventScript_RivalsPokeBallTouch::
+	goto_if_set FLAG_HIDDEN_ITEM_RIVALS_HOUSE_2F_THIEF_BALL, LittlerootTown_Rival_2F_EventScript_RivalsNoThiefBall
+	giveitem ITEM_THIEF_BALL
+	setflag FLAG_HIDDEN_ITEM_RIVALS_HOUSE_2F_THIEF_BALL
+	releaseall
+	end
+
+LittlerootTown_Rival_2F_EventScript_RivalsNoThiefBall::
 	msgbox RivalsHouse_2F_Text_ItsRivalsPokeBall, MSGBOX_DEFAULT
 	releaseall
 	end
@@ -324,6 +332,8 @@ RivalsHouse_2F_Text_MayWhoAreYou:
 	.string "with POKéMON all over the world.\p"
 	.string "I… I heard about you, {PLAYER}{KUN}, from\n"
 	.string "my dad, PROF. BIRCH.\p"
+	.string "Don't talk to the Zigzagoon\n"
+	.string "in the PETALBURG WOODS.\p"
 	.string "I was hoping that you would be nice,\n"
 	.string "{PLAYER}{KUN}, and that we could be friends.\p"
 	.string "Oh, this is silly, isn't it?\n"

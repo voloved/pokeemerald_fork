@@ -2845,6 +2845,14 @@ const struct BardSound gBardSounds_Moves[MOVES_COUNT][6] = {
         { .songLengthId = 39 },
         NULL_BARD_SOUND,
         NULL_BARD_SOUND,
+    },
+    [MOVE_CHILL_O_WISP] = {
+        { .songLengthId = 17 },
+        { .songLengthId = 24 },
+        { .songLengthId = 17 },
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
     }
 };
 

@@ -1,5 +1,6 @@
 .set LOCALID_GRUNT, 3
 .set LOCALID_DEVON_EMPLOYEE, 4
+.set LOCALID_DEVON_MEANZIGZAGOON, 14
 
 PetalburgWoods_MapScripts::
 	.byte 0
@@ -318,6 +319,46 @@ PetalburgWoods_EventScript_JamesRematch::
 	msgbox PetalburgWoods_Text_IveBeenTrainingHard, MSGBOX_AUTOCLOSE
 	end
 
+PetalburgWoods_EventScript_MeanZigzagoon::
+	lock
+	faceplayer
+	msgbox PetalburgWoods_Text_TalkToMeanZigzagoon, MSGBOX_DEFAULT
+	waitmessage
+	goto_if_set FLAG_NUZLOCKE PetalburgWoods_EventScript_MeanZigzagoonNuzlocke
+	removemoney 2, 2
+	msgbox PetalburgWoods_Text_TalkToMeanZigzagoonLostHalfMoney, MSGBOX_DEFAULT
+	waitmessage
+	setflag FLAG_TEMP_MEAN_ZIGZAGOON
+	setwildbattle SPECIES_ZIGZAGOON, 1
+	waitse
+	playmoncry SPECIES_ZIGZAGOON, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	dowildbattle
+	clearflag FLAG_TEMP_MEAN_ZIGZAGOON
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, PetalburgWoods_EventScript_MeanZigzagoonDefeated
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, PetalburgWoods_EventScript_MeanZigzagoonDefeated  @ This should be impossible though
+	release
+	end
+
+PetalburgWoods_EventScript_MeanZigzagoonDefeated::
+	setflag FLAG_HIDE_MEAN_ZIGZAGOON
+	removeobject VAR_LAST_TALKED
+	msgbox PetalburgWoods_Text_SomethingForYourTroubles, MSGBOX_DEFAULT
+	waitmessage
+	giveitem ITEM_POTION, 1
+	release
+	end
+
+PetalburgWoods_EventScript_MeanZigzagoonNuzlocke::
+	removemoney 2, 2
+	msgbox PetalburgWoods_Text_TalkToMeanZigzagoonNuzlocke, MSGBOX_DEFAULT
+	waitmessage
+	turnobject LOCALID_DEVON_MEANZIGZAGOON, DIR_NORTH
+	release
+	end
+
 PetalburgWoods_Text_NotAOneToBeFound:
 	.string "Hmmm…\n"
 	.string "Not a one to be found…$"
@@ -473,4 +514,20 @@ PetalburgWoods_Text_TrainerTipsPP:
 	.string "make moves during battle.\p"
 	.string "If a POKéMON runs out of PP, it must be\n"
 	.string "taken to a POKéMON CENTER.$"
+
+PetalburgWoods_Text_TalkToMeanZigzagoon:
+	.string "Big Mistake, {PLAYER}.$"
+
+PetalburgWoods_Text_TalkToMeanZigzagoonLostHalfMoney:
+	.string "You just lost half your money.$"
+
+PetalburgWoods_Text_TalkToMeanZigzagoonNuzlocke:
+	.string "Hang on, you're doing the Nuzlocke\n"
+	.string "challenge.\p"
+	.string "This troll isn't worth ruining your run.\p"
+	.string "Half of your money has been\n"
+	.string "taken though.$"
+
+PetalburgWoods_Text_SomethingForYourTroubles:
+	.string "Here's a POTION for your troubles.$"
 

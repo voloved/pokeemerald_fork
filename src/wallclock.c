@@ -881,7 +881,7 @@ static void Task_ViewClock_WaitFadeIn(u8 taskId)
 static void Task_ViewClock_HandleInput(u8 taskId)
 {
     InitClockWithRtc(taskId);
-    if (JOY_NEW(A_BUTTON) || (JOY_NEW(B_BUTTON) && !JOY_HELD(R_BUTTON)))
+    if (JOY_NEW(A_BUTTON) || JOY_NEW_RAW(B_BUTTON))
         gTasks[taskId].func = Task_ViewClock_FadeOut;
     if (JOY_NEW(R_BUTTON)){
         FastForwardTime(1, 24);

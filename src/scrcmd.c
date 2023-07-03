@@ -1730,8 +1730,13 @@ bool8 ScrCmd_bufferpartymonnick(struct ScriptContext *ctx)
     u8 stringVarIndex = ScriptReadByte(ctx);
     u16 partyIndex = VarGet(ScriptReadHalfword(ctx));
 
-    GetMonData(&gPlayerParty[partyIndex], MON_DATA_NICKNAME, sScriptStringVars[stringVarIndex]);
-    StringGet_Nickname(sScriptStringVars[stringVarIndex]);
+    if (partyIndex > PARTY_SIZE){
+        StringCopy_PlayerName(sScriptStringVars[stringVarIndex], gSaveBlock2Ptr->playerName);
+    }
+    else{
+        GetMonData(&gPlayerParty[partyIndex], MON_DATA_NICKNAME, sScriptStringVars[stringVarIndex]);
+        StringGet_Nickname(sScriptStringVars[stringVarIndex]);
+    }
     return FALSE;
 }
 
@@ -1886,9 +1891,10 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
             break;
         }
     }
-    if (gSpecialVar_Result == PARTY_SIZE && PlayerHasMove(moveId)){  // If no mon have the move, but the player has the HM in bag, use the first mon
-            gSpecialVar_Result = 0;
-            gSpecialVar_0x8004 = GetMonData(&gPlayerParty[0], MON_DATA_SPECIES, NULL);
+    if (gSpecialVar_Result == PARTY_SIZE && PlayerHasMove(moveId)){ 
+        // If no mon have the move, but the player has the HM in bag, use the actual player
+            gSpecialVar_Result = PARTY_SIZE + 1;  // A number larger than the party size is treated as using to player elsewhere in the code
+            gSpecialVar_0x8004 = SPECIES_NONE;
     }
     return FALSE;
 }
@@ -1906,9 +1912,11 @@ bool8 ScrCmd_addmoney(struct ScriptContext *ctx)
 bool8 ScrCmd_removemoney(struct ScriptContext *ctx)
 {
     u32 amount = ScriptReadWord(ctx);
-    u8 ignore = ScriptReadByte(ctx);
+    u8 setting = ScriptReadByte(ctx);
+    if (setting == 2)
+        amount = SAFE_DIV(GetMoney(&gSaveBlock1Ptr->money), amount);
 
-    if (!ignore)
+    if (setting != 1)
         RemoveMoney(&gSaveBlock1Ptr->money, amount);
     return FALSE;
 }

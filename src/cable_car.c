@@ -892,7 +892,8 @@ static void CreateCableCarSprites(void)
     if ((rval % 64) == 0)
     {
         // Unclear if this was intentional, but the - 1 in the below ARRAY_COUNT means the Zigzagoon is never used
-        spriteId = CreateObjectGraphicsSprite(hikerGraphicsIds[rval % (ARRAY_COUNT(hikerGraphicsIds) - 1)], hikerCallbacks[GOING_DOWN], hikerCoords[GOING_DOWN][0], hikerCoords[GOING_DOWN][1], 106);
+        rval >>= 7;
+        spriteId = CreateObjectGraphicsSprite(hikerGraphicsIds[rval % ARRAY_COUNT(hikerGraphicsIds)], hikerCallbacks[GOING_DOWN], hikerCoords[GOING_DOWN][0], hikerCoords[GOING_DOWN][1], 106);
         if (spriteId != MAX_SPRITES)
         {
             gSprites[spriteId].oam.priority = 2;
@@ -900,6 +901,7 @@ static void CreateCableCarSprites(void)
             gSprites[spriteId].y2 = -gSprites[spriteId].centerToCornerVecY;
 
             // Randomly choose which direction the NPC is going
+            rval >>= 2;
             if (!GOING_DOWN)
             {
                 if (rval % 2)
@@ -928,6 +930,7 @@ static void CreateCableCarSprites(void)
                     gSprites[spriteId].sSameDir = FALSE;
                 }
             }
+            rval >>= 1;
             gSprites[spriteId].sDelay = hikerMovementDelayTable[rval % ARRAY_COUNT(hikerMovementDelayTable)];
         }
     }

@@ -54,6 +54,7 @@
 #include "constants/songs.h"
 #include "constants/trainers.h"
 #include "constants/flags.h"
+#include "constants/battle.h"
 #include "debug.h"
 
 extern const u8 *const gBattleScriptsForMoveEffects[];
@@ -622,6 +623,7 @@ static const u32 sStatusFlagsForMoveEffects[NUM_MOVE_EFFECTS] =
     [MOVE_EFFECT_FREEZE]         = STATUS1_FREEZE,
     [MOVE_EFFECT_PARALYSIS]      = STATUS1_PARALYSIS,
     [MOVE_EFFECT_TOXIC]          = STATUS1_TOXIC_POISON,
+    [MOVE_EFFECT_FROSTBITE]      = STATUS1_FROSTBITE,
     [MOVE_EFFECT_CONFUSION]      = STATUS2_CONFUSION,
     [MOVE_EFFECT_FLINCH]         = STATUS2_FLINCHED,
     [MOVE_EFFECT_UPROAR]         = STATUS2_UPROAR,
@@ -674,6 +676,7 @@ static const u8 *const sMoveEffectBS_Ptrs[] =
     [MOVE_EFFECT_REMOVE_PARALYSIS] = BattleScript_MoveEffectSleep,
     [MOVE_EFFECT_ATK_DEF_DOWN]     = BattleScript_MoveEffectSleep,
     [MOVE_EFFECT_RECOIL_33]        = BattleScript_MoveEffectRecoil,
+    [MOVE_EFFECT_FROSTBITE]        = BattleScript_MoveEffectFrostbite,
 };
 
 static const struct WindowTemplate sUnusedWinTemplate =
@@ -1149,8 +1152,10 @@ static void Cmd_accuracycheck(void)
             buff = MIN_STAT_STAGE;
         if (buff > MAX_STAT_STAGE)
             buff = MAX_STAT_STAGE;
-
-        moveAcc = gBattleMoves[move].accuracy;
+        if (move ==  MOVE_CHILL_O_WISP && !FlagGet(FLAG_USE_FROSTBITE))
+            moveAcc = gBattleMoves[move].secondaryEffectChance;
+        else
+            moveAcc = gBattleMoves[move].accuracy;
         // check Thunder on sunny weather
         if (WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_SUN && gBattleMoves[move].effect == EFFECT_THUNDER)
             moveAcc = 50;
@@ -1361,6 +1366,155 @@ static void ModulateDmgByType(u8 multiplier)
     }
 }
 
+static s32 GetMultiplierTriAttack(s32 mult1, s32 mult2, s32 mult3){
+    s32 mults[3] = {mult1, mult2, mult3};
+    u32 i = 0, SupEffCount = 0, NotEffCount = 0, NoEffCount = 0;
+    for (i = 0; i < ARRAY_COUNT(mults); i++){
+        if (mults[i] == TYPE_MUL_SUPER_EFFECTIVE)
+            SupEffCount++;
+        else if (mults[i] == TYPE_MUL_NOT_EFFECTIVE)
+            NotEffCount++;
+        else if (mults[i]== TYPE_MUL_NO_EFFECT)
+            NoEffCount++;
+    }
+    if (SupEffCount == 0 && NotEffCount ==  0 && NoEffCount == 0)
+        return TYPE_MUL_NORMAL_TRI_ATTACK;
+    if (NoEffCount > 0){  // If there's a SE when also being NoEff, allow some damage to pass
+        if (SupEffCount > 1)
+            return TYPE_MUL_SE_NE_SAME_TRI_ATTACK;
+        else if (SupEffCount == 1)
+            return TYPE_MUL_NORMAL_TRI_ATTACK;
+        else
+            return TYPE_MUL_NO_EFFECT_TRI_ATTACK;
+    }
+    if (SupEffCount == NotEffCount)  // To buff Tri Attack, if there's one NE and one SE, then give SE more weight
+        return TYPE_MUL_SE_NE_SAME_TRI_ATTACK;
+    if (SupEffCount == 1 && NotEffCount ==  2)
+        return TYPE_MUL_NORMAL_TRI_ATTACK;
+    if (SupEffCount > NotEffCount)
+    {
+        SupEffCount -= NotEffCount;
+        switch (SupEffCount)
+        {
+        case 1:
+            return TYPE_MUL_SUPER_EFFECTIVE_1_TRI_ATTACK;
+        case 2:
+            return TYPE_MUL_SUPER_EFFECTIVE_2_TRI_ATTACK;
+        case 3:
+            return TYPE_MUL_SUPER_EFFECTIVE_3_TRI_ATTACK;
+        default:
+            return TYPE_MUL_NORMAL_TRI_ATTACK;
+        }
+    }
+    if (SupEffCount < NotEffCount)
+    {
+        NotEffCount -= SupEffCount;
+        switch (NotEffCount)
+        {
+        case 1:
+            return TYPE_MUL_NOT_EFFECTIVE_1_TRI_ATTACK;
+        case 2:
+            return TYPE_MUL_NOT_EFFECTIVE_2_TRI_ATTACK;
+        case 3:
+            return TYPE_MUL_NOT_EFFECTIVE_3_TRI_ATTACK;
+        default:
+            return TYPE_MUL_NORMAL_TRI_ATTACK;
+        }
+    }
+    return TYPE_MUL_NORMAL_TRI_ATTACK; // This section of the code should be unreachable, but just in case.
+}
+
+static void ModulateDmgByTypeTriAttack(u16 multiplier)
+{
+    gBattleMoveDamage = gBattleMoveDamage * multiplier / TYPE_MUL_NORMAL_TRI_ATTACK;
+    if (gBattleMoveDamage == 0 && multiplier != 0)
+        gBattleMoveDamage = 1;
+    if (multiplier == TYPE_MUL_NO_EFFECT){
+        gMoveResultFlags |= MOVE_RESULT_DOESNT_AFFECT_FOE;
+        gMoveResultFlags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE;
+        gMoveResultFlags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
+    }
+    else if (multiplier < TYPE_MUL_NORMAL_TRI_ATTACK){
+        if (gBattleMoves[gCurrentMove].power && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
+        {
+            if (gMoveResultFlags & MOVE_RESULT_SUPER_EFFECTIVE)
+                gMoveResultFlags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
+            else
+                gMoveResultFlags |= MOVE_RESULT_NOT_VERY_EFFECTIVE;
+        }
+    }
+    else if (multiplier > TYPE_MUL_NORMAL_TRI_ATTACK){
+        if (gBattleMoves[gCurrentMove].power && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
+        {
+            if (gMoveResultFlags & MOVE_RESULT_NOT_VERY_EFFECTIVE)
+                gMoveResultFlags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE;
+            else
+                gMoveResultFlags |= MOVE_RESULT_SUPER_EFFECTIVE;
+        }
+    }
+}
+
+static void ModulateDmgByTypeTriAttack2(u8 multiplier, u16 move, u8 *flags)
+{
+    gBattleMoveDamage = gBattleMoveDamage * multiplier / TYPE_MUL_NORMAL_TRI_ATTACK;
+    if (gBattleMoveDamage == 0 && multiplier != 0)
+        gBattleMoveDamage = 1;
+    if (multiplier == TYPE_MUL_NO_EFFECT){
+        *flags |= MOVE_RESULT_DOESNT_AFFECT_FOE;
+        *flags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE;
+        *flags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
+    }
+    else if (multiplier < TYPE_MUL_NORMAL_TRI_ATTACK){
+        if (gBattleMoves[move].power && !(*flags & MOVE_RESULT_NO_EFFECT))
+        {
+            if (*flags & MOVE_RESULT_SUPER_EFFECTIVE)
+                *flags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
+            else
+                *flags |= MOVE_RESULT_NOT_VERY_EFFECTIVE;
+        }
+    }
+    else if (multiplier > TYPE_MUL_NORMAL_TRI_ATTACK){
+        // MOVE_TRI_ATTACK is being fed in as `move` so that other moves can also trigger this offEFECT_TRI_ATTACK. Not that it will though
+        if (gBattleMoves[move].power && !(*flags & MOVE_RESULT_NO_EFFECT))
+        {
+            if (*flags & MOVE_RESULT_NOT_VERY_EFFECTIVE)
+                *flags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE;
+            else
+                *flags |= MOVE_RESULT_SUPER_EFFECTIVE;
+        }
+    }
+}
+
+static u8 ModulateDmgByTypeTriAttack3(u8 currMult, u8 prevMult)
+// Used to account for both types for Tri Attack
+{
+    if (prevMult == TYPE_MUL_BLANK)
+        return currMult;
+    if (prevMult == TYPE_MUL_NO_EFFECT)
+        return TYPE_MUL_NO_EFFECT;
+    switch (currMult)
+    {
+    case TYPE_MUL_NO_EFFECT:
+        return TYPE_MUL_NO_EFFECT;
+    case TYPE_MUL_NOT_EFFECTIVE:
+        if (prevMult == TYPE_MUL_SUPER_EFFECTIVE)
+            return TYPE_MUL_NORMAL;
+        else
+            return TYPE_MUL_NOT_EFFECTIVE;
+        break;
+    case TYPE_MUL_SUPER_EFFECTIVE:
+        if (prevMult == TYPE_MUL_NOT_EFFECTIVE)
+            return TYPE_MUL_NORMAL;
+        else
+            return TYPE_MUL_SUPER_EFFECTIVE;
+        break;
+    case TYPE_MUL_NORMAL:
+    default:
+        return prevMult;
+        break;
+    }
+}
+
 s32 GetTypeEffectiveness(struct Pokemon *mon, u8 moveType) {
     u16 species = GetMonData(mon, MON_DATA_SPECIES);
     u8 type1 = gSpeciesInfo[species].type1;
@@ -1417,6 +1571,147 @@ s32 GetTypeEffectiveness(struct Pokemon *mon, u8 moveType) {
     return flags;
 }
 
+static u8 TypeCalcTriAttack(u8 defender, u16 move, u8 flags){
+    s32 i,j = 0;
+    s32 typeTemp = TYPE_MUL_BLANK, multTotal = 0, multFire = 0, multElec = 0, multIce = 0;
+    static const u8 typesToCheck[] = { TYPE_FIRE, TYPE_ELECTRIC, TYPE_ICE };
+    for (j = 0; j < ARRAY_COUNT(typesToCheck); j++){
+        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        {
+            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            {
+                if (gBattleMons[defender].status2 & STATUS2_FORESIGHT)
+                    break;
+                i += 3;
+                continue;
+            }
+
+            else if (TYPE_EFFECT_ATK_TYPE(i) == typesToCheck[j])
+            {
+                // check type1
+                if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[defender].type1)
+                    typeTemp = ModulateDmgByTypeTriAttack3(TYPE_EFFECT_MULTIPLIER(i), typeTemp);
+                // check type2
+                if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[defender].type2 &&
+                    gBattleMons[defender].type1 != gBattleMons[defender].type2)
+                    typeTemp = ModulateDmgByTypeTriAttack3(TYPE_EFFECT_MULTIPLIER(i), typeTemp);
+            }
+            i += 3;
+        }
+        if (typeTemp == TYPE_MUL_BLANK)
+            typeTemp = TYPE_MUL_NORMAL;
+        switch (typesToCheck[j])
+        {
+        case TYPE_FIRE:
+            multFire = typeTemp;
+            break;
+        case TYPE_ELECTRIC:
+            multElec = typeTemp;
+            break;
+        case TYPE_ICE:
+            multIce = typeTemp;
+            break;
+        }
+        i = 0;
+        typeTemp = TYPE_MUL_BLANK;
+    }
+    multTotal = GetMultiplierTriAttack(multFire, multElec, multIce);
+    ModulateDmgByTypeTriAttack2(multTotal, move, &flags);
+    return flags;
+}
+
+static u8 AI_TypeCalcTriAttack(u8 type1, u8 type2, u16 move, u8 flags){
+    s32 i,j = 0;
+    s32 typeTemp = TYPE_MUL_BLANK, multTotal = 0, multFire = 0, multElec = 0, multIce = 0;
+    static const u8 typesToCheck[] = { TYPE_FIRE, TYPE_ELECTRIC, TYPE_ICE };
+    for (j = 0; j < ARRAY_COUNT(typesToCheck); j++){
+        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        {
+            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            {
+                i += 3;
+                continue;
+            }
+            if (TYPE_EFFECT_ATK_TYPE(i) == typesToCheck[j])
+            {
+                // check type1
+                if (TYPE_EFFECT_DEF_TYPE(i) == type1)
+                    typeTemp = ModulateDmgByTypeTriAttack3(TYPE_EFFECT_MULTIPLIER(i), typeTemp);
+                // check type2
+                if (TYPE_EFFECT_DEF_TYPE(i) == type2 && type1 != type2)
+                    typeTemp = ModulateDmgByTypeTriAttack3(TYPE_EFFECT_MULTIPLIER(i), typeTemp);
+            }
+            i += 3;
+        }
+        if (typeTemp == TYPE_MUL_BLANK)
+            typeTemp = TYPE_MUL_NORMAL;
+        switch (typesToCheck[j])
+        {
+        case TYPE_FIRE:
+            multFire = typeTemp;
+            break;
+        case TYPE_ELECTRIC:
+            multElec = typeTemp;
+            break;
+        case TYPE_ICE:
+            multIce = typeTemp;
+            break;
+        }
+        i = 0;
+        typeTemp = TYPE_MUL_BLANK;
+    }
+    multTotal = GetMultiplierTriAttack(multFire, multElec, multIce);
+    ModulateDmgByTypeTriAttack2(multTotal, move, &flags);
+    return flags;
+}
+
+static void TypeCalcTriAttackForCmd(){
+    s32 i,j = 0;
+    s32 typeTemp = TYPE_MUL_BLANK, multTotal = 0, multFire = 0, multElec = 0, multIce = 0;
+    static const u8 typesToCheck[] = { TYPE_FIRE, TYPE_ELECTRIC, TYPE_ICE };
+    for (j = 0; j < ARRAY_COUNT(typesToCheck); j++){
+        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        {
+            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            {
+                if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT)
+                    break;
+                i += 3;
+                continue;
+            }
+            else if (TYPE_EFFECT_ATK_TYPE(i) == typesToCheck[j])
+            {
+                // check type1
+                if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type1)
+                    typeTemp = ModulateDmgByTypeTriAttack3(TYPE_EFFECT_MULTIPLIER(i), typeTemp);
+                // check type2
+                if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type2 &&
+                    gBattleMons[gBattlerTarget].type1 != gBattleMons[gBattlerTarget].type2)
+                    typeTemp = ModulateDmgByTypeTriAttack3(TYPE_EFFECT_MULTIPLIER(i), typeTemp);
+            }
+            i += 3;
+        }
+        if (typeTemp == TYPE_MUL_BLANK)
+            typeTemp = TYPE_MUL_NORMAL;
+        switch (typesToCheck[j])
+        {
+        case TYPE_FIRE:
+            multFire = typeTemp;
+            break;
+        case TYPE_ELECTRIC:
+            multElec = typeTemp;
+            break;
+        case TYPE_ICE:
+            multIce = typeTemp;
+            break;
+        }
+        i = 0;
+        typeTemp = TYPE_MUL_BLANK;
+    }
+    multTotal = GetMultiplierTriAttack(multFire, multElec, multIce);
+    ModulateDmgByTypeTriAttack(multTotal);
+}
+
 static void Cmd_typecalc(void)
 {
     s32 i = 0;
@@ -1446,6 +1741,8 @@ static void Cmd_typecalc(void)
         gBattleCommunication[MISS_TYPE] = B_MSG_GROUND_MISS;
         RecordAbilityBattle(gBattlerTarget, gLastUsedAbility);
     }
+    else if (gBattleMoves[gCurrentMove].effect == EFFECT_TRI_ATTACK)
+        TypeCalcTriAttackForCmd();
     else
     {
         while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
@@ -1620,6 +1917,8 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     {
         flags |= (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE);
     }
+    else if (gBattleMoves[move].effect == EFFECT_TRI_ATTACK)
+        flags = TypeCalcTriAttack(defender, move, flags);
     else
     {
         while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
@@ -1672,6 +1971,8 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     {
         flags = MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE;
     }
+    else if (gBattleMoves[move].effect == EFFECT_TRI_ATTACK)
+        flags = AI_TypeCalcTriAttack(type1, type2, move, flags);
     else
     {
         while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
@@ -2443,6 +2744,19 @@ void SetMoveEffect(bool8 primary, u8 certain)
             CancelMultiTurnMoves(gEffectBattler);
             statusChanged = TRUE;
             break;
+        case STATUS1_FROSTBITE:
+            if (IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_ICE))
+                break;
+            if (gBattleMons[gEffectBattler].status1)
+                break;
+            if (noSunCanFreeze == FALSE)
+                break;
+            if (gBattleMons[gEffectBattler].ability == ABILITY_MAGMA_ARMOR)
+                break;
+
+            CancelMultiTurnMoves(gEffectBattler);
+            statusChanged = TRUE;
+            break;
         case STATUS1_PARALYSIS:
             if (gBattleMons[gEffectBattler].ability == ABILITY_LIMBER)
             {
@@ -2648,6 +2962,8 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 else
                 {
                     gBattleCommunication[MOVE_EFFECT_BYTE] = Random() % 3 + 3;
+                    if (FlagGet(FLAG_USE_FROSTBITE) && gBattleCommunication[MOVE_EFFECT_BYTE] == MOVE_EFFECT_FREEZE)
+                        gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_FROSTBITE;
                     SetMoveEffect(FALSE, 0);
                 }
                 break;
@@ -4349,7 +4665,6 @@ static void Cmd_moveend(void)
             if (gBattleMons[gBattlerTarget].status1 & STATUS1_FREEZE
                 && gBattleMons[gBattlerTarget].hp != 0
                 && gBattlerAttacker != gBattlerTarget
-                && gSpecialStatuses[gBattlerTarget].specialDmg
                 && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
                 && moveType == TYPE_FIRE)
             {
@@ -6584,6 +6899,12 @@ static void Cmd_various(void)
         BtlController_EmitPlayFanfareOrBGM(BUFFER_A, MUS_VICTORY_TRAINER, TRUE);
         MarkBattlerForControllerExec(gActiveBattler);
         break;
+    case VARIOUS_JUMP_IF_SET:
+        if (FlagGet(T1_READ_16(gBattlescriptCurrInstr + 3)))
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 5);
+        else
+            gBattlescriptCurrInstr += 9;
+        return;
     }
 
     gBattlescriptCurrInstr += 3;
@@ -9144,7 +9465,7 @@ static void Cmd_callterrainattack(void)
 // Refresh
 static void Cmd_cureifburnedparalysedorpoisoned(void)
 {
-    if (gBattleMons[gBattlerAttacker].status1 & (STATUS1_POISON | STATUS1_BURN | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON))
+    if (gBattleMons[gBattlerAttacker].status1 & (STATUS1_POISON | STATUS1_BURN | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON | STATUS1_FROSTBITE))
     {
         gBattleMons[gBattlerAttacker].status1 = 0;
         gBattlescriptCurrInstr += 5;
@@ -9983,10 +10304,12 @@ static void Cmd_handleballthrow(void)
 
         if (gBattleMons[gBattlerTarget].status1 & (STATUS1_SLEEP | STATUS1_FREEZE))
             odds *= 2;
-        if (gBattleMons[gBattlerTarget].status1 & (STATUS1_POISON | STATUS1_BURN | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON))
+        if (gBattleMons[gBattlerTarget].status1 & (STATUS1_POISON | STATUS1_BURN | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON | STATUS1_FROSTBITE))
             odds = (odds * 15) / 10;
 
-        if (gLastUsedItem != ITEM_SAFARI_BALL)
+        if (FlagGet(FLAG_TEMP_MEAN_ZIGZAGOON))
+            odds = 0;
+        else if (gLastUsedItem != ITEM_SAFARI_BALL)
         {
             if (gLastUsedItem == ITEM_MASTER_BALL)
             {

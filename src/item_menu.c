@@ -1035,14 +1035,10 @@ static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u8 y)
             StringExpandPlaceholders(gStringVar4, gText_xVar1);
             offset = GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, 119);
             BagMenu_Print(windowId, FONT_NARROW, gStringVar4, offset, y, 0, 0, TEXT_SKIP_DRAW, COLORID_NORMAL);
-            if (gSaveBlock1Ptr->registeredItem && gSaveBlock1Ptr->registeredItem == itemId){
-                selOff = (GetStringWidth(FONT_NORMAL, ItemId_GetName(itemId), 0)) + 2;
-                BlitBitmapToWindow(windowId, sRegisteredSelect_Gfx, selOff, y - 1, 24, 16);
-            }
-            else if (gSaveBlock1Ptr->registeredLongItem && gSaveBlock1Ptr->registeredLongItem == itemId){
-                selOff = (GetStringWidth(FONT_NORMAL, ItemId_GetName(itemId), 0)) + 2;
-                BlitBitmapToWindow(windowId, sRegisteredSelectLong_Gfx, selOff, y - 1, 24, 16);
-            }
+            if (gSaveBlock1Ptr->registeredItem && gSaveBlock1Ptr->registeredItem == itemId)
+                BlitBitmapToWindow(windowId, sRegisteredSelect_Gfx, 71, y - 1, 24, 16);
+            else if (gSaveBlock1Ptr->registeredLongItem && gSaveBlock1Ptr->registeredLongItem == itemId)
+                BlitBitmapToWindow(windowId, sRegisteredSelectLong_Gfx, 71, y - 1, 24, 16);
         }
         else
         {
@@ -1699,7 +1695,8 @@ static void OpenContextMenu(u8 taskId)
                 memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_ItemsPocket, sizeof(sContextMenuItems_ItemsPocket));
                 if (ItemIsMail(gSpecialVar_ItemId) == TRUE)
                     gBagMenu->contextMenuItemsBuffer[0] = ACTION_CHECK;
-                if (gSpecialVar_ItemId == ITEM_CLEANSE_TAG || gSpecialVar_ItemId == ITEM_POKE_DOLL)
+                if (gSpecialVar_ItemId == ITEM_CLEANSE_TAG || gSpecialVar_ItemId == ITEM_POKE_DOLL
+                || ItemId_GetFieldFunc(gSpecialVar_ItemId) == ItemUseOutOfBattle_Repel)
                 {
                     if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
                         gBagMenu->contextMenuItemsBuffer[2] = ACTION_DESELECT;
@@ -1709,7 +1706,8 @@ static void OpenContextMenu(u8 taskId)
                 break;
             case KEYITEMS_POCKET:
                 gBagMenu->contextMenuItemsPtr = gBagMenu->contextMenuItemsBuffer;
-                if (ItemId_GetFieldFunc(gSpecialVar_ItemId) == ItemUseOutOfBattle_CannotUse){
+                if ((ItemId_GetFieldFunc(gSpecialVar_ItemId) == ItemUseOutOfBattle_CannotUse && !gMain.inBattle)
+                    || (ItemId_GetBattleUsage(gSpecialVar_ItemId) == 0 && gMain.inBattle)){
                     gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_Cancel);
                     memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_Cancel, sizeof(sContextMenuItems_Cancel));
                 }
@@ -2765,6 +2763,7 @@ enum BagSortOptions
 enum ItemSortType
 {
 	ITEM_TYPE_SORT_FIRST,
+    ITEM_TYPE_REPEL,
     ITEM_TYPE_FIELD_USE,
 	ITEM_TYPE_HEALTH_RECOVERY,
 	ITEM_TYPE_STATUS_RECOVERY,
@@ -2855,9 +2854,10 @@ static const u16 sItemsByType[ITEMS_COUNT] =
     [ITEM_CLEANSE_TAG] = ITEM_TYPE_SORT_FIRST,
     [ITEM_POKE_DOLL] = ITEM_TYPE_SORT_FIRST,
 
-    [ITEM_REPEL] = ITEM_TYPE_FIELD_USE,
-    [ITEM_SUPER_REPEL] = ITEM_TYPE_FIELD_USE,
-    [ITEM_MAX_REPEL] = ITEM_TYPE_FIELD_USE,
+    [ITEM_REPEL] = ITEM_TYPE_REPEL,
+    [ITEM_SUPER_REPEL] = ITEM_TYPE_REPEL,
+    [ITEM_MAX_REPEL] = ITEM_TYPE_REPEL,
+
     [ITEM_ESCAPE_ROPE] = ITEM_TYPE_FIELD_USE,
     [ITEM_HEART_SCALE] = ITEM_TYPE_FIELD_USE,
 

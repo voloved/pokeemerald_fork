@@ -47,30 +47,25 @@ Debug_Script_1::
 	end
 
 Debug_Script_2::
-	setflag FLAG_NUZLOCKE
+	call RustboroCity_House1_EventScript_Hiker
 	end
 
 Debug_Script_3::
-	clearflag FLAG_NUZLOCKE
-	clearflag FLAG_NUZLOCKE_LOST
+	call PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
 	end
 
 Debug_Script_4::
-	setflag FLAG_NUZLOCKE_LOST
-	end
-
-Debug_Script_5::
-	setflag FLAG_MOVE_SPLIT_USE_ORIGINAL
-	end
-
-Debug_Script_6::
-	clearflag FLAG_MOVE_SPLIT_USE_ORIGINAL
-	end
-
-Debug_Script_7::
 	call EverGrandeCity_HallOfFame_EventScript_ResetEliteFour
 	end
 
+Debug_Script_5::
+	end
+
+Debug_Script_6::
+	end
+
+Debug_Script_7::
+	end
+
 Debug_Script_8::
-	call RustboroCity_House1_EventScript_Hiker
 	end

@@ -144,6 +144,17 @@ bool8 DoesPartyHaveEnigmaBerry(void)
     return hasItem;
 }
 
+static void SetMeanZigzagoonData(void){
+    const u8 abilityIfMeanZigzagoon = 1;
+    u8 name[10] = _("MEAN ZIG");
+    SetMonData(&gEnemyParty[0], MON_DATA_NICKNAME, name);
+    SetMonData(&gEnemyParty[0], MON_DATA_ABILITY_NUM, &abilityIfMeanZigzagoon);
+    SetMonMoveSlot(&gEnemyParty[0], MOVE_DEATH_MOVE, 0);
+    SetMonMoveSlot(&gEnemyParty[0], MOVE_NONE, 1);
+    SetMonMoveSlot(&gEnemyParty[0], MOVE_NONE, 2);
+    SetMonMoveSlot(&gEnemyParty[0], MOVE_NONE, 3);
+}
+
 void CreateScriptedWildMon(u16 species, u8 level, u16 item)
 {
     u8 heldItem[2];
@@ -156,6 +167,8 @@ void CreateScriptedWildMon(u16 species, u8 level, u16 item)
         heldItem[1] = item >> 8;
         SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, heldItem);
     }
+    if (FlagGet(FLAG_TEMP_MEAN_ZIGZAGOON))
+        SetMeanZigzagoonData();
 }
 
 void ScriptSetMonMoveSlot(u8 monIndex, u16 move, u8 slot)

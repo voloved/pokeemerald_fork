@@ -1171,11 +1171,13 @@
 	.endm
 
 	@ Subtracts value from the player's money. If the player has less than 'value' money, their money is set to 0.
-	@ If 'disable' is set to anything but 0 then this command does nothing.
-	.macro removemoney value:req, disable=0
+	@ If 'setting' is set to 0 then 'value' will be subtracted.
+	@ If 'setting' is set to 1 then this command does nothing.
+	@ If 'setting' is set to 2 then the current money will be divided by 'value'.
+	.macro removemoney value:req, setting=0
 	.byte 0x91
 	.4byte \value
-	.byte \disable
+	.byte \setting
 	.endm
 
 	@ Checks if the player has money >= value. VAR_RESULT is set to TRUE if the player has enough money, or FALSE if they do not.

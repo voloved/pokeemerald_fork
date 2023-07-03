@@ -313,6 +313,7 @@ const u16 gEggMoves[] = {
               MOVE_ROLE_PLAY,
               MOVE_FIRE_PUNCH,
               MOVE_THUNDER_PUNCH,
+              MOVE_WILL_O_WISP,
               MOVE_ICE_PUNCH),
 
     egg_moves(KRABBY,
@@ -754,7 +755,7 @@ const u16 gEggMoves[] = {
               MOVE_COUNTER,
               MOVE_SPITE,
               MOVE_FORESIGHT,
-              MOVE_REFLECT,
+              MOVE_CHILL_O_WISP,
               MOVE_BITE,
               MOVE_CRUSH_CLAW,
               MOVE_FAKE_OUT),
@@ -779,7 +780,7 @@ const u16 gEggMoves[] = {
               MOVE_BODY_SLAM,
               MOVE_ROCK_SLIDE,
               MOVE_ANCIENT_POWER,
-              MOVE_MUD_SHOT,
+              MOVE_CHILL_O_WISP,
               MOVE_ICICLE_SPEAR,
               MOVE_DOUBLE_EDGE),
 

@@ -36,9 +36,9 @@ struct Main
 
     /*0x43A*/ u8 state;
 
-    /*0x43A*/ u8 oamLoadDisabled:1;
-    /*0x43A*/ u8 inBattle:1;
-    /*0x43A*/ u8 anyLinkBattlerHasFrontierPass:1;
+    /*0x43B*/ u8 oamLoadDisabled:1;
+    /*0x43B*/ u8 inBattle:1;
+    /*0x43B*/ u8 anyLinkBattlerHasFrontierPass:1;
 };
 
 #define GAME_CODE_LENGTH 4

@@ -115,6 +115,7 @@
 #define JOY_NEW(button) TEST_BUTTON(gMain.newKeys,  button)
 #define JOY_HELD(button)  TEST_BUTTON(gMain.heldKeys, button)
 #define JOY_RELEASED(button)  TEST_BUTTON(gMain.newKeysReleased, button)
+#define JOY_NEW_RAW(button) TEST_BUTTON(gMain.newKeysRaw,  button)
 #define JOY_HELD_RAW(button) TEST_BUTTON(gMain.heldKeysRaw, button)
 #define JOY_REPEAT(button) TEST_BUTTON(gMain.newAndRepeatedKeys, button)
 
@@ -126,7 +127,8 @@
     f;                       \
 })
 
-#define DIV_ROUND_UP(val, roundBy)(((val) / (roundBy)) + (((val) % (roundBy)) ? 1 : 0))
+#define DIV_ROUND_UP(dividend, divisor)(((dividend) / (divisor)) + (((dividend) % (divisor)) ? 1 : 0))
+#define DIV_ROUND(dividend, divisor)(((dividend) + (divisor) / 2) / (divisor))
 
 #define ROUND_BITS_TO_BYTES(numBits) DIV_ROUND_UP(numBits, 8)
 

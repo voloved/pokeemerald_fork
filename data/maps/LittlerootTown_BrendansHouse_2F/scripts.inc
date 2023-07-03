@@ -51,8 +51,7 @@ LittlerootTown_BrendansHouse_2F_EventScript_CheckInitDecor::
 LittlerootTown_BrendansHouse_2F_EventScript_RivalsPokeBall::
 	lockall
 	goto_if_eq VAR_LITTLEROOT_RIVAL_STATE, 2, LittlerootTown_BrendansHouse_2F_EventScript_MeetBrendan
-	msgbox RivalsHouse_2F_Text_ItsRivalsPokeBall, MSGBOX_DEFAULT
-	releaseall
+	goto LittlerootTown_Rival_2F_EventScript_RivalsPokeBallTouch
 	end
 
 LittlerootTown_BrendansHouse_2F_EventScript_MeetBrendan::

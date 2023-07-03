@@ -680,9 +680,10 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun
 	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
 	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit
-	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu
-	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
-	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_FrostBite
+	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu
+	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	case 8, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
 	return
@@ -700,13 +701,16 @@ EventScript_Multichoice_BirchPCOptions_5:
 EventScript_Multichoice_BirchPCOptions_9:
 	goto_if_set FLAG_MOVE_SPLIT_USE_ORIGINAL, EventScript_Multichoice_BirchPCOptions_12
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_8, 4
+EventScript_Multichoice_BirchPCOptions_17:
+	goto_if_set FLAG_USE_FROSTBITE, EventScript_Multichoice_BirchPCOptions_18
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_16, 5
 EventScript_Multichoice_BirchPCOptions_15:
 	goto_if_set FLAG_RELEARN_IN_PARTY_MENU, EventScript_Multichoice_BirchPCOptions_16
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_14, 5	
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_14, 6
 EventScript_Multichoice_BirchPCOptions_13:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 6
-	dynmultipush EventScript_Multichoice_Exit, 7
-	dynmultistack 0, 0, TRUE, 8, FALSE, 0, DYN_MULTICHOICE_CB_NONE
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 7
+	dynmultipush EventScript_Multichoice_Exit, 8
+	dynmultistack 0, 0, TRUE, 9, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	return
 
 EventScript_Multichoice_BirchPCOptions_2:
@@ -726,8 +730,12 @@ EventScript_Multichoice_BirchPCOptions_12:
 	goto EventScript_Multichoice_BirchPCOptions_15
 
 EventScript_Multichoice_BirchPCOptions_16:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_13, 5
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_13, 6
 	goto EventScript_Multichoice_BirchPCOptions_13
+
+EventScript_Multichoice_BirchPCOptions_18:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_15, 5
+	goto EventScript_Multichoice_BirchPCOptions_15
 
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
 	message LittlerootTown_ProfessorBirchsLab_Text_SkipIntro
@@ -811,6 +819,28 @@ LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit_Cont:
 LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplitNo::
 	setflag FLAG_MOVE_SPLIT_USE_ORIGINAL
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_GenFourSplitNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_FrostBite::
+	message LittlerootTown_ProfessorBirchsLab_Text_FrostBite
+	waitmessage
+	goto_if_unset FLAG_USE_FROSTBITE, LittlerootTown_ProfessorBirchsLab_EventScript_Frostbite_Unset
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Frostbite_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_Frostbite_Unset:
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_Frostbite_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_FrostbiteNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	setflag FLAG_USE_FROSTBITE
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_FrostBiteYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_FrostbiteNo::
+	clearflag FLAG_USE_FROSTBITE
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_FrostBiteNo, MSGBOX_SIGN
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
@@ -1263,6 +1293,12 @@ EventScript_Multichoice_BirchPCOptions_Text_8:
 EventScript_Multichoice_BirchPCOptions_Text_9:
 	.string "{COLOR RED}USE GEN 4 MOVE SPLIT$"
 
+EventScript_Multichoice_BirchPCOptions_Text_15:
+	.string "{COLOR GREEN}USE FROSTBITE$"
+
+EventScript_Multichoice_BirchPCOptions_Text_16:
+	.string "{COLOR RED}USE FROSTBITE$"
+
 EventScript_Multichoice_BirchPCOptions_Text_13:
 	.string "{COLOR GREEN}RELEARN MOVES IN MENU$"
 
@@ -1444,6 +1480,18 @@ LittlerootTown_ProfessorBirchsLab_Text_GenFourSplitYes:
 LittlerootTown_ProfessorBirchsLab_Text_GenFourSplitNo:
 	.string "Move splitting set to\n"
 	.string "Gen 3 default.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_FrostBite:
+	.string "Would you like to replace the\n"
+	.string "frozen status with frostbite?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_FrostBiteYes:
+	.string "Frostbites will now occur in battle\n"
+	.string "instead of being frozen.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_FrostBiteNo:
+	.string "Being frozen will now occur in battle\n"
+	.string "instead of being frostbitten.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_RelearnInMenu:
 	.string "Add option to relearn level-up\n"
