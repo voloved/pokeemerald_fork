@@ -2962,6 +2962,8 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 else
                 {
                     gBattleCommunication[MOVE_EFFECT_BYTE] = Random() % 3 + 3;
+                    if (FlagGet(FLAG_USE_FROSTBITE) && gBattleCommunication[MOVE_EFFECT_BYTE] == MOVE_EFFECT_FREEZE)
+                        gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_FROSTBITE;
                     SetMoveEffect(FALSE, 0);
                 }
                 break;
