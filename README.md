@@ -12,6 +12,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 ## Not Yet Versioned
  - [Added Sleep Mode](https://github.com/pret/pokeemerald/wiki/Add-Sleep-Mode)
    - Hold L Trigger + R Trigger + SELECT to enter sleep mode. Press SELECT + START to leave sleep mode.
+ - Thief Ball does not show on already caught Pokémon when SUGGEST BALL mode is ADV.
 
 ## v2.2.0
  - [Added Eon Flute](https://www.pokecommunity.com/showthread.php?t=422107) [Credit: camthesaxman and paccy for the Emerald Port]
@@ -22,7 +23,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Player's icon shown and them raising their Poké Ball not shown when performing a field move that the party does not known.
  - Sped up slow and medium text speed.
  - [Arrows show that cycling balls can be done.](https://github.com/rh-hideout/pokeemerald-expansion/pull/3039)
- - Thief Ball option only shows if the Pokémon's catch rate is low enough (proxy for its rarity).
+ - Thief Ball option only shows if the Pokémon's catch rate is low enough (proxy for its rarity) when SUGGEST BALL mode is ADV.
  - Register icon for Cleanse Tag and Poké Doll aligned.
  - Repels can now be registered items.
  - [Added Frostbite](https://github.com/rh-hideout/pokeemerald-expansion/pull/2942) [Credit: Bassoonian]
@@ -38,7 +39,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 ## v2.1.0
  - [Added last used ball in battle menu.](https://github.com/rh-hideout/pokeemerald-expansion/commit/c06029bc721119b0efd6e26c24a3f77772dfd77b) [Credit: Ghoulslash]
    - This defaults to a Thief ball if in a trainer battle.
-   - Gives suggested ball on the first turn (and the Timer Ball aftewr enough turns)
+   - Gives suggested ball on the first turn (and the Timer Ball after enough turns)
  - [Added Second Page to Options Menu.](https://github.com/pret/pokeemerald/wiki/Multipage-Options-Menu)
    - Includes: Show Follower, Show Ball Suggestion, Ball Suggestion Preferences, Difficulty.
  - [Holding Select Allows For A Second Register Item](https://github.com/pret/pokeemerald/wiki/Holding-Select-Allows-For-A-Second-Register-Item)

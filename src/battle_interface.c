@@ -2904,9 +2904,10 @@ static u16 ChoosePreferredBallComplex(u8 minOddsToConsiderBall, u8 minOddsToCons
     minOddsToConsiderBall = percentageToCatchOddsLUT[minOddsToConsiderBall];
     minOddsToConsiderLuxuryBall = percentageToCatchOddsLUT[minOddsToConsiderLuxuryBall];
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
-     {
+     {  // If player has a Thief ball, has not caught this Pokemon, they are rare enough, and the odds are at least minOddsToConsiderBall
         if (BattleCanUseThiefBall() && CheckBagHasItem(ITEM_THIEF_BALL, 1) 
         && catchOddsBeforeBallMod * getBallMultiplier(ITEM_THIEF_BALL) / 10 >= minOddsToConsiderBall
+        && !GetSetPokedexFlag(SpeciesToNationalPokedexNum(opposingBattlerSpecies), FLAG_GET_CAUGHT)
         && catchRate <= minCatchRateThiefBall)  // minCatchRateThiefBall used as proxy for rarity of mon
             return ITEM_THIEF_BALL;
         else
