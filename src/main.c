@@ -71,6 +71,7 @@ u32 IntrMain_Buffer[0x200];
 s8 gPcmDmaCounter;
 
 static EWRAM_DATA u16 sTrainerId = 0;
+EWRAM_DATA bool8 gWokeUpFromSleepMode = FALSE;
 
 //EWRAM_DATA void (**gFlashTimerIntrFunc)(void) = NULL;
 
@@ -269,9 +270,11 @@ static void ReadKeys(void)
         VBlankIntrWait();
         while (keyInput)              // Doesn't continue until the wake keys are let go
             keyInput = REG_KEYINPUT ^ KEYS_MASK;
+        gWokeUpFromSleepMode = TRUE;
         return;
     }
 
+    gWokeUpFromSleepMode = FALSE;
     gMain.newKeysRaw = keyInput & ~gMain.heldKeysRaw;
     gMain.newKeysReleased = ~keyInput & gMain.heldKeysRaw;
     gMain.newKeys = gMain.newKeysRaw;
