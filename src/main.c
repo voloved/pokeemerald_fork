@@ -24,6 +24,8 @@
 #include "main.h"
 #include "trainer_hill.h"
 #include "constants/rgb.h"
+#include "palette.h"
+#include "event_data.h"
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -164,7 +166,8 @@ void AgbMain()
 
         PlayTimeCounter_Update();
         MapMusicMain();
-        WaitForVBlank();
+        if (gPaletteFade.active || !FlagGet(FLAG_VSYNCOFF))
+            WaitForVBlank();
     }
 }
 

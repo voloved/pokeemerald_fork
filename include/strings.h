@@ -326,6 +326,8 @@ extern const u8 gText_SuggestBallOn[];
 extern const u8 gText_SuggestionTypeLast[];
 extern const u8 gText_SuggestionTypeSimple[];
 extern const u8 gText_SuggestionTypeComplex[];
+extern const u8 gText_VSyncOn[];
+extern const u8 gText_VSyncOff[];
 extern const u8 gText_Option[];
 extern const u8 gText_OptionMenu[];
 extern const u8 gText_SmallDot[];
@@ -343,6 +345,7 @@ extern const u8 gText_Difficulty[];
 extern const u8 gText_TypeEffect[];
 extern const u8 gText_SuggestBall[];
 extern const u8 gText_SuggestionType[];
+extern const u8 gText_VSync[];
 
 extern const u8 gText_MaleSymbol[];
 extern const u8 gText_FemaleSymbol[];

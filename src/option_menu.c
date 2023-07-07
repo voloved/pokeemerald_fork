@@ -33,6 +33,7 @@ enum
     TD_TYPEEFFECT,
     TD_SUGGESTBALL,
     TD_SUGGESTIONTYPE,
+    TD_VSYNC,
 };
 
 // Menu items Pg1
@@ -56,6 +57,7 @@ enum
     MENUITEM_TYPEEFFECT,
     MENUITEM_SUGGESTBALL,
     MENUITEM_SUGGESTIONTYPE,
+    MENUITEM_VSYNC,
     MENUITEM_CANCEL_PG2,
     MENUITEM_COUNT_PG2,
 };
@@ -83,6 +85,7 @@ enum
 #define YPOS_TYPEEFFECT      (MENUITEM_TYPEEFFECT * 16)
 #define YPOS_SUGGESTBALL     (MENUITEM_SUGGESTBALL * 16)
 #define YPOS_SUGGESTIONTYPE  (MENUITEM_SUGGESTIONTYPE * 16)
+#define YPOS_VSYNC           (MENUITEM_VSYNC * 16)
 
 // this file's functions
 static void Task_OptionMenuFadeIn(u8 taskId);
@@ -108,6 +111,8 @@ static u8   SuggestBall_ProcessInput(u8 selection);
 static void SuggestBall_DrawChoices(u8 selection);
 static u8   SuggestionType_ProcessInput(u8 selection);
 static void SuggestionType_DrawChoices(u8 selection);
+static u8   VSync_ProcessInput(u8 selection);
+static void VSync_DrawChoices(u8 selection);
 static u8   Sound_ProcessInput(u8 selection);
 static void Sound_DrawChoices(u8 selection);
 static u8   FrameType_ProcessInput(u8 selection);
@@ -145,6 +150,7 @@ static const u8 *const sOptionMenuItemsNames_Pg2[MENUITEM_COUNT_PG2] =
     [MENUITEM_TYPEEFFECT]      = gText_TypeEffect,
     [MENUITEM_SUGGESTBALL]     = gText_SuggestBall,
     [MENUITEM_SUGGESTIONTYPE]  = gText_SuggestionType,
+    [MENUITEM_VSYNC]           = gText_VSync,
     [MENUITEM_CANCEL_PG2]      = gText_OptionMenuCancel,
 };
 
@@ -225,6 +231,7 @@ static void ReadAllCurrentSettings(u8 taskId)
     gTasks[taskId].data[TD_TYPEEFFECT] = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     gTasks[taskId].data[TD_SUGGESTBALL] = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
     gTasks[taskId].data[TD_SUGGESTIONTYPE] = FlagGet(FLAG_BALL_SUGGEST_NOT_LAST) * (1 + FlagGet(FLAG_BALL_SUGGEST_COMPLEX));  // 0 = Last; 1 = Simple; 2 = Complex
+    gTasks[taskId].data[TD_VSYNC] = FlagGet(FLAG_VSYNCOFF);
 }
 
 static void DrawOptionsPg1(u8 taskId)
@@ -248,6 +255,7 @@ static void DrawOptionsPg2(u8 taskId)
     TypeEffect_DrawChoices(gTasks[taskId].data[TD_TYPEEFFECT]);
     SuggestBall_DrawChoices(gTasks[taskId].data[TD_SUGGESTBALL]);
     SuggestionType_DrawChoices(gTasks[taskId].data[TD_SUGGESTIONTYPE]);
+    VSync_DrawChoices(gTasks[taskId].data[TD_VSYNC]);
     HighlightOptionMenuItem(gTasks[taskId].data[TD_MENUSELECTION]);
     CopyWindowToVram(WIN_OPTIONS, COPYWIN_FULL);
 }
@@ -569,6 +577,13 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
             if (previousOption != gTasks[taskId].data[TD_SUGGESTIONTYPE])
                 SuggestionType_DrawChoices(gTasks[taskId].data[TD_SUGGESTIONTYPE]);
             break;
+        case MENUITEM_VSYNC:
+            previousOption = gTasks[taskId].data[TD_VSYNC];
+            gTasks[taskId].data[TD_VSYNC] = VSync_ProcessInput(gTasks[taskId].data[TD_VSYNC]);
+
+            if (previousOption != gTasks[taskId].data[TD_VSYNC])
+                VSync_DrawChoices(gTasks[taskId].data[TD_VSYNC]);
+            break;
         default:
             return;
         }
@@ -619,6 +634,10 @@ static void Task_OptionMenuSave(u8 taskId)
         FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
         FlagSet(FLAG_BALL_SUGGEST_COMPLEX);
     }
+    if (gTasks[taskId].data[TD_VSYNC] == 0)
+        FlagClear(FLAG_VSYNCOFF);
+    else
+        FlagSet(FLAG_VSYNCOFF);
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
     gTasks[taskId].func = Task_OptionMenuFadeOut;
 }
@@ -936,7 +955,28 @@ static void SuggestionType_DrawChoices(u8 selection)
     DrawOptionMenuChoice(gText_SuggestionTypeComplex, GetStringRightAlignXOffset(FONT_NORMAL, gText_SuggestionTypeComplex, 198), YPOS_SUGGESTIONTYPE, styles[2]);
 }
 
+static u8 VSync_ProcessInput(u8 selection)
+{
+    if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
+    {
+        selection ^= 1;
+        sArrowPressed = TRUE;
+    }
 
+    return selection;
+}
+
+static void VSync_DrawChoices(u8 selection)
+{
+    u8 styles[2];
+
+    styles[0] = 0;
+    styles[1] = 0;
+    styles[selection] = 1;
+
+    DrawOptionMenuChoice(gText_VSyncOn, 104, YPOS_VSYNC, styles[0]);
+    DrawOptionMenuChoice(gText_VSyncOff, GetStringRightAlignXOffset(FONT_NORMAL, gText_VSyncOff, 198), YPOS_VSYNC, styles[1]);
+}
 
 static u8 Sound_ProcessInput(u8 selection)
 {
