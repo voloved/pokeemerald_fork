@@ -941,12 +941,14 @@ static u8 VSync_ProcessInput(u8 selection)
 
 static void VSync_DrawChoices(u8 selection)
 {
-    const u8 *str = NULL;
-    if (selection == 0)
-        str = gText_VSyncOn;
-    else
-        str = gText_VSyncOff;
-    DrawOptionMenuChoice(str, 104, YPOS_VSYNC, 1);
+    u8 styles[2];
+
+    styles[0] = 0;
+    styles[1] = 0;
+    styles[selection] = 1;
+
+    DrawOptionMenuChoice(gText_VSyncOn, 104, YPOS_VSYNC, styles[0]);
+    DrawOptionMenuChoice(gText_VSyncOff, GetStringRightAlignXOffset(FONT_NORMAL, gText_VSyncOff, 198), YPOS_VSYNC, styles[1]);
 }
 
 static u8 Sound_ProcessInput(u8 selection)
