@@ -2887,7 +2887,8 @@ static u16 ChoosePreferredBallSimple(void){
     return ballHighest;
 }
 
-static u16 ChoosePreferredBallComplex(u8 minOddsToConsiderBall, u8 minOddsToConsiderLuxuryBall, u8 additionPerForBetterBall, u16 minRarityMonThiefBall)
+static u16 ChoosePreferredBallComplex(u8 minOddsToConsiderBall, u8 minOddsToConsiderLuxuryBall, 
+                                    u8 minOddsToConsiderThiefBall,u8 additionPerForBetterBall, u16 minRarityMonThiefBall)
 {
     static const u8 ballsByValue[] = { ITEM_POKE_BALL, ITEM_GREAT_BALL, ITEM_NEST_BALL, ITEM_TIMER_BALL, ITEM_REPEAT_BALL, 
                                        ITEM_DIVE_BALL, ITEM_NET_BALL, ITEM_ULTRA_BALL };  //Order to check the balls
@@ -2903,10 +2904,11 @@ static u16 ChoosePreferredBallComplex(u8 minOddsToConsiderBall, u8 minOddsToCons
 
     minOddsToConsiderBall = percentageToCatchOddsLUT[minOddsToConsiderBall];
     minOddsToConsiderLuxuryBall = percentageToCatchOddsLUT[minOddsToConsiderLuxuryBall];
+    minOddsToConsiderThiefBall = percentageToCatchOddsLUT[minOddsToConsiderThiefBall];
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
      {  // If player has a Thief ball, has not caught this Pokemon, they are rare enough, and the odds are at least minOddsToConsiderBall
         if (BattleCanUseThiefBall() && CheckBagHasItem(ITEM_THIEF_BALL, 1) 
-        && catchOddsBeforeBallMod * getBallMultiplier(ITEM_THIEF_BALL) / 10 >= minOddsToConsiderBall
+        && catchOddsBeforeBallMod * getBallMultiplier(ITEM_THIEF_BALL) / 10 >= minOddsToConsiderThiefBall
         && !GetSetPokedexFlag(SpeciesToNationalPokedexNum(opposingBattlerSpecies), FLAG_GET_CAUGHT)
         && catchRate <= minCatchRateThiefBall)  // minCatchRateThiefBall used as proxy for rarity of mon
             return ITEM_THIEF_BALL;
@@ -2952,7 +2954,7 @@ void TryAddLastUsedBallItemSprites(void)
     if (useSimpleOrComplex)
     {
         if (useComplex)
-            preferredBall = ChoosePreferredBallComplex(0, 0, 3, SPECIES_BULBASAUR);  // Complex
+            preferredBall = ChoosePreferredBallComplex(0, 0, 80, 3, SPECIES_BULBASAUR);  // Complex
         else
             preferredBall = ChoosePreferredBallSimple(); // Simple
         if (preferredBall == ITEM_NONE)
