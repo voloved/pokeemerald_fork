@@ -13,10 +13,11 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Added Sleep Mode](https://github.com/pret/pokeemerald/wiki/Add-Sleep-Mode)
    - Hold L Trigger + R Trigger + SELECT to enter sleep mode. Press SELECT + START to leave sleep mode.
  - Thief Ball does not show on already caught Pokémon when SUGGEST BALL mode is ADV.
- - [Added Option for Turning Off Wating for VBlank in Options Menu.](https://gitlab.com/devolov/pokeemerald_fork/-/commit/f30bc4e2c884b194b5d7eaceada9a31552dea87c)
+ - [Added Option for Turning Off Waiting for VBlank in Options Menu.](https://gitlab.com/devolov/pokeemerald_fork/-/commit/f30bc4e2c884b194b5d7eaceada9a31552dea87c)
    - Expect The Game to Run Faster, But be More Buggy in this Mode.
  - [Made Pikachu Fat Using Gen 2 Sprites](https://gitlab.com/devolov/pokeemerald_fork/-/commit/3abf7502d0d461c61c2a3d5c12b0139821163cfb)
    - Credit to [Bellossom](https://bellossom.tumblr.com/post/626377942285565952/i-refreshed-an-old-pikachu-sprite) for the Front Sprite.
+ - Bug fix on no name showing up when player uses strength and no one in the party knows it.
 
 ## v2.2.0
  - [Added Eon Flute](https://www.pokecommunity.com/showthread.php?t=422107) [Credit: camthesaxman and paccy for the Emerald Port]
@@ -88,7 +89,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Overlevel check turns off if Nuzlocke setting is off.
 
 ## v1.5.2
- - Readded Nuse Joy chime when healing.
+ - Readded Nurse Joy chime when healing.
  - No longer shows Nuzlocke cap if player is champion.
 
 ## v1.5.1
