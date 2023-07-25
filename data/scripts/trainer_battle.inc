@@ -23,6 +23,9 @@ EventScript_TryDoNormalTrainerBattleRematch::
 	goto EventScript_ShowTrainerIntroMsg
 
 EventScript_NoNormalTrainerBattleCheckRematch::
+	callnative IsRematchAllowed
+	compare VAR_RESULT, TRUE
+	goto_if_ne EventScript_NoNormalTrainerBattle
 	checkbuttonheld B_BUTTON
 	goto_if_ne VAR_RESULT, TRUE, EventScript_NoNormalTrainerBattle
 	msgbox TrainerBattle_Text_WouldYouLikeToRematch, MSGBOX_YESNO
@@ -30,16 +33,13 @@ EventScript_NoNormalTrainerBattleCheckRematch::
 EventScript_NoNormalTrainerBattle::
 	gotopostbattlescript
 
-TrainerBattle_Text_WouldYouLikeToRematch:
-	.string "Would you like to have a\n"
-	.string "rematch with me?$"
-
 EventScript_TryDoDoubleTrainerBattle::
 	lock
 	faceplayer
 	call EventScript_RevealTrainer
 	specialvar VAR_RESULT, GetTrainerFlag
-	goto_if_ne VAR_RESULT, FALSE, EventScript_NoDoubleTrainerBattle
+	goto_if_ne VAR_RESULT, FALSE, EventScript_NoDoubleTrainerBattleCheckRematch
+EventScript_TryDoDoubleTrainerBattleRematch::
 	special HasEnoughMonsForDoubleBattle
 	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EventScript_NotEnoughMonsForDoubleBattle
 	special PlayTrainerEncounterMusic
@@ -53,6 +53,14 @@ EventScript_NotEnoughMonsForDoubleBattle::
 	release
 	end
 
+EventScript_NoDoubleTrainerBattleCheckRematch::
+	callnative IsRematchAllowed
+	compare VAR_RESULT, TRUE
+	goto_if_ne EventScript_NoDoubleTrainerBattle
+	checkbuttonheld B_BUTTON
+	goto_if_ne VAR_RESULT, TRUE, EventScript_NoDoubleTrainerBattle
+	msgbox TrainerBattle_Text_WouldYouLikeToRematchUs, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, EventScript_TryDoDoubleTrainerBattleRematch
 EventScript_NoDoubleTrainerBattle::
 	gotopostbattlescript
 
@@ -63,6 +71,14 @@ EventScript_DoNoIntroTrainerBattle::
 	special PlayTrainerEncounterMusic
 	dotrainerbattle
 	gotopostbattlescript
+
+TrainerBattle_Text_WouldYouLikeToRematch:
+	.string "Would you like to have a\n"
+	.string "rematch with me?$"
+
+TrainerBattle_Text_WouldYouLikeToRematchUs:
+	.string "Would you like to have a\n"
+	.string "rematch with us?$"
 
 EventScript_TryDoRematchBattle::
 	call EventScript_RevealTrainer

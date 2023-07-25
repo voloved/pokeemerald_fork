@@ -1222,7 +1222,7 @@ void ItemUseOutOfBattle_PokeVial(u8 taskId)
     u16 vialUsages = VarGet(VAR_POKEVIAL_USAGES);
     u16 vialUsagesMax = ItemId_GetHoldEffectParam(ITEM_POKEVIAL);
     u16 vialUsagesLeft = vialUsagesMax - vialUsages;
-    if(gMapHeader.allowpokevial == 0)
+    if(gMapHeader.allowPokevial == 0)
         DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
     else if (vialUsagesLeft == 0){
         if (gTasks[taskId].tUsingRegisteredKeyItem) // to account for pressing select in the overworld
