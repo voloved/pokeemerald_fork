@@ -1698,7 +1698,7 @@ static void OpenContextMenu(u8 taskId)
                 if (gSpecialVar_ItemId == ITEM_CLEANSE_TAG || gSpecialVar_ItemId == ITEM_POKE_DOLL
                 || ItemId_GetFieldFunc(gSpecialVar_ItemId) == ItemUseOutOfBattle_Repel)
                 {
-                    if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
+                    if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId || gSaveBlock1Ptr->registeredLongItem == gSpecialVar_ItemId)
                         gBagMenu->contextMenuItemsBuffer[2] = ACTION_DESELECT;
                     else
                         gBagMenu->contextMenuItemsBuffer[2] = ACTION_REGISTER;
