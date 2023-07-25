@@ -19,6 +19,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
    - Credit to [Bellossom](https://bellossom.tumblr.com/post/626377942285565952/i-refreshed-an-old-pikachu-sprite) for the Front Sprite.
  - [Allow Rematch With Trainers When Holding B When Talking to Them](https://gitlab.com/devolov/pokeemerald_fork/-/wikis/Allow-Rematching-Trainers)
  - [Showing IVs/EVs in Summary Screen](https://www.pokecommunity.com/showpost.php?p=10161688&postcount=77) [Credit: PokemonCrazy]
+ - Changed Will-O-Wisp and Chill-O-Wisp's Accuracy from 75% to 85%.
  - Bug fix on no name showing up when player uses strength and no one in the party knows it.
  - Bug fix on Cleanse Tag and Poké Doll never showing Deselect option.
 
