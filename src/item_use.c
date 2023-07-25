@@ -1216,7 +1216,9 @@ void ItemUseOutOfBattle_PokeVial(u8 taskId)
 {
     u16 vialUsages = VarGet(VAR_POKEVIAL_USAGES);
     u16 vialUsagesMax = ItemId_GetHoldEffectParam(ITEM_POKEVIAL);
-    if (vialUsages >= vialUsagesMax){
+    if(gMapHeader.allowpokevial == 0)
+        DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
+    else if (vialUsages >= vialUsagesMax){
         if (gTasks[taskId].tUsingRegisteredKeyItem) // to account for pressing select in the overworld
             DisplayItemMessageOnField(taskId, gText_PokeVial_Failure, Task_CloseCantUseKeyItemMessage);
         else if (!InBattlePyramid())
@@ -1302,15 +1304,14 @@ void ItemUseOutOfBattle_PokeBall(u8 taskId)
 
 void ItemUseOutOfBattle_EonFlute(u8 taskId)
 {
-	s16* data = gTasks[taskId].data;
-	
 	if (Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
 	{
         sItemUseOnFieldCB = ItemUseOnFieldCB_EonFlute;
 		SetUpItemUseOnFieldCallback(taskId);
 	}
-	else {
-		DisplayDadsAdviceCannotUseItemMessage(taskId, data[3]);
+	else
+    {
+		DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
 	}
 }
 
