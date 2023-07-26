@@ -659,11 +659,11 @@ static const struct WindowTemplate sPageSkillsTemplate[] =
     },
     [PSS_DATA_WINDOW_EVIV] = {
         .bg = 0,
-        .tilemapLeft = 24,
+        .tilemapLeft = 22,
         .tilemapTop = 0,
-        .width = 3,
+        .width = 8,
         .height = 2,
-        .paletteNum = 6,
+        .paletteNum = 7,
         .baseBlock = 567,
     },
 };
@@ -3404,6 +3404,7 @@ static void BufferIvOrEvStats(u8 mode)
     u8 *currHPString = Alloc(20);
     const s8 *natureMod = gNatureStatTable[sMonSummaryScreen->summary.nature];
     const u8 *Text_EvIv = NULL;
+    int stringXPos;
 
     switch (mode)
     {
@@ -3437,6 +3438,7 @@ static void BufferIvOrEvStats(u8 mode)
         spA = sMonSummaryScreen->summary.spatk;
         spD = sMonSummaryScreen->summary.spdef;
         spe = sMonSummaryScreen->summary.speed;
+        Text_EvIv = gText_EmptyString2;
         break;
     }
 
@@ -3459,7 +3461,6 @@ static void BufferIvOrEvStats(u8 mode)
         BufferStat(gStringVar3, 0, spe, 2, 3);
         DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, sStatsRightColumnLayout);
         PrintRightColumnStats();
-        PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_EVIV), Text_EvIv, 0, 0, 0, 1);
         break;
     case 0:
     default:
@@ -3475,10 +3476,11 @@ static void BufferIvOrEvStats(u8 mode)
         BufferStat(gStringVar3, natureMod[STAT_SPEED - 1], spe, 2, 3);
         DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, sStatsRightColumnLayout);
         PrintRightColumnStats();
-        PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_EVIV), gText_EmptyString2, 0, 0, 0, 1);
         break;
     }
 
+    stringXPos = GetStringRightAlignXOffset(1, Text_EvIv, 62);
+    PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_EVIV), Text_EvIv, stringXPos, 0, 0, 0);
     Free(currHPString);
 }
 
