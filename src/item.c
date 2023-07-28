@@ -77,8 +77,10 @@ void SortBagIntoProperPockets(void)
     u16 i, itemCount;
     u8 pocket, pocket_correct;
     u16 itemId;
+    bool8 itemsInPocketRemoved = FALSE;
     for (pocket = 0; pocket < POCKETS_COUNT; pocket++)
     {
+        itemsInPocketRemoved = FALSE;
         for (i = 0; i < gBagPockets[pocket].capacity; i++)
         {
             itemId = gBagPockets[pocket].itemSlots[i].itemId;
@@ -86,12 +88,15 @@ void SortBagIntoProperPockets(void)
             pocket_correct = GetPocketByItemId(itemId) - 1;
             if (itemId != ITEM_NONE && pocket_correct != pocket)
             {
+                itemsInPocketRemoved = TRUE;
                 gBagPockets[pocket].itemSlots[i].itemId = ITEM_NONE;
                 SetBagItemQuantity(&gBagPockets[pocket].itemSlots[i].quantity, 0);
                 AddBagItem(itemId, itemCount);
 
             }
         }
+        if (itemsInPocketRemoved)
+            CompactItemsInBagPocket(&gBagPockets[pocket]);
     }
 }
 
