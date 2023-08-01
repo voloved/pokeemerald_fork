@@ -1553,7 +1553,9 @@ static void Task_HandleInput(u8 taskId)
         {
             ChangePage(taskId, 1);
         }
-        else if (JOY_NEW(A_BUTTON) && (!JOY_HELD(L_BUTTON) || sMonSummaryScreen->currPageIndex != PSS_PAGE_SKILLS))
+        else if (JOY_NEW(A_BUTTON) && (sMonSummaryScreen->currPageIndex != PSS_PAGE_SKILLS
+        || (!JOY_HELD(L_BUTTON) && (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A 
+        || gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_VSYNC))))
         {
             if (sMonSummaryScreen->currPageIndex != PSS_PAGE_SKILLS)
             {
@@ -1570,7 +1572,8 @@ static void Task_HandleInput(u8 taskId)
                 }
             }
         }
-        else if (JOY_NEW(B_BUTTON) && (!JOY_HELD(R_BUTTON) || sMonSummaryScreen->currPageIndex != PSS_PAGE_SKILLS))
+        else if (JOY_NEW(B_BUTTON) && (!(JOY_HELD(R_BUTTON) && gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A)
+         || sMonSummaryScreen->currPageIndex != PSS_PAGE_SKILLS))
         {
             StopPokemonAnimations();
             PlaySE(SE_SELECT);

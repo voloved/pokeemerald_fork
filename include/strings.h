@@ -311,7 +311,7 @@ extern const u8 gText_SoundMono[];
 extern const u8 gText_SoundStereo[];
 extern const u8 gText_FrameTypeNumber[];
 extern const u8 gText_FrameType[];
-extern const u8 gText_ButtonTypeNormal[];
+extern const u8 gText_ButtonTypeVSync[];
 extern const u8 gText_ButtonTypeLR[];
 extern const u8 gText_ButtonTypeLEqualsA[];
 extern const u8 gText_FollowerOff[];

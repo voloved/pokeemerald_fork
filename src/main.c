@@ -92,6 +92,7 @@ void AgbMain()
 {
     // Modern compilers are liberal with the stack on entry to this function,
     // so RegisterRamReset may crash if it resets IWRAM.
+    bool8 VSyncOn;
 #if !MODERN
     RegisterRamReset(RESET_ALL);
 #endif //MODERN
@@ -166,7 +167,10 @@ void AgbMain()
 
         PlayTimeCounter_Update();
         MapMusicMain();
-        if (gPaletteFade.active || !FlagGet(FLAG_VSYNCOFF))
+        VSyncOn = !gSaveBlock2Ptr->vSyncOff;
+        if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_VSYNC && JOY_HELD(R_BUTTON))
+            VSyncOn = !VSyncOn;
+        if (gPaletteFade.active || VSyncOn)
             WaitForVBlank();
     }
 }
@@ -324,6 +328,13 @@ static void ReadKeys(void)
             gMain.newKeys ^= B_BUTTON;
         }
     }
+    if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_VSYNC && JOY_HELD(L_BUTTON))
+    {
+        if (JOY_HELD(A_BUTTON))
+            gMain.newKeys ^= A_BUTTON;
+        if(JOY_HELD(B_BUTTON))
+            gMain.newKeys ^= B_BUTTON;
+    }  
 
     if (JOY_NEW(gMain.watchedKeysMask))
         gMain.watchedKeysPressed = TRUE;

@@ -231,7 +231,7 @@ static void ReadAllCurrentSettings(u8 taskId)
     gTasks[taskId].data[TD_TYPEEFFECT] = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     gTasks[taskId].data[TD_SUGGESTBALL] = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
     gTasks[taskId].data[TD_SUGGESTIONTYPE] = FlagGet(FLAG_BALL_SUGGEST_NOT_LAST) * (1 + FlagGet(FLAG_BALL_SUGGEST_COMPLEX));  // 0 = Last; 1 = Simple; 2 = Complex
-    gTasks[taskId].data[TD_VSYNC] = FlagGet(FLAG_VSYNCOFF);
+    gTasks[taskId].data[TD_VSYNC] = gSaveBlock2Ptr->vSyncOff;
 }
 
 static void DrawOptionsPg1(u8 taskId)
@@ -411,7 +411,9 @@ static void Task_OptionMenuProcessInput(u8 taskId)
         sCurrPage = Process_ChangePage(sCurrPage);
         gTasks[taskId].func = Task_ChangePage;
     }
-    else if (JOY_NEW(A_BUTTON) && !JOY_HELD(L_BUTTON))
+    else if (JOY_NEW(A_BUTTON) && !(JOY_HELD(L_BUTTON) &&
+    (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A
+    || gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_VSYNC)))
     {
         if (gTasks[taskId].data[TD_MENUSELECTION] == MENUITEM_CANCEL)
             gTasks[taskId].func = Task_OptionMenuSave;
@@ -511,7 +513,9 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
         sCurrPage = Process_ChangePage(sCurrPage);
         gTasks[taskId].func = Task_ChangePage;
     }
-    else if (JOY_NEW(A_BUTTON) && !JOY_HELD(L_BUTTON))
+    else if (JOY_NEW(A_BUTTON) && !(JOY_HELD(L_BUTTON) &&
+    (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A
+    || gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_VSYNC)))
     {
         if (gTasks[taskId].data[TD_MENUSELECTION] == MENUITEM_CANCEL_PG2)
             gTasks[taskId].func = Task_OptionMenuSave;
@@ -604,6 +608,7 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsSound = gTasks[taskId].data[TD_SOUND];
     gSaveBlock2Ptr->optionsButtonMode = gTasks[taskId].data[TD_BUTTONMODE];
     gSaveBlock2Ptr->optionsWindowFrameType = gTasks[taskId].data[TD_FRAMETYPE];
+    gSaveBlock2Ptr->vSyncOff = gTasks[taskId].data[TD_VSYNC];
 
     if (gTasks[taskId].data[TD_FOLLOWER] == 0)
         FlagClear(FLAG_POKEMON_FOLLOWERS);
@@ -634,10 +639,6 @@ static void Task_OptionMenuSave(u8 taskId)
         FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
         FlagSet(FLAG_BALL_SUGGEST_COMPLEX);
     }
-    if (gTasks[taskId].data[TD_VSYNC] == 0)
-        FlagClear(FLAG_VSYNCOFF);
-    else
-        FlagSet(FLAG_VSYNCOFF);
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
     gTasks[taskId].func = Task_OptionMenuFadeOut;
 }
@@ -1066,9 +1067,9 @@ static void ButtonMode_DrawChoices(u8 selection)
     styles[2] = 0;
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(gText_ButtonTypeNormal, 104, YPOS_BUTTONMODE, styles[0]);
+    DrawOptionMenuChoice(gText_ButtonTypeVSync, 104, YPOS_BUTTONMODE, styles[0]);
 
-    widthNormal = GetStringWidth(FONT_NORMAL, gText_ButtonTypeNormal, 0);
+    widthNormal = GetStringWidth(FONT_NORMAL, gText_ButtonTypeVSync, 0);
     widthLR = GetStringWidth(FONT_NORMAL, gText_ButtonTypeLR, 0);
     widthLA = GetStringWidth(FONT_NORMAL, gText_ButtonTypeLEqualsA, 0);
 
