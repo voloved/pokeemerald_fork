@@ -23,6 +23,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Thief Ball now shows if caught Pokémon is added to the Dex and what box it gets transferred to.
  - Bug fix on no name showing up when player uses strength and no one in the party knows it.
  - Bug fix on Cleanse Tag and Poké Doll never showing Deselect option.
+ - Bug fix on opening better bag pocket from overworld.
+ - Bug fix on holding select also causing the tap to select option to be used.
 
 ## v2.2.0
  - [Added Eon Flute](https://www.pokecommunity.com/showthread.php?t=422107) [Credit: camthesaxman and paccy for the Emerald Port]

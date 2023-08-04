@@ -118,13 +118,13 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
                 sPlayerSelectHoldFrames = 0;
             else if (sPlayerSelectHoldFrames == 60){
                 input->input_field_1_7 = TRUE;
-                sPlayerSelectHoldFrames = 0;
             }
-            else if (JOY_HELD(SELECT_BUTTON))
+            if (JOY_HELD(SELECT_BUTTON))
                 sPlayerSelectHoldFrames = sPlayerSelectHoldFrames < 0xFF ? sPlayerSelectHoldFrames + 1 : 0xFF;
             else if (sPlayerSelectHoldFrames != 0)
             {
-                input->input_field_1_6 = TRUE;
+                if (sPlayerSelectHoldFrames < 60)
+                    input->input_field_1_6 = TRUE;
                 sPlayerSelectHoldFrames = 0;
             }
         }
