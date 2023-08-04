@@ -9,7 +9,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
-## Not Yet Versioned
+## v2.2.1
  - [Added Sleep Mode](https://github.com/pret/pokeemerald/wiki/Add-Sleep-Mode)
    - Hold L Trigger + R Trigger + SELECT to enter sleep mode. Press SELECT + START to leave sleep mode.
  - Thief Ball does not show on already caught Pokémon when SUGGEST BALL mode is ADV.
