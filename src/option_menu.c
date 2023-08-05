@@ -378,6 +378,46 @@ static u8 Process_ChangePage(u8 CurrentPage)
     return CurrentPage;
 }
 
+static void MenuSavePg1(u8 taskId)
+{
+    gSaveBlock2Ptr->optionsTextSpeed = gTasks[taskId].data[TD_TEXTSPEED];
+    gSaveBlock2Ptr->optionsBattleSceneOff = gTasks[taskId].data[TD_BATTLESCENE];
+    gSaveBlock2Ptr->optionsBattleStyle = gTasks[taskId].data[TD_BATTLESTYLE];
+    gSaveBlock2Ptr->optionsSound = gTasks[taskId].data[TD_SOUND];
+    gSaveBlock2Ptr->optionsButtonMode = gTasks[taskId].data[TD_BUTTONMODE];
+    gSaveBlock2Ptr->optionsWindowFrameType = gTasks[taskId].data[TD_FRAMETYPE];
+}
+
+static void MenuSavePg2(u8 taskId)
+{
+    gSaveBlock2Ptr->vSyncOff = gTasks[taskId].data[TD_VSYNC];
+    if (gTasks[taskId].data[TD_FOLLOWER] == 0)
+        FlagClear(FLAG_POKEMON_FOLLOWERS);
+    else
+        FlagSet(FLAG_POKEMON_FOLLOWERS);
+    SetDifficulty(gTasks[taskId].data[TD_DIFFICULTY]);
+    if (gTasks[taskId].data[TD_TYPEEFFECT] == 0)
+        FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
+    else
+        FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
+    if (gTasks[taskId].data[TD_SUGGESTBALL] == 0)
+        FlagClear(FLAG_SHOW_BALL_SUGGESTION);
+    else
+        FlagSet(FLAG_SHOW_BALL_SUGGESTION);
+    if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 0){  // Last{
+        FlagClear(FLAG_BALL_SUGGEST_NOT_LAST);
+        FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
+    }
+    else if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 1){  // Simple
+        FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
+        FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
+    }
+    else if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 2){  // Simple
+        FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
+        FlagSet(FLAG_BALL_SUGGEST_COMPLEX);
+    }
+}
+
 static void Task_ChangePage(u8 taskId)
 {
     DrawTextOption();
@@ -408,6 +448,7 @@ static void Task_OptionMenuProcessInput(u8 taskId)
     {
         FillWindowPixelBuffer(WIN_OPTIONS, PIXEL_FILL(1));
         ClearStdWindowAndFrame(WIN_OPTIONS, FALSE);
+        MenuSavePg1(taskId);
         sCurrPage = Process_ChangePage(sCurrPage);
         gTasks[taskId].func = Task_ChangePage;
     }
@@ -510,6 +551,7 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
     {
         FillWindowPixelBuffer(WIN_OPTIONS, PIXEL_FILL(1));
         ClearStdWindowAndFrame(WIN_OPTIONS, FALSE);
+        MenuSavePg2(taskId);
         sCurrPage = Process_ChangePage(sCurrPage);
         gTasks[taskId].func = Task_ChangePage;
     }
@@ -602,43 +644,8 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
 
 static void Task_OptionMenuSave(u8 taskId)
 {
-    gSaveBlock2Ptr->optionsTextSpeed = gTasks[taskId].data[TD_TEXTSPEED];
-    gSaveBlock2Ptr->optionsBattleSceneOff = gTasks[taskId].data[TD_BATTLESCENE];
-    gSaveBlock2Ptr->optionsBattleStyle = gTasks[taskId].data[TD_BATTLESTYLE];
-    gSaveBlock2Ptr->optionsSound = gTasks[taskId].data[TD_SOUND];
-    gSaveBlock2Ptr->optionsButtonMode = gTasks[taskId].data[TD_BUTTONMODE];
-    gSaveBlock2Ptr->optionsWindowFrameType = gTasks[taskId].data[TD_FRAMETYPE];
-    gSaveBlock2Ptr->vSyncOff = gTasks[taskId].data[TD_VSYNC];
-
-    if (gTasks[taskId].data[TD_FOLLOWER] == 0)
-        FlagClear(FLAG_POKEMON_FOLLOWERS);
-    else
-        FlagSet(FLAG_POKEMON_FOLLOWERS);
-
-    SetDifficulty(gTasks[taskId].data[TD_DIFFICULTY]);
-
-    if (gTasks[taskId].data[TD_TYPEEFFECT] == 0)
-        FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
-    else
-        FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
-
-    if (gTasks[taskId].data[TD_SUGGESTBALL] == 0)
-        FlagClear(FLAG_SHOW_BALL_SUGGESTION);
-    else
-        FlagSet(FLAG_SHOW_BALL_SUGGESTION);
-    
-    if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 0){  // Last{
-        FlagClear(FLAG_BALL_SUGGEST_NOT_LAST);
-        FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
-    }
-    else if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 1){  // Simple
-        FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
-        FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
-    }
-    else if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 2){  // Simple
-        FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
-        FlagSet(FLAG_BALL_SUGGEST_COMPLEX);
-    }
+    MenuSavePg1(taskId);
+    MenuSavePg2(taskId);
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
     gTasks[taskId].func = Task_OptionMenuFadeOut;
 }
