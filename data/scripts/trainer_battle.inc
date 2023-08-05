@@ -1,3 +1,5 @@
+#include "gba/io_reg.h"
+
 EventScript_StartTrainerApproach::
 	selectapproachingtrainer
 	lockfortrainer
@@ -14,11 +16,20 @@ EventScript_TryDoNormalTrainerBattle::
 	applymovement VAR_LAST_TALKED, Movement_RevealTrainer
 	waitmovement 0
 	specialvar VAR_RESULT, GetTrainerFlag
-	goto_if_ne VAR_RESULT, FALSE, EventScript_NoNormalTrainerBattle
+	goto_if_ne VAR_RESULT, FALSE, EventScript_NoNormalTrainerBattleCheckRematch
+EventScript_TryDoNormalTrainerBattleRematch::
 	special PlayTrainerEncounterMusic
 	special SetTrainerFacingDirection
 	goto EventScript_ShowTrainerIntroMsg
 
+EventScript_NoNormalTrainerBattleCheckRematch::
+	callnative IsRematchAllowed
+	compare VAR_RESULT, TRUE
+	goto_if_ne EventScript_NoNormalTrainerBattle
+	checkbuttonheld B_BUTTON
+	goto_if_ne VAR_RESULT, TRUE, EventScript_NoNormalTrainerBattle
+	msgbox TrainerBattle_Text_WouldYouLikeToRematch, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, EventScript_TryDoNormalTrainerBattleRematch
 EventScript_NoNormalTrainerBattle::
 	gotopostbattlescript
 
@@ -27,7 +38,8 @@ EventScript_TryDoDoubleTrainerBattle::
 	faceplayer
 	call EventScript_RevealTrainer
 	specialvar VAR_RESULT, GetTrainerFlag
-	goto_if_ne VAR_RESULT, FALSE, EventScript_NoDoubleTrainerBattle
+	goto_if_ne VAR_RESULT, FALSE, EventScript_NoDoubleTrainerBattleCheckRematch
+EventScript_TryDoDoubleTrainerBattleRematch::
 	special HasEnoughMonsForDoubleBattle
 	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EventScript_NotEnoughMonsForDoubleBattle
 	special PlayTrainerEncounterMusic
@@ -41,6 +53,14 @@ EventScript_NotEnoughMonsForDoubleBattle::
 	release
 	end
 
+EventScript_NoDoubleTrainerBattleCheckRematch::
+	callnative IsRematchAllowed
+	compare VAR_RESULT, TRUE
+	goto_if_ne EventScript_NoDoubleTrainerBattle
+	checkbuttonheld B_BUTTON
+	goto_if_ne VAR_RESULT, TRUE, EventScript_NoDoubleTrainerBattle
+	msgbox TrainerBattle_Text_WouldYouLikeToRematchUs, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, EventScript_TryDoDoubleTrainerBattleRematch
 EventScript_NoDoubleTrainerBattle::
 	gotopostbattlescript
 
@@ -51,6 +71,14 @@ EventScript_DoNoIntroTrainerBattle::
 	special PlayTrainerEncounterMusic
 	dotrainerbattle
 	gotopostbattlescript
+
+TrainerBattle_Text_WouldYouLikeToRematch:
+	.string "Would you like to have a\n"
+	.string "rematch with me?$"
+
+TrainerBattle_Text_WouldYouLikeToRematchUs:
+	.string "Would you like to have a\n"
+	.string "rematch with us?$"
 
 EventScript_TryDoRematchBattle::
 	call EventScript_RevealTrainer

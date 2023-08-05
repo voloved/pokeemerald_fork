@@ -33,6 +33,7 @@ enum
     TD_TYPEEFFECT,
     TD_SUGGESTBALL,
     TD_SUGGESTIONTYPE,
+    TD_VSYNC,
 };
 
 // Menu items Pg1
@@ -56,6 +57,7 @@ enum
     MENUITEM_TYPEEFFECT,
     MENUITEM_SUGGESTBALL,
     MENUITEM_SUGGESTIONTYPE,
+    MENUITEM_VSYNC,
     MENUITEM_CANCEL_PG2,
     MENUITEM_COUNT_PG2,
 };
@@ -83,6 +85,7 @@ enum
 #define YPOS_TYPEEFFECT      (MENUITEM_TYPEEFFECT * 16)
 #define YPOS_SUGGESTBALL     (MENUITEM_SUGGESTBALL * 16)
 #define YPOS_SUGGESTIONTYPE  (MENUITEM_SUGGESTIONTYPE * 16)
+#define YPOS_VSYNC           (MENUITEM_VSYNC * 16)
 
 // this file's functions
 static void Task_OptionMenuFadeIn(u8 taskId);
@@ -108,6 +111,8 @@ static u8   SuggestBall_ProcessInput(u8 selection);
 static void SuggestBall_DrawChoices(u8 selection);
 static u8   SuggestionType_ProcessInput(u8 selection);
 static void SuggestionType_DrawChoices(u8 selection);
+static u8   VSync_ProcessInput(u8 selection);
+static void VSync_DrawChoices(u8 selection);
 static u8   Sound_ProcessInput(u8 selection);
 static void Sound_DrawChoices(u8 selection);
 static u8   FrameType_ProcessInput(u8 selection);
@@ -145,6 +150,7 @@ static const u8 *const sOptionMenuItemsNames_Pg2[MENUITEM_COUNT_PG2] =
     [MENUITEM_TYPEEFFECT]      = gText_TypeEffect,
     [MENUITEM_SUGGESTBALL]     = gText_SuggestBall,
     [MENUITEM_SUGGESTIONTYPE]  = gText_SuggestionType,
+    [MENUITEM_VSYNC]           = gText_VSync,
     [MENUITEM_CANCEL_PG2]      = gText_OptionMenuCancel,
 };
 
@@ -225,6 +231,7 @@ static void ReadAllCurrentSettings(u8 taskId)
     gTasks[taskId].data[TD_TYPEEFFECT] = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     gTasks[taskId].data[TD_SUGGESTBALL] = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
     gTasks[taskId].data[TD_SUGGESTIONTYPE] = FlagGet(FLAG_BALL_SUGGEST_NOT_LAST) * (1 + FlagGet(FLAG_BALL_SUGGEST_COMPLEX));  // 0 = Last; 1 = Simple; 2 = Complex
+    gTasks[taskId].data[TD_VSYNC] = gSaveBlock2Ptr->vSyncOff;
 }
 
 static void DrawOptionsPg1(u8 taskId)
@@ -248,6 +255,7 @@ static void DrawOptionsPg2(u8 taskId)
     TypeEffect_DrawChoices(gTasks[taskId].data[TD_TYPEEFFECT]);
     SuggestBall_DrawChoices(gTasks[taskId].data[TD_SUGGESTBALL]);
     SuggestionType_DrawChoices(gTasks[taskId].data[TD_SUGGESTIONTYPE]);
+    VSync_DrawChoices(gTasks[taskId].data[TD_VSYNC]);
     HighlightOptionMenuItem(gTasks[taskId].data[TD_MENUSELECTION]);
     CopyWindowToVram(WIN_OPTIONS, COPYWIN_FULL);
 }
@@ -370,6 +378,46 @@ static u8 Process_ChangePage(u8 CurrentPage)
     return CurrentPage;
 }
 
+static void MenuSavePg1(u8 taskId)
+{
+    gSaveBlock2Ptr->optionsTextSpeed = gTasks[taskId].data[TD_TEXTSPEED];
+    gSaveBlock2Ptr->optionsBattleSceneOff = gTasks[taskId].data[TD_BATTLESCENE];
+    gSaveBlock2Ptr->optionsBattleStyle = gTasks[taskId].data[TD_BATTLESTYLE];
+    gSaveBlock2Ptr->optionsSound = gTasks[taskId].data[TD_SOUND];
+    gSaveBlock2Ptr->optionsButtonMode = gTasks[taskId].data[TD_BUTTONMODE];
+    gSaveBlock2Ptr->optionsWindowFrameType = gTasks[taskId].data[TD_FRAMETYPE];
+}
+
+static void MenuSavePg2(u8 taskId)
+{
+    gSaveBlock2Ptr->vSyncOff = gTasks[taskId].data[TD_VSYNC];
+    if (gTasks[taskId].data[TD_FOLLOWER] == 0)
+        FlagClear(FLAG_POKEMON_FOLLOWERS);
+    else
+        FlagSet(FLAG_POKEMON_FOLLOWERS);
+    SetDifficulty(gTasks[taskId].data[TD_DIFFICULTY]);
+    if (gTasks[taskId].data[TD_TYPEEFFECT] == 0)
+        FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
+    else
+        FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
+    if (gTasks[taskId].data[TD_SUGGESTBALL] == 0)
+        FlagClear(FLAG_SHOW_BALL_SUGGESTION);
+    else
+        FlagSet(FLAG_SHOW_BALL_SUGGESTION);
+    if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 0){  // Last{
+        FlagClear(FLAG_BALL_SUGGEST_NOT_LAST);
+        FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
+    }
+    else if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 1){  // Simple
+        FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
+        FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
+    }
+    else if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 2){  // Simple
+        FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
+        FlagSet(FLAG_BALL_SUGGEST_COMPLEX);
+    }
+}
+
 static void Task_ChangePage(u8 taskId)
 {
     DrawTextOption();
@@ -400,10 +448,13 @@ static void Task_OptionMenuProcessInput(u8 taskId)
     {
         FillWindowPixelBuffer(WIN_OPTIONS, PIXEL_FILL(1));
         ClearStdWindowAndFrame(WIN_OPTIONS, FALSE);
+        MenuSavePg1(taskId);
         sCurrPage = Process_ChangePage(sCurrPage);
         gTasks[taskId].func = Task_ChangePage;
     }
-    else if (JOY_NEW(A_BUTTON) && !JOY_HELD(L_BUTTON))
+    else if (JOY_NEW(A_BUTTON) && !(JOY_HELD(L_BUTTON) &&
+    (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A
+    || gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_VSYNC)))
     {
         if (gTasks[taskId].data[TD_MENUSELECTION] == MENUITEM_CANCEL)
             gTasks[taskId].func = Task_OptionMenuSave;
@@ -500,10 +551,13 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
     {
         FillWindowPixelBuffer(WIN_OPTIONS, PIXEL_FILL(1));
         ClearStdWindowAndFrame(WIN_OPTIONS, FALSE);
+        MenuSavePg2(taskId);
         sCurrPage = Process_ChangePage(sCurrPage);
         gTasks[taskId].func = Task_ChangePage;
     }
-    else if (JOY_NEW(A_BUTTON) && !JOY_HELD(L_BUTTON))
+    else if (JOY_NEW(A_BUTTON) && !(JOY_HELD(L_BUTTON) &&
+    (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A
+    || gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_VSYNC)))
     {
         if (gTasks[taskId].data[TD_MENUSELECTION] == MENUITEM_CANCEL_PG2)
             gTasks[taskId].func = Task_OptionMenuSave;
@@ -569,6 +623,13 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
             if (previousOption != gTasks[taskId].data[TD_SUGGESTIONTYPE])
                 SuggestionType_DrawChoices(gTasks[taskId].data[TD_SUGGESTIONTYPE]);
             break;
+        case MENUITEM_VSYNC:
+            previousOption = gTasks[taskId].data[TD_VSYNC];
+            gTasks[taskId].data[TD_VSYNC] = VSync_ProcessInput(gTasks[taskId].data[TD_VSYNC]);
+
+            if (previousOption != gTasks[taskId].data[TD_VSYNC])
+                VSync_DrawChoices(gTasks[taskId].data[TD_VSYNC]);
+            break;
         default:
             return;
         }
@@ -583,42 +644,8 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
 
 static void Task_OptionMenuSave(u8 taskId)
 {
-    gSaveBlock2Ptr->optionsTextSpeed = gTasks[taskId].data[TD_TEXTSPEED];
-    gSaveBlock2Ptr->optionsBattleSceneOff = gTasks[taskId].data[TD_BATTLESCENE];
-    gSaveBlock2Ptr->optionsBattleStyle = gTasks[taskId].data[TD_BATTLESTYLE];
-    gSaveBlock2Ptr->optionsSound = gTasks[taskId].data[TD_SOUND];
-    gSaveBlock2Ptr->optionsButtonMode = gTasks[taskId].data[TD_BUTTONMODE];
-    gSaveBlock2Ptr->optionsWindowFrameType = gTasks[taskId].data[TD_FRAMETYPE];
-
-    if (gTasks[taskId].data[TD_FOLLOWER] == 0)
-        FlagClear(FLAG_POKEMON_FOLLOWERS);
-    else
-        FlagSet(FLAG_POKEMON_FOLLOWERS);
-
-    SetDifficulty(gTasks[taskId].data[TD_DIFFICULTY]);
-
-    if (gTasks[taskId].data[TD_TYPEEFFECT] == 0)
-        FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
-    else
-        FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
-
-    if (gTasks[taskId].data[TD_SUGGESTBALL] == 0)
-        FlagClear(FLAG_SHOW_BALL_SUGGESTION);
-    else
-        FlagSet(FLAG_SHOW_BALL_SUGGESTION);
-    
-    if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 0){  // Last{
-        FlagClear(FLAG_BALL_SUGGEST_NOT_LAST);
-        FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
-    }
-    else if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 1){  // Simple
-        FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
-        FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
-    }
-    else if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 2){  // Simple
-        FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
-        FlagSet(FLAG_BALL_SUGGEST_COMPLEX);
-    }
+    MenuSavePg1(taskId);
+    MenuSavePg2(taskId);
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
     gTasks[taskId].func = Task_OptionMenuFadeOut;
 }
@@ -804,12 +831,6 @@ static u8 Difficulty_ProcessInput(u8 selection)
 static void Difficulty_DrawChoices(u8 selection)
 {
     u8 styles[3];
-    /* FALSE = Have the middle text be exactly in between where the first text ends and second text begins.
-       TRUE = Have the mid text be in the middle of the frame, ignoring the first and last text size. 
-    Setting it to FALSE is how vanilla code does it for the TEST SPEED, but the layout looks off-center if there's
-    multiple three-item options in one page and the length of characters for the first and last choices
-    of one of the options mismatch.*/
-    bool8 centerMid = TRUE;
     s32 widthEasy, widthNormal, widthHard, xMid;
 
     styles[0] = 0;
@@ -820,15 +841,7 @@ static void Difficulty_DrawChoices(u8 selection)
     DrawOptionMenuChoice(gText_DifficultyEasy, 104, YPOS_DIFFICULTY, styles[0]);
 
     widthNormal = GetStringWidth(FONT_NORMAL, gText_DifficultyNormal, 0);
-    if (centerMid){
-        xMid = (94 - widthNormal) / 2 + 104;
-    }
-    else{
-        widthEasy = GetStringWidth(FONT_NORMAL, gText_DifficultyEasy, 0);
-        widthHard = GetStringWidth(FONT_NORMAL, gText_DifficultyHard, 0);
-        widthNormal -= 94;
-        xMid = (widthEasy - widthNormal - widthHard) / 2 + 104;
-     }
+    xMid = (94 - widthNormal) / 2 + 104;
 
     DrawOptionMenuChoice(gText_DifficultyNormal, xMid, YPOS_DIFFICULTY, styles[1]);
     DrawOptionMenuChoice(gText_DifficultyHard, GetStringRightAlignXOffset(FONT_NORMAL, gText_DifficultyHard, 198), YPOS_DIFFICULTY, styles[2]);
@@ -906,12 +919,6 @@ static u8 SuggestionType_ProcessInput(u8 selection)
 static void SuggestionType_DrawChoices(u8 selection)
 {
     u8 styles[3];
-    /* FALSE = Have the middle text be exactly in between where the first text ends and second text begins.
-       TRUE = Have the mid text be in the middle of the frame, ignoring the first and last text size. 
-    Setting it to FALSE is how vanilla code does it for the TEST SPEED, but the layout looks off-center if there's
-    multiple three-item options in one page and the length of characters for the first and last choices
-    of one of the options mismatch.*/
-    bool8 centerMid = TRUE;
     s32 widthLast, widthSimple, widthComplex, xMid;
 
     styles[0] = 0;
@@ -922,21 +929,35 @@ static void SuggestionType_DrawChoices(u8 selection)
     DrawOptionMenuChoice(gText_SuggestionTypeLast, 104, YPOS_SUGGESTIONTYPE, styles[0]);
 
     widthSimple = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeSimple, 0);
-    if (centerMid){
-        xMid = (94 - widthSimple) / 2 + 104;
-    }
-    else{
-        widthLast = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeLast, 0);
-        widthComplex = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeComplex, 0);
-        widthSimple -= 94;
-        xMid = (widthLast - widthSimple - widthComplex) / 2 + 104;
-    }
+    xMid = (94 - widthSimple) / 2 + 104;
+
     DrawOptionMenuChoice(gText_SuggestionTypeSimple, xMid, YPOS_SUGGESTIONTYPE, styles[1]);
 
     DrawOptionMenuChoice(gText_SuggestionTypeComplex, GetStringRightAlignXOffset(FONT_NORMAL, gText_SuggestionTypeComplex, 198), YPOS_SUGGESTIONTYPE, styles[2]);
 }
 
+static u8 VSync_ProcessInput(u8 selection)
+{
+    if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
+    {
+        selection ^= 1;
+        sArrowPressed = TRUE;
+    }
 
+    return selection;
+}
+
+static void VSync_DrawChoices(u8 selection)
+{
+    u8 styles[2];
+
+    styles[0] = 0;
+    styles[1] = 0;
+    styles[selection] = 1;
+
+    DrawOptionMenuChoice(gText_VSyncOn, 104, YPOS_VSYNC, styles[0]);
+    DrawOptionMenuChoice(gText_VSyncOff, GetStringRightAlignXOffset(FONT_NORMAL, gText_VSyncOff, 198), YPOS_VSYNC, styles[1]);
+}
 
 static u8 Sound_ProcessInput(u8 selection)
 {
@@ -1053,9 +1074,9 @@ static void ButtonMode_DrawChoices(u8 selection)
     styles[2] = 0;
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(gText_ButtonTypeNormal, 104, YPOS_BUTTONMODE, styles[0]);
+    DrawOptionMenuChoice(gText_ButtonTypeVSync, 104, YPOS_BUTTONMODE, styles[0]);
 
-    widthNormal = GetStringWidth(FONT_NORMAL, gText_ButtonTypeNormal, 0);
+    widthNormal = GetStringWidth(FONT_NORMAL, gText_ButtonTypeVSync, 0);
     widthLR = GetStringWidth(FONT_NORMAL, gText_ButtonTypeLR, 0);
     widthLA = GetStringWidth(FONT_NORMAL, gText_ButtonTypeLEqualsA, 0);
 

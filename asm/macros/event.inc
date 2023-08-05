@@ -1801,6 +1801,12 @@
 	.4byte \func
 	.endm
 
+	@ Checks if the button is held
+	.macro checkbuttonheld buttonToCheck:req
+	.byte 0xea
+	.2byte \buttonToCheck
+	.endm
+
 @ Supplementary
 
 	.macro goto_if_unset flag:req, dest:req

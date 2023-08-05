@@ -9,6 +9,24 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v2.2.1
+ - [Added Sleep Mode](https://github.com/pret/pokeemerald/wiki/Add-Sleep-Mode)
+   - Hold L Trigger + R Trigger + SELECT to enter sleep mode. Press SELECT + START to leave sleep mode.
+ - Thief Ball does not show on already caught Pokémon when SUGGEST BALL mode is ADV.
+ - [Added Option for Turning Off Waiting for VBlank in Options Menu.](https://gitlab.com/devolov/pokeemerald_fork/-/commit/f30bc4e2c884b194b5d7eaceada9a31552dea87c)
+   - Expect The Game to Run Faster, But be More Buggy in this Mode.
+ - [Made Pikachu Fat Using Gen 2 Sprites](https://gitlab.com/devolov/pokeemerald_fork/-/commit/3abf7502d0d461c61c2a3d5c12b0139821163cfb)
+   - Credit to [Bellossom](https://bellossom.tumblr.com/post/626377942285565952/i-refreshed-an-old-pikachu-sprite) for the Front Sprite.
+ - [Allow Rematch With Trainers When Holding B When Talking to Them](https://gitlab.com/devolov/pokeemerald_fork/-/wikis/Allow-Rematching-Trainers)
+ - [Showing IVs/EVs in Summary Screen](https://www.pokecommunity.com/showpost.php?p=10161688&postcount=77) [Credit: PokemonCrazy]
+ - Changed Will-O-Wisp and Chill-O-Wisp's Accuracy from 75% to 85%.
+ - Thief Ball now shows if caught Pokémon is added to the Dex and what box it gets transferred to.
+ - Bug fix on no name showing up when player uses strength and no one in the party knows it.
+ - Bug fix on Cleanse Tag and Poké Doll never showing Deselect option.
+ - Bug fix on opening better bag pocket from overworld.
+ - Bug fix on holding select also causing the tap to select option to be used.
+ - Bug fix on saving menu options when swapping through pages.
+
 ## v2.2.0
  - [Added Eon Flute](https://www.pokecommunity.com/showthread.php?t=422107) [Credit: camthesaxman and paccy for the Emerald Port]
  - [Go-Goggles can be Used to and a Sandstorm in Battles](https://gitlab.com/devolov/pokeemerald_fork/-/commit/00c938536e5abfe4db4e89fd3e93b2c6ac1a450c)
@@ -18,7 +36,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Player's icon shown and them raising their Poké Ball not shown when performing a field move that the party does not known.
  - Sped up slow and medium text speed.
  - [Arrows show that cycling balls can be done.](https://github.com/rh-hideout/pokeemerald-expansion/pull/3039)
- - Thief Ball option only shows if the Pokémon's catch rate is low enough (proxy for its rarity).
+ - Thief Ball option only shows if the Pokémon's catch rate is low enough (proxy for its rarity) when SUGGEST BALL mode is ADV.
  - Register icon for Cleanse Tag and Poké Doll aligned.
  - Repels can now be registered items.
  - [Added Frostbite](https://github.com/rh-hideout/pokeemerald-expansion/pull/2942) [Credit: Bassoonian]
@@ -34,7 +52,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 ## v2.1.0
  - [Added last used ball in battle menu.](https://github.com/rh-hideout/pokeemerald-expansion/commit/c06029bc721119b0efd6e26c24a3f77772dfd77b) [Credit: Ghoulslash]
    - This defaults to a Thief ball if in a trainer battle.
-   - Gives suggested ball on the first turn (and the Timer Ball aftewr enough turns)
+   - Gives suggested ball on the first turn (and the Timer Ball after enough turns)
  - [Added Second Page to Options Menu.](https://github.com/pret/pokeemerald/wiki/Multipage-Options-Menu)
    - Includes: Show Follower, Show Ball Suggestion, Ball Suggestion Preferences, Difficulty.
  - [Holding Select Allows For A Second Register Item](https://github.com/pret/pokeemerald/wiki/Holding-Select-Allows-For-A-Second-Register-Item)
@@ -79,7 +97,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Overlevel check turns off if Nuzlocke setting is off.
 
 ## v1.5.2
- - Readded Nuse Joy chime when healing.
+ - Readded Nurse Joy chime when healing.
  - No longer shows Nuzlocke cap if player is champion.
 
 ## v1.5.1
