@@ -11,6 +11,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
 ## Not Yet Versioned
  - Ball Does Not Get Thrown When Cycling Unless The Ball Was Not Cycled That Turn.
+ - Swapped Turbo and VSync Mapping of Shoulder Buttons in VSync Button Mode.
  - Bug Fix Where Bag Menu Does Not Have A Dot for Each Pouch.
 
 ## v2.2.1
