@@ -978,6 +978,8 @@ u16 ItemId_GetId(u16 itemId)
 
 u16 ItemId_GetPrice(u16 itemId)
 {
+    if (FlagGet(FLAG_CHEAP_MART))
+        return 1;
     return gItems[SanitizeItemId(itemId)].price;
 }
 

@@ -247,7 +247,33 @@ LittlerootTown_EventScript_SetRivalBirchPosForDexUpgradeFemale::
 	end
 
 LittlerootTown_EventScript_FatMan::
-	msgbox LittlerootTown_Text_CanUsePCToStoreItems, MSGBOX_NPC
+	goto_if_set FLAG_IS_CHAMPION, LittlerootTown_EventScript_FatMan_EliteFourWon
+	msgbox LittlerootTown_Text_HeyJaime, MSGBOX_NPC
+	end
+
+LittlerootTown_EventScript_FatMan_EliteFourWon::
+	lock
+	faceplayer
+	message LittlerootTown_Text_JaimeSelling
+	waitmessage
+	setflag FLAG_CHEAP_MART
+	pokemart LittlerootTown_EventScript_FatMan_Vitamins
+	clearflag FLAG_CHEAP_MART
+	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_DEFAULT
+	release
+	end
+
+	.align 2
+LittlerootTown_EventScript_FatMan_Vitamins:
+	.2byte ITEM_PROTEIN
+	.2byte ITEM_CALCIUM
+	.2byte ITEM_IRON
+	.2byte ITEM_ZINC
+	.2byte ITEM_CARBOS
+	.2byte ITEM_HP_UP
+	.2byte ITEM_RARE_CANDY
+	.2byte ITEM_NONE
+	release
 	end
 
 LittlerootTown_EventScript_Boy::
@@ -988,9 +1014,20 @@ LittlerootTown_Text_ComeHomeIfAnythingHappens:
 	.string "If anything happens, you can come home.\p"
 	.string "Go on, go get them, honey!$"
 
-LittlerootTown_Text_CanUsePCToStoreItems:
+LittlerootTown_Text_HeyJaime:
 	.string "Hey.\n"
 	.string "  - Jaime$"
+
+LittlerootTown_Text_JaimeSelling:
+	.string "Hey {PLAYER}, I'm taking a break\n"
+	.string "from dealing shoes.\p"
+	.string "I have some Vitamins I'm selling.\n"
+	.string "You interested?\p"
+	.string "I'll give you a discount\n"
+	.string "since you're cool.$"
+
+LittlerootTown_Text_JaimeSold:
+	.string "Always a pleasure.$"
 
 LittlerootTown_Text_BirchSpendsDaysInLab:
 	.string "PROF. BIRCH spends days in his LAB\n"
