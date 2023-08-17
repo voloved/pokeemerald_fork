@@ -978,7 +978,7 @@ u16 ItemId_GetId(u16 itemId)
 
 u16 ItemId_GetPrice(u16 itemId)
 {
-    if (FlagGet(FLAG_CHEAP_MART))
+    if (FlagGet(FLAG_TEMP_MEAN_ZIGZAGOON))
         return 1;
     return gItems[SanitizeItemId(itemId)].price;
 }

@@ -256,9 +256,9 @@ LittlerootTown_EventScript_FatMan_EliteFourWon::
 	faceplayer
 	message LittlerootTown_Text_JaimeSelling
 	waitmessage
-	setflag FLAG_CHEAP_MART
+	setflag FLAG_TEMP_MEAN_ZIGZAGOON
 	pokemart LittlerootTown_EventScript_FatMan_Vitamins
-	clearflag FLAG_CHEAP_MART
+	clearflag FLAG_TEMP_MEAN_ZIGZAGOON
 	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_DEFAULT
 	release
 	end
