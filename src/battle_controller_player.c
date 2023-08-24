@@ -333,6 +333,13 @@ static void HandleInputChooseAction(void)
             SwapBallToDisplay(sameBall);
             PlaySE(SE_SELECT);
         }
+        else if (JOY_NEW_RAW(B_BUTTON))
+        {
+            sAckBallUseBtn = FALSE;
+            sBallSwapped = FALSE;
+            ArrowsChangeColorLastBallCycle(0);
+            PlaySE(SE_PC_OFF);
+        }
         else if (!JOY_HELD(B_LAST_USED_BALL_BUTTON) && sBallSwapped)
         {
             sAckBallUseBtn = FALSE;
