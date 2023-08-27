@@ -6770,6 +6770,7 @@ void ItemUseCB_Mints(u8 taskId, TaskFunc task)
 
 #define tIVToSet        tCurrNature
 #define tIVSetAmount    tNewNature
+#define MIN_BOTTLE_CAP_LEVEL 50
 
 static const u8 sStatToIVLUT[] = 
 {
@@ -6794,7 +6795,8 @@ static const u8 *const sStatNamePointers[NUM_STATS] =
 static const u8 sText_AskBottleCap[] = _("Would you like to set {STR_VAR_1}'s\n{STR_VAR_2} IV to {STR_VAR_3}?");
 static const u8 sText_AskGoldenBottleCap[] = _("Would you like to set all of {STR_VAR_1}'s\nIVs to {STR_VAR_3}?");
 static const u8 sText_BottleCapsDone[] = _("{STR_VAR_1}'s IVs have\nbeen changed!{PAUSE_UNTIL_PRESS}");
-static const u8 sThe_Max[] = _("the max");
+static const u8 sText_TheMax[] = _("the max");
+static const u8 sText_LevelTooLow[] = _("{STR_VAR_1}'s level is\ntoo low.{PAUSE_UNTIL_PRESS}");
 static void Task_BottleCaps(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
@@ -6804,6 +6806,17 @@ static void Task_BottleCaps(u8 taskId)
     switch (tState)
     {
     case 0:
+        if (MIN_BOTTLE_CAP_LEVEL > GetMonData(&gPlayerParty[tMonId], MON_DATA_LEVEL, NULL))
+        {
+            gPartyMenuUseExitCallback = FALSE;
+            GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
+            StringExpandPlaceholders(gStringVar4, sText_LevelTooLow);
+            PlaySE(SE_SELECT);
+            DisplayPartyMenuMessage(gStringVar4, 1);
+            ScheduleBgCopyTilemapToVram(2);
+            gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
+            return;
+        }
         if (tIVToSet == NUM_STATS)
         {
             for (i = 0; i < ARRAY_COUNT(sStatToIVLUT); i++)
@@ -6838,7 +6851,7 @@ static void Task_BottleCaps(u8 taskId)
         GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
         StringCopy(gStringVar2, sStatNamePointers[tIVToSet]);
         if (tIVSetAmount == MAX_PER_STAT_IVS)
-            StringCopy(gStringVar3, sThe_Max);
+            StringCopy(gStringVar3, sText_TheMax);
         else
             ConvertIntToDecimalStringN(gStringVar3, tIVSetAmount, STR_CONV_MODE_LEFT_ALIGN, 2);
         if (tIVToSet == NUM_STATS)
