@@ -3993,6 +3993,8 @@ extern const u32 gItemIconPalette_PinkMint[];
 extern const u32 gItemIconPalette_GreenMint[];
 extern const u32 gItemIconPalette_LightBlueMint[];
 extern const u32 gItemIconPalette_YellowMint[];
+extern const u32 gItemIcon_BottleCap[];
+extern const u32 gItemIconPalette_GoldBottleCap[];
 
 extern const u32 gItemIcon_ReturnToFieldArrow[];
 extern const u32 gItemIconPalette_ReturnToFieldArrow[];
