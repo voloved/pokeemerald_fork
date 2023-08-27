@@ -42,5 +42,6 @@ void ItemUseOutOfBattle_CannotUse(u8);
 void ItemUseOutOfBattle_EonFlute(u8 taskId);
 u8 CheckIfItemIsTMHMOrEvolutionStone(u16 itemId);
 u32 CannotThrowBall(void);
+void ItemUseOutOfBattle_Mints(u8 taskId);
 
 #endif // GUARD_ITEM_USE_H
