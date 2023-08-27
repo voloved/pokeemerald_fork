@@ -1334,4 +1334,10 @@ void ItemUseOutOfBattle_Mints(u8 taskId)
     SetUpItemUseCallback(taskId);
 }
 
+void ItemUseOutOfBattle_BottleCaps(u8 taskId)
+{
+    gItemUseCB = ItemUseCB_BottleCaps;
+    SetUpItemUseCallback(taskId);
+}
+
 #undef tUsingRegisteredKeyItem

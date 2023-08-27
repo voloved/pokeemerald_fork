@@ -790,15 +790,17 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
-    [ITEM_03D] =
+    [ITEM_RUSTY_BOTTLE_CAP] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("RUSTBOTTLCAP"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 10000,
+        .holdEffectParam = 0,
+        .description = sRustyBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = NUM_STATS,
     },
 
     [ITEM_GOLD_BOTTLE_CAP] =
@@ -806,10 +808,12 @@ const struct Item gItems[] =
         .name = _("GOLDBOTTLCAP"),
         .itemId = ITEM_GOLD_BOTTLE_CAP,
         .price = 10000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
         .description = sGoldBottleCapDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = NUM_STATS,
     },
 
 // Vitamins

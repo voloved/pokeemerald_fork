@@ -294,6 +294,7 @@ LittlerootTown_EventScript_FatMan_Vitamins:
 	.2byte ITEM_SERIOUS_MINT
 	.2byte ITEM_TIMID_MINT
 	.2byte ITEM_GOLD_BOTTLE_CAP
+	.2byte ITEM_RUSTY_BOTTLE_CAP,
 	.2byte ITEM_NONE
 	release
 	end

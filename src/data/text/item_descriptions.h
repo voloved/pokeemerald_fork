@@ -1665,3 +1665,8 @@ static const u8 sGoldBottleCapDesc[] = _(
     "A beautiful bottle\n"
     "cap that gives off\n"
     "a golden gleam.");
+
+static const u8 sRustyBottleCapDesc[] = _(
+    "A rusted bottle\n"
+    "cap that gives off\n"
+    "no gleam.");
