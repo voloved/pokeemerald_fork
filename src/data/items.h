@@ -724,75 +724,87 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
-    [ITEM_037] =
+    [ITEM_BOTTLE_CAP_HP] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("CAP: HP"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 5000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = STAT_HP,
     },
 
-    [ITEM_038] =
+    [ITEM_BOTTLE_CAP_ATK] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("CAP: ATK"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 5000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = STAT_ATK,
     },
 
-    [ITEM_039] =
+    [ITEM_BOTTLE_CAP_DEF] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("CAP: DEF"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 5000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = STAT_DEF,
     },
 
-    [ITEM_03A] =
+    [ITEM_BOTTLE_CAP_SPEED] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("CAP: SPEED"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 5000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = STAT_SPEED,
     },
 
-    [ITEM_03B] =
+    [ITEM_BOTTLE_CAP_SPATK] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("CAP: SP.ATK"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 5000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = STAT_SPATK,
     },
 
-    [ITEM_03C] =
+    [ITEM_BOTTLE_CAP_SPDEF] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("CAP: SP.DEF"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 5000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = STAT_SPDEF,
     },
 
     [ITEM_RUSTY_BOTTLE_CAP] =
     {
-        .name = _("RUSTBOTTLCAP"),
+        .name = _("RUSTED CAP"),
         .itemId = ITEM_GOLD_BOTTLE_CAP,
         .price = 10000,
         .holdEffectParam = 0,
@@ -805,7 +817,7 @@ const struct Item gItems[] =
 
     [ITEM_GOLD_BOTTLE_CAP] =
     {
-        .name = _("GOLDBOTTLCAP"),
+        .name = _("GOLDEN CAP"),
         .itemId = ITEM_GOLD_BOTTLE_CAP,
         .price = 10000,
         .holdEffectParam = MAX_PER_STAT_IVS,

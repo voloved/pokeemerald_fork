@@ -1661,6 +1661,11 @@ static const u8 sTimidMintDesc[] = _(
     "of a Pokémon to\n"
     "Timid");
 
+static const u8 sBottleCapDesc[] = _(
+    "A beautiful bottle\n"
+    "cap that gives off\n"
+    "a pretty gleam.");
+
 static const u8 sGoldBottleCapDesc[] = _(
     "A beautiful bottle\n"
     "cap that gives off\n"
