@@ -10,6 +10,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
 ## Not Yet Versioned
+ - Added Nature Mints and Bottle Caps
+   - They can be bouight for cheap from Jaime after becoming the champion.
  - Ball Does Not Get Thrown When Cycling Unless The Ball Was Not Cycled That Turn.
  - Swapped Turbo and VSync Mapping of Shoulder Buttons in VSync Button Mode.
  - Bug Fix Where Bag Menu Does Not Have A Dot for Each Pouch.
