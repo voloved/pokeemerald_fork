@@ -98,6 +98,7 @@ enum {
     ACTION_BY_NUMBER,
     ACTION_REGISTER_TAP,
     ACTION_REGISTER_HOLD,
+    ACTION_SWAP,
     ACTION_DUMMY,
 };
 
@@ -207,6 +208,7 @@ static void ItemMenu_UseOutOfBattle(u8);
 static void ItemMenu_Toss(u8);
 static void ItemMenu_Register(u8);
 static void ItemMenu_RegisterHold(u8);
+static void ItemMenu_Swap(u8);
 static void ItemMenu_CheckWhichRegister(u8);
 static void ItemMenu_Give(u8);
 static void ItemMenu_Cancel(u8);
@@ -301,6 +303,7 @@ static const u8 sMenuText_ByNumber[] = _("Number");
 static const u8 sText_NothingToSort[] = _("There's nothing to sort!");
 static const u8 sMenuText_Tap[] = _("Tap");
 static const u8 sMenuText_Hold[] = _("Hold");
+static const u8 sMenuText_Swap[] = _("SWAP");
 static const u8 sText_RegisterHow[] = _("Register this\nitem by tapping or\nholding SELECT?");
 static const struct MenuAction sItemMenuActions[] = {
     [ACTION_USE]               = {gMenuText_Use,      ItemMenu_UseOutOfBattle},
@@ -323,6 +326,7 @@ static const struct MenuAction sItemMenuActions[] = {
     [ACTION_BY_AMOUNT]         = {sMenuText_ByAmount, ItemMenu_SortByAmount},
     [ACTION_REGISTER_TAP]      = {sMenuText_Tap,      ItemMenu_Register},
     [ACTION_REGISTER_HOLD]     = {sMenuText_Hold,     ItemMenu_RegisterHold},
+    [ACTION_SWAP]              = {sMenuText_Swap,     ItemMenu_Swap},
     [ACTION_DUMMY]             = {gText_EmptyString2, NULL}
 };
 
@@ -1723,6 +1727,7 @@ static void OpenContextMenu(u8 taskId)
                     gBagMenu->contextMenuItemsBuffer[1] = ACTION_DESELECT;
                 if (gSpecialVar_ItemId == ITEM_MACH_BIKE || gSpecialVar_ItemId == ITEM_ACRO_BIKE)
                 {
+                    gBagMenu->contextMenuItemsBuffer[2] = ACTION_SWAP;
                     if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
                         gBagMenu->contextMenuItemsBuffer[0] = ACTION_WALK;
                 }
@@ -2044,6 +2049,33 @@ static void ItemMenu_RegisterHold(u8 taskId)
 {
     gTasks[taskId].tIsRegisterHold = TRUE;
     gTasks[taskId].func = ItemMenu_Register;
+}
+
+static void ItemMenu_Swap(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    u16 *scrollPos = &gBagPosition.scrollPosition[gBagPosition.pocket];
+    u16 *cursorPos = &gBagPosition.cursorPosition[gBagPosition.pocket];
+    u8 itemListPos = GetItemListPosition(gBagPosition.pocket);
+
+    if (gSpecialVar_ItemId == ITEM_MACH_BIKE)
+        gBagPockets[gBagPosition.pocket].itemSlots[itemListPos].itemId = ITEM_ACRO_BIKE;
+    else if (gSpecialVar_ItemId == ITEM_ACRO_BIKE)
+        gBagPockets[gBagPosition.pocket].itemSlots[itemListPos].itemId = ITEM_MACH_BIKE;
+    SwapRegisteredBike();
+    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE))
+        SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ACRO_BIKE);
+    else if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_ACRO_BIKE))
+        SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_MACH_BIKE);
+
+    BagDestroyPocketScrollArrowPair();
+    RemoveContextWindow();
+    DestroyListMenuTask(tListTaskId, scrollPos, cursorPos);
+    LoadBagItemListBuffers(gBagPosition.pocket);
+    tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, *scrollPos, *cursorPos);
+    ScheduleBgCopyTilemapToVram(0);
+    ItemMenu_Cancel(taskId);
+
 }
 
 static void AddRegisterSubMenu(void)
