@@ -17,6 +17,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Swapped Turbo and VSync Mapping of Shoulder Buttons in VSync Button Mode.
  - Bug Fix Where Bag Menu Does Not Have A Dot for Each Pouch.
  - Added Ability to Sort Key Items by Type.
+ - [Increased Money Limit](https://github.com/pret/pokeemerald/wiki/Increase-money-limit) [Credit: DizzyEgg]
  - More clean-up on bike sprites.
 
 ## v2.2.1
