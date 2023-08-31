@@ -12,9 +12,11 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 ## Not Yet Versioned
  - Added Nature Mints and Bottle Caps
    - They can be bouight for cheap from Jaime after becoming the champion.
+ - [Add Ability to Swap Bikes Whenever](https://github.com/pret/pokeemerald/wiki/Add-Ability-to-Swap-Bikes-Whenever)
  - Ball Does Not Get Thrown When Cycling Unless The Ball Was Not Cycled That Turn.
  - Swapped Turbo and VSync Mapping of Shoulder Buttons in VSync Button Mode.
  - Bug Fix Where Bag Menu Does Not Have A Dot for Each Pouch.
+ - Added Ability to Sort Key Items by Type.
  - More clean-up on bike sprites.
 
 ## v2.2.1
