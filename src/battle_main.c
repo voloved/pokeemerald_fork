@@ -4235,7 +4235,10 @@ void BattleTurnPassed(void)
 
     *(&gBattleStruct->absentBattlerFlags) = gAbsentBattlerFlags;
     BattlePutTextOnWindow(gText_EmptyString3, B_WIN_MSG);
-    gBattleMainFunc = PlayerTryEvolution;
+    if (FlagGet(FLAG_MID_BATTLE_EVOLUTION) && !(gBattleTypeFlags & BATTLE_TYPE_LINK))
+        gBattleMainFunc = PlayerTryEvolution;
+    else
+        gBattleMainFunc = HandleTurnActionSelectionState;
     gRandomTurnNumber = Random();
 
     if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
