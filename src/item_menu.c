@@ -2058,6 +2058,7 @@ static void ItemMenu_Swap(u8 taskId)
     u16 *cursorPos = &gBagPosition.cursorPosition[gBagPosition.pocket];
     u8 itemListPos = GetItemListPosition(gBagPosition.pocket);
 
+    IncrementGameStat(GAME_STAT_TRADED_BIKES);
     if (gSpecialVar_ItemId == ITEM_MACH_BIKE)
         gBagPockets[gBagPosition.pocket].itemSlots[itemListPos].itemId = ITEM_ACRO_BIKE;
     else if (gSpecialVar_ItemId == ITEM_ACRO_BIKE)

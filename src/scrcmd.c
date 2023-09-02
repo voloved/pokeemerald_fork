@@ -159,6 +159,18 @@ bool8 ScrCmd_checkbuttonheld(struct ScriptContext *ctx)
     return FALSE;
 }
 
+bool8 ScrCmd_setandcheckrematchable(struct ScriptContext *ctx)
+{
+    if (CanCurrentTrainerWantRematch())
+    {
+        SetRematchForCurrentTrainer();
+        gSpecialVar_Result = TRUE;
+    }
+    else
+        gSpecialVar_Result = FALSE;
+    return FALSE;
+}
+
 bool8 ScrCmd_waitstate(struct ScriptContext *ctx)
 {
     ScriptContext_Stop();

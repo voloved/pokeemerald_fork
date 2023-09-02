@@ -2008,7 +2008,8 @@ static u8 getLevelCap(void){
     return GetScaledLevel(levelCap);
 }
 
-bool8 levelCappedNuzlocke(u8 level){
+bool8 levelCappedNuzlocke(u8 level)
+{
     u8 levelCap = getLevelCap();
     if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_NUZLOCKE_LEVEL_CAP) || FlagGet(FLAG_IS_CHAMPION))
         return FALSE;  //Redundant since getLevelCap would already return 100 for these, but better to be explicit
@@ -2017,13 +2018,25 @@ bool8 levelCappedNuzlocke(u8 level){
     return FALSE;
 }
 
-void LevelCapToString(void){
+void LevelCapToString(void)
+{
     u8 lvl_txt[3];
     ConvertIntToDecimalStringN(lvl_txt, getLevelCap(), STR_CONV_MODE_LEFT_ALIGN, 3);
     StringCopy(gStringVar1, lvl_txt);
 }
 
-u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
+void SetRematchForCurrentTrainer(void)
+{
+    SetRematchIdForTrainer(gRematchTable, TrainerIdToRematchTableId(gRematchTable, gTrainerBattleOpponent_A));
+}
+
+bool32 CanCurrentTrainerWantRematch(void)
+{
+    return TrainerIdToRematchTableId(gRematchTable, gTrainerBattleOpponent_A) != -1;
+}
+
+u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc)
+{
     u8 varToCheck, bitToCheck;
     u16 varValue;
     const u16 pkmnSeenVars[] = {
@@ -2360,7 +2373,8 @@ u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc){
     return 0;
 }
 
-u8 currLocConvertForNuzlocke(u8 currLocation){
+u8 currLocConvertForNuzlocke(u8 currLocation)
+{
     switch (currLocation)
     {
     case MAPSEC_MAUVILLE_CITY:
