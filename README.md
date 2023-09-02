@@ -20,7 +20,10 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Added Ability to Move Held Items.](https://www.pokecommunity.com/showpost.php?p=10517557) [Credit: Zeturic]
  - [Added Mid-Battle Evolutions](https://www.pokecommunity.com/showpost.php?p=10464666) [Credit: CtrlFootPrint]
  - [Increased Money Limit](https://github.com/pret/pokeemerald/wiki/Increase-money-limit) [Credit: DizzyEgg]
+ - Now Able to Rematch Gym Leaders by Holding B When Talking After Becoming Champion.
+ - Rematching when Holdiong B Causes Trainer to Use the Party they Would if it Were a PokéNav Rematch.
  - More clean-up on bike sprites.
+ - Bug fix on Indicators Displaying on Enemy Party's Pokémon After Catching.
 
 ## v2.2.1
  - [Added Sleep Mode](https://github.com/pret/pokeemerald/wiki/Add-Sleep-Mode)
