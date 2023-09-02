@@ -492,5 +492,10 @@ void CountBadges(void)
 
 void IsRematchAllowed(void)
 {
-    gSpecialVar_Result = gMapHeader.allowPokevial;
+    if (FlagGet(FLAG_IS_CHAMPION) && gMapHeader.allowRematchesAfterChampion) // allowRematchesAfterChampion does not include Trick House and Battle Frontier
+    {
+        gSpecialVar_Result = TRUE;
+        return;
+    }
+    gSpecialVar_Result = gMapHeader.allowPokevial; // allowPokevial does not include Trick House, Battle Frontier, and Gyms
 }
