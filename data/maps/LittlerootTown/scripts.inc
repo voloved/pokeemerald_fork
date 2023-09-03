@@ -248,7 +248,115 @@ LittlerootTown_EventScript_SetRivalBirchPosForDexUpgradeFemale::
 
 LittlerootTown_EventScript_FatMan::
 	goto_if_set FLAG_IS_CHAMPION, LittlerootTown_EventScript_FatMan_EliteFourWon
+	callnative CanGetNatureMintFromJaime
+	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_FatManGiveMints
 	msgbox LittlerootTown_Text_HeyJaime, MSGBOX_NPC
+	end
+
+LittlerootTown_EventScript_FatManGiveMints::
+	lock
+	faceplayer
+	msgbox LittlerootTown_Text_JaimeHasMints, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_EventScript_MintEnd
+	message LittlerootTown_Text_JaimeWhichMint
+	waitmessage
+	setvar VAR_0x8004, SCROLL_MULTI_NATURE_MINTS
+	special ShowScrollableMultichoice
+	waitstate
+	switch VAR_RESULT
+	case 0, LittlerootTown_EventScript_GiveAdamant
+	case 1, LittlerootTown_EventScript_GiveBold
+	case 2, LittlerootTown_EventScript_GiveBrave
+	case 3, LittlerootTown_EventScript_GiveCalm
+	case 4, LittlerootTown_EventScript_GiveCareful
+	case 5, LittlerootTown_EventScript_GiveGentle
+	case 6, LittlerootTown_EventScript_GiveHasty
+	case 7, LittlerootTown_EventScript_GiveImpish
+	case 8, LittlerootTown_EventScript_GiveJolly
+	case 9, LittlerootTown_EventScript_GiveLax
+	case 10, LittlerootTown_EventScript_GiveLonely
+	case 11, LittlerootTown_EventScript_GiveMild
+	case 12, LittlerootTown_EventScript_GiveModest
+	case 13, LittlerootTown_EventScript_GiveNaive
+	case 14, LittlerootTown_EventScript_GiveNaughty
+	case 15, LittlerootTown_EventScript_GiveQuiet
+	case 16, LittlerootTown_EventScript_GiveRash
+	case 17, LittlerootTown_EventScript_GiveRelaxed
+	case 18, LittlerootTown_EventScript_GiveSassy
+	case 19, LittlerootTown_EventScript_GiveSerious
+	case 20, LittlerootTown_EventScript_GiveTimid
+	case 21, LittlerootTown_EventScript_MintEnd
+	case MULTI_B_PRESSED, LittlerootTown_EventScript_MintEnd
+	end
+
+LittlerootTown_EventScript_GiveAdamant::
+	giveitem ITEM_ADAMANT_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveBold::
+	giveitem ITEM_BOLD_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveBrave::
+	giveitem ITEM_BRAVE_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveCalm::
+	giveitem ITEM_CALM_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveCareful::
+	giveitem ITEM_CAREFUL_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveGentle::
+	giveitem ITEM_GENTLE_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveHasty::
+	giveitem ITEM_HASTY_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveImpish::
+	giveitem ITEM_IMPISH_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveJolly::
+	giveitem ITEM_JOLLY_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveLax::
+	giveitem ITEM_LAX_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveLonely::
+	giveitem ITEM_LONELY_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveMild::
+	giveitem ITEM_MILD_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveModest::
+	giveitem ITEM_MODEST_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveNaive::
+	giveitem ITEM_NAIVE_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveNaughty::
+	giveitem ITEM_NAUGHTY_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveQuiet::
+	giveitem ITEM_QUIET_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveRash::
+	giveitem ITEM_RASH_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveRelaxed::
+	giveitem ITEM_RELAXED_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveSassy::
+	giveitem ITEM_SASSY_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveSerious::
+	giveitem ITEM_SERIOUS_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveTimid::
+	giveitem ITEM_TIMID_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_MintGiveEnd::
+	addvar VAR_JAIME_MINTS_GIVEN, 1
+LittlerootTown_EventScript_MintEnd::
+	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_DEFAULT
+	release
 	end
 
 LittlerootTown_EventScript_FatMan_EliteFourWon::
@@ -1046,6 +1154,15 @@ LittlerootTown_Text_ComeHomeIfAnythingHappens:
 LittlerootTown_Text_HeyJaime:
 	.string "Hey.\n"
 	.string "  - Jaime$"
+
+LittlerootTown_Text_JaimeHasMints:
+	.string "I have {STR_VAR_1} that\n"
+	.string "I can give away.\p"
+	.string "Do you want one?$"
+
+LittlerootTown_Text_JaimeWhichMint:
+	.string "Which mint would\n"
+	.string "you like?$"
 
 LittlerootTown_Text_JaimeSelling:
 	.string "Hey {PLAYER}, I'm taking a break\n"

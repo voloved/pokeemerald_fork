@@ -749,6 +749,28 @@ extern const u8 gText_Zinc1000[];
 extern const u8 gText_HPUp1000[];
 extern const u8 gText_PPUp3000[];
 
+extern const u8 gText_AdamantMint[];
+extern const u8 gText_BoldMint[];
+extern const u8 gText_Mint[];
+extern const u8 gText_CalmMint[];
+extern const u8 gText_CarefulMint[];
+extern const u8 gText_GentleMint[];
+extern const u8 gText_HastyMint[];
+extern const u8 gText_ImpishMint[];
+extern const u8 gText_JollyMint[];
+extern const u8 gText_LaxMint[];
+extern const u8 gText_LonelyMint[];
+extern const u8 gText_MildMint[];
+extern const u8 gText_ModestMint[];
+extern const u8 gText_NaiveMint[];
+extern const u8 gText_NaughtyMint[];
+extern const u8 gText_QuietMint[];
+extern const u8 gText_RashMint[];
+extern const u8 gText_RelaxedMint[];
+extern const u8 gText_SassyMint[];
+extern const u8 gText_SeriousMint[];
+extern const u8 gText_TimidMint[];
+
 extern const u8 gText_BattleTower2[];
 extern const u8 gText_BattleDome[];
 extern const u8 gText_BattlePalace[];

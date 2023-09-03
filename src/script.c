@@ -478,18 +478,6 @@ void InitRamScript_NoObjectEvent(u8 *script, u16 scriptSize)
     InitRamScript(script, scriptSize, MAP_GROUP(UNDEFINED), MAP_NUM(UNDEFINED), NO_OBJECT);
 }
 
-void CountBadges(void)
-{
-    u32 i;
-    u32 numBadges = 0;
-    for(i = 0; i < NUM_BADGES; i++)
-    {
-        if(FlagGet(FLAG_BADGE01_GET + i))
-            numBadges++;
-    }
-    gSpecialVar_Result = numBadges;
-}
-
 void IsRematchAllowed(void)
 {
     if (FlagGet(FLAG_IS_CHAMPION) && gMapHeader.allowRematchesAfterChampion) // allowRematchesAfterChampion does not include Trick House and Battle Frontier
