@@ -2323,6 +2323,9 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         value = personality & 1;
         SetBoxMonData(boxMon, MON_DATA_ABILITY_NUM, &value);
     }
+    
+    value = HIDDEN_NATURE_NONE;
+    SetBoxMonData(boxMon, MON_DATA_HIDDEN_NATURE, &value);
 
     GiveBoxMonInitialMoveset(boxMon);
 }
@@ -2732,7 +2735,7 @@ static u16 GetDeoxysStat(struct Pokemon *mon, s32 statId)
     ivVal = GetMonData(mon, MON_DATA_HP_IV + statId, NULL);
     evVal = GetMonData(mon, MON_DATA_HP_EV + statId, NULL);
     statValue = ((sDeoxysBaseStats[statId] * 2 + ivVal + evVal / 4) * mon->level) / 100 + 5;
-    nature = GetNature(mon);
+    nature = GetNature(mon, TRUE);
     statValue = ModifyStatByNature(nature, statValue, (u8)statId);
     return statValue;
 }
@@ -2840,7 +2843,7 @@ static u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon)
 {                                                               \
     u8 baseStat = gSpeciesInfo[species].base;                   \
     s32 n = (((2 * baseStat + iv + ev / 4) * level) / 100) + 5; \
-    u8 nature = GetNature(mon);                                 \
+    u8 nature = GetNature(mon, TRUE);                           \
     n = ModifyStatByNature(nature, n, statIndex);               \
     SetMonData(mon, field, &n);                                 \
 }
@@ -4091,6 +4094,9 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_NATURE:
         return boxMon->personality % 25;
         break;
+    case MON_DATA_HIDDEN_NATURE:
+        retVal = substruct0->hiddenNature;
+        break;
     default:
         break;
     }
@@ -4491,6 +4497,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         boxMon->personality = pidTemp;
       break;
     }
+    case MON_DATA_HIDDEN_NATURE:
+        SET8(substruct0->hiddenNature);
+        break;
     default:
         break;
     }
@@ -4752,7 +4761,7 @@ void RemoveBattleMonPPBonus(struct BattlePokemon *mon, u8 moveIndex)
     mon->ppBonuses &= gPPUpClearMask[moveIndex];
 }
 
-void CopyPlayerPartyMonToBattleData(u8 battlerId, u8 partyIndex)
+void CopyPlayerPartyMonToBattleData(u8 battlerId, u8 partyIndex, bool8 resetStats)
 {
     u16 *hpSwitchout;
     s32 i;
@@ -4798,11 +4807,13 @@ void CopyPlayerPartyMonToBattleData(u8 battlerId, u8 partyIndex)
 
     hpSwitchout = &gBattleStruct->hpOnSwitchout[GetBattlerSide(battlerId)];
     *hpSwitchout = gBattleMons[battlerId].hp;
-
-    for (i = 0; i < NUM_BATTLE_STATS; i++)
-        gBattleMons[battlerId].statStages[i] = DEFAULT_STAT_STAGE;
-
-    gBattleMons[battlerId].status2 = 0;
+    if (resetStats)
+    {
+        for (i = 0; i < NUM_BATTLE_STATS; i++)
+            gBattleMons[battlerId].statStages[i] = DEFAULT_STAT_STAGE;
+            
+        gBattleMons[battlerId].status2 = 0;
+    }
     UpdateSentPokesToOpponentValue(battlerId);
     ClearTemporarySpeciesSpriteData(battlerId, FALSE);
 }
@@ -5140,7 +5151,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                                 if (battlerId != MAX_BATTLERS_COUNT)
                                 {
                                     gAbsentBattlerFlags &= ~gBitTable[battlerId];
-                                    CopyPlayerPartyMonToBattleData(battlerId, GetPartyIdFromBattlePartyId(gBattlerPartyIndexes[battlerId]));
+                                    CopyPlayerPartyMonToBattleData(battlerId, GetPartyIdFromBattlePartyId(gBattlerPartyIndexes[battlerId]), TRUE);
                                     if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER && gBattleResults.numRevivesUsed < 255)
                                         gBattleResults.numRevivesUsed++;
                                 }
@@ -5589,9 +5600,12 @@ u8 *UseStatIncreaseItem(u16 itemId)
     return gDisplayedStringBattle;
 }
 
-u8 GetNature(struct Pokemon *mon)
+u8 GetNature(struct Pokemon *mon, bool32 checkHidden)
 {
-    return GetMonData(mon, MON_DATA_PERSONALITY, 0) % NUM_NATURES;
+    if (!checkHidden || GetMonData(mon, MON_DATA_HIDDEN_NATURE, 0) == HIDDEN_NATURE_NONE)
+        return GetNatureFromPersonality(GetMonData(mon, MON_DATA_PERSONALITY, 0));
+    else
+        return GetMonData(mon, MON_DATA_HIDDEN_NATURE, 0);
 }
 
 u8 GetNatureFromPersonality(u32 personality)
@@ -6688,7 +6702,7 @@ bool8 IsMonSpriteNotFlipped(u16 species)
 
 s8 GetMonFlavorRelation(struct Pokemon *mon, u8 flavor)
 {
-    u8 nature = GetNature(mon);
+    u8 nature = GetNature(mon, FALSE);
     return gPokeblockFlavorCompatibilityTable[nature * FLAVOR_COUNT + flavor];
 }
 

@@ -96,6 +96,7 @@ enum {
     MON_DATA_SPDEF2,
     MON_DATA_DEAD,
     MON_DATA_NATURE,
+    MON_DATA_HIDDEN_NATURE,
 };
 
 struct PokemonSubstruct0
@@ -105,7 +106,9 @@ struct PokemonSubstruct0
     u32 experience;
     u8 ppBonuses;
     u8 friendship;
-    u16 filler;
+    u8 hiddenNature:5;  // 25 natures
+    u8 free_sub0:3;
+    u8 filler;
 };
 
 struct PokemonSubstruct1
@@ -467,13 +470,13 @@ void GetSpeciesName(u8 *name, u16 species);
 u8 CalculatePPWithBonus(u16 move, u8 ppBonuses, u8 moveIndex);
 void RemoveMonPPBonus(struct Pokemon *mon, u8 moveIndex);
 void RemoveBattleMonPPBonus(struct BattlePokemon *mon, u8 moveIndex);
-void CopyPlayerPartyMonToBattleData(u8 battlerId, u8 partyIndex);
+void CopyPlayerPartyMonToBattleData(u8 battlerId, u8 partyIndex, bool8 resetStats);
 bool8 ExecuteTableBasedItemEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex);
 bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex, u8 e);
 bool8 HealStatusConditions(struct Pokemon *mon, u32 battlePartyId, u32 healMask, u8 battlerId);
 u8 GetItemEffectParamOffset(u16 itemId, u8 effectByte, u8 effectBit);
 u8 *UseStatIncreaseItem(u16 itemId);
-u8 GetNature(struct Pokemon *mon);
+u8 GetNature(struct Pokemon *mon, bool32 checkHidden);
 u8 GetNatureFromPersonality(u32 personality);
 u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem);
 u16 HoennPokedexNumToSpecies(u16 hoennNum);

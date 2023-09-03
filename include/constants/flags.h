@@ -20,7 +20,7 @@
 #define FLAG_TEMP_A      (TEMP_FLAGS_START + 0xA)  // Unused Flag
 #define FLAG_TEMP_B      (TEMP_FLAGS_START + 0xB)  // Unused Flag
 #define FLAG_TEMP_C      (TEMP_FLAGS_START + 0xC)  // Unused Flag
-#define FLAG_TEMP_MEAN_ZIGZAGOON     (TEMP_FLAGS_START + 0xD)  // Unused for the Mean Zigzagoon battle
+#define FLAG_TEMP_MEAN_ZIGZAGOON     (TEMP_FLAGS_START + 0xD)  // Used for the Mean Zigzagoon battle; Also used for cheap vitamins after E4
 #define FLAG_TEMP_HIDE_FOLLOWER      (TEMP_FLAGS_START + 0xE)  // When set, follower pokemon won't be spawned
 #define FLAG_TEMP_F      (TEMP_FLAGS_START + 0xF)  // Unused Flag
 #define FLAG_TEMP_10     (TEMP_FLAGS_START + 0x10) // Unused Flag
@@ -1248,8 +1248,8 @@
 #define FLAG_BALL_SUGGEST_NOT_LAST                                  0x4AF // Will Suggest the last ball if set.
 #define FLAG_BALL_SUGGEST_COMPLEX                                   0x4B0 // Will show Simple option if not set
 #define FLAG_USE_FROSTBITE                                          0x4B1
-#define FLAG_UNUSED_0x4B2                                           0x4B2 // Unused Flag
-#define FLAG_UNUSED_0x4B3                                           0x4B3 // Unused Flag
+#define FLAG_MID_BATTLE_EVOLUTION                                   0x4B2
+#define FLAG_GOT_MINT_FROM_JAIME                                    0x4B3
 #define FLAG_UNUSED_0x4B4                                           0x4B4 // Unused Flag
 #define FLAG_UNUSED_0x4B5                                           0x4B5 // Unused Flag
 #define FLAG_UNUSED_0x4B6                                           0x4B6 // Unused Flag

@@ -1233,7 +1233,7 @@ void RemoveCameraObject(void)
 
 u8 GetPokeblockNameByMonNature(void)
 {
-    return CopyMonFavoritePokeblockName(GetNature(&gPlayerParty[GetLeadMonIndex()]), gStringVar1);
+    return CopyMonFavoritePokeblockName(GetNature(&gPlayerParty[GetLeadMonIndex()], FALSE), gStringVar1);
 }
 
 void GetSecretBaseNearbyMapName(void)
@@ -2313,6 +2313,16 @@ void ShowScrollableMultichoice(void)
         task->tKeepOpenAfterSelect = FALSE;
         task->tTaskId = taskId;
         break;
+    case SCROLL_MULTI_NATURE_MINTS:
+        task->tMaxItemsOnScreen = MAX_SCROLL_MULTI_ON_SCREEN;
+        task->tNumItems = 22;
+        task->tLeft = 17;
+        task->tTop = 1;
+        task->tWidth = 12;
+        task->tHeight = 12;
+        task->tKeepOpenAfterSelect = FALSE;
+        task->tTaskId = taskId;
+        break;
     default:
         gSpecialVar_Result = MULTI_B_PRESSED;
         DestroyTask(taskId);
@@ -2472,6 +2482,31 @@ static const u8 *const sScrollableMultichoiceOptions[][MAX_SCROLL_MULTI_LENGTH] 
         gText_PokemonMoves,
         gText_Underpowered,
         gText_WhenInDanger,
+        gText_Exit
+    },
+    [SCROLL_MULTI_NATURE_MINTS] =
+    {
+        gText_AdamantMint,
+        gText_BoldMint,
+        gText_Mint,
+        gText_CalmMint,
+        gText_CarefulMint,
+        gText_GentleMint,
+        gText_HastyMint,
+        gText_ImpishMint,
+        gText_JollyMint,
+        gText_LaxMint,
+        gText_LonelyMint,
+        gText_MildMint,
+        gText_ModestMint,
+        gText_NaiveMint,
+        gText_NaughtyMint,
+        gText_QuietMint,
+        gText_RashMint,
+        gText_RelaxedMint,
+        gText_SassyMint,
+        gText_SeriousMint,
+        gText_TimidMint,
         gText_Exit
     }
 };
@@ -2745,7 +2780,7 @@ void ShowNatureGirlMessage(void)
     if (gSpecialVar_0x8004 >= PARTY_SIZE)
         gSpecialVar_0x8004 = 0;
 
-    nature = GetNature(&gPlayerParty[gSpecialVar_0x8004]);
+    nature = GetNature(&gPlayerParty[gSpecialVar_0x8004], FALSE);
     ShowFieldMessage(sNatureGirlMessages[nature]);
 }
 

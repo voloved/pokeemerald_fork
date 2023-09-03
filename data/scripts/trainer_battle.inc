@@ -17,7 +17,7 @@ EventScript_TryDoNormalTrainerBattle::
 	waitmovement 0
 	specialvar VAR_RESULT, GetTrainerFlag
 	goto_if_ne VAR_RESULT, FALSE, EventScript_NoNormalTrainerBattleCheckRematch
-EventScript_TryDoNormalTrainerBattleRematch::
+EventScript_TryDoNormalTrainerBattleCont::
 	special PlayTrainerEncounterMusic
 	special SetTrainerFacingDirection
 	goto EventScript_ShowTrainerIntroMsg
@@ -33,13 +33,18 @@ EventScript_NoNormalTrainerBattleCheckRematch::
 EventScript_NoNormalTrainerBattle::
 	gotopostbattlescript
 
+EventScript_TryDoNormalTrainerBattleRematch::
+	setandcheckrematchable
+	goto_if_eq VAR_RESULT, TRUE, EventScript_NoNormalTrainerBattle
+	goto EventScript_TryDoNormalTrainerBattleCont
+
 EventScript_TryDoDoubleTrainerBattle::
 	lock
 	faceplayer
 	call EventScript_RevealTrainer
 	specialvar VAR_RESULT, GetTrainerFlag
 	goto_if_ne VAR_RESULT, FALSE, EventScript_NoDoubleTrainerBattleCheckRematch
-EventScript_TryDoDoubleTrainerBattleRematch::
+EventScript_TryDoDoubleTrainerBattleCont::
 	special HasEnoughMonsForDoubleBattle
 	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EventScript_NotEnoughMonsForDoubleBattle
 	special PlayTrainerEncounterMusic
@@ -63,6 +68,11 @@ EventScript_NoDoubleTrainerBattleCheckRematch::
 	goto_if_eq VAR_RESULT, YES, EventScript_TryDoDoubleTrainerBattleRematch
 EventScript_NoDoubleTrainerBattle::
 	gotopostbattlescript
+
+EventScript_TryDoDoubleTrainerBattleRematch::
+	setandcheckrematchable
+	goto_if_eq VAR_RESULT, TRUE, EventScript_NoDoubleTrainerBattle
+	goto EventScript_TryDoDoubleTrainerBattleCont
 
 EventScript_DoNoIntroTrainerBattle::
   setflag FLAG_SAFE_FOLLOWER_MOVEMENT

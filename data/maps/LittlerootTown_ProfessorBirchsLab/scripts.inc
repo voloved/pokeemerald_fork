@@ -681,9 +681,10 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
 	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit
 	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_FrostBite
-	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu
-	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
-	case 8, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvo
+	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu
+	case 8, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	case 9, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
 	return
@@ -704,12 +705,15 @@ EventScript_Multichoice_BirchPCOptions_9:
 EventScript_Multichoice_BirchPCOptions_17:
 	goto_if_set FLAG_USE_FROSTBITE, EventScript_Multichoice_BirchPCOptions_18
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_16, 5
+EventScript_Multichoice_BirchPCOptions_19:
+	goto_if_set FLAG_MID_BATTLE_EVOLUTION, EventScript_Multichoice_BirchPCOptions_20
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_18, 6
 EventScript_Multichoice_BirchPCOptions_15:
 	goto_if_set FLAG_RELEARN_IN_PARTY_MENU, EventScript_Multichoice_BirchPCOptions_16
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_14, 6
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_14, 7
 EventScript_Multichoice_BirchPCOptions_13:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 7
-	dynmultipush EventScript_Multichoice_Exit, 8
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 8
+	dynmultipush EventScript_Multichoice_Exit, 9
 	dynmultistack 0, 0, TRUE, 9, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	return
 
@@ -735,6 +739,10 @@ EventScript_Multichoice_BirchPCOptions_16:
 
 EventScript_Multichoice_BirchPCOptions_18:
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_15, 5
+	goto EventScript_Multichoice_BirchPCOptions_19
+
+EventScript_Multichoice_BirchPCOptions_20:
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_17, 6
 	goto EventScript_Multichoice_BirchPCOptions_15
 
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
@@ -841,6 +849,28 @@ LittlerootTown_ProfessorBirchsLab_EventScript_Frostbite_Cont:
 LittlerootTown_ProfessorBirchsLab_EventScript_FrostbiteNo::
 	clearflag FLAG_USE_FROSTBITE
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_FrostBiteNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvo::
+	message LittlerootTown_ProfessorBirchsLab_Text_MidBattleEvo
+	waitmessage
+	goto_if_unset FLAG_MID_BATTLE_EVOLUTION, LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvo_Unset
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvo_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvo_Unset:
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvo_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvoNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	setflag FLAG_MID_BATTLE_EVOLUTION
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_MidBattleEvoYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvoNo::
+	clearflag FLAG_MID_BATTLE_EVOLUTION
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_MidBattleEvoNo, MSGBOX_SIGN
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
@@ -1299,6 +1329,12 @@ EventScript_Multichoice_BirchPCOptions_Text_15:
 EventScript_Multichoice_BirchPCOptions_Text_16:
 	.string "{COLOR RED}USE FROSTBITE$"
 
+EventScript_Multichoice_BirchPCOptions_Text_17:
+	.string "{COLOR GREEN}MID-BATTLE EVOLUTION$"
+
+EventScript_Multichoice_BirchPCOptions_Text_18:
+	.string "{COLOR RED}MID-BATTLE EVOLUTION$"
+
 EventScript_Multichoice_BirchPCOptions_Text_13:
 	.string "{COLOR GREEN}RELEARN MOVES IN MENU$"
 
@@ -1504,6 +1540,18 @@ LittlerootTown_ProfessorBirchsLab_Text_RelearnInMenuYes:
 LittlerootTown_ProfessorBirchsLab_Text_RelearnInMenuNo:
 	.string "Relearn will not be\n"
 	.string "in the party menu.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_MidBattleEvo:
+	.string "Have POKéMON evolve\n"
+	.string "during a battle?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_MidBattleEvoYes:
+	.string "POKéMON will evolve\n"
+	.string "during a battle.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_MidBattleEvoNo:
+	.string "POKéMON not will evolve\n"
+	.string "during a battle.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_NoDupesClause:
 	.string "Would you like to not use the dupes\n"

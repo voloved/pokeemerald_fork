@@ -1807,6 +1807,11 @@
 	.2byte \buttonToCheck
 	.endm
 
+	@ Checks if the battle can be rematchable; iterates the rematch flag if so
+	.macro setandcheckrematchable
+	.byte 0xeb
+	.endm
+
 @ Supplementary
 
 	.macro goto_if_unset flag:req, dest:req

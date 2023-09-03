@@ -724,92 +724,108 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
-    [ITEM_037] =
+    [ITEM_BOTTLE_CAP_HP] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("CAP: HP"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 5000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = STAT_HP,
     },
 
-    [ITEM_038] =
+    [ITEM_BOTTLE_CAP_ATK] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("CAP: ATK"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 5000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = STAT_ATK,
     },
 
-    [ITEM_039] =
+    [ITEM_BOTTLE_CAP_DEF] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("CAP: DEF"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 5000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = STAT_DEF,
     },
 
-    [ITEM_03A] =
+    [ITEM_BOTTLE_CAP_SPEED] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("CAP: SPEED"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 5000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = STAT_SPEED,
     },
 
-    [ITEM_03B] =
+    [ITEM_BOTTLE_CAP_SPATK] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("CAP: SP.ATK"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 5000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = STAT_SPATK,
     },
 
-    [ITEM_03C] =
+    [ITEM_BOTTLE_CAP_SPDEF] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("CAP: SP.DEF"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 5000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = STAT_SPDEF,
     },
 
-    [ITEM_03D] =
+    [ITEM_RUSTY_BOTTLE_CAP] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("RUSTED CAP"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 10000,
+        .holdEffectParam = 0,
+        .description = sRustyBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = NUM_STATS,
     },
 
-    [ITEM_03E] =
+    [ITEM_GOLD_BOTTLE_CAP] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("GOLDEN CAP"),
+        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .price = 10000,
+        .holdEffectParam = MAX_PER_STAT_IVS,
+        .description = sGoldBottleCapDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_BottleCaps,
+        .secondaryId = NUM_STATS,
     },
 
 // Vitamins
@@ -4554,5 +4570,238 @@ const struct Item gItems[] =
         .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+    },
+    
+    //mints
+    [ITEM_ADAMANT_MINT] = 
+    {
+        .name = _("ADAMANT MINT"),
+        .itemId = ITEM_ADAMANT_MINT,
+        .price = 20000,
+        .description = sAdamantMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_ADAMANT,
+    },
+    [ITEM_BOLD_MINT] = 
+    {
+        .name = _("BOLD MINT"),
+        .itemId = ITEM_BOLD_MINT,
+        .price = 20000,
+        .description = sBoldMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_BOLD,
+    },
+    [ITEM_BRAVE_MINT] = 
+    {
+        .name = _("BRAVE MINT"),
+        .itemId = ITEM_BRAVE_MINT,
+        .price = 20000,
+        .description = sBraveMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_BRAVE,
+    },
+    [ITEM_CALM_MINT] = 
+    {
+        .name = _("CALM MINT"),
+        .itemId = ITEM_CALM_MINT,
+        .price = 20000,
+        .description = sCalmMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_CALM,
+    },
+    [ITEM_CAREFUL_MINT] = 
+    {
+        .name = _("CAREFUL MINT"),
+        .itemId = ITEM_CAREFUL_MINT,
+        .price = 20000,
+        .description = sCarefulMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_CAREFUL,
+    },
+    [ITEM_GENTLE_MINT] = 
+    {
+        .name = _("GENTLE MINT"),
+        .itemId = ITEM_GENTLE_MINT,
+        .price = 20000,
+        .description = sGentleMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_GENTLE,
+    },
+    [ITEM_HASTY_MINT] = 
+    {
+        .name = _("HASTY MINT"),
+        .itemId = ITEM_HASTY_MINT,
+        .price = 20000,
+        .description = sHastyMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_HASTY,
+    },
+    [ITEM_IMPISH_MINT] = 
+    {
+        .name = _("IMPISH MINT"),
+        .itemId = ITEM_IMPISH_MINT,
+        .price = 20000,
+        .description = sImpishMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_IMPISH,
+    },
+    [ITEM_JOLLY_MINT] = 
+    {
+        .name = _("JOLLY MINT"),
+        .itemId = ITEM_JOLLY_MINT,
+        .price = 20000,
+        .description = sJollyMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_JOLLY,
+    },
+    [ITEM_LAX_MINT] = 
+    {
+        .name = _("LAX MINT"),
+        .itemId = ITEM_LAX_MINT,
+        .price = 20000,
+        .description = sLaxMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_LAX,
+    },
+    [ITEM_LONELY_MINT] = 
+    {
+        .name = _("LONELY MINT"),
+        .itemId = ITEM_LONELY_MINT,
+        .price = 20000,
+        .description = sLonelyMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_LONELY,
+    },
+    [ITEM_MILD_MINT] = 
+    {
+        .name = _("MILD MINT"),
+        .itemId = ITEM_MILD_MINT,
+        .price = 20000,
+        .description = sMildMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_MILD,
+    },
+    [ITEM_MODEST_MINT] = 
+    {
+        .name = _("MODEST MINT"),
+        .itemId = ITEM_MODEST_MINT,
+        .price = 20000,
+        .description = sModestMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_MODEST,
+    },
+    [ITEM_NAIVE_MINT] = 
+    {
+        .name = _("NAIVE MINT"),
+        .itemId = ITEM_NAIVE_MINT,
+        .price = 20000,
+        .description = sNaiveMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_NAIVE,
+    },
+    [ITEM_NAUGHTY_MINT] = 
+    {
+        .name = _("NAUGHTY MINT"),
+        .itemId = ITEM_NAUGHTY_MINT,
+        .price = 20000,
+        .description = sNaughtyMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_NAUGHTY,
+    },
+    [ITEM_QUIET_MINT] = 
+    {
+        .name = _("QUIET MINT"),
+        .itemId = ITEM_QUIET_MINT,
+        .price = 20000,
+        .description = sQuietMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_QUIET,
+    },
+    [ITEM_RASH_MINT] = 
+    {
+        .name = _("RASH MINT"),
+        .itemId = ITEM_RASH_MINT,
+        .price = 20000,
+        .description = sRashMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_RASH,
+    },
+    [ITEM_RELAXED_MINT] = 
+    {
+        .name = _("RELAXED MINT"),
+        .itemId = ITEM_RELAXED_MINT,
+        .price = 20000,
+        .description = sRelaxedMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_RELAXED,
+    },
+    [ITEM_SASSY_MINT] = 
+    {
+        .name = _("SASSY MINT"),
+        .itemId = ITEM_SASSY_MINT,
+        .price = 20000,
+        .description = sSassyMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_SASSY,
+    },
+    [ITEM_SERIOUS_MINT] = 
+    {
+        .name = _("SERIOUS MINT"),
+        .itemId = ITEM_SERIOUS_MINT,
+        .price = 20000,
+        .description = sSeriousMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_SERIOUS,
+    },
+    [ITEM_TIMID_MINT] = 
+    {
+        .name = _("TIMID MINT"),
+        .itemId = ITEM_TIMID_MINT,
+        .price = 20000,
+        .description = sTimidMintDesc,
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Mints,
+        .secondaryId = NATURE_TIMID,
     },
 };

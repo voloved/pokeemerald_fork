@@ -9,6 +9,23 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v2.2.2
+ - Added Nature Mints and Bottle Caps
+   - They can be bought for cheap from Jaime after becoming the champion.
+   - Jaime also gifts one Nature Mint after the player wins a badge.
+ - [Add Ability to Swap Bikes Whenever](https://github.com/pret/pokeemerald/wiki/Add-Ability-to-Swap-Bikes-Whenever)
+ - Ball Does Not Get Thrown When Cycling Unless The Ball Was Not Cycled That Turn.
+ - Swapped Turbo and VSync Mapping of Shoulder Buttons in VSync Button Mode.
+ - Bug Fix Where Bag Menu Does Not Have A Dot for Each Pouch.
+ - Added Ability to Sort Key Items by Type.
+ - [Added Ability to Move Held Items.](https://www.pokecommunity.com/showpost.php?p=10517557) [Credit: Zeturic]
+ - [Added Mid-Battle Evolutions](https://www.pokecommunity.com/showpost.php?p=10464666) [Credit: CtrlFootPrint]
+ - [Increased Money Limit](https://github.com/pret/pokeemerald/wiki/Increase-money-limit) [Credit: DizzyEgg]
+ - Now Able to Rematch Gym Leaders by Holding B When Talking After Becoming Champion.
+ - Rematching when Holdiong B Causes Trainer to Use the Party they Would if it Were a PokéNav Rematch.
+ - More clean-up on bike sprites.
+ - Bug fix on Indicators Displaying on Enemy Party's Pokémon After Catching.
+
 ## v2.2.1
  - [Added Sleep Mode](https://github.com/pret/pokeemerald/wiki/Add-Sleep-Mode)
    - Hold L Trigger + R Trigger + SELECT to enter sleep mode. Press SELECT + START to leave sleep mode.

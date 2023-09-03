@@ -1328,4 +1328,16 @@ void ItemUseOutOfBattle_EonFlute(u8 taskId)
 	}
 }
 
+void ItemUseOutOfBattle_Mints(u8 taskId)
+{
+    gItemUseCB = ItemUseCB_Mints;
+    SetUpItemUseCallback(taskId);
+}
+
+void ItemUseOutOfBattle_BottleCaps(u8 taskId)
+{
+    gItemUseCB = ItemUseCB_BottleCaps;
+    SetUpItemUseCallback(taskId);
+}
+
 #undef tUsingRegisteredKeyItem

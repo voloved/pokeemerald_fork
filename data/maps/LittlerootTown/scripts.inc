@@ -1,4 +1,5 @@
 .set LOCALID_TWIN, 1
+.set LOCALID_JAIME, 2
 .set LOCALID_MOM, 4
 .set LOCALID_RIVAL, 7
 .set LOCALID_BIRCH, 8
@@ -247,7 +248,187 @@ LittlerootTown_EventScript_SetRivalBirchPosForDexUpgradeFemale::
 	end
 
 LittlerootTown_EventScript_FatMan::
-	msgbox LittlerootTown_Text_CanUsePCToStoreItems, MSGBOX_NPC
+	goto_if_set FLAG_IS_CHAMPION, LittlerootTown_EventScript_FatMan_EliteFourWon
+	callnative CanGetNatureMintFromJaime
+	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_FatManGiveMints
+	msgbox LittlerootTown_Text_HeyJaime, MSGBOX_NPC
+	end
+
+LittlerootTown_EventScript_FatManGiveMints::
+	lock
+	applymovement LOCALID_JAIME, Common_Movement_FacePlayer
+	goto_if_set FLAG_GOT_MINT_FROM_JAIME, LittlerootTown_EventScript_FatManGiveMintsNotFirstTime
+	waitmovement 0
+	setflag FLAG_GOT_MINT_FROM_JAIME
+	playse SE_PIN
+	applymovement LOCALID_JAIME, Common_Movement_ExclamationMark
+	waitmovement 0
+	msgbox LittlerootTown_Text_JaimeFirstMints, MSGBOX_DEFAULT
+	closemessage
+LittlerootTown_EventScript_FatManGiveMintsNotFirstTime::
+	msgbox LittlerootTown_Text_JaimeHasMints, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_EventScript_MintEnd
+	message LittlerootTown_Text_JaimeWhichMint
+	waitmessage
+	setvar VAR_0x8004, SCROLL_MULTI_NATURE_MINTS
+	special ShowScrollableMultichoice
+	waitstate
+	switch VAR_RESULT
+	case 0, LittlerootTown_EventScript_GiveAdamant
+	case 1, LittlerootTown_EventScript_GiveBold
+	case 2, LittlerootTown_EventScript_GiveBrave
+	case 3, LittlerootTown_EventScript_GiveCalm
+	case 4, LittlerootTown_EventScript_GiveCareful
+	case 5, LittlerootTown_EventScript_GiveGentle
+	case 6, LittlerootTown_EventScript_GiveHasty
+	case 7, LittlerootTown_EventScript_GiveImpish
+	case 8, LittlerootTown_EventScript_GiveJolly
+	case 9, LittlerootTown_EventScript_GiveLax
+	case 10, LittlerootTown_EventScript_GiveLonely
+	case 11, LittlerootTown_EventScript_GiveMild
+	case 12, LittlerootTown_EventScript_GiveModest
+	case 13, LittlerootTown_EventScript_GiveNaive
+	case 14, LittlerootTown_EventScript_GiveNaughty
+	case 15, LittlerootTown_EventScript_GiveQuiet
+	case 16, LittlerootTown_EventScript_GiveRash
+	case 17, LittlerootTown_EventScript_GiveRelaxed
+	case 18, LittlerootTown_EventScript_GiveSassy
+	case 19, LittlerootTown_EventScript_GiveSerious
+	case 20, LittlerootTown_EventScript_GiveTimid
+	case 21, LittlerootTown_EventScript_MintEnd
+	case MULTI_B_PRESSED, LittlerootTown_EventScript_MintEnd
+	end
+
+LittlerootTown_EventScript_GiveAdamant::
+	giveitem ITEM_ADAMANT_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveBold::
+	giveitem ITEM_BOLD_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveBrave::
+	giveitem ITEM_BRAVE_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveCalm::
+	giveitem ITEM_CALM_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveCareful::
+	giveitem ITEM_CAREFUL_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveGentle::
+	giveitem ITEM_GENTLE_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveHasty::
+	giveitem ITEM_HASTY_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveImpish::
+	giveitem ITEM_IMPISH_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveJolly::
+	giveitem ITEM_JOLLY_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveLax::
+	giveitem ITEM_LAX_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveLonely::
+	giveitem ITEM_LONELY_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveMild::
+	giveitem ITEM_MILD_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveModest::
+	giveitem ITEM_MODEST_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveNaive::
+	giveitem ITEM_NAIVE_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveNaughty::
+	giveitem ITEM_NAUGHTY_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveQuiet::
+	giveitem ITEM_QUIET_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveRash::
+	giveitem ITEM_RASH_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveRelaxed::
+	giveitem ITEM_RELAXED_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveSassy::
+	giveitem ITEM_SASSY_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveSerious::
+	giveitem ITEM_SERIOUS_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_GiveTimid::
+	giveitem ITEM_TIMID_MINT
+	goto LittlerootTown_EventScript_MintGiveEnd
+LittlerootTown_EventScript_MintGiveEnd::
+	addvar VAR_JAIME_MINTS_GIVEN, 1
+LittlerootTown_EventScript_MintEnd::
+	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_DEFAULT
+	release
+	end
+
+LittlerootTown_EventScript_FatMan_EliteFourWon::
+	lock
+	applymovement LOCALID_JAIME, Common_Movement_FacePlayer
+	goto_if_set FLAG_GOT_MINT_FROM_JAIME, LittlerootTown_EventScript_FatMan_EliteFourNotFirstTime
+	waitmovement 0
+	setflag FLAG_GOT_MINT_FROM_JAIME
+	playse SE_PIN
+	applymovement LOCALID_JAIME, Common_Movement_ExclamationMark
+	waitmovement 0
+	msgbox LittlerootTown_Text_JaimeSellingFirstMints, MSGBOX_DEFAULT
+	closemessage
+LittlerootTown_EventScript_FatMan_EliteFourNotFirstTime:
+	msgbox LittlerootTown_Text_JaimeSelling, MSGBOX_DEFAULT
+	setflag FLAG_TEMP_MEAN_ZIGZAGOON
+	pokemart LittlerootTown_EventScript_FatMan_Vitamins
+	clearflag FLAG_TEMP_MEAN_ZIGZAGOON
+	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_DEFAULT
+	release
+	end
+
+	.align 2
+LittlerootTown_EventScript_FatMan_Vitamins:
+	.2byte ITEM_PROTEIN
+	.2byte ITEM_CALCIUM
+	.2byte ITEM_IRON
+	.2byte ITEM_ZINC
+	.2byte ITEM_CARBOS
+	.2byte ITEM_HP_UP
+	.2byte ITEM_RARE_CANDY
+	.2byte ITEM_ADAMANT_MINT
+	.2byte ITEM_BOLD_MINT
+	.2byte ITEM_BRAVE_MINT
+	.2byte ITEM_CALM_MINT
+	.2byte ITEM_CAREFUL_MINT
+	.2byte ITEM_GENTLE_MINT
+	.2byte ITEM_HASTY_MINT
+	.2byte ITEM_IMPISH_MINT
+	.2byte ITEM_JOLLY_MINT
+	.2byte ITEM_LAX_MINT
+	.2byte ITEM_LONELY_MINT
+	.2byte ITEM_MILD_MINT
+	.2byte ITEM_MODEST_MINT
+	.2byte ITEM_NAIVE_MINT
+	.2byte ITEM_NAUGHTY_MINT
+	.2byte ITEM_QUIET_MINT
+	.2byte ITEM_RASH_MINT
+	.2byte ITEM_RELAXED_MINT
+	.2byte ITEM_SASSY_MINT
+	.2byte ITEM_SERIOUS_MINT
+	.2byte ITEM_TIMID_MINT
+	.2byte ITEM_BOTTLE_CAP_HP
+	.2byte ITEM_BOTTLE_CAP_ATK
+	.2byte ITEM_BOTTLE_CAP_DEF
+	.2byte ITEM_BOTTLE_CAP_SPEED
+	.2byte ITEM_BOTTLE_CAP_SPATK
+	.2byte ITEM_BOTTLE_CAP_SPDEF
+	.2byte ITEM_GOLD_BOTTLE_CAP
+	.2byte ITEM_RUSTY_BOTTLE_CAP
+	.2byte ITEM_NONE
+	release
 	end
 
 LittlerootTown_EventScript_Boy::
@@ -988,9 +1169,53 @@ LittlerootTown_Text_ComeHomeIfAnythingHappens:
 	.string "If anything happens, you can come home.\p"
 	.string "Go on, go get them, honey!$"
 
-LittlerootTown_Text_CanUsePCToStoreItems:
+LittlerootTown_Text_HeyJaime:
 	.string "Hey.\n"
 	.string "  - Jaime$"
+
+LittlerootTown_Text_JaimeFirstMints:
+	.string "Hey {PLAYER}, I see you have been\n"
+	.string "getting badges.\p"
+	.string "So you're committed to this trainer\n"
+	.string "thing, huh?\p"
+	.string "Tell you what, I am taking a break from \n"
+	.string "selling shoes to sell NATURE MINTS.\p"
+	.string "NATURE MINTS allow you to change the\n"
+	.string "nature of a POKEMON from their\l"
+	.string "original nature to the one in the\l"
+	.string "MINT's name.$"
+
+LittlerootTown_Text_JaimeHasMints:
+	.string "I have {STR_VAR_1} that\n"
+	.string "I can give away.\p"
+	.string "Do you want one?$"
+
+LittlerootTown_Text_JaimeWhichMint:
+	.string "Which mint would\n"
+	.string "you like?$"
+
+LittlerootTown_Text_JaimeSellingFirstMints:
+	.string "Hey {PLAYER}, I see you beat the\n"
+	.string "ELITE FOUR. Nice.\p"
+	.string "Have you heard of NATURE MINTS\n"
+	.string "and CAPS?\p"
+	.string "NATURE MINTS allow you to change the\n"
+	.string "nature of a POKéMON from their\l"
+	.string "original nature to the one in the\l"
+	.string "MINT's name and CAPS allow you to\l"
+	.string "max the IV of one of you POKéMON.$"
+
+
+LittlerootTown_Text_JaimeSelling:
+	.string "I'm taking a break from\n"
+	.string "dealing shoes.\p"
+	.string "I have some Vitamins I'm selling.\n"
+	.string "You interested?\p"
+	.string "I'll give you a discount\n"
+	.string "since you're cool.$"
+
+LittlerootTown_Text_JaimeSold:
+	.string "Always a pleasure.$"
 
 LittlerootTown_Text_BirchSpendsDaysInLab:
 	.string "PROF. BIRCH spends days in his LAB\n"

@@ -98,6 +98,7 @@ enum {
     ACTION_BY_NUMBER,
     ACTION_REGISTER_TAP,
     ACTION_REGISTER_HOLD,
+    ACTION_SWAP,
     ACTION_DUMMY,
 };
 
@@ -207,6 +208,7 @@ static void ItemMenu_UseOutOfBattle(u8);
 static void ItemMenu_Toss(u8);
 static void ItemMenu_Register(u8);
 static void ItemMenu_RegisterHold(u8);
+static void ItemMenu_Swap(u8);
 static void ItemMenu_CheckWhichRegister(u8);
 static void ItemMenu_Give(u8);
 static void ItemMenu_Cancel(u8);
@@ -301,6 +303,7 @@ static const u8 sMenuText_ByNumber[] = _("Number");
 static const u8 sText_NothingToSort[] = _("There's nothing to sort!");
 static const u8 sMenuText_Tap[] = _("Tap");
 static const u8 sMenuText_Hold[] = _("Hold");
+static const u8 sMenuText_Swap[] = _("SWAP");
 static const u8 sText_RegisterHow[] = _("Register this\nitem by tapping or\nholding SELECT?");
 static const struct MenuAction sItemMenuActions[] = {
     [ACTION_USE]               = {gMenuText_Use,      ItemMenu_UseOutOfBattle},
@@ -323,6 +326,7 @@ static const struct MenuAction sItemMenuActions[] = {
     [ACTION_BY_AMOUNT]         = {sMenuText_ByAmount, ItemMenu_SortByAmount},
     [ACTION_REGISTER_TAP]      = {sMenuText_Tap,      ItemMenu_Register},
     [ACTION_REGISTER_HOLD]     = {sMenuText_Hold,     ItemMenu_RegisterHold},
+    [ACTION_SWAP]              = {sMenuText_Swap,     ItemMenu_Swap},
     [ACTION_DUMMY]             = {gText_EmptyString2, NULL}
 };
 
@@ -792,6 +796,10 @@ static bool8 SetupBagMenu(void)
     case 13:
         PrintPocketNames(gPocketNamesStringsTable[gBagPosition.pocket], 0);
         CopyPocketNameToWindow(0);
+        DrawPocketIndicatorSquare(0, FALSE);
+        DrawPocketIndicatorSquare(5, FALSE);
+        DrawPocketIndicatorSquare(6, FALSE);
+        DrawPocketIndicatorSquare(7, FALSE);
         DrawPocketIndicatorSquare(gBagPosition.pocket, TRUE);
         gMain.state++;
         break;
@@ -1263,7 +1271,7 @@ static void PrintItemSoldAmount(int windowId, int numSold, int moneyEarned)
     ConvertIntToDecimalStringN(gStringVar1, numSold, STR_CONV_MODE_LEADING_ZEROS, numDigits);
     StringExpandPlaceholders(gStringVar4, gText_xVar1);
     AddTextPrinterParameterized(windowId, FONT_NORMAL, gStringVar4, 0, 1, TEXT_SKIP_DRAW, 0);
-    PrintMoneyAmount(windowId, 38, 1, moneyEarned, 0);
+    PrintMoneyAmount(windowId, 32, 1, moneyEarned, 0);
 }
 
 static void Task_BagMenu_HandleInput(u8 taskId)
@@ -1490,9 +1498,9 @@ static void DrawItemListBgRow(u8 y)
 static void DrawPocketIndicatorSquare(u8 x, bool8 isCurrentPocket)
 {
     if (!isCurrentPocket)
-        FillBgTilemapBufferRect_Palette0(2, 0x1017, x + 5, 3, 1, 1);
+        FillBgTilemapBufferRect_Palette0(2, 0x1017, x + 4, 3, 1, 1);
     else
-        FillBgTilemapBufferRect_Palette0(2, 0x102B, x + 5, 3, 1, 1);
+        FillBgTilemapBufferRect_Palette0(2, 0x102B, x + 4, 3, 1, 1);
     ScheduleBgCopyTilemapToVram(2);
 }
 
@@ -1690,9 +1698,6 @@ static void OpenContextMenu(u8 taskId)
             switch (gBagPosition.pocket)
             {
             case ITEMS_POCKET:
-            case MEDICINE_POCKET:
-            case BATTLEITEMS_POCKET:
-            case TREASURES_POCKET:
                 gBagMenu->contextMenuItemsPtr = gBagMenu->contextMenuItemsBuffer;
                 gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_ItemsPocket);
                 memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_ItemsPocket, sizeof(sContextMenuItems_ItemsPocket));
@@ -1722,6 +1727,7 @@ static void OpenContextMenu(u8 taskId)
                     gBagMenu->contextMenuItemsBuffer[1] = ACTION_DESELECT;
                 if (gSpecialVar_ItemId == ITEM_MACH_BIKE || gSpecialVar_ItemId == ITEM_ACRO_BIKE)
                 {
+                    gBagMenu->contextMenuItemsBuffer[2] = ACTION_SWAP;
                     if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
                         gBagMenu->contextMenuItemsBuffer[0] = ACTION_WALK;
                 }
@@ -1737,6 +1743,18 @@ static void OpenContextMenu(u8 taskId)
             case BERRIES_POCKET:
                 gBagMenu->contextMenuItemsPtr = sContextMenuItems_BerriesPocket;
                 gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_BerriesPocket);
+                break;
+            case MEDICINE_POCKET:
+                gBagMenu->contextMenuItemsPtr = sContextMenuItems_ItemsPocket;
+                gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_ItemsPocket);
+                break;
+            case BATTLEITEMS_POCKET:
+                gBagMenu->contextMenuItemsPtr = sContextMenuItems_ItemsPocket;
+                gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_ItemsPocket);
+                break;
+            case TREASURES_POCKET:
+                gBagMenu->contextMenuItemsPtr = sContextMenuItems_ItemsPocket;
+                gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_ItemsPocket);
                 break;
             }
         }
@@ -2031,6 +2049,34 @@ static void ItemMenu_RegisterHold(u8 taskId)
 {
     gTasks[taskId].tIsRegisterHold = TRUE;
     gTasks[taskId].func = ItemMenu_Register;
+}
+
+static void ItemMenu_Swap(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    u16 *scrollPos = &gBagPosition.scrollPosition[gBagPosition.pocket];
+    u16 *cursorPos = &gBagPosition.cursorPosition[gBagPosition.pocket];
+    u8 itemListPos = GetItemListPosition(gBagPosition.pocket);
+
+    IncrementGameStat(GAME_STAT_TRADED_BIKES);
+    if (gSpecialVar_ItemId == ITEM_MACH_BIKE)
+        gBagPockets[gBagPosition.pocket].itemSlots[itemListPos].itemId = ITEM_ACRO_BIKE;
+    else if (gSpecialVar_ItemId == ITEM_ACRO_BIKE)
+        gBagPockets[gBagPosition.pocket].itemSlots[itemListPos].itemId = ITEM_MACH_BIKE;
+    SwapRegisteredBike();
+    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE))
+        SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ACRO_BIKE);
+    else if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_ACRO_BIKE))
+        SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_MACH_BIKE);
+
+    BagDestroyPocketScrollArrowPair();
+    RemoveContextWindow();
+    DestroyListMenuTask(tListTaskId, scrollPos, cursorPos);
+    LoadBagItemListBuffers(gBagPosition.pocket);
+    tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, *scrollPos, *cursorPos);
+    ScheduleBgCopyTilemapToVram(0);
+    ItemMenu_Cancel(taskId);
+
 }
 
 static void AddRegisterSubMenu(void)
@@ -2765,33 +2811,27 @@ enum BagSortOptions
 };
 enum ItemSortType
 {
-	ITEM_TYPE_SORT_FIRST,
+    ITEM_TYPE_SORT_FIRST,
     ITEM_TYPE_REPEL,
     ITEM_TYPE_FIELD_USE,
-	ITEM_TYPE_HEALTH_RECOVERY,
-	ITEM_TYPE_STATUS_RECOVERY,
-	ITEM_TYPE_PP_RECOVERY,
-	ITEM_TYPE_STAT_BOOST_DRINK,
-	ITEM_TYPE_STAT_BOOST_FEATHER,
-	ITEM_TYPE_EVOLUTION_STONE,
-	ITEM_TYPE_EVOLUTION_ITEM,
-	ITEM_TYPE_BATTLE_ITEM,
-	ITEM_TYPE_FLUTE,
-	ITEM_TYPE_STAT_BOOST_HELD_ITEM,
-	ITEM_TYPE_HELD_ITEM,
-	ITEM_TYPE_GEM,
-	ITEM_TYPE_PLATE,
-	ITEM_TYPE_MEMORY,
-	ITEM_TYPE_DRIVE,
-	ITEM_TYPE_INCENSE,
-	ITEM_TYPE_MEGA_STONE,
-	ITEM_TYPE_Z_CRYSTAL,
-	ITEM_TYPE_NECTAR,
-	ITEM_TYPE_SELLABLE,
-	ITEM_TYPE_RELIC,
-	ITEM_TYPE_SHARD,
-	ITEM_TYPE_FOSSIL,
-	ITEM_TYPE_MAIL,
+    ITEM_TYPE_HEALTH_RECOVERY,
+    ITEM_TYPE_STATUS_RECOVERY,
+    ITEM_TYPE_PP_RECOVERY,
+    ITEM_TYPE_STAT_BOOST_DRINK,
+    ITEM_TYPE_STAT_BOOST_BOTTLECAP,
+    ITEM_TYPE_NATURE_MINT,
+    ITEM_TYPE_EVOLUTION_STONE,
+    ITEM_TYPE_EVOLUTION_ITEM,
+    ITEM_TYPE_BATTLE_ITEM,
+    ITEM_TYPE_FLUTE,
+    ITEM_TYPE_STAT_BOOST_HELD_ITEM,
+    ITEM_TYPE_HELD_ITEM,
+    ITEM_TYPE_INCENSE,
+    ITEM_TYPE_MEGA_STONE,
+    ITEM_TYPE_SELLABLE,
+    ITEM_TYPE_SHARD,
+    ITEM_TYPE_FOSSIL,
+    ITEM_TYPE_MAIL,
 };
 enum ItemSortBalls
 {
@@ -2833,6 +2873,8 @@ static const u8 sBagMenuSortItems[] =
 static const u8 sBagMenuSortKeyItems[] =
 {
     ACTION_BY_NAME,
+    ACTION_BY_TYPE,
+    ACTION_DUMMY,
     ACTION_CANCEL,
 };
 
@@ -2903,6 +2945,37 @@ static const u16 sItemsByType[ITEMS_COUNT] =
     [ITEM_PP_UP] = ITEM_TYPE_STAT_BOOST_DRINK,
     [ITEM_ZINC] = ITEM_TYPE_STAT_BOOST_DRINK,
     [ITEM_PP_MAX] = ITEM_TYPE_STAT_BOOST_DRINK,
+
+    [ITEM_BOTTLE_CAP_HP] = ITEM_TYPE_STAT_BOOST_BOTTLECAP,
+    [ITEM_BOTTLE_CAP_ATK] = ITEM_TYPE_STAT_BOOST_BOTTLECAP,
+    [ITEM_BOTTLE_CAP_DEF] = ITEM_TYPE_STAT_BOOST_BOTTLECAP,
+    [ITEM_BOTTLE_CAP_SPEED] = ITEM_TYPE_STAT_BOOST_BOTTLECAP,
+    [ITEM_BOTTLE_CAP_SPATK] = ITEM_TYPE_STAT_BOOST_BOTTLECAP,
+    [ITEM_BOTTLE_CAP_SPDEF] = ITEM_TYPE_STAT_BOOST_BOTTLECAP,
+    [ITEM_GOLD_BOTTLE_CAP] = ITEM_TYPE_STAT_BOOST_BOTTLECAP,
+    [ITEM_RUSTY_BOTTLE_CAP] = ITEM_TYPE_STAT_BOOST_BOTTLECAP,
+
+    [ITEM_ADAMANT_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_BOLD_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_BRAVE_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_CALM_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_CAREFUL_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_GENTLE_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_HASTY_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_IMPISH_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_JOLLY_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_LAX_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_LONELY_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_MILD_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_MODEST_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_NAIVE_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_NAUGHTY_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_QUIET_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_RASH_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_RELAXED_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_SASSY_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_SERIOUS_MINT] = ITEM_TYPE_NATURE_MINT,
+    [ITEM_TIMID_MINT] = ITEM_TYPE_NATURE_MINT,
     
     [ITEM_MACHO_BRACE] = ITEM_TYPE_STAT_BOOST_HELD_ITEM,
 
@@ -3285,12 +3358,40 @@ static s8 CompareItemsByMost(struct ItemSlot* itemSlot1, struct ItemSlot* itemSl
     return CompareItemsAlphabetically(itemSlot1, itemSlot2, pocket); //Items have same quantity so sort alphabetically
 }
 
+static u8 GetKeyItemType(u16 itemId)
+{
+    if (itemId == ITEM_NONE)
+        return 0xFF;
+    else if (ItemId_GetFieldFunc(itemId) == ItemUseOutOfBattle_PokeVial)
+        return 0;
+    else if (ItemId_GetFieldFunc(itemId) == ItemUseOutOfBattle_Bike)
+        return 1;
+    else if (ItemId_GetFieldFunc(itemId) == ItemUseOutOfBattle_Itemfinder)
+        return 2;
+    else if (ItemId_GetFieldFunc(itemId) == ItemUseOutOfBattle_Rod)
+        return 3;
+    else if (ItemId_GetFieldFunc(itemId) != ItemUseOutOfBattle_CannotUse)
+        return 4;
+    else if (ItemId_GetBattleUsage(itemId) )
+        return 5;
+    else   
+        return 6;
+}
+
 static s8 CompareItemsByType(struct ItemSlot* itemSlot1, struct ItemSlot* itemSlot2, u8 pocket)
 {
+    u8 type1, type2;
     //Null items go last
-    u8 type1 = (itemSlot1->itemId == ITEM_NONE) ? 0xFF : sItemsByType[itemSlot1->itemId];
-    u8 type2 = (itemSlot2->itemId == ITEM_NONE) ? 0xFF : sItemsByType[itemSlot2->itemId];
-
+    if (pocket == KEYITEMS_POCKET)
+    {
+        type1 = GetKeyItemType(itemSlot1->itemId);
+        type2 = GetKeyItemType(itemSlot2->itemId);
+    }
+    else
+    {
+        type1 = (itemSlot1->itemId == ITEM_NONE) ? 0xFF : sItemsByType[itemSlot1->itemId];
+        type2 = (itemSlot2->itemId == ITEM_NONE) ? 0xFF : sItemsByType[itemSlot2->itemId];
+    }
     if (type1 < type2)
         return -1;
     else if (type1 > type2)

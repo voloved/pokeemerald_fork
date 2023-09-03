@@ -59,9 +59,11 @@ Debug_Script_4::
 	end
 
 Debug_Script_5::
+	setflag FLAG_IS_CHAMPION
 	end
 
 Debug_Script_6::
+	clearflag FLAG_IS_CHAMPION
 	end
 
 Debug_Script_7::

@@ -86,6 +86,7 @@ enum {
     MENU_ITEM,
     MENU_GIVE,
     MENU_TAKE_ITEM,
+    MENU_MOVE_ITEM,
     MENU_MAIL,
     MENU_TAKE_MAIL,
     MENU_READ,
@@ -467,6 +468,7 @@ static void CursorCb_Cancel1(u8);
 static void CursorCb_Item(u8);
 static void CursorCb_Give(u8);
 static void CursorCb_TakeItem(u8);
+static void CursorCb_MoveItem(u8);
 static void CursorCb_Mail(u8);
 static void CursorCb_Read(u8);
 static void CursorCb_TakeMail(u8);
@@ -3394,6 +3396,126 @@ static void CursorCb_TakeItem(u8 taskId)
     }
     ScheduleBgCopyTilemapToVram(2);
     gTasks[taskId].func = Task_UpdateHeldItemSprite;
+}
+
+void CursorCb_MoveItemCallback(u8 taskId)
+{
+    u16 item1, item2;
+    u8 buffer[100];
+
+    if (gPaletteFade.active)
+        return;
+
+    switch (PartyMenuButtonHandler(&gPartyMenu.slotId2))
+    {
+    case 2:     // User hit B or A while on Cancel
+        HandleChooseMonCancel(taskId, &gPartyMenu.slotId2);
+        break;
+    case 1:     // User hit A on a Pokemon
+        // Pokemon can't give away items to eggs or themselves
+        if (GetMonData(&gPlayerParty[gPartyMenu.slotId2], MON_DATA_IS_EGG)
+            || gPartyMenu.slotId == gPartyMenu.slotId2)
+        {
+            PlaySE(SE_FAILURE);
+            return;
+        }
+
+        if(GetMonData(&gPlayerParty[gPartyMenu.slotId2], MON_DATA_HELD_ITEM) >= ITEM_ORANGE_MAIL
+        && GetMonData(&gPlayerParty[gPartyMenu.slotId2], MON_DATA_HELD_ITEM) <= ITEM_RETRO_MAIL)
+        {
+            PlaySE(SE_FAILURE);
+            return;
+        }
+
+        PlaySE(SE_SELECT);
+        gPartyMenu.action = PARTY_ACTION_CHOOSE_MON;
+
+        // look up held items
+        item1 = GetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_HELD_ITEM);
+        item2 = GetMonData(&gPlayerParty[gPartyMenu.slotId2], MON_DATA_HELD_ITEM);
+
+        // swap the held items
+        SetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_HELD_ITEM, &item2);
+        SetMonData(&gPlayerParty[gPartyMenu.slotId2], MON_DATA_HELD_ITEM, &item1);
+
+        // update the held item icons
+        UpdatePartyMonHeldItemSprite(
+            &gPlayerParty[gPartyMenu.slotId],
+            &sPartyMenuBoxes[gPartyMenu.slotId]
+        );
+
+        UpdatePartyMonHeldItemSprite(
+            &gPlayerParty[gPartyMenu.slotId2],
+            &sPartyMenuBoxes[gPartyMenu.slotId2]
+        );
+
+        // create the string describing the move
+        if (item2 == ITEM_NONE)
+        {
+            GetMonNickname(&gPlayerParty[gPartyMenu.slotId2], gStringVar1);
+            CopyItemName(item1, gStringVar2);
+            StringExpandPlaceholders(gStringVar4, gText_PkmnWasGivenItem);
+        }
+        else
+        {
+            GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gStringVar1);
+            CopyItemName(item1, gStringVar2);
+            StringExpandPlaceholders(buffer, gText_XsYAnd);
+
+            StringAppend(buffer, gText_XsYWereSwapped);
+            GetMonNickname(&gPlayerParty[gPartyMenu.slotId2], gStringVar1);
+            CopyItemName(item2, gStringVar2);
+            StringExpandPlaceholders(gStringVar4, buffer);
+        }
+
+        // display the string
+        DisplayPartyMenuMessage(gStringVar4, TRUE);
+
+        // update colors of selected boxes
+        AnimatePartySlot(gPartyMenu.slotId2, 0);
+        AnimatePartySlot(gPartyMenu.slotId, 1);
+
+        // return to the main party menu
+        ScheduleBgCopyTilemapToVram(2);
+        gTasks[taskId].func = Task_UpdateHeldItemSprite;
+        break;
+    }
+}
+
+void CursorCb_MoveItem(u8 taskId)
+{
+    struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
+
+    PlaySE(SE_SELECT);
+
+    // delete old windows
+    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
+    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[0]);
+
+    if (GetMonData(mon, MON_DATA_HELD_ITEM) != ITEM_NONE)
+    {
+        gPartyMenu.action = PARTY_ACTION_SWITCH;
+
+        // show "Move item to where" in bottom left
+        DisplayPartyMenuStdMessage(PARTY_MSG_MOVE_ITEM_WHERE);
+        // update color of first selected box
+        AnimatePartySlot(gPartyMenu.slotId, 1);
+
+        // set up callback
+        gPartyMenu.slotId2 = gPartyMenu.slotId;
+        gTasks[taskId].func = CursorCb_MoveItemCallback;
+    }
+    else
+    {
+        // create and display string about lack of hold item
+        GetMonNickname(mon, gStringVar1);
+        StringExpandPlaceholders(gStringVar4, gText_PkmnNotHolding);
+        DisplayPartyMenuMessage(gStringVar4, TRUE);
+
+        // return to the main party menu
+        ScheduleBgCopyTilemapToVram(2);
+        gTasks[taskId].func = Task_UpdateHeldItemSprite;
+    }
 }
 
 static void CursorCb_Toss(u8 taskId)
@@ -6668,3 +6790,269 @@ static void Task_ItemUseCB_PokeBallBreakYesNoInput(u8 taskId)
         break;
     }
 }
+
+// mints
+#define tState          data[0]
+#define tSpecies        data[1]
+#define tCurrNature     data[2]
+#define tMonId          data[3]
+#define tOldFunc        4
+#define tNewNature      data[6]
+
+static const u8 sText_AskMint[] = _("Would you like to change {STR_VAR_1}'s\nnature to {STR_VAR_2}?");
+static const u8 sText_MintDone[] = _("{STR_VAR_1}'s nature became\n{STR_VAR_2}!{PAUSE_UNTIL_PRESS}");
+static void Task_Mints(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    
+    switch (tState)
+    {
+    case 0:
+        // Can't use.
+        if (tCurrNature == tNewNature)
+        {
+            gPartyMenuUseExitCallback = FALSE;
+            PlaySE(SE_SELECT);
+            DisplayPartyMenuMessage(gText_WontHaveEffect, 1);
+            ScheduleBgCopyTilemapToVram(2);
+            gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
+            return;
+        }
+        
+        gPartyMenuUseExitCallback = TRUE;
+        GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
+        StringCopy(gStringVar2, gNatureNamePointers[tNewNature]);
+        StringExpandPlaceholders(gStringVar4, sText_AskMint);
+        PlaySE(SE_SELECT);
+        DisplayPartyMenuMessage(gStringVar4, 1);
+        ScheduleBgCopyTilemapToVram(2);
+        tState++;
+        break;
+    case 1:
+        if (!IsPartyMenuTextPrinterActive())
+        {
+            PartyMenuDisplayYesNoMenu();
+            tState++;
+        }
+        break;
+    case 2:
+        switch (Menu_ProcessInputNoWrapClearOnChoose())
+        {
+        case 0:
+            tState++;
+            break;
+        case 1:
+        case MENU_B_PRESSED:
+            gPartyMenuUseExitCallback = FALSE;
+            PlaySE(SE_SELECT);
+            ScheduleBgCopyTilemapToVram(2);
+            
+            // Don't exit party selections screen, return to choosing a mon.
+            ClearStdWindowAndFrameToTransparent(6, 0);
+            ClearWindowTilemap(6);
+            DisplayPartyMenuStdMessage(PARTY_MSG_USE_ON_WHICH_MON);
+            gTasks[taskId].func = (TaskFunc)GetWordTaskArg(taskId, tOldFunc);
+            return;
+        }
+        break;
+    case 3:
+        PlaySE(SE_USE_ITEM);
+        StringExpandPlaceholders(gStringVar4, sText_MintDone);
+        DisplayPartyMenuMessage(gStringVar4, 1);
+        ScheduleBgCopyTilemapToVram(2);
+        tState++;
+        break;
+    case 4:
+        if (!IsPartyMenuTextPrinterActive())
+            tState++;
+        break;
+    case 5:
+        SetMonData(&gPlayerParty[tMonId], MON_DATA_HIDDEN_NATURE, &tNewNature);
+        CalculateMonStats(&gPlayerParty[tMonId]);
+        
+        RemoveBagItem(gSpecialVar_ItemId, 1);
+        gTasks[taskId].func = Task_ClosePartyMenu;
+        break;
+    }
+}
+
+void ItemUseCB_Mints(u8 taskId, TaskFunc task)
+{
+    s16 *data = gTasks[taskId].data;
+
+    tState = 0;
+    tMonId = gPartyMenu.slotId;
+    tSpecies = GetMonData(&gPlayerParty[tMonId], MON_DATA_SPECIES, NULL);
+    tCurrNature = GetNature(&gPlayerParty[tMonId], TRUE);
+    tNewNature = ItemId_GetSecondaryId(gSpecialVar_ItemId);
+    SetWordTaskArg(taskId, tOldFunc, (uintptr_t)(gTasks[taskId].func));
+    gTasks[taskId].func = Task_Mints;
+}
+
+
+#define tIVToSet        tCurrNature
+#define tIVSetAmount    tNewNature
+#define MIN_BOTTLE_CAP_LEVEL 50
+
+static const u8 sStatToIVLUT[] = 
+{
+    [STAT_HP]     =   MON_DATA_HP_IV,
+    [STAT_ATK]    =   MON_DATA_ATK_IV,
+    [STAT_DEF]    =   MON_DATA_DEF_IV,
+    [STAT_SPEED]  =   MON_DATA_SPEED_IV,
+    [STAT_SPATK]  =   MON_DATA_SPATK_IV,
+    [STAT_SPDEF]  =   MON_DATA_SPDEF_IV,
+};
+
+static const u8 *const sStatNamePointers[NUM_STATS] =
+{
+    [STAT_HP]    = gText_HP4,
+    [STAT_ATK]   = gText_Attack3,
+    [STAT_DEF]   = gText_Defense3,
+    [STAT_SPEED] = gText_Speed2,
+    [STAT_SPATK] = gText_SpAtk4,
+    [STAT_SPDEF] = gText_SpDef4,
+};
+
+static const u8 sText_AskBottleCap[] = _("Would you like to set {STR_VAR_1}'s\n{STR_VAR_2} IV to {STR_VAR_3}?");
+static const u8 sText_AskGoldenBottleCap[] = _("Would you like to set all of {STR_VAR_1}'s\nIVs to {STR_VAR_3}?");
+static const u8 sText_BottleCapsDone[] = _("{STR_VAR_1}'s IVs have\nbeen changed!{PAUSE_UNTIL_PRESS}");
+static const u8 sText_TheMax[] = _("the max");
+static const u8 sText_LevelTooLow[] = _("{STR_VAR_1}'s level is\ntoo low.{PAUSE_UNTIL_PRESS}");
+static void Task_BottleCaps(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    bool8 IVAlreadySet = TRUE;
+    u8 currIVVal = 0;
+    int i = 0;
+    switch (tState)
+    {
+    case 0:
+        if (MIN_BOTTLE_CAP_LEVEL > GetMonData(&gPlayerParty[tMonId], MON_DATA_LEVEL, NULL))
+        {
+            gPartyMenuUseExitCallback = FALSE;
+            GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
+            StringExpandPlaceholders(gStringVar4, sText_LevelTooLow);
+            PlaySE(SE_SELECT);
+            DisplayPartyMenuMessage(gStringVar4, 1);
+            ScheduleBgCopyTilemapToVram(2);
+            gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
+            return;
+        }
+        if (tIVToSet == NUM_STATS)
+        {
+            for (i = 0; i < ARRAY_COUNT(sStatToIVLUT); i++)
+            {
+                currIVVal = GetMonData(&gPlayerParty[tMonId], sStatToIVLUT[i], NULL);
+                if (currIVVal != tIVSetAmount)
+                {
+                    IVAlreadySet = FALSE;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            currIVVal = GetMonData(&gPlayerParty[tMonId], sStatToIVLUT[tIVToSet], NULL);
+            if (currIVVal != tIVSetAmount)
+                IVAlreadySet = FALSE;
+        }
+
+        // Can't use.
+        if (IVAlreadySet)
+        {
+            gPartyMenuUseExitCallback = FALSE;
+            PlaySE(SE_SELECT);
+            DisplayPartyMenuMessage(gText_WontHaveEffect, 1);
+            ScheduleBgCopyTilemapToVram(2);
+            gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
+            return;
+        }
+        
+        gPartyMenuUseExitCallback = TRUE;
+        GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
+        StringCopy(gStringVar2, sStatNamePointers[tIVToSet]);
+        if (tIVSetAmount == MAX_PER_STAT_IVS)
+            StringCopy(gStringVar3, sText_TheMax);
+        else
+            ConvertIntToDecimalStringN(gStringVar3, tIVSetAmount, STR_CONV_MODE_LEFT_ALIGN, 2);
+        if (tIVToSet == NUM_STATS)
+            StringExpandPlaceholders(gStringVar4, sText_AskGoldenBottleCap);
+        else
+            StringExpandPlaceholders(gStringVar4, sText_AskBottleCap);
+        PlaySE(SE_SELECT);
+        DisplayPartyMenuMessage(gStringVar4, 1);
+        ScheduleBgCopyTilemapToVram(2);
+        tState++;
+        break;
+    case 1:
+        if (!IsPartyMenuTextPrinterActive())
+        {
+            PartyMenuDisplayYesNoMenu();
+            tState++;
+        }
+        break;
+    case 2:
+        switch (Menu_ProcessInputNoWrapClearOnChoose())
+        {
+        case 0:
+            tState++;
+            break;
+        case 1:
+        case MENU_B_PRESSED:
+            gPartyMenuUseExitCallback = FALSE;
+            PlaySE(SE_SELECT);
+            ScheduleBgCopyTilemapToVram(2);
+            
+            // Don't exit party selections screen, return to choosing a mon.
+            ClearStdWindowAndFrameToTransparent(6, 0);
+            ClearWindowTilemap(6);
+            DisplayPartyMenuStdMessage(PARTY_MSG_USE_ON_WHICH_MON);
+            gTasks[taskId].func = (TaskFunc)GetWordTaskArg(taskId, tOldFunc);
+            return;
+        }
+        break;
+    case 3:
+        PlaySE(SE_USE_ITEM);
+        StringExpandPlaceholders(gStringVar4, sText_BottleCapsDone);
+        DisplayPartyMenuMessage(gStringVar4, 1);
+        ScheduleBgCopyTilemapToVram(2);
+        tState++;
+        break;
+    case 4:
+        if (!IsPartyMenuTextPrinterActive())
+            tState++;
+        break;
+    case 5:
+
+        if (tIVToSet == NUM_STATS)
+        {
+            for (i = 0; i < ARRAY_COUNT(sStatToIVLUT); i++)
+            {
+                SetMonData(&gPlayerParty[tMonId], sStatToIVLUT[i], &tIVSetAmount);
+            }
+        }
+        else
+            SetMonData(&gPlayerParty[tMonId], sStatToIVLUT[tIVToSet], &tIVSetAmount);
+        CalculateMonStats(&gPlayerParty[tMonId]);
+        
+        RemoveBagItem(gSpecialVar_ItemId, 1);
+        gTasks[taskId].func = Task_ClosePartyMenu;
+        break;
+    }
+}
+
+void ItemUseCB_BottleCaps(u8 taskId, TaskFunc task)
+{
+    // tCurrNature = Check if IV is maxed
+    // tNewNature = What IV to set.
+    s16 *data = gTasks[taskId].data;
+    tState = 0;
+    tMonId = gPartyMenu.slotId;
+    tSpecies = GetMonData(&gPlayerParty[tMonId], MON_DATA_SPECIES, NULL);
+    tIVToSet = ItemId_GetSecondaryId(gSpecialVar_ItemId);
+    tIVSetAmount = ItemId_GetHoldEffectParam(gSpecialVar_ItemId);
+    SetWordTaskArg(taskId, tOldFunc, (uintptr_t)(gTasks[taskId].func));
+    gTasks[taskId].func = Task_BottleCaps;
+}
+

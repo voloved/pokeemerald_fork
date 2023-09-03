@@ -190,7 +190,8 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
 };
 
 static EWRAM_DATA bool8 sDescriptionSubmenu = FALSE;
-static EWRAM_DATA bool8 sAckBallUseBtn = 0;
+static EWRAM_DATA bool8 sAckBallUseBtn = FALSE;
+static EWRAM_DATA bool8 sBallSwapped = FALSE;
 static const u8 sTargetIdentities[MAX_BATTLERS_COUNT] = {B_POSITION_PLAYER_LEFT, B_POSITION_PLAYER_RIGHT, B_POSITION_OPPONENT_RIGHT, B_POSITION_OPPONENT_LEFT};
 
 // unknown unused data
@@ -301,12 +302,8 @@ static void HandleInputChooseAction(void)
     }
     else if(JOY_NEW(B_LAST_USED_BALL_BUTTON)){
         sAckBallUseBtn = TRUE;
+        sBallSwapped = FALSE;
         ArrowsChangeColorLastBallCycle(1);
-    }
-    else if (sAckBallUseBtn && JOY_NEW_RAW(B_BUTTON)){
-        sAckBallUseBtn = FALSE;
-        ArrowsChangeColorLastBallCycle(0);
-        PlaySE(SE_PC_OFF);
     }
 
     if(sAckBallUseBtn){
@@ -314,6 +311,7 @@ static void HandleInputChooseAction(void)
         {
             bool8 sameBall = FALSE;
             u16 nextBall = GetNextBall(gBattleStruct->ballToDisplay);
+            sBallSwapped = TRUE;
             if (gBattleStruct->ballToDisplay == nextBall
             || (gBattleTypeFlags & BATTLE_TYPE_TRAINER && gBattleStruct->ballToDisplay == ITEM_THIEF_BALL))
                 sameBall = TRUE;
@@ -326,6 +324,7 @@ static void HandleInputChooseAction(void)
         {
             bool8 sameBall = FALSE;
             u16 prevBall = GetPrevBall(gBattleStruct->ballToDisplay);
+            sBallSwapped = TRUE;
             if (gBattleStruct->ballToDisplay == prevBall
             || (gBattleTypeFlags & BATTLE_TYPE_TRAINER && gBattleStruct->ballToDisplay == ITEM_THIEF_BALL))
                 sameBall = TRUE;
@@ -333,6 +332,19 @@ static void HandleInputChooseAction(void)
                 gBattleStruct->ballToDisplay = prevBall;
             SwapBallToDisplay(sameBall);
             PlaySE(SE_SELECT);
+        }
+        else if (JOY_NEW_RAW(B_BUTTON))
+        {
+            sAckBallUseBtn = FALSE;
+            sBallSwapped = FALSE;
+            ArrowsChangeColorLastBallCycle(0);
+            PlaySE(SE_PC_OFF);
+        }
+        else if (!JOY_HELD(B_LAST_USED_BALL_BUTTON) && sBallSwapped)
+        {
+            sAckBallUseBtn = FALSE;
+            sBallSwapped = FALSE;
+            ArrowsChangeColorLastBallCycle(FALSE);
         }
         else if (JOY_RELEASED(B_LAST_USED_BALL_BUTTON) && CanThrowLastUsedBall())
         {

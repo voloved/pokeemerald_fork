@@ -533,14 +533,37 @@ const u8 gText_EggWillTakeSomeTime[] = _("What will hatch from this?\nIt will ta
 const u8 gText_EggWillHatchSoon[] = _("It moves occasionally.\nIt should hatch soon.");
 const u8 gText_EggAboutToHatch[] = _("It's making sounds.\nIt's about to hatch!");
 const u8 gText_HMMovesCantBeForgotten2[] = _("HM moves can't be\nforgotten now.");
-const u8 gText_XNatureMetAtYZ[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature,\nmet at {LV_2}{DYNAMIC 0}{DYNAMIC 3}{DYNAMIC 1},\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}.");
-const u8 gText_XNatureHatchedAtYZ[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature,\nhatched at {LV_2}{DYNAMIC 0}{DYNAMIC 3}{DYNAMIC 1},\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}.");
-const u8 gText_XNatureObtainedInTrade[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature,\nobtained in a trade.");
-const u8 gText_XNatureFatefulEncounter[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature,\nobtained in a fateful\nencounter at {LV_2}{DYNAMIC 0}{DYNAMIC 3}{DYNAMIC 1}.");
-const u8 gText_XNatureProbablyMetAt[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature,\nprobably met at {LV_2}{DYNAMIC 0}{DYNAMIC 3}{DYNAMIC 1},\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}.");
-const u8 gText_XNature[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature");
-const u8 gText_XNatureMetSomewhereAt[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature,\nmet somewhere at {LV_2}{DYNAMIC 0}{DYNAMIC 3}{DYNAMIC 1}.");
-const u8 gText_XNatureHatchedSomewhereAt[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature,\nhatched somewhere at {LV_2}{DYNAMIC 0}{DYNAMIC 3}{DYNAMIC 1}.");
+
+const u8 gText_XNatureMetAtYZ[] = _(
+    "{DYNAMIC 0x00}{DYNAMIC 0x02}{DYNAMIC 0x01}{DYNAMIC 0x05}{DYNAMIC 0x06}{DYNAMIC 0x07} nature,\n"
+    "met at {LV_2}{DYNAMIC 0x00}{DYNAMIC 0x03}{DYNAMIC 0x01},\n{DYNAMIC 0x00}{DYNAMIC 0x04}{DYNAMIC 0x01}.");
+
+const u8 gText_XNatureHatchedAtYZ[] = _(
+    "{DYNAMIC 0x00}{DYNAMIC 0x02}{DYNAMIC 0x01}{DYNAMIC 0x05}{DYNAMIC 0x06}{DYNAMIC 0x07} nature,\n"
+    "hatched at {LV_2}{DYNAMIC 0x00}{DYNAMIC 0x03}{DYNAMIC 0x01},\n{DYNAMIC 0x00}{DYNAMIC 0x04}{DYNAMIC 0x01}.");
+
+const u8 gText_XNatureObtainedInTrade[] = _(
+    "{DYNAMIC 0x00}{DYNAMIC 0x02}{DYNAMIC 0x01}{DYNAMIC 0x05}{DYNAMIC 0x06}{DYNAMIC 0x07} nature,\n"
+    "obtained in a trade.");
+
+const u8 gText_XNatureFatefulEncounter[] = _(
+    "{DYNAMIC 0x00}{DYNAMIC 0x02}{DYNAMIC 0x01}{DYNAMIC 0x05}{DYNAMIC 0x06}{DYNAMIC 0x07} nature,\n"
+    "obtained in a fateful\nencounter at {LV_2}{DYNAMIC 0x00}{DYNAMIC 0x03}{DYNAMIC 0x01}.");
+
+const u8 gText_XNatureProbablyMetAt[] = _(
+    "{DYNAMIC 0x00}{DYNAMIC 0x02}{DYNAMIC 0x01}{DYNAMIC 0x05}{DYNAMIC 0x06}{DYNAMIC 0x07} nature,\n"
+    "probably met at {LV_2}{DYNAMIC 0x00}{DYNAMIC 0x03}{DYNAMIC 0x01},\n{DYNAMIC 0x00}{DYNAMIC 0x04}{DYNAMIC 0x01}.");
+
+const u8 gText_XNature[] = _("{DYNAMIC 0x00}{DYNAMIC 0x02}{DYNAMIC 0x01}{DYNAMIC 0x05}{DYNAMIC 0x06}{DYNAMIC 0x07} nature");
+
+const u8 gText_XNatureMetSomewhereAt[] = _(
+    "{DYNAMIC 0x00}{DYNAMIC 0x02}{DYNAMIC 0x01}{DYNAMIC 0x05}{DYNAMIC 0x06}{DYNAMIC 0x07} nature,\n"
+    "met somewhere at {LV_2}{DYNAMIC 0x00}{DYNAMIC 0x03}{DYNAMIC 0x01}.");
+
+const u8 gText_XNatureHatchedSomewhereAt[] = _(
+    "{DYNAMIC 0x00}{DYNAMIC 0x02}{DYNAMIC 0x01}{DYNAMIC 0x05}{DYNAMIC 0x06}{DYNAMIC 0x07} nature,\n"
+    "hatched somewhere at {LV_2}{DYNAMIC 0x00}{DYNAMIC 0x03}{DYNAMIC 0x01}.");
+
 const u8 gText_OddEggFoundByCouple[] = _("An odd POKéMON EGG found\nby the DAY CARE couple.");
 const u8 gText_PeculiarEggNicePlace[] = _("A peculiar POKéMON EGG\nobtained at the nice place.");
 const u8 gText_PeculiarEggTrade[] = _("A peculiar POKéMON EGG\nobtained in a trade.");
@@ -874,6 +897,29 @@ const u8 gText_Calcium1000[] = _("CALCIUM{CLEAR_TO 99}{FONT_SMALL}1,000");
 const u8 gText_Zinc1000[] = _("ZINC{CLEAR_TO 99}{FONT_SMALL}1,000");
 const u8 gText_HPUp1000[] = _("HP UP{CLEAR_TO 99}{FONT_SMALL}1,000");
 const u8 gText_PPUp3000[] = _("PP UP{CLEAR_TO 99}{FONT_SMALL}3,000");
+
+const u8 gText_AdamantMint[] = _("ADAMANT MINT");
+const u8 gText_BoldMint[] = _("BOLD MINT");
+const u8 gText_Mint[] = _("BRAVE MINT");
+const u8 gText_CalmMint[] = _("CALM MINT");
+const u8 gText_CarefulMint[] = _("CAREFUL MINT");
+const u8 gText_GentleMint[] = _("GENTLE MINT");
+const u8 gText_HastyMint[] = _("HASTY MINT");
+const u8 gText_ImpishMint[] = _("IMPISH MINT");
+const u8 gText_JollyMint[] = _("JOLLY MINT");
+const u8 gText_LaxMint[] = _("LAX MINT");
+const u8 gText_LonelyMint[] = _("LONELY MINT");
+const u8 gText_MildMint[] = _("MILD MINT");
+const u8 gText_ModestMint[] = _("MODEST MINT");
+const u8 gText_NaiveMint[] = _("NAIVE MINT");
+const u8 gText_NaughtyMint[] = _("NAUGHTY MINT");
+const u8 gText_QuietMint[] = _("QUIET MINT");
+const u8 gText_RashMint[] = _("RASH MINT");
+const u8 gText_RelaxedMint[] = _("RELAXED MINT");
+const u8 gText_SassyMint[] = _("SASSY MINT");
+const u8 gText_SeriousMint[] = _("SERIOUS MINT");
+const u8 gText_TimidMint[] = _("TIMID MINT");
+
 const u8 gText_RankingHall[] = _("RANKING HALL");
 const u8 gText_ExchangeService[] = _("EXCHANGE SERVICE");
 const u8 gText_LilycoveCity[] = _("LILYCOVE CITY");
@@ -1872,3 +1918,7 @@ const u8 gText_Berry[] = _("BERRY");
 const u8 gText_Berries[] = _("BERRIES");
 const u8 gText_Nickname[] = _("NICKNAME");
 const u8 gText_Relearn[] = _("RELEARN");
+const u8 gMenuText_Move[] = _("MOVE");
+const u8 gText_MoveItemWhere[] = _("Move item to where?");
+const u8 gText_XsYAnd[] = _("{STR_VAR_1}'s\n{STR_VAR_2} and\l");
+const u8 gText_XsYWereSwapped[] = _("{STR_VAR_1}'s\l{STR_VAR_2} were swapped!{PAUSE_UNTIL_PRESS}");
