@@ -9,9 +9,10 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
-## Not Yet Versioned
+## v2.2.2
  - Added Nature Mints and Bottle Caps
-   - They can be bouight for cheap from Jaime after becoming the champion.
+   - They can be bought for cheap from Jaime after becoming the champion.
+   - Jaime also gifts one Nature Mint after the player wins a badge.
  - [Add Ability to Swap Bikes Whenever](https://github.com/pret/pokeemerald/wiki/Add-Ability-to-Swap-Bikes-Whenever)
  - Ball Does Not Get Thrown When Cycling Unless The Ball Was Not Cycled That Turn.
  - Swapped Turbo and VSync Mapping of Shoulder Buttons in VSync Button Mode.

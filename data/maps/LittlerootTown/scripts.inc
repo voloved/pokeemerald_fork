@@ -1,4 +1,5 @@
 .set LOCALID_TWIN, 1
+.set LOCALID_JAIME, 2
 .set LOCALID_MOM, 4
 .set LOCALID_RIVAL, 7
 .set LOCALID_BIRCH, 8
@@ -255,7 +256,16 @@ LittlerootTown_EventScript_FatMan::
 
 LittlerootTown_EventScript_FatManGiveMints::
 	lock
-	faceplayer
+	applymovement LOCALID_JAIME, Common_Movement_FacePlayer
+	goto_if_set FLAG_GOT_MINT_FROM_JAIME, LittlerootTown_EventScript_FatManGiveMintsNotFirstTime
+	waitmovement 0
+	setflag FLAG_GOT_MINT_FROM_JAIME
+	playse SE_PIN
+	applymovement LOCALID_JAIME, Common_Movement_ExclamationMark
+	waitmovement 0
+	msgbox LittlerootTown_Text_JaimeFirstMints, MSGBOX_DEFAULT
+	closemessage
+LittlerootTown_EventScript_FatManGiveMintsNotFirstTime::
 	msgbox LittlerootTown_Text_JaimeHasMints, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, LittlerootTown_EventScript_MintEnd
 	message LittlerootTown_Text_JaimeWhichMint
@@ -361,9 +371,17 @@ LittlerootTown_EventScript_MintEnd::
 
 LittlerootTown_EventScript_FatMan_EliteFourWon::
 	lock
-	faceplayer
-	message LittlerootTown_Text_JaimeSelling
-	waitmessage
+	applymovement LOCALID_JAIME, Common_Movement_FacePlayer
+	goto_if_set FLAG_GOT_MINT_FROM_JAIME, LittlerootTown_EventScript_FatMan_EliteFourNotFirstTime
+	waitmovement 0
+	setflag FLAG_GOT_MINT_FROM_JAIME
+	playse SE_PIN
+	applymovement LOCALID_JAIME, Common_Movement_ExclamationMark
+	waitmovement 0
+	msgbox LittlerootTown_Text_JaimeSellingFirstMints, MSGBOX_DEFAULT
+	closemessage
+LittlerootTown_EventScript_FatMan_EliteFourNotFirstTime:
+	msgbox LittlerootTown_Text_JaimeSelling, MSGBOX_DEFAULT
 	setflag FLAG_TEMP_MEAN_ZIGZAGOON
 	pokemart LittlerootTown_EventScript_FatMan_Vitamins
 	clearflag FLAG_TEMP_MEAN_ZIGZAGOON
@@ -1155,6 +1173,18 @@ LittlerootTown_Text_HeyJaime:
 	.string "Hey.\n"
 	.string "  - Jaime$"
 
+LittlerootTown_Text_JaimeFirstMints:
+	.string "Hey {PLAYER}, I see you have been\n"
+	.string "getting badges.\p"
+	.string "So you're committed to this trainer\n"
+	.string "thing, huh?\p"
+	.string "Tell you what, I am taking a break from \n"
+	.string "selling shoes to sell NATURE MINTS.\p"
+	.string "NATURE MINTS allow you to change the\n"
+	.string "nature of a POKEMON from their\l"
+	.string "original nature to the one in the\l"
+	.string "MINT's name.$"
+
 LittlerootTown_Text_JaimeHasMints:
 	.string "I have {STR_VAR_1} that\n"
 	.string "I can give away.\p"
@@ -1164,9 +1194,21 @@ LittlerootTown_Text_JaimeWhichMint:
 	.string "Which mint would\n"
 	.string "you like?$"
 
+LittlerootTown_Text_JaimeSellingFirstMints:
+	.string "Hey {PLAYER}, I see you beat the\n"
+	.string "ELITE FOUR. Nice.\p"
+	.string "Have you heard of NATURE MINTS\n"
+	.string "and CAPS?\p"
+	.string "NATURE MINTS allow you to change the\n"
+	.string "nature of a POKéMON from their\l"
+	.string "original nature to the one in the\l"
+	.string "MINT's name and CAPS allow you to\l"
+	.string "max the IV of one of you POKéMON.$"
+
+
 LittlerootTown_Text_JaimeSelling:
-	.string "Hey {PLAYER}, I'm taking a break\n"
-	.string "from dealing shoes.\p"
+	.string "I'm taking a break from\n"
+	.string "dealing shoes.\p"
 	.string "I have some Vitamins I'm selling.\n"
 	.string "You interested?\p"
 	.string "I'll give you a discount\n"

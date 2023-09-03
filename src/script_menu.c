@@ -1157,7 +1157,7 @@ int ScriptMenu_AdjustLeftCoordFromWidth(int left, int width)
 
 static u32 getNumBadges(void)
 {
-    u32 i = 0;;
+    u32 i = 0;
     u32 numBadges = 0;
     for(i = 0; i < NUM_BADGES; i++)
     {
