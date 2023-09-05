@@ -9,14 +9,16 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## Not Yet Versioned
+ - Toggling running shoes by pressing B can now be turned off.
+ - Removed Lucky Egg from player's PC.
 ## v2.2.2
- - Added Nature Mints and Bottle Caps
+ - Added [Nature Mints](https://www.pokecommunity.com/showpost.php?p=10245635&postcount=191) (Credit: Ghoulslash) and Bottle Caps
    - They can be bought for cheap from Jaime after becoming the champion.
    - Jaime also gifts one Nature Mint after the player wins a badge.
  - [Add Ability to Swap Bikes Whenever](https://github.com/pret/pokeemerald/wiki/Add-Ability-to-Swap-Bikes-Whenever)
  - Ball Does Not Get Thrown When Cycling Unless The Ball Was Not Cycled That Turn.
  - Swapped Turbo and VSync Mapping of Shoulder Buttons in VSync Button Mode.
- - Bug Fix Where Bag Menu Does Not Have A Dot for Each Pouch.
  - Added Ability to Sort Key Items by Type.
  - [Added Ability to Move Held Items.](https://www.pokecommunity.com/showpost.php?p=10517557) [Credit: Zeturic]
  - [Added Mid-Battle Evolutions](https://www.pokecommunity.com/showpost.php?p=10464666) [Credit: CtrlFootPrint]
@@ -24,6 +26,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Now Able to Rematch Gym Leaders by Holding B When Talking After Becoming Champion.
  - Rematching when Holdiong B Causes Trainer to Use the Party they Would if it Were a PokéNav Rematch.
  - More clean-up on bike sprites.
+ - Bug Fix Where Bag Menu Does Not Have A Dot for Each Pouch.
  - Bug fix on Indicators Displaying on Enemy Party's Pokémon After Catching.
 
 ## v2.2.1

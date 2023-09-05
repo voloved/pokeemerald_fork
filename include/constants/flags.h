@@ -1225,7 +1225,7 @@
 #define FLAG_MISSINGNO                                              0x498
 #define FLAG_SKIP_INTRO                                             0x499
 #define FLAG_NUZLOCKE_LOST                                          0x49A
-#define FLAG_UNUSED_0x49B                                           0x49B // Unused Flag
+#define FLAG_ALLOW_RUNNING_TOGGLE                                   0x49B
 #define FLAG_GRINDRUN                                               0x49C
 #define FLAG_NO_LOW_HEALTH_BEEP                                     0x49D
 #define FLAG_NUZLOCKE_NO_DUPES_CLAUSE                               0x49E

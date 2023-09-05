@@ -678,13 +678,14 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro
 	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_ExpMult
 	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun
-	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
-	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit
-	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_FrostBite
-	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvo
-	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu
-	case 8, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
-	case 9, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_RunToggle
+	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_LowHealthBeep
+	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_GenFourSplit
+	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_FrostBite
+	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvo
+	case 8, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu
+	case 9, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	case 10, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
 	return
@@ -696,54 +697,61 @@ EventScript_Multichoice_BirchPCOptions_1:
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_3, 1
 	goto_if_set FLAG_GRINDRUN, EventScript_Multichoice_BirchPCOptions_6
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_5, 2
+EventScript_Multichoice_BirchPCOptions_21:
+	goto_if_set FLAG_ALLOW_RUNNING_TOGGLE, EventScript_Multichoice_BirchPCOptions_22
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_12, 3
 EventScript_Multichoice_BirchPCOptions_5:
 	goto_if_set FLAG_NO_LOW_HEALTH_BEEP, EventScript_Multichoice_BirchPCOptions_10
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_7, 3
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_7, 4
 EventScript_Multichoice_BirchPCOptions_9:
 	goto_if_set FLAG_MOVE_SPLIT_USE_ORIGINAL, EventScript_Multichoice_BirchPCOptions_12
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_8, 4
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_8, 5
 EventScript_Multichoice_BirchPCOptions_17:
 	goto_if_set FLAG_USE_FROSTBITE, EventScript_Multichoice_BirchPCOptions_18
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_16, 5
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_16, 6
 EventScript_Multichoice_BirchPCOptions_19:
 	goto_if_set FLAG_MID_BATTLE_EVOLUTION, EventScript_Multichoice_BirchPCOptions_20
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_18, 6
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_18, 7
 EventScript_Multichoice_BirchPCOptions_15:
 	goto_if_set FLAG_RELEARN_IN_PARTY_MENU, EventScript_Multichoice_BirchPCOptions_16
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_14, 7
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_14, 8
 EventScript_Multichoice_BirchPCOptions_13:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 8
-	dynmultipush EventScript_Multichoice_Exit, 9
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 9
+	dynmultipush EventScript_Multichoice_Exit, 10
 	dynmultistack 0, 0, TRUE, 9, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	return
 
-EventScript_Multichoice_BirchPCOptions_2:
+EventScript_Multichoice_BirchPCOptions_2: @ Skip Intro
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_0, 0
 	goto EventScript_Multichoice_BirchPCOptions_1
 
-EventScript_Multichoice_BirchPCOptions_6:
+EventScript_Multichoice_BirchPCOptions_6: @ Grind Run
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_4, 2
+	goto EventScript_Multichoice_BirchPCOptions_21
+
+EventScript_Multichoice_BirchPCOptions_22: @ Toggle Running
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_11, 3
 	goto EventScript_Multichoice_BirchPCOptions_5
 
-EventScript_Multichoice_BirchPCOptions_10:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_6, 3
+EventScript_Multichoice_BirchPCOptions_10: @ Low Health Beep
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_6, 4
 	goto EventScript_Multichoice_BirchPCOptions_9
 
-EventScript_Multichoice_BirchPCOptions_12:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_9, 4
-	goto EventScript_Multichoice_BirchPCOptions_15
+EventScript_Multichoice_BirchPCOptions_12: @ Move Split
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_9, 5
+	goto EventScript_Multichoice_BirchPCOptions_17
 
-EventScript_Multichoice_BirchPCOptions_16:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_13, 6
-	goto EventScript_Multichoice_BirchPCOptions_13
-
-EventScript_Multichoice_BirchPCOptions_18:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_15, 5
+EventScript_Multichoice_BirchPCOptions_18: @ Frostbite
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_15, 6
 	goto EventScript_Multichoice_BirchPCOptions_19
 
-EventScript_Multichoice_BirchPCOptions_20:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_17, 6
+EventScript_Multichoice_BirchPCOptions_20: @ Mid-Battle Evolutions
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_17, 7
 	goto EventScript_Multichoice_BirchPCOptions_15
+
+EventScript_Multichoice_BirchPCOptions_16: @ Relearn Move in Party Menu
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_13, 8
+	goto EventScript_Multichoice_BirchPCOptions_13
 
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
 	message LittlerootTown_ProfessorBirchsLab_Text_SkipIntro
@@ -784,6 +792,29 @@ LittlerootTown_ProfessorBirchsLab_EventScript_GrindRun_Cont:
 LittlerootTown_ProfessorBirchsLab_EventScript_GrindRunNo::
 	clearflag FLAG_GRINDRUN
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrindRunNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_RunToggle::
+	message LittlerootTown_ProfessorBirchsLab_Text_RunToggle
+	waitmessage
+	goto_if_unset FLAG_ALLOW_RUNNING_TOGGLE, LittlerootTown_ProfessorBirchsLab_EventScript_RunToggle_Unset
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_RunToggle_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_RunToggle_Unset:
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_RunToggle_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_RunToggleNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	setflag FLAG_ALLOW_RUNNING_TOGGLE
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RunToggleYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_RunToggleNo::
+	clearflag FLAG_ALLOW_RUNNING_TOGGLE
+	clearflag FLAG_RUNNING_SHOES_TOGGLE @ Removing this will retain if the player is running next time they choose 'Yes'
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RunToggleNo, MSGBOX_SIGN
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
@@ -1323,6 +1354,21 @@ EventScript_Multichoice_BirchPCOptions_Text_8:
 EventScript_Multichoice_BirchPCOptions_Text_9:
 	.string "{COLOR RED}USE GEN 4 MOVE SPLIT$"
 
+EventScript_Multichoice_BirchPCOptions_Text_10:
+	.string "CARCINISATION$"
+
+EventScript_Multichoice_BirchPCOptions_Text_11:
+	.string "{COLOR GREEN}TOGGLE RUNNING WITH B$"
+
+EventScript_Multichoice_BirchPCOptions_Text_12:
+	.string "{COLOR RED}TOGGLE RUNNING WITH B$"
+
+EventScript_Multichoice_BirchPCOptions_Text_13:
+	.string "{COLOR GREEN}RELEARN MOVES IN MENU$"
+
+EventScript_Multichoice_BirchPCOptions_Text_14:
+	.string "{COLOR RED}RELEARN MOVES IN MENU$"
+
 EventScript_Multichoice_BirchPCOptions_Text_15:
 	.string "{COLOR GREEN}USE FROSTBITE$"
 
@@ -1334,15 +1380,6 @@ EventScript_Multichoice_BirchPCOptions_Text_17:
 
 EventScript_Multichoice_BirchPCOptions_Text_18:
 	.string "{COLOR RED}MID-BATTLE EVOLUTION$"
-
-EventScript_Multichoice_BirchPCOptions_Text_13:
-	.string "{COLOR GREEN}RELEARN MOVES IN MENU$"
-
-EventScript_Multichoice_BirchPCOptions_Text_14:
-	.string "{COLOR RED}RELEARN MOVES IN MENU$"
-
-EventScript_Multichoice_BirchPCOptions_Text_10:
-	.string "CARCINISATION$"
 
 EventScript_Multichoice_Exit:
 	.string "EXIT$"
@@ -1491,6 +1528,18 @@ LittlerootTown_ProfessorBirchsLab_Text_GrindRunYes:
 LittlerootTown_ProfessorBirchsLab_Text_GrindRunNo:
 	.string "Your running will\n"
 	.string "be normal.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RunToggle:
+	.string "Toggle running shoes when\n"
+	.string "pressing B?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RunToggleYes:
+	.string "Running shoes will toggle\n"
+	.string "when pressing B.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RunToggleNo:
+	.string "Running shoes will not toggle\n"
+	.string "when pressing B.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_LowHealthBeep:
 	.string "Would you like to turn off\n"
