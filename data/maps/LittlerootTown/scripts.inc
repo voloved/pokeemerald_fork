@@ -365,6 +365,8 @@ LittlerootTown_EventScript_GiveTimid::
 LittlerootTown_EventScript_MintGiveEnd::
 	addvar VAR_JAIME_MINTS_GIVEN, 1
 LittlerootTown_EventScript_MintEnd::
+	callnative CanGetNatureMintFromJaime
+	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_FatManGiveMintsNotFirstTime
 	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_DEFAULT
 	release
 	end

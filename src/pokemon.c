@@ -4530,6 +4530,16 @@ u8 GiveMonToPlayer(struct Pokemon *mon)
         SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
         SetMonData(mon, MON_DATA_OT_ID, gSaveBlock2Ptr->playerTrainerId);
     }
+    else{
+        const u8 minIV = MAX_PER_STAT_IVS / 2;
+        static const u8 ivMonData[] = { MON_DATA_HP_IV, MON_DATA_ATK_IV, MON_DATA_DEF_IV, MON_DATA_SPEED_IV, MON_DATA_SPATK_IV, MON_DATA_SPDEF_IV };
+        u32 i, currIV;
+        for (i = 0; i < ARRAY_COUNT(ivMonData); i++)
+        {
+            if (minIV > GetMonData(mon, ivMonData[i], NULL))
+                SetMonData(mon, ivMonData[i], &minIV);
+        }
+    }
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
