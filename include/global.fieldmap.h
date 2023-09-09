@@ -158,7 +158,7 @@ struct MapHeader
                bool8 allowRunning:1;
                bool8 showMapName:1;
                bool8 allowPokevial:1;
-               bool8 allowRematchesAfterChampion: 3;// the last 2 bits are unused
+               bool8 allowRematchesBeforeChampion: 3;// the last 2 bits are unused
                                     // but the 4 bit sized bitfield is required to match
     /* 0x1B */ u8 battleType;
 };

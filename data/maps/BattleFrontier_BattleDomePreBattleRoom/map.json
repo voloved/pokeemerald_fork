@@ -12,7 +12,7 @@
   "allow_running": false,
   "show_map_name": false,
   "allow_pokevial":false,
-  "allow_rematches_after_champion":false,
+  "allow_rematches_before_champion":false,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": null,
   "object_events": [
