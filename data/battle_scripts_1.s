@@ -235,6 +235,7 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectCamouflage             @ EFFECT_CAMOUFLAGE
 	.4byte BattleScript_EffectOHKO                   @ EFFECT_DEATH_MOVE
 	.4byte BattleScript_EffectChillOWisp             @ EFFECT_CHILL_O_WISP
+	.4byte BattleScript_EffectHit                    @ EFFECT_ACROBATICS
 
 BattleScript_EffectHit::
 	jumpifnotmove MOVE_SURF, BattleScript_HitFromAtkCanceler

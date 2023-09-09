@@ -10653,5 +10653,3 @@ bool8 CalcNextShakeFromOdds(u32 odds)
     odds = 1048560 / odds;
     return Random() < odds;
 }
-
-

@@ -1449,6 +1449,10 @@ static const u8 sEnergyBallDescription[] = _(
     "Draws power from nature to\n"
     "attack. May lower Sp. Def.");
 
+static const u8 sAcrobaticsDescription[] = _(
+    "Does double damage if the\n"
+    "user has no item.");
+
 // MOVE_NONE is ignored in this table. Make sure to always subtract 1 before getting the right pointer.
 const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
 {
@@ -1814,4 +1818,5 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_DEATH_MOVE - 1] = sDeathMoveDescription,
     [MOVE_CHILL_O_WISP - 1] = sChillOWispDescription,
     [MOVE_ENERGY_BALL - 1] = sEnergyBallDescription,
+    [MOVE_ACROBATICS - 1] = sAcrobaticsDescription,
 };

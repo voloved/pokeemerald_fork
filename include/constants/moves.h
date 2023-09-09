@@ -364,8 +364,9 @@
 #define MOVE_DEATH_MOVE 360
 #define MOVE_CHILL_O_WISP 361
 #define MOVE_ENERGY_BALL 362
+#define MOVE_ACROBATICS 363
 
-#define MOVES_COUNT 363
+#define MOVES_COUNT 364
 
 // Used for checks for moves affected by Disable, Mimic, etc.
 #define MOVE_UNAVAILABLE 0xFFFF

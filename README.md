@@ -11,10 +11,14 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
 ## Not Yet Versioned
  - Added Roserade, Ambipom, Mismagius, Honchkrow, and Froslass.
+ - Added Energy Ball and Acrobatics as moves.
+ - PokéVial can now be used in gyms and Trick House.
  - Toggling running shoes by pressing B can now be turned off.
  - Removed Lucky Egg from player's PC.
+ - Fixed ave compatibility on using Nature Mints with older save files.
+
 ## v2.2.2
- - Added [Nature Mints](https://www.pokecommunity.com/showpost.php?p=10245635&postcount=191) (Credit: Ghoulslash) and Bottle Caps
+ - Added Bottle Caps and [Nature Mints](https://www.pokecommunity.com/showpost.php?p=10245635&postcount=191) (Credit: Ghoulslash)
    - They can be bought for cheap from Jaime after becoming the champion.
    - Jaime also gifts one Nature Mint after the player wins a badge.
  - [Add Ability to Swap Bikes Whenever](https://github.com/pret/pokeemerald/wiki/Add-Ability-to-Swap-Bikes-Whenever)
