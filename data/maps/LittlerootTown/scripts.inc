@@ -255,7 +255,7 @@ LittlerootTown_EventScript_Jaime::
 	end
 
 LittlerootTown_EventScript_JaimeGiveMints::
-	lock
+	lockall
 	applymovement LOCALID_JAIME, Common_Movement_FacePlayer
 	goto_if_set FLAG_GOT_MINT_FROM_JAIME, LittlerootTown_EventScript_JaimeGiveMintsNotFirstTime
 	waitmovement 0
@@ -372,7 +372,7 @@ LittlerootTown_EventScript_MintEnd::
 	end
 
 LittlerootTown_EventScript_Jaime_EliteFourWon::
-	lock
+	lockall
 	applymovement LOCALID_JAIME, Common_Movement_FacePlayer
 	goto_if_set FLAG_GOT_MINT_FROM_JAIME, LittlerootTown_EventScript_Jaime_EliteFourNotFirstTime
 	waitmovement 0
