@@ -1980,13 +1980,28 @@ $(OBJEVENTGFXDIR)/pokemon/probopass.4bpp: %.4bpp: %.png
 $(OBJEVENTGFXDIR)/pokemon/dusknoir.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 4 -mheight 4
 
+$(OBJEVENTGFXDIR)/pokemon/roserade.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
+$(OBJEVENTGFXDIR)/pokemon/ambipom.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
+$(OBJEVENTGFXDIR)/pokemon/mismagius.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
+$(OBJEVENTGFXDIR)/pokemon/honchkrow.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
+$(OBJEVENTGFXDIR)/pokemon/froslass.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
 $(OBJEVENTGFXDIR)/pokemon/leafeon.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 4 -mheight 4
 
-$(OBJEVENTGFXDIR)/pokemon/glaceon.4bpp: %.4bpp: %.png # Credit to Kyle-Dove https://www.deviantart.com/kyle-dove/art/Sylveon-Sprite-353872866
+$(OBJEVENTGFXDIR)/pokemon/glaceon.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 4 -mheight 4
 
-$(OBJEVENTGFXDIR)/pokemon/sylveon.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/pokemon/sylveon.4bpp: %.4bpp: %.png # Credit to Kyle-Dove https://www.deviantart.com/kyle-dove/art/Sylveon-Sprite-353872866
 	$(GFX) $< $@ -mwidth 4 -mheight 4
 
 $(OBJEVENTGFXDIR)/pokemon/missingno.4bpp: %.4bpp: %.png

@@ -10,6 +10,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
 ## Not Yet Versioned
+ - Added Roserade, Ambipom, Mismagius, Honchkrow, and Froslass.
  - Toggling running shoes by pressing B can now be turned off.
  - Removed Lucky Egg from player's PC.
 ## v2.2.2
@@ -156,7 +157,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Mareep is female 75% of the time.
 
 ## v1.4.0
-- Added Weavile, Magnezone, Lickilicky, Rhyperior, Tangrowth, Electivire, Magmortar, Togekiss, Yanmega, Gliscor, Mamoswine, Porygon Z, Gallade, Probopass, Dusknoir
+- Added Weavile, Magnezone, Lickilicky, Rhyperior, Tangrowth, Electivire, Magmortar, Togekiss, Yanmega, Gliscor, Mamoswine, Porygon Z, Gallade, Probopass, and Dusknoir
 - [Added Difficulty Mode](https://github.com/pret/pokeemerald/wiki/Add-Difficulty-Mode)
 - [Infinite TM usage](https://github.com/pret/pokeemerald/wiki/Infinite-TM-usage) [Credit: ExpoSeed]
 - [Item Automatically Goes to PC if Bag is Full](https://github.com/pret/pokeemerald/wiki/Item-Automatically-Goes-to-PC-if-Bag-is-Full)
