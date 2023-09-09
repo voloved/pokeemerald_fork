@@ -1445,6 +1445,10 @@ static const u8 sChillOWispDescription[] = _(
     "Inflicts a frostbite on the\n"
     "foe with intense frost.");
 
+static const u8 sEnergyBallDescription[] = _(
+    "Draws power from nature to\n"
+    "attack. May lower Sp. Def.");
+
 // MOVE_NONE is ignored in this table. Make sure to always subtract 1 before getting the right pointer.
 const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
 {
@@ -1809,4 +1813,5 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_FAIRY_WIND - 1] = sFairyWindDescription,
     [MOVE_DEATH_MOVE - 1] = sDeathMoveDescription,
     [MOVE_CHILL_O_WISP - 1] = sChillOWispDescription,
+    [MOVE_ENERGY_BALL - 1] = sEnergyBallDescription,
 };
