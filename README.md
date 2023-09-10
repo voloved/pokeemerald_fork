@@ -31,6 +31,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Now Able to Rematch Gym Leaders by Holding B When Talking After Becoming Champion.
  - Rematching when Holding B Causes Trainer to Use the Party they Would if it Were a PokéNav Rematch.
  - More clean-up on bike sprites.
+ - Buffed Razor Wind.
  - Bug Fix Where Bag Menu Does Not Have A Dot for Each Pouch.
  - Bug fix on Indicators Displaying on Enemy Party's Pokémon After Catching.
 
