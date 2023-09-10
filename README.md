@@ -9,7 +9,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
-## Not Yet Versioned
+## v2.2.3
  - Added Roserade, Ambipom, Mismagius, Honchkrow, and Froslass.
  - Added Energy Ball and Acrobatics as moves.
  - PokéVial can now be used in gyms and Trick House.
@@ -29,7 +29,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Added Mid-Battle Evolutions](https://www.pokecommunity.com/showpost.php?p=10464666) [Credit: CtrlFootPrint]
  - [Increased Money Limit](https://github.com/pret/pokeemerald/wiki/Increase-money-limit) [Credit: DizzyEgg]
  - Now Able to Rematch Gym Leaders by Holding B When Talking After Becoming Champion.
- - Rematching when Holdiong B Causes Trainer to Use the Party they Would if it Were a PokéNav Rematch.
+ - Rematching when Holding B Causes Trainer to Use the Party they Would if it Were a PokéNav Rematch.
  - More clean-up on bike sprites.
  - Bug Fix Where Bag Menu Does Not Have A Dot for Each Pouch.
  - Bug fix on Indicators Displaying on Enemy Party's Pokémon After Catching.
