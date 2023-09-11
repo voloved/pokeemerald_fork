@@ -5315,7 +5315,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
 
                             if (targetSpecies != SPECIES_NONE)
                             {
-                                BeginEvolutionScene(mon, targetSpecies, FALSE, partyIndex);
+                                BeginEvolutionScene(mon, targetSpecies, FALSE, partyIndex, item);
                                 return FALSE;
                             }
                         }
@@ -5754,6 +5754,8 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem)
                 targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
             }
+            else if(evolutionItem == ITEM_EVERSTONE)
+                targetSpecies = GetPreEvolution(species);
         }
         break;
     }
