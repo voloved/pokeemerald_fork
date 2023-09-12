@@ -5625,14 +5625,16 @@ u8 *UseStatIncreaseItem(u16 itemId)
     return gDisplayedStringBattle;
 }
 
+u8 SanitizeHiddenNature(u8 natureHidden)
+{
+    if (natureHidden >= NUM_NATURES)
+        return HIDDEN_NATURE_NONE;
+    return natureHidden;
+}
+
 u8 GetNature(struct Pokemon *mon, bool32 checkHidden)
 {
-    u32 natureHidden = GetMonData(mon, MON_DATA_HIDDEN_NATURE, 0);
-    if (natureHidden >= NUM_NATURES)
-    {
-        natureHidden = HIDDEN_NATURE_NONE;
-        SetMonData(mon, MON_DATA_HIDDEN_NATURE, &natureHidden);
-    }
+    u32 natureHidden = SanitizeHiddenNature(GetMonData(mon, MON_DATA_HIDDEN_NATURE, 0));
     if (!checkHidden || natureHidden == HIDDEN_NATURE_NONE)
         return GetNatureFromPersonality(GetMonData(mon, MON_DATA_PERSONALITY, 0));
     else
