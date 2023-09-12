@@ -5627,8 +5627,10 @@ u8 *UseStatIncreaseItem(u16 itemId)
 
 u8 SanitizeHiddenNature(u8 natureHidden)
 {
-    if (natureHidden >= NUM_NATURES)
+    if (natureHidden > NUM_NATURES || natureHidden == 0)  // Sets a Hidden Nature of 0 to NONE to retain save compatability with older versions
         return HIDDEN_NATURE_NONE;
+    if (natureHidden == HIDDEN_NATURE_HARDY)
+        return NATURE_HARDY;
     return natureHidden;
 }
 

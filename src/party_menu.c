@@ -6867,6 +6867,8 @@ static void Task_Mints(u8 taskId)
             tState++;
         break;
     case 5:
+        if (tNewNature == NATURE_HARDY)
+            tNewNature = HIDDEN_NATURE_HARDY;
         SetMonData(&gPlayerParty[tMonId], MON_DATA_HIDDEN_NATURE, &tNewNature);
         CalculateMonStats(&gPlayerParty[tMonId]);
         
