@@ -5628,11 +5628,14 @@ u8 *UseStatIncreaseItem(u16 itemId)
 u8 GetNature(struct Pokemon *mon, bool32 checkHidden)
 {
     u32 natureHidden = GetMonData(mon, MON_DATA_HIDDEN_NATURE, 0);
+    if (natureHidden >= NUM_NATURES)
+    {
+        natureHidden = HIDDEN_NATURE_NONE;
+        SetMonData(mon, MON_DATA_HIDDEN_NATURE, &natureHidden);
+    }
     if (!checkHidden || natureHidden == HIDDEN_NATURE_NONE)
         return GetNatureFromPersonality(GetMonData(mon, MON_DATA_PERSONALITY, 0));
     else
-        if (natureHidden == HIDDEN_NATURE_HARDY)
-            return NATURE_HARDY;
         return natureHidden;
 }
 

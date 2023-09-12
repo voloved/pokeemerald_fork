@@ -173,8 +173,7 @@
 #define MON_FEMALE     0xFE
 #define MON_GENDERLESS 0xFF
 
-#define HIDDEN_NATURE_NONE      0
-#define HIDDEN_NATURE_HARDY     26  // Will likely never be used since there are no hardy nature mints.
+#define HIDDEN_NATURE_NONE      0 // Using zero for save compatability and b/c there will be no Hardy Nature mints
 
 // Constants for AdjustFriendship
 #define FRIENDSHIP_EVENT_GROW_LEVEL       0
