@@ -307,7 +307,7 @@ static void HandleInputChooseAction(void)
     }
 
     if(sAckBallUseBtn){
-        if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_RIGHT)))
+        if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_RIGHT)))
         {
             bool8 sameBall = FALSE;
             u16 nextBall = GetNextBall(gBattleStruct->ballToDisplay);
@@ -320,7 +320,7 @@ static void HandleInputChooseAction(void)
             SwapBallToDisplay(sameBall);
             PlaySE(SE_SELECT);
         }
-        else if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT)))
+        else if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_LEFT)))
         {
             bool8 sameBall = FALSE;
             u16 prevBall = GetPrevBall(gBattleStruct->ballToDisplay);

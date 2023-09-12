@@ -15,7 +15,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - PokéVial can now be used in gyms and Trick House.
  - Toggling running shoes by pressing B can now be turned off.
  - Removed Lucky Egg from player's PC.
- - Fixed ave compatibility on using Nature Mints with older save files.
+ - Made Everstone Able to De-evolve Any Non-Basic Pokémon.
+ - Fixed save compatibility on using Nature Mints with older save files.
 
 ## v2.2.2
  - Added Bottle Caps and [Nature Mints](https://www.pokecommunity.com/showpost.php?p=10245635&postcount=191) (Credit: Ghoulslash)

@@ -230,7 +230,7 @@ static void ReadAllCurrentSettings(u8 taskId)
     gTasks[taskId].data[TD_DIFFICULTY] = GetDifficulty();
     gTasks[taskId].data[TD_TYPEEFFECT] = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     gTasks[taskId].data[TD_SUGGESTBALL] = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
-    gTasks[taskId].data[TD_SUGGESTIONTYPE] = FlagGet(FLAG_BALL_SUGGEST_NOT_LAST) * (1 + FlagGet(FLAG_BALL_SUGGEST_COMPLEX));  // 0 = Last; 1 = Simple; 2 = Complex
+    gTasks[taskId].data[TD_SUGGESTIONTYPE] = FlagGet(FLAG_BALL_SUGGEST_COMPLEX) ? 2 : FlagGet(FLAG_BALL_SUGGEST_NOT_LAST);  // 0 = Last; 1 = Simple; 2 = Complex
     gTasks[taskId].data[TD_VSYNC] = gSaveBlock2Ptr->vSyncOff;
 }
 
