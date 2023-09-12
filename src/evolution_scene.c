@@ -165,7 +165,7 @@ static void CB2_BeginEvolutionScene(void)
 #define tLearnMoveNoState   data[8]
 #define tEvoWasStopped      data[9]
 #define tPartyId            data[10]
-#define tEvoItem            data[11]
+#define tDevolving          data[11]
 
 #define TASK_BIT_CAN_STOP       (1 << 0)
 #define TASK_BIT_LEARN_MOVE     (1 << 7)
@@ -185,33 +185,33 @@ static void Task_BeginEvolutionScene(u8 taskId)
             u16 postEvoSpecies;
             bool8 canStopEvo;
             u8 partyId;
-            u16 evoItem;
+            bool8 devolving;
 
             mon = &gPlayerParty[gTasks[taskId].tPartyId];
             postEvoSpecies = gTasks[taskId].tPostEvoSpecies;
             canStopEvo = gTasks[taskId].tCanStop;
             partyId = gTasks[taskId].tPartyId;
-            evoItem = gTasks[taskId].tEvoItem;
+            devolving = gTasks[taskId].tDevolving;
 
             DestroyTask(taskId);
-            EvolutionScene(mon, postEvoSpecies, canStopEvo, partyId, evoItem);
+            EvolutionScene(mon, postEvoSpecies, canStopEvo, partyId, devolving);
         }
         break;
     }
 }
 
-void BeginEvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, bool8 canStopEvo, u8 partyId, u16 evoItem)
+void BeginEvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, bool8 canStopEvo, u8 partyId, bool8 devolving)
 {
     u8 taskId = CreateTask(Task_BeginEvolutionScene, 0);
     gTasks[taskId].tState = 0;
     gTasks[taskId].tPostEvoSpecies = postEvoSpecies;
     gTasks[taskId].tCanStop = canStopEvo;
     gTasks[taskId].tPartyId = partyId;
-    gTasks[taskId].tEvoItem = evoItem;
+    gTasks[taskId].tDevolving = devolving;
     SetMainCallback2(CB2_BeginEvolutionScene);
 }
 
-void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, bool8 canStopEvo, u8 partyId, u16 evoItem)
+void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, bool8 canStopEvo, u8 partyId, bool8 devolving)
 {
     u8 name[20];
     u16 currSpecies;
@@ -303,8 +303,7 @@ void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, bool8 canStopEvo, u
     gTasks[id].tLearnsFirstMove = TRUE;
     gTasks[id].tEvoWasStopped = FALSE;
     gTasks[id].tPartyId = partyId;
-    gTasks[id].tEvoItem = evoItem;
-
+    gTasks[id].tDevolving = devolving;
 
     memcpy(&sEvoStructPtr->savedPalette, &gPlttBufferUnfaded[0x20], sizeof(sEvoStructPtr->savedPalette));
 
@@ -677,7 +676,7 @@ static void Task_EvolutionScene(u8 taskId)
     case EVOSTATE_INTRO_MSG:
         if (!gPaletteFade.active)
         {
-            if (gTasks[taskId].tEvoItem == ITEM_EVERSTONE)
+            if (gTasks[taskId].tDevolving)
                 StringExpandPlaceholders(gStringVar4, gText_PkmnIsDevolving);
             else
                 StringExpandPlaceholders(gStringVar4, gText_PkmnIsEvolving);
@@ -777,7 +776,7 @@ static void Task_EvolutionScene(u8 taskId)
     case EVOSTATE_SET_MON_EVOLVED:
         if (IsCryFinished())
         {
-            if (gTasks[taskId].tEvoItem == ITEM_EVERSTONE)
+            if (gTasks[taskId].tDevolving)
                 StringExpandPlaceholders(gStringVar4, gText_CongratsPkmnDevolved);
             else
                 StringExpandPlaceholders(gStringVar4, gText_CongratsPkmnEvolved);
@@ -891,7 +890,7 @@ static void Task_EvolutionScene(u8 taskId)
                 StringExpandPlaceholders(gStringVar4, gText_EllipsisQuestionMark);
             else
             {
-                if (gTasks[taskId].tEvoItem == ITEM_EVERSTONE)
+                if (gTasks[taskId].tDevolving)
                     StringExpandPlaceholders(gStringVar4, gText_PkmnStoppedDevolving);
                 else
                     StringExpandPlaceholders(gStringVar4, gText_PkmnStoppedEvolving);

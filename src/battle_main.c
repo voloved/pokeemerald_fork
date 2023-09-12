@@ -4408,7 +4408,7 @@ static void Task_BeginBattleEvolutionScene(u8 taskId)
         battlerPosition = gTasks[taskId].tBattlerPosition;
         SpeciesToEvolveInto = gTasks[taskId].tSpeciesToEvolveInto;
         DestroyTask(taskId);
-        EvolutionScene(&gPlayerParty[battlerPosition], SpeciesToEvolveInto, TRUE, battlerPosition, ITEM_NONE);
+        EvolutionScene(&gPlayerParty[battlerPosition], SpeciesToEvolveInto, TRUE, battlerPosition, FALSE);
     }
 }
 
@@ -5523,7 +5523,7 @@ static void HandleEndTurn_FinishBattle(void)
 }
 
 static void FreeResetData_ReturnToOvOrDoEvolutions(void)
-{                          
+{
     if (!gPaletteFade.active)
     {
         ResetSpriteData();
@@ -5568,7 +5568,7 @@ static void TryEvolvePokemon(void)
                 {
                     FreeAllWindowBuffers();
                     gBattleMainFunc = WaitForEvoSceneToFinish;
-                    EvolutionScene(&gPlayerParty[i], species, TRUE, i, ITEM_NONE);
+                    EvolutionScene(&gPlayerParty[i], species, TRUE, i, FALSE);
                     return;
                 }
             }

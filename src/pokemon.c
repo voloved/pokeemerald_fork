@@ -5311,11 +5311,12 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
 
                     case 7: // ITEM4_EVO_STONE
                         {
+                            bool8 devolving = (item == ITEM_EVERSTONE);
                             u16 targetSpecies = GetEvolutionTargetSpecies(mon, EVO_MODE_ITEM_USE, item);
 
                             if (targetSpecies != SPECIES_NONE)
                             {
-                                BeginEvolutionScene(mon, targetSpecies, FALSE, partyIndex, item);
+                                BeginEvolutionScene(mon, targetSpecies, FALSE, partyIndex, devolving);
                                 return FALSE;
                             }
                         }
