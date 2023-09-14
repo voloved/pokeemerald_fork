@@ -123,17 +123,22 @@ static void SetEvoSparklesMatrices(void)
 }
 
 #define sSpeed     data[3]
+#define sDevolving data[4]
 #define sAmplitude data[5]
 #define sTrigIdx   data[6]
 #define sTimer     data[7]
 
 static void SpriteCB_Sparkle_SpiralUpward(struct Sprite *sprite)
 {
-    if (sprite->y > 8)
+    u32 start = sprite->sDevolving ? 22 : 88;
+    u32 end = sprite->sDevolving ? 102 : 8;
+    s16 y_delta;
+    if (sprite->sDevolving ? sprite->y < end : sprite->y > end)
     {
         u8 matrixNum;
 
-        sprite->y = 88 - (sprite->sTimer * sprite->sTimer) / 80;
+        y_delta = (sprite->sTimer * sprite->sTimer) / 80;
+        sprite->y = sprite->sDevolving ? start + y_delta : start - y_delta;
         sprite->y2 = Sin((u8)sprite->sTrigIdx, sprite->sAmplitude) / 4;
         sprite->x2 = Cos((u8)sprite->sTrigIdx, sprite->sAmplitude);
         sprite->sTrigIdx += 4;
@@ -153,7 +158,7 @@ static void SpriteCB_Sparkle_SpiralUpward(struct Sprite *sprite)
         DestroySprite(sprite);
 }
 
-static void CreateSparkle_SpiralUpward(u8 trigIdx)
+static void CreateSparkle_SpiralUpward(u8 trigIdx, bool32 devolving)
 {
     u8 spriteId = CreateSprite(&sEvoSparkleSpriteTemplate, DISPLAY_WIDTH / 2, 88, 0);
     if (spriteId != MAX_SPRITES)
@@ -161,6 +166,7 @@ static void CreateSparkle_SpiralUpward(u8 trigIdx)
         gSprites[spriteId].sAmplitude = 48;
         gSprites[spriteId].sTrigIdx = trigIdx;
         gSprites[spriteId].sTimer = 0;
+        gSprites[spriteId].sDevolving = devolving;
         gSprites[spriteId].oam.affineMode = ST_OAM_AFFINE_NORMAL;
         gSprites[spriteId].oam.matrixNum = 31;
         gSprites[spriteId].callback = SpriteCB_Sparkle_SpiralUpward;
@@ -276,13 +282,15 @@ void LoadEvoSparkleSpriteAndPal(void)
     LoadSpritePalettes(sEvoSparkleSpritePals);
 }
 
-#define tPalNum data[1]
-#define tTimer  data[15]
+#define tPalNum    data[1]
+#define tDevolving data[14]
+#define tTimer     data[15]
 
-u8 EvolutionSparkles_SpiralUpward(u16 palNum)
+u8 EvolutionSparkles_SpiralUpward(u16 palNum, bool32 devolving)
 {
     u8 taskId = CreateTask(Task_Sparkles_SpiralUpward_Init, 0);
     gTasks[taskId].tPalNum = palNum;
+    gTasks[taskId].tDevolving = devolving;
     return taskId;
 }
 
@@ -303,7 +311,7 @@ static void Task_Sparkles_SpiralUpward(u8 taskId)
         {
             u8 i;
             for (i = 0; i < 4; i++)
-                CreateSparkle_SpiralUpward((gTasks[taskId].tTimer & 120) * 2 + i * 64);
+                CreateSparkle_SpiralUpward((gTasks[taskId].tTimer & 120) * 2 + i * 64, gTasks[taskId].tDevolving);
         }
         gTasks[taskId].tTimer++;
     }

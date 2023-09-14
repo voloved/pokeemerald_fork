@@ -711,7 +711,7 @@ static void Task_EvolutionScene(u8 taskId)
         if (!gPaletteFade.active)
         {
             StartBgAnimation(FALSE);
-            sEvoGraphicsTaskId = EvolutionSparkles_SpiralUpward(17);
+            sEvoGraphicsTaskId = EvolutionSparkles_SpiralUpward(17, gTasks[taskId].tDevolving);
             gTasks[taskId].tState++;
         }
         break;
@@ -1182,7 +1182,7 @@ static void Task_TradeEvolutionScene(u8 taskId)
         {
             StartBgAnimation(TRUE);
             var = gSprites[sEvoStructPtr->preEvoSpriteId].oam.paletteNum + 16;
-            sEvoGraphicsTaskId = EvolutionSparkles_SpiralUpward(var);
+            sEvoGraphicsTaskId = EvolutionSparkles_SpiralUpward(var, FALSE);
             gTasks[taskId].tState++;
             SetGpuReg(REG_OFFSET_BG3CNT, BGCNT_PRIORITY(3) | BGCNT_SCREENBASE(6));
         }
