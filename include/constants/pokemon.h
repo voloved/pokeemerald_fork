@@ -255,7 +255,6 @@
 #define EVO_BEAUTY           15 // Pokémon levels up with beauty ≥ specified value
 
 #define EVOS_PER_MON 8
-#define NUM_EEVEELUTIONS EVOS_PER_MON
 
 // Evolution 'modes,' for GetEvolutionTargetSpecies
 #define EVO_MODE_NORMAL     0

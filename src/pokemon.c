@@ -6427,8 +6427,8 @@ static u16 GetPreEvolution(u16 species){
     if (species == SPECIES_EEVEE)
         return SPECIES_NONE;
     
-    for (i = 0; i < ARRAY_COUNT(gEeveelutions); i++){
-        if (species == gEeveelutions[i])
+    for (i = 0; i < EVOS_PER_MON; i++){
+        if (gEvolutionTable[SPECIES_EEVEE][i].targetSpecies == species)
                 return SPECIES_EEVEE;
     }
 
