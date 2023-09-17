@@ -8078,8 +8078,6 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
     [SPECIES_OLD_UNOWN_N] = OLD_UNOWN_SPECIES_INFO,
 
-    [SPECIES_OLD_UNOWN_Z] = OLD_UNOWN_SPECIES_INFO,
-
     [SPECIES_TREECKO] =
     {
         .baseHP        = 40,
@@ -12884,6 +12882,29 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .eggGroup2 = EGG_GROUP_MINERAL,
         .abilities = {ABILITY_INNER_FOCUS, ABILITY_NONE},
         .bodyColor = BODY_COLOR_WHITE,
+        .noFlip = FALSE,
+    },
+    [SPECIES_URSALUNA] =
+    {
+        .baseHP        = 130,
+        .baseAttack    = 140,
+        .baseDefense   = 105,
+        .baseSpeed     = 50,
+        .baseSpAttack  = 45,
+        .baseSpDefense = 80,
+        .type1 = TYPE_GROUND,
+        .type2 = TYPE_NORMAL,
+        .catchRate = 75,
+        .expYield = 194,
+        .evYield_Attack    = 3,
+        .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20,
+        .friendship = 70,
+        .growthRate = GROWTH_MEDIUM_FAST,
+        .eggGroup1 = EGG_GROUP_FIELD,
+        .eggGroup2 = EGG_GROUP_FIELD,
+        .abilities = {ABILITY_GUTS, ABILITY_NONE},
+        .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
     },
     [SPECIES_LEAFEON] =

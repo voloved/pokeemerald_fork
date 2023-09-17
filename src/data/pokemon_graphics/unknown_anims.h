@@ -2132,7 +2132,6 @@ static const union AnimCmd *const *const sUnknownAnimsTable[] =
     ANIM_CMD_FULL(OLD_UNOWN_I, sUnknownAnims_OLD_UNOWN),
     ANIM_CMD_FULL(OLD_UNOWN_K, sUnknownAnims_OLD_UNOWN),
     ANIM_CMD_FULL(OLD_UNOWN_N, sUnknownAnims_OLD_UNOWN),
-    ANIM_CMD_FULL(OLD_UNOWN_Z, sUnknownAnims_OLD_UNOWN),
     ANIM_CMD(TREECKO),
     ANIM_CMD(GROVYLE),
     ANIM_CMD(SCEPTILE),

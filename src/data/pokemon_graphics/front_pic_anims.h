@@ -4748,6 +4748,13 @@ static const union AnimCmd sAnim_FROSLASS_1[] =
     ANIMCMD_END,
 };
 
+static const union AnimCmd sAnim_URSALUNA_1[] =
+{
+    ANIMCMD_FRAME(1, 40),
+    ANIMCMD_FRAME(0, 20),
+    ANIMCMD_END,
+};
+
 static const union AnimCmd sAnim_LEAFEON_1[] =
 {
     ANIMCMD_FRAME(1, 35),
@@ -7099,6 +7106,11 @@ static const union AnimCmd *const sAnims_FROSLASS[] ={
     sAnim_FROSLASS_1,
 };
 
+static const union AnimCmd *const sAnims_URSALUNA[] ={
+    sAnim_GeneralFrame0,
+    sAnim_URSALUNA_1,
+};
+
 static const union AnimCmd *const sAnims_LEAFEON[] ={
     sAnim_GeneralFrame0,
     sAnim_LEAFEON_1,
@@ -7520,7 +7532,6 @@ const union AnimCmd *const *const gMonFrontAnimsPtrTable[] =
     ANIM_CMD_FULL(OLD_UNOWN_I, sAnims_OLD_UNOWN_B),
     ANIM_CMD_FULL(OLD_UNOWN_K, sAnims_OLD_UNOWN_B),
     ANIM_CMD_FULL(OLD_UNOWN_N, sAnims_OLD_UNOWN_B),
-    ANIM_CMD_FULL(OLD_UNOWN_Z, sAnims_OLD_UNOWN_B),
     ANIM_CMD(TREECKO),
     ANIM_CMD(GROVYLE),
     ANIM_CMD(SCEPTILE),
@@ -7676,6 +7687,7 @@ const union AnimCmd *const *const gMonFrontAnimsPtrTable[] =
     ANIM_CMD(MISMAGIUS),
     ANIM_CMD(HONCHKROW),
     ANIM_CMD(FROSLASS),
+    ANIM_CMD(URSALUNA),
     ANIM_CMD(LEAFEON),
     ANIM_CMD(GLACEON),
     ANIM_CMD(SYLVEON),

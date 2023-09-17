@@ -2023,6 +2023,10 @@ Cry_Froslass::
 	.incbin "sound/direct_sound_samples/cries/froslass.bin"
 
 	.align 2
+Cry_Ursaluna::
+	.incbin "sound/direct_sound_samples/cries/ursaluna.bin"
+
+	.align 2
 Cry_Leafeon::
 	.incbin "sound/direct_sound_samples/cries/leafeon.bin"
 
