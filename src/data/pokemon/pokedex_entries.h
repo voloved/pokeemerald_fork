@@ -4896,6 +4896,18 @@ const struct PokedexEntry gPokedexEntries[] =
         .trainerOffset = 7,
     },
 
+    [NATIONAL_DEX_ANNIHILAPE] =
+    {
+        .categoryName = _("Rage Monkey"),
+        .height = 12,
+        .weight = 560,
+        .description = gAnnihilapePokedexText,
+        .pokemonScale = 356,
+        .pokemonOffset = 17,
+        .trainerScale = 256,
+        .trainerOffset = 0,
+    },
+
     [NATIONAL_DEX_LEAFEON] =
     {
         .categoryName = _("Verdant"),

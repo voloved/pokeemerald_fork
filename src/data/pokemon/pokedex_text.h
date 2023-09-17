@@ -2445,6 +2445,12 @@ const u8 gUrsalunaPokedexText[] = _(
     "physique and newfound capacity to\n"
     "manipulate peat at will.");
 
+const u8 gAnnihilapePokedexText[] = _(
+    "When its anger rose beyond a\n"
+    "critical point, this Pokémon gained power\n"
+    "that is unfettered by the limits of\n"
+    "its physical body.");
+
 const u8 gLeafeonPokedexText[] = _(
     "Its cellular composition is closer to\n"
     "that of a plant than an animal. It uses\n"

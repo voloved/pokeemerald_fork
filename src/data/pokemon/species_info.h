@@ -8076,8 +8076,6 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
     [SPECIES_OLD_UNOWN_K] = OLD_UNOWN_SPECIES_INFO,
 
-    [SPECIES_OLD_UNOWN_N] = OLD_UNOWN_SPECIES_INFO,
-
     [SPECIES_TREECKO] =
     {
         .baseHP        = 40,
@@ -12907,6 +12905,31 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
     },
+
+    [SPECIES_ANNIHILAPE] =
+    {
+        .baseHP        = 110,
+        .baseAttack    = 115,
+        .baseDefense   = 80,
+        .baseSpeed     = 90,
+        .baseSpAttack  = 50,
+        .baseSpDefense = 90,
+        .type1 = TYPE_FIGHTING,
+        .type2 = TYPE_GHOST,
+        .catchRate = 45,
+        .expYield = 243,
+        .evYield_Attack = 3,
+        .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20,
+        .friendship = 50,
+        .growthRate = GROWTH_MEDIUM_FAST,
+        .eggGroup1 = EGG_GROUP_FIELD,
+        .eggGroup2 = EGG_GROUP_FIELD,
+        .abilities = {ABILITY_VITAL_SPIRIT, ABILITY_INNER_FOCUS},
+        .bodyColor = BODY_COLOR_GRAY,
+        .noFlip = FALSE,
+    },
+
     [SPECIES_LEAFEON] =
     {
         .baseHP        = 65,

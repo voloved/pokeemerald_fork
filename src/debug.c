@@ -2805,7 +2805,7 @@ static void DebugAction_Give_Pokemon_SelectId(u8 taskId)
         if (gMain.newKeys & DPAD_UP)
         {
             gTasks[taskId].data[3] += sPowersOfTen[gTasks[taskId].data[4]];
-            if (gTasks[taskId].data[3] > SPECIES_URSALUNA && gTasks[taskId].data[3] < SPECIES_TREECKO)
+            if (gTasks[taskId].data[3] > SPECIES_ANNIHILAPE && gTasks[taskId].data[3] < SPECIES_TREECKO)
                 gTasks[taskId].data[3] = SPECIES_TREECKO;
             if (gTasks[taskId].data[3] >= NUM_SPECIES)
                 gTasks[taskId].data[3] = NUM_SPECIES - 1;
@@ -2813,8 +2813,8 @@ static void DebugAction_Give_Pokemon_SelectId(u8 taskId)
         if (gMain.newKeys & DPAD_DOWN)
         {
             gTasks[taskId].data[3] -= sPowersOfTen[gTasks[taskId].data[4]];
-            if (gTasks[taskId].data[3] < SPECIES_TREECKO && gTasks[taskId].data[3] > SPECIES_URSALUNA)
-                gTasks[taskId].data[3] = SPECIES_URSALUNA;
+            if (gTasks[taskId].data[3] < SPECIES_TREECKO && gTasks[taskId].data[3] > SPECIES_ANNIHILAPE)
+                gTasks[taskId].data[3] = SPECIES_ANNIHILAPE;
             if (gTasks[taskId].data[3] < 1)
                 gTasks[taskId].data[3] = 1;
         }
@@ -3577,9 +3577,9 @@ static void DebugAction_Fill_PCBoxes_Slow(u8 taskId)
                     0);
 
             #ifndef POKEMON_EXPANSION
-                if (i < SPECIES_URSALUNA)
+                if (i < SPECIES_ANNIHILAPE)
                     i += 1;
-                else if (i == SPECIES_URSALUNA)
+                else if (i == SPECIES_ANNIHILAPE)
                     i = SPECIES_TREECKO;
                 else if (i < SPECIES_CHIMECHO)
                     i += 1;

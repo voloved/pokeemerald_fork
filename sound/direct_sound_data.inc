@@ -2027,6 +2027,10 @@ Cry_Ursaluna::
 	.incbin "sound/direct_sound_samples/cries/ursaluna.bin"
 
 	.align 2
+Cry_Annihilape::
+	.incbin "sound/direct_sound_samples/cries/annihilape.bin"
+
+	.align 2
 Cry_Leafeon::
 	.incbin "sound/direct_sound_samples/cries/leafeon.bin"
 

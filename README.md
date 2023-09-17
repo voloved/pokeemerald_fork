@@ -10,7 +10,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
 ## v2.2.3
- - Added Roserade, Ambipom, Mismagius, Honchkrow, and Froslass.
+ - Added Roserade, Ambipom, Mismagius, Honchkrow, Froslass, Ursaluna, and Annihilape.
  - Added Energy Ball and Acrobatics as moves.
  - PokéVial can now be used in gyms and Trick House.
  - Toggling running shoes by pressing B can now be turned off.

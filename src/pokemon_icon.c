@@ -7,7 +7,7 @@
 
 #define POKE_ICON_BASE_PAL_TAG 56000
 
-#define INVALID_ICON_SPECIES SPECIES_OLD_UNOWN_N // Oddly specific, used when an icon should be a ?. Any of the 'old unown' would work
+#define INVALID_ICON_SPECIES SPECIES_OLD_UNOWN_I // Oddly specific, used when an icon should be a ?. Any of the 'old unown' would work
 
 struct MonIconSpriteTemplate
 {
@@ -279,7 +279,6 @@ const u8 *const gMonIconTable[] =
     [SPECIES_OLD_UNOWN_C] = gMonIcon_QuestionMark,
     [SPECIES_OLD_UNOWN_I] = gMonIcon_QuestionMark,
     [SPECIES_OLD_UNOWN_K] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_N] = gMonIcon_QuestionMark,
     [SPECIES_TREECKO] = gMonIcon_Treecko,
     [SPECIES_GROVYLE] = gMonIcon_Grovyle,
     [SPECIES_SCEPTILE] = gMonIcon_Sceptile,
@@ -436,6 +435,7 @@ const u8 *const gMonIconTable[] =
     [SPECIES_HONCHKROW]  = gMonIcon_Honchkrow,
     [SPECIES_FROSLASS]   = gMonIcon_Froslass,
     [SPECIES_URSALUNA]   = gMonIcon_Ursaluna,
+    [SPECIES_ANNIHILAPE] = gMonIcon_Annihilape,
     [SPECIES_LEAFEON] = gMonIcon_Leafeon,
     [SPECIES_GLACEON] = gMonIcon_Glaceon,
     [SPECIES_SYLVEON] = gMonIcon_Sylveon,
@@ -727,7 +727,6 @@ const u8 gMonIconPaletteIndices[] =
     [SPECIES_OLD_UNOWN_C] = 0,
     [SPECIES_OLD_UNOWN_I] = 0,
     [SPECIES_OLD_UNOWN_K] = 0,
-    [SPECIES_OLD_UNOWN_N] = 0,
     [SPECIES_TREECKO] = 1,
     [SPECIES_GROVYLE] = 0,
     [SPECIES_SCEPTILE] = 1,
@@ -884,6 +883,7 @@ const u8 gMonIconPaletteIndices[] =
     [SPECIES_HONCHKROW] = 2,
     [SPECIES_FROSLASS] = 0,
     [SPECIES_URSALUNA] = 2,
+    [SPECIES_ANNIHILAPE] = 0,
     [SPECIES_LEAFEON] = 1,
     [SPECIES_GLACEON] = 0,
     [SPECIES_SYLVEON] = 0,

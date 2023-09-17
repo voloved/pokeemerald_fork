@@ -409,6 +409,7 @@ gCryTable::
 	cry Cry_Honchkrow
 	cry Cry_Froslass
 	cry Cry_Ursaluna
+	cry Cry_Annihilape
 	cry Cry_Leafeon
 	cry Cry_Glaceon
 	cry Cry_Sylveon
@@ -825,6 +826,7 @@ gCryTable_Reverse::
 	cry_reverse Cry_Honchkrow
 	cry_reverse Cry_Froslass
 	cry_reverse Cry_Ursaluna
+	cry_reverse Cry_Annihilape
 	cry_reverse Cry_Leafeon
 	cry_reverse Cry_Glaceon
 	cry_reverse Cry_Sylveon
