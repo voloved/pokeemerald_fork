@@ -16,6 +16,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Toggling running shoes by pressing B can now be turned off.
  - Removed Lucky Egg from player's PC.
  - Made Everstone Able to De-evolve Any Non-Basic Pokémon.
+ - Safari Zone Pokémon will run away 20% less often.
  - Fixed save compatibility on using Nature Mints with older save files.
 
 ## v2.2.2

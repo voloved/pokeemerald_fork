@@ -12761,7 +12761,8 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_PRESSURE, ABILITY_NONE},
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-    },    
+    },
+
     [SPECIES_ROSERADE] =
     {
         .baseHP        = 60,
@@ -12786,6 +12787,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = TRUE,
     },
+
     [SPECIES_AMBIPOM] =
     {
         .baseHP        = 75,
@@ -12810,6 +12812,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
     },
+
     [SPECIES_MISMAGIUS] =
     {
         .baseHP        = 60,
@@ -12835,6 +12838,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
     },
+
     [SPECIES_HONCHKROW] =
     {
         .baseHP        = 100,
@@ -12859,6 +12863,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
     },
+
     [SPECIES_FROSLASS] =
     {
         .baseHP        = 70,
@@ -12882,6 +12887,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
     },
+
     [SPECIES_URSALUNA] =
     {
         .baseHP        = 130,
