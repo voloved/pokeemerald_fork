@@ -251,6 +251,11 @@ static const u8 sGreenShardDesc[] = _(
     "ancient item. Can\n"
     "be sold cheaply.");
 
+static const u8 sInfRareCandyDesc[] = _(
+    "Raises a POKéMON\n"
+    "by one level. Has\n"
+    "infinite usages.");
+
 // Vitamins
 static const u8 sHPUpDesc[] = _(
     "Raises the base HP\n"

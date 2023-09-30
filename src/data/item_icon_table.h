@@ -58,7 +58,7 @@ const u32 *const gItemIconTable[ITEMS_COUNT + 1][2] =
     // ????????
     [ITEM_034] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
     [ITEM_035] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
-    [ITEM_036] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
+    [ITEM_INF_RARE_CANDY] = {gItemIcon_RareCandy, gItemIconPalette_YellowShard},
     [ITEM_BOTTLE_CAP_HP] = {gItemIcon_BottleCap, gItemIconPalette_GreenMint},
     [ITEM_BOTTLE_CAP_ATK] = {gItemIcon_BottleCap, gItemIconPalette_RedMint},
     [ITEM_BOTTLE_CAP_DEF] = {gItemIcon_BottleCap, gItemIconPalette_BlueMint},
