@@ -727,7 +727,7 @@ const struct Item gItems[] =
     [ITEM_BOTTLE_CAP_HP] =
     {
         .name = _("CAP: HP"),
-        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .itemId = ITEM_BOTTLE_CAP_HP,
         .price = 5000,
         .holdEffectParam = MAX_PER_STAT_IVS,
         .description = sBottleCapDesc,
@@ -740,7 +740,7 @@ const struct Item gItems[] =
     [ITEM_BOTTLE_CAP_ATK] =
     {
         .name = _("CAP: ATK"),
-        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .itemId = ITEM_BOTTLE_CAP_ATK,
         .price = 5000,
         .holdEffectParam = MAX_PER_STAT_IVS,
         .description = sBottleCapDesc,
@@ -753,7 +753,7 @@ const struct Item gItems[] =
     [ITEM_BOTTLE_CAP_DEF] =
     {
         .name = _("CAP: DEF"),
-        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .itemId = ITEM_BOTTLE_CAP_DEF,
         .price = 5000,
         .holdEffectParam = MAX_PER_STAT_IVS,
         .description = sBottleCapDesc,
@@ -766,7 +766,7 @@ const struct Item gItems[] =
     [ITEM_BOTTLE_CAP_SPEED] =
     {
         .name = _("CAP: SPEED"),
-        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .itemId = ITEM_BOTTLE_CAP_SPEED,
         .price = 5000,
         .holdEffectParam = MAX_PER_STAT_IVS,
         .description = sBottleCapDesc,
@@ -779,7 +779,7 @@ const struct Item gItems[] =
     [ITEM_BOTTLE_CAP_SPATK] =
     {
         .name = _("CAP: SP.ATK"),
-        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .itemId = ITEM_BOTTLE_CAP_SPATK,
         .price = 5000,
         .holdEffectParam = MAX_PER_STAT_IVS,
         .description = sBottleCapDesc,
@@ -792,7 +792,7 @@ const struct Item gItems[] =
     [ITEM_BOTTLE_CAP_SPDEF] =
     {
         .name = _("CAP: SP.DEF"),
-        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .itemId = ITEM_BOTTLE_CAP_SPDEF,
         .price = 5000,
         .holdEffectParam = MAX_PER_STAT_IVS,
         .description = sBottleCapDesc,
@@ -805,7 +805,7 @@ const struct Item gItems[] =
     [ITEM_RUSTY_BOTTLE_CAP] =
     {
         .name = _("RUSTED CAP"),
-        .itemId = ITEM_GOLD_BOTTLE_CAP,
+        .itemId = ITEM_RUSTY_BOTTLE_CAP,
         .price = 10000,
         .holdEffectParam = 0,
         .description = sRustyBottleCapDesc,
