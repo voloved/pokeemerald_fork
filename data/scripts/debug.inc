@@ -55,7 +55,7 @@ Debug_Script_3::
 	end
 
 Debug_Script_4::
-	call EverGrandeCity_HallOfFame_EventScript_ResetEliteFour
+	call EverGrandeCity_HallOfFame_EventScript_SetGameClearFlags
 	end
 
 Debug_Script_5::
