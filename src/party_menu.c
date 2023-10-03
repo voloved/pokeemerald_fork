@@ -1077,7 +1077,9 @@ static void CreatePartyMonSprites(u8 slot)
             CreatePartyMonIconSpriteParameterized(gMultiPartnerParty[actualSlot].species, gMultiPartnerParty[actualSlot].personality, &sPartyMenuBoxes[slot], 0, FALSE);
             CreatePartyMonHeldItemSpriteParameterized(gMultiPartnerParty[actualSlot].species, gMultiPartnerParty[actualSlot].heldItem, &sPartyMenuBoxes[slot]);
             CreatePartyMonPokeballSpriteParameterized(gMultiPartnerParty[actualSlot].species, &sPartyMenuBoxes[slot]);
-            if (gMultiPartnerParty[actualSlot].hp == 0)
+            if (GetMonData(&gPlayerParty[slot], MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE))
+                status =  AILMENT_DED;
+            else if (gMultiPartnerParty[actualSlot].hp == 0)
                 status = AILMENT_FNT;
             else
                 status = GetAilmentFromStatus(gMultiPartnerParty[actualSlot].status);
@@ -1947,7 +1949,8 @@ u8 GetAilmentFromStatus(u32 status)
 u8 GetMonAilment(struct Pokemon *mon)
 {
     u8 ailment;
-
+    if (GetMonData(mon, MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE))
+        return AILMENT_DED;
     if (GetMonData(mon, MON_DATA_HP) == 0)
         return AILMENT_FNT;
     ailment = GetAilmentFromStatus(GetMonData(mon, MON_DATA_STATUS));
@@ -2662,6 +2665,14 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
 
     sPartyMenuInternal->numActions = 0;
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
+
+    if (GetMonData(&mons[slotId], MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE))
+    {
+        if (GetMonData(&mons[1], MON_DATA_SPECIES) != SPECIES_NONE)
+            AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SWITCH);
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_CANCEL1);
+        return;
+    }
 
     // Add field moves to action list
      // If Mon can learn HM02 and action list consists of < 4 moves, add FLY to action list

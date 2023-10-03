@@ -12,6 +12,7 @@
 #define AILMENT_PKRS  6
 #define AILMENT_FNT   7
 #define AILMENT_FSB   8
+#define AILMENT_DED   9
 
 #define TUTOR_MOVE_MEGA_PUNCH      0
 #define TUTOR_MOVE_SWORDS_DANCE    1
