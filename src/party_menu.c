@@ -2658,6 +2658,24 @@ static bool8 CanLearnFlyInParty(void)
     return FALSE;
 }
 
+static u8 SlotToShowFly(void)
+// Returns the slot to display fly in if no one in the party can learn fly. Returns the party size otherwise
+{
+    u8 i;
+    if (CanLearnFlyInParty())
+        return PARTY_SIZE;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (!GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL))
+            break;
+        if (GetMonData(&gPlayerParty[i], MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE))
+            continue;
+        if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
+            return i;
+    }
+    return PARTY_SIZE;
+}
+
 static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
 {
     u8 i, j;
@@ -2677,7 +2695,7 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     // Add field moves to action list
      // If Mon can learn HM02 and action list consists of < 4 moves, add FLY to action list
     if ((CanMonLearnTMHM(&mons[slotId], ITEM_HM02 - ITEM_TM01) || 
-    (slotId == 0 && !CanLearnFlyInParty())) && CheckBagHasItem(ITEM_HM02_FLY, 1)) 
+    (slotId == SlotToShowFly())) && CheckBagHasItem(ITEM_HM02_FLY, 1)) 
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
     // If Mon can learn HM05 and action list consists of < 4 moves, add FLASH to action list
     if (CanMonLearnTMHM(&mons[slotId], ITEM_HM05 - ITEM_TM01) && CheckBagHasItem(ITEM_HM05_FLASH, 1)) 
