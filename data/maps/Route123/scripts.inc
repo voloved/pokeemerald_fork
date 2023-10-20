@@ -13,6 +13,7 @@ Route123_EventScript_GigaDrainGirl::
 	msgbox Route123_Text_LoveGrassMonsHaveAny, MSGBOX_DEFAULT
 	special IsGrassTypeInParty
 	goto_if_eq VAR_RESULT, FALSE, Route123_EventScript_NoGrassMons
+	goto_if_eq VAR_RESULT, 2, Route123_EventScript_DeadGrassMons
 	msgbox Route123_Text_YouLikeGrassMonsTooHaveThis, MSGBOX_DEFAULT
 	giveitem ITEM_TM19
 	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
@@ -22,6 +23,11 @@ Route123_EventScript_GigaDrainGirl::
 	end
 
 Route123_EventScript_NoGrassMons::
+	release
+	end
+
+Route123_EventScript_DeadGrassMons::
+	msgbox Route123_Text_GrassMonIsDead, MSGBOX_DEFAULT
 	release
 	end
 
@@ -180,6 +186,10 @@ Route123_Text_YouLikeGrassMonsTooHaveThis:
 	.string "don't you?\p"
 	.string "I'm so happy, you can have this!\n"
 	.string "It's a token of our friendship.$"
+
+Route123_Text_GrassMonIsDead:
+	.string "WTF! You have a grass POKéMON.\n"
+	.string "Why are they dead?$"
 
 Route123_Text_CheckTreesWithMyGrassMon:
 	.string "I check trees with my GRASS-type\n"
