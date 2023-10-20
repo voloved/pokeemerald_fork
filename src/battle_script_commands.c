@@ -3626,6 +3626,7 @@ static void Cmd_getexp(void)
     u8 holdEffect;
     s32 sentIn;
     u16 *exp = &gBattleStruct->expValue;
+    u16 expMult = VarGet(VAR_EXP_MULT);  // Val = Multiplier; 0 = 1; 1 = 2; 2 = 4; 3 = 0.5; 4 = 0
 
     gBattlerFainted = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
     sentIn = gSentPokesToOpponent[(gBattlerFainted & 2) >> 1];
@@ -3633,7 +3634,8 @@ static void Cmd_getexp(void)
     switch (gBattleScripting.getexpState)
     {
     case 0: // check if should receive exp at all
-        if (gUsingThiefBall == THIEF_BALL_CAUGHT){
+        if (gUsingThiefBall == THIEF_BALL_CAUGHT)
+        {
             gUsingThiefBall = THIEF_BALL_NOT_USING;
             gBattleScripting.getexpState = 6; // goto last case
         }
@@ -3644,7 +3646,7 @@ static void Cmd_getexp(void)
               | BATTLE_TYPE_FRONTIER
               | BATTLE_TYPE_SAFARI
               | BATTLE_TYPE_BATTLE_TOWER
-              | BATTLE_TYPE_EREADER_TRAINER)))
+              | BATTLE_TYPE_EREADER_TRAINER)) || expMult == 4)
         {
             gBattleScripting.getexpState = 6; // goto last case
         }
@@ -3678,7 +3680,7 @@ static void Cmd_getexp(void)
 
             calculatedExp = gSpeciesInfo[gBattleMons[gBattlerFainted].species].expYield * gBattleMons[gBattlerFainted].level / 7;
 
-            switch(VarGet(VAR_EXP_MULT))
+            switch(expMult)
             {
                 case 1:
                     calculatedExp = calculatedExp * 2;
