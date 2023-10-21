@@ -944,3 +944,10 @@ u16 CountPartyAliveNonEggMons(void)
     aliveNonEggMonsCount += CountPartyAliveNonEggMonsExcept(PARTY_SIZE);
     return aliveNonEggMonsCount;
 }
+
+u16 ChooseRandomEggSpecies(void)
+{
+    static const u16 baby_species[] = { SPECIES_WYNAUT, SPECIES_SMOOCHUM, SPECIES_ELEKID, SPECIES_MAGBY };  // Excluding non-rare
+    u16 randomSpeciesidx = Random() % ARRAY_COUNT(baby_species);
+    return baby_species[randomSpeciesidx];
+}
