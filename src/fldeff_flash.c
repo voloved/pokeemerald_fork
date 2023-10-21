@@ -73,7 +73,7 @@ bool8 SetUpFieldMove_Flash(void)
 {
     // In Ruby and Sapphire, Registeel's tomb is opened by using Fly. In Emerald,
     // Flash is used instead.
-    if (ShouldDoBrailleRegisteelEffect())
+    if (ShouldDoBrailleRegisteelEffect(FALSE))
     {
         gSpecialVar_Result = GetCursorSelectionMonId();
         gFieldCallback2 = FieldCallback_PrepareFadeInFromMenu;

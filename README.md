@@ -13,11 +13,19 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Added Roserade, Ambipom, Mismagius, Honchkrow, Froslass, Ursaluna, and Annihilape.
  - Added Energy Ball and Acrobatics as moves.
  - PokéVial can now be used in gyms and Trick House.
+ - PokéVial's usages gets cut to three when playing a Nuzlocke run.
  - Toggling running shoes by pressing B can now be turned off.
  - Removed Lucky Egg from player's PC.
  - Made Everstone Able to De-evolve Any Non-Basic Pokémon.
+ - Dead Pokémon no longer count towards repelling, lottery, nor field moves.
+ - Ditto evolves into Mew with Upgrade. Mew evolves into Mewtwo with Upgrade.
+ - Added items into the PC after becoming champion, including an Inifinite Rare Candy.
  - Safari Zone Pokémon will run away 20% less often.
  - Fixed save compatibility on using Nature Mints with older save files.
+ - If a Pokémon can learn a field move, then it'll be shown as the one performing it rather than the plater.
+ - Flash only displays in party menu for Pokémon that don't know it when in the Registeel cave puzzle.
+ - Bugfix on not showing negative priority moves in move description submenu.
+ - Bugfix on giving Exp. when Exp. multiplier is set to zero and the Exp. Share is on.
 
 ## v2.2.2
  - Added Bottle Caps and [Nature Mints](https://www.pokecommunity.com/showpost.php?p=10245635&postcount=191) (Credit: Ghoulslash)

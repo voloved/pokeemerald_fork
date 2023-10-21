@@ -76,6 +76,7 @@
 #include "naming_screen.h"
 #include "battle_setup.h"
 #include "move_relearner.h"
+#include "braille_puzzles.h"
 
 enum {
     MENU_SUMMARY,
@@ -2676,6 +2677,13 @@ static u8 SlotToShowFly(void)
     return PARTY_SIZE;
 }
 
+static bool8 ShouldDiplayFlash()
+{
+    if (ShouldDoBrailleRegisteelEffect(TRUE))
+        return TRUE;
+    return FALSE;
+}
+
 static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
 {
     u8 i, j;
@@ -2698,7 +2706,7 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     (slotId == SlotToShowFly())) && CheckBagHasItem(ITEM_HM02_FLY, 1)) 
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
     // If Mon can learn HM05 and action list consists of < 4 moves, add FLASH to action list
-    if (CanMonLearnTMHM(&mons[slotId], ITEM_HM05 - ITEM_TM01) && CheckBagHasItem(ITEM_HM05_FLASH, 1)) 
+    if (CanMonLearnTMHM(&mons[slotId], ITEM_HM05 - ITEM_TM01) && CheckBagHasItem(ITEM_HM05_FLASH, 1) && ShouldDiplayFlash()) 
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 1 + MENU_FIELD_MOVES);
 
 

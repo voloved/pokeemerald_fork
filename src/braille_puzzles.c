@@ -218,10 +218,12 @@ static void DoBrailleRegirockEffect(void)
     UnfreezeObjectEvents();
 }
 
-bool8 ShouldDoBrailleRegisteelEffect(void)
+bool8 ShouldDoBrailleRegisteelEffect(bool8 checkToDisplayFlash)
 {
     if (!FlagGet(FLAG_SYS_REGISTEEL_PUZZLE_COMPLETED) && (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ANCIENT_TOMB) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(ANCIENT_TOMB)))
     {
+        if (checkToDisplayFlash)
+            return TRUE;  // Used to showFLASH in the party menu even when a mon does not know it for this room's puzzle
         if (gSaveBlock1Ptr->pos.x == 8 && gSaveBlock1Ptr->pos.y == 25)
         {
             sIsRegisteelPuzzle = TRUE;
