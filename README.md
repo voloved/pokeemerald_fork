@@ -9,21 +9,40 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 
+## v2.2.3
+ - Added Roserade, Ambipom, Mismagius, Honchkrow, Froslass, Ursaluna, and Annihilape.
+ - Added Energy Ball and Acrobatics as moves.
+ - PokéVial can now be used in gyms and Trick House.
+ - PokéVial's usages gets cut to three when playing a Nuzlocke run.
+ - Toggling running shoes by pressing B can now be turned off.
+ - Removed Lucky Egg from player's PC.
+ - Made Everstone Able to De-evolve Any Non-Basic Pokémon.
+ - Dead Pokémon no longer count towards repelling, lottery, nor field moves.
+ - Ditto evolves into Mew with Upgrade. Mew evolves into Mewtwo with Upgrade.
+ - Added items into the PC after becoming champion, including an Inifinite Rare Candy.
+ - Safari Zone Pokémon will run away 20% less often.
+ - Fixed save compatibility on using Nature Mints with older save files.
+ - If a Pokémon can learn a field move, then it'll be shown as the one performing it rather than the plater.
+ - Flash only displays in party menu for Pokémon that don't know it when in the Registeel cave puzzle.
+ - Bugfix on not showing negative priority moves in move description submenu.
+ - Bugfix on giving Exp. when Exp. multiplier is set to zero and the Exp. Share is on.
+
 ## v2.2.2
- - Added Nature Mints and Bottle Caps
+ - Added Bottle Caps and [Nature Mints](https://www.pokecommunity.com/showpost.php?p=10245635&postcount=191) (Credit: Ghoulslash)
    - They can be bought for cheap from Jaime after becoming the champion.
    - Jaime also gifts one Nature Mint after the player wins a badge.
  - [Add Ability to Swap Bikes Whenever](https://github.com/pret/pokeemerald/wiki/Add-Ability-to-Swap-Bikes-Whenever)
  - Ball Does Not Get Thrown When Cycling Unless The Ball Was Not Cycled That Turn.
  - Swapped Turbo and VSync Mapping of Shoulder Buttons in VSync Button Mode.
- - Bug Fix Where Bag Menu Does Not Have A Dot for Each Pouch.
  - Added Ability to Sort Key Items by Type.
  - [Added Ability to Move Held Items.](https://www.pokecommunity.com/showpost.php?p=10517557) [Credit: Zeturic]
  - [Added Mid-Battle Evolutions](https://www.pokecommunity.com/showpost.php?p=10464666) [Credit: CtrlFootPrint]
  - [Increased Money Limit](https://github.com/pret/pokeemerald/wiki/Increase-money-limit) [Credit: DizzyEgg]
  - Now Able to Rematch Gym Leaders by Holding B When Talking After Becoming Champion.
- - Rematching when Holdiong B Causes Trainer to Use the Party they Would if it Were a PokéNav Rematch.
+ - Rematching when Holding B Causes Trainer to Use the Party they Would if it Were a PokéNav Rematch.
  - More clean-up on bike sprites.
+ - Buffed Razor Wind.
+ - Bug Fix Where Bag Menu Does Not Have A Dot for Each Pouch.
  - Bug fix on Indicators Displaying on Enemy Party's Pokémon After Catching.
 
 ## v2.2.1
@@ -153,7 +172,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Mareep is female 75% of the time.
 
 ## v1.4.0
-- Added Weavile, Magnezone, Lickilicky, Rhyperior, Tangrowth, Electivire, Magmortar, Togekiss, Yanmega, Gliscor, Mamoswine, Porygon Z, Gallade, Probopass, Dusknoir
+- Added Weavile, Magnezone, Lickilicky, Rhyperior, Tangrowth, Electivire, Magmortar, Togekiss, Yanmega, Gliscor, Mamoswine, Porygon Z, Gallade, Probopass, and Dusknoir
 - [Added Difficulty Mode](https://github.com/pret/pokeemerald/wiki/Add-Difficulty-Mode)
 - [Infinite TM usage](https://github.com/pret/pokeemerald/wiki/Infinite-TM-usage) [Credit: ExpoSeed]
 - [Item Automatically Goes to PC if Bag is Full](https://github.com/pret/pokeemerald/wiki/Item-Automatically-Goes-to-PC-if-Bag-is-Full)

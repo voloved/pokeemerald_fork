@@ -2410,6 +2410,47 @@ const u8 gDusknoirPokedexText[] = _(
     "it takes lost spirits into its pliant body\n"
     "and guides them home.");
 
+const u8 gRoseradePokedexText[] = _(
+    "Its sweet aroma attracts prey.\n"
+    "With the movements of a dancer,\n"
+    "it strikes with whips that are densely\n"
+    "lined with poison thorns.");
+
+const u8 gAmbipomPokedexText[] = _(
+    "They live on large trees. Split into two,\n"
+    "the tails are so adept at handling and\n"
+    "doing things, Ambipom rarely uses\n"
+    "its hands now.");
+
+const u8 gMismagiusPokedexText[] = _(
+    "Its cries sound like incantations.\n"
+    "Those hearing it are tormented by\n"
+    "headaches and hallucinations.\n"
+    "It appears where you least expect it.");
+
+const u8 gHonchkrowPokedexText[] = _(
+    "Becoming active at night, it is known\n"
+    "to swarm with numerous Murkrow in tow.\n"
+    "It is said that it never forgives the\n"
+    "mistakes of its cronies.");
+
+const u8 gFroslassPokedexText[] = _(
+    "When it finds people or Pokémon it likes,\n"
+    "it freezes them and takes them to its\n"
+    "chilly den, where they become its\n"
+    "decorations.");
+
+const u8 gUrsalunaPokedexText[] = _(
+    "Swampy terrain gives Ursaluna its burly\n"
+    "physique and newfound capacity to\n"
+    "manipulate peat at will.");
+
+const u8 gAnnihilapePokedexText[] = _(
+    "When its anger rose beyond a\n"
+    "critical point, this Pokémon gained power\n"
+    "that is unfettered by the limits of\n"
+    "its physical body.");
+
 const u8 gLeafeonPokedexText[] = _(
     "Its cellular composition is closer to\n"
     "that of a plant than an animal. It uses\n"

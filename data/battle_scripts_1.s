@@ -235,6 +235,7 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectCamouflage             @ EFFECT_CAMOUFLAGE
 	.4byte BattleScript_EffectOHKO                   @ EFFECT_DEATH_MOVE
 	.4byte BattleScript_EffectChillOWisp             @ EFFECT_CHILL_O_WISP
+	.4byte BattleScript_EffectHit                    @ EFFECT_ACROBATICS
 
 BattleScript_EffectHit::
 	jumpifnotmove MOVE_SURF, BattleScript_HitFromAtkCanceler
@@ -791,6 +792,14 @@ BattleScript_EffectRazorWind::
 	jumpifword CMP_COMMON_BITS, gHitMarker, HITMARKER_NO_ATTACKSTRING, BattleScript_TwoTurnMovesSecondTurn
 	setbyte sTWOTURN_STRINGID, B_MSG_TURN1_RAZOR_WIND
 	call BattleScriptFirstChargingTurn
+	setstatchanger STAT_SPATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_RazorWindEnd
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_INCREASE, BattleScript_RazorWindEnd
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatUpStringIds
+	waitmessage B_WAIT_TIME_LONG
+BattleScript_RazorWindEnd::	
 	goto BattleScript_MoveEnd
 
 BattleScript_TwoTurnMovesSecondTurn::

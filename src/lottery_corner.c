@@ -61,8 +61,9 @@ void PickLotteryCornerTicket(void)
 
         if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
         {
-            // do not calculate ticket values for eggs.
-            if (!GetMonData(mon, MON_DATA_IS_EGG))
+            // do not calculate ticket values for eggs or dead.
+            if (!GetMonData(mon, MON_DATA_IS_EGG) &&
+                !(GetMonData(&gPlayerParty[i], MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE)))
             {
                 u32 otId = GetMonData(mon, MON_DATA_OT_ID);
                 u8 numMatchingDigits = GetMatchingDigits(gSpecialVar_Result, otId);

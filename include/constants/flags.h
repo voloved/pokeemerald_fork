@@ -911,7 +911,7 @@
 #define FLAG_HIDE_BATTLE_TOWER_MULTI_BATTLE_PARTNER_ALT_2           0x361
 #define FLAG_HIDE_PETALBURG_GYM_WALLY                               0x362
 #define FLAG_UNKNOWN_0x363                                          0x363 // Set, however has no purpose.
-#define FLAG_HIDE_LITTLEROOT_TOWN_FAT_MAN                           0x364
+#define FLAG_HIDE_LITTLEROOT_TOWN_JAIME                             0x364
 #define FLAG_HIDE_SLATEPORT_CITY_STERNS_SHIPYARD_MR_BRINEY          0x365
 #define FLAG_HIDE_LANETTES_HOUSE_LANETTE                            0x366
 #define FLAG_HIDE_FALLORBOR_POKEMON_CENTER_LANETTE                  0x367
@@ -1225,7 +1225,7 @@
 #define FLAG_MISSINGNO                                              0x498
 #define FLAG_SKIP_INTRO                                             0x499
 #define FLAG_NUZLOCKE_LOST                                          0x49A
-#define FLAG_UNUSED_0x49B                                           0x49B // Unused Flag
+#define FLAG_ALLOW_RUNNING_TOGGLE                                   0x49B
 #define FLAG_GRINDRUN                                               0x49C
 #define FLAG_NO_LOW_HEALTH_BEEP                                     0x49D
 #define FLAG_NUZLOCKE_NO_DUPES_CLAUSE                               0x49E

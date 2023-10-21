@@ -1068,6 +1068,10 @@ static const union AnimCmd sSpriteAnim_StatusFrostbite[] = {
     ANIMCMD_FRAME(28, 0, FALSE, FALSE),
     ANIMCMD_END
 };
+static const union AnimCmd sSpriteAnim_StatusDead[] = {
+    ANIMCMD_FRAME(32, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
 static const union AnimCmd *const sSpriteAnimTable_StatusCondition[] = {
     sSpriteAnim_StatusPoison,
     sSpriteAnim_StatusParalyzed,
@@ -1077,11 +1081,12 @@ static const union AnimCmd *const sSpriteAnimTable_StatusCondition[] = {
     sSpriteAnim_StatusPokerus,
     sSpriteAnim_StatusFaint,
     sSpriteAnim_StatusFrostbite,
+    sSpriteAnim_StatusDead,
 };
 static const struct CompressedSpriteSheet sStatusIconsSpriteSheet =
 {
     .data = gStatusGfx_Icons,
-    .size = 0x400,
+    .size = 0x480,
     .tag = TAG_MON_STATUS
 };
 static const struct CompressedSpritePalette sStatusIconsSpritePalette =
@@ -1438,7 +1443,7 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
         if (sMonSummaryScreen->monList.mons == gPlayerParty || sMonSummaryScreen->mode == SUMMARY_MODE_BOX || sMonSummaryScreen->handleDeoxys == TRUE)
         {
             sum->nature = GetNature(mon, FALSE);
-            sum->hiddenNature = GetMonData(mon, MON_DATA_HIDDEN_NATURE);
+            sum->hiddenNature = SanitizeHiddenNature(GetMonData(mon, MON_DATA_HIDDEN_NATURE));
             sum->currentHP = GetMonData(mon, MON_DATA_HP);
             sum->maxHP = GetMonData(mon, MON_DATA_MAX_HP);
             sum->atk = GetMonData(mon, MON_DATA_ATK);
@@ -1450,7 +1455,7 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
         else
         {
             sum->nature = GetNature(mon, FALSE);
-            sum->hiddenNature = GetMonData(mon, MON_DATA_HIDDEN_NATURE);
+            sum->hiddenNature = SanitizeHiddenNature(GetMonData(mon, MON_DATA_HIDDEN_NATURE));
             sum->currentHP = GetMonData(mon, MON_DATA_HP);
             sum->maxHP = GetMonData(mon, MON_DATA_MAX_HP);
             sum->atk = GetMonData(mon, MON_DATA_ATK2);

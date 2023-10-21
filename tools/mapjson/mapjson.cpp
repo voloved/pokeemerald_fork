@@ -117,7 +117,7 @@ string generate_map_header_text(Json map_data, Json layouts_data, string version
              << "allow_running=" << map_data["allow_running"].bool_value() << ", "
              << "show_map_name=" << map_data["show_map_name"].bool_value() << ", "
              << "allow_pokevial=" << map_data["allow_pokevial"].bool_value() << ", "
-             << "allow_rematches_after_champion=" << map_data["allow_rematches_after_champion"].bool_value() << "\n";
+             << "allow_rematches_before_champion=" << map_data["allow_rematches_before_champion"].bool_value() << "\n";
 
      text << "\t.byte " << map_data["battle_scene"].string_value() << "\n\n";
 

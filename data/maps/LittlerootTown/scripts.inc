@@ -165,7 +165,7 @@ LittlerootTown_EventScript_GoInsideWithMom::
 	hideobjectat OBJ_EVENT_ID_PLAYER, 0
 	closedoor VAR_0x8004, VAR_0x8005
 	waitdooranim
-	clearflag FLAG_HIDE_LITTLEROOT_TOWN_FAT_MAN
+	clearflag FLAG_HIDE_LITTLEROOT_TOWN_JAIME
 	clearflag FLAG_HIDE_MAP_NAME_POPUP
 	return
 
@@ -247,17 +247,17 @@ LittlerootTown_EventScript_SetRivalBirchPosForDexUpgradeFemale::
 	setobjectxy LOCALID_BIRCH, 14, 10
 	end
 
-LittlerootTown_EventScript_FatMan::
-	goto_if_set FLAG_IS_CHAMPION, LittlerootTown_EventScript_FatMan_EliteFourWon
+LittlerootTown_EventScript_Jaime::
+	goto_if_set FLAG_IS_CHAMPION, LittlerootTown_EventScript_Jaime_EliteFourWon
 	callnative CanGetNatureMintFromJaime
-	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_FatManGiveMints
+	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_JaimeGiveMints
 	msgbox LittlerootTown_Text_HeyJaime, MSGBOX_NPC
 	end
 
-LittlerootTown_EventScript_FatManGiveMints::
-	lock
+LittlerootTown_EventScript_JaimeGiveMints::
+	lockall
 	applymovement LOCALID_JAIME, Common_Movement_FacePlayer
-	goto_if_set FLAG_GOT_MINT_FROM_JAIME, LittlerootTown_EventScript_FatManGiveMintsNotFirstTime
+	goto_if_set FLAG_GOT_MINT_FROM_JAIME, LittlerootTown_EventScript_JaimeGiveMintsNotFirstTime
 	waitmovement 0
 	setflag FLAG_GOT_MINT_FROM_JAIME
 	playse SE_PIN
@@ -265,7 +265,7 @@ LittlerootTown_EventScript_FatManGiveMints::
 	waitmovement 0
 	msgbox LittlerootTown_Text_JaimeFirstMints, MSGBOX_DEFAULT
 	closemessage
-LittlerootTown_EventScript_FatManGiveMintsNotFirstTime::
+LittlerootTown_EventScript_JaimeGiveMintsNotFirstTime::
 	msgbox LittlerootTown_Text_JaimeHasMints, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, LittlerootTown_EventScript_MintEnd
 	message LittlerootTown_Text_JaimeWhichMint
@@ -364,15 +364,17 @@ LittlerootTown_EventScript_GiveTimid::
 	goto LittlerootTown_EventScript_MintGiveEnd
 LittlerootTown_EventScript_MintGiveEnd::
 	addvar VAR_JAIME_MINTS_GIVEN, 1
+	callnative CanGetNatureMintFromJaime
+	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_JaimeGiveMintsNotFirstTime
 LittlerootTown_EventScript_MintEnd::
 	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_DEFAULT
 	release
 	end
 
-LittlerootTown_EventScript_FatMan_EliteFourWon::
-	lock
+LittlerootTown_EventScript_Jaime_EliteFourWon::
+	lockall
 	applymovement LOCALID_JAIME, Common_Movement_FacePlayer
-	goto_if_set FLAG_GOT_MINT_FROM_JAIME, LittlerootTown_EventScript_FatMan_EliteFourNotFirstTime
+	goto_if_set FLAG_GOT_MINT_FROM_JAIME, LittlerootTown_EventScript_Jaime_EliteFourNotFirstTime
 	waitmovement 0
 	setflag FLAG_GOT_MINT_FROM_JAIME
 	playse SE_PIN
@@ -380,17 +382,17 @@ LittlerootTown_EventScript_FatMan_EliteFourWon::
 	waitmovement 0
 	msgbox LittlerootTown_Text_JaimeSellingFirstMints, MSGBOX_DEFAULT
 	closemessage
-LittlerootTown_EventScript_FatMan_EliteFourNotFirstTime:
+LittlerootTown_EventScript_Jaime_EliteFourNotFirstTime:
 	msgbox LittlerootTown_Text_JaimeSelling, MSGBOX_DEFAULT
 	setflag FLAG_TEMP_MEAN_ZIGZAGOON
-	pokemart LittlerootTown_EventScript_FatMan_Vitamins
+	pokemart LittlerootTown_EventScript_Jaime_Vitamins
 	clearflag FLAG_TEMP_MEAN_ZIGZAGOON
 	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_DEFAULT
 	release
 	end
 
 	.align 2
-LittlerootTown_EventScript_FatMan_Vitamins:
+LittlerootTown_EventScript_Jaime_Vitamins:
 	.2byte ITEM_PROTEIN
 	.2byte ITEM_CALCIUM
 	.2byte ITEM_IRON

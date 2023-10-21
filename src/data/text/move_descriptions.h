@@ -50,8 +50,8 @@ static const u8 sGuillotineDescription[] = _(
     "that may cause fainting.");
 
 static const u8 sRazorWindDescription[] = _(
-    "A 2-turn move that strikes\n"
-    "the foe on the 2nd turn.");
+    "A 2-turn move that raises\n"
+    "ATTACK before striking.");
 
 static const u8 sSwordsDanceDescription[] = _(
     "A fighting dance that\n"
@@ -1445,6 +1445,14 @@ static const u8 sChillOWispDescription[] = _(
     "Inflicts a frostbite on the\n"
     "foe with intense frost.");
 
+static const u8 sEnergyBallDescription[] = _(
+    "Draws power from nature to\n"
+    "attack. May lower Sp. Def.");
+
+static const u8 sAcrobaticsDescription[] = _(
+    "Does double damage if the\n"
+    "user has no item.");
+
 // MOVE_NONE is ignored in this table. Make sure to always subtract 1 before getting the right pointer.
 const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
 {
@@ -1809,4 +1817,6 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_FAIRY_WIND - 1] = sFairyWindDescription,
     [MOVE_DEATH_MOVE - 1] = sDeathMoveDescription,
     [MOVE_CHILL_O_WISP - 1] = sChillOWispDescription,
+    [MOVE_ENERGY_BALL - 1] = sEnergyBallDescription,
+    [MOVE_ACROBATICS - 1] = sAcrobaticsDescription,
 };

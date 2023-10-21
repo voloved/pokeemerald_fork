@@ -21,6 +21,7 @@ void ReshowPlayerPC(u8 taskId);
 void CB2_PlayerPCExitBagMenu(void);
 void Mailbox_ReturnToMailListAfterDeposit(void);
 void NewGameInitPCItems(void);
+void PostGameInitPCItems(void);
 
 
 #endif //GUARD_PLAYER_PC_H

@@ -25,17 +25,16 @@ EventScript_TryDoNormalTrainerBattleCont::
 EventScript_NoNormalTrainerBattleCheckRematch::
 	callnative IsRematchAllowed
 	compare VAR_RESULT, TRUE
-	goto_if_ne EventScript_NoNormalTrainerBattle
+	goto_if_ne EventScript_NoRematchTrainerBattle
 	checkbuttonheld B_BUTTON
-	goto_if_ne VAR_RESULT, TRUE, EventScript_NoNormalTrainerBattle
+	goto_if_ne VAR_RESULT, TRUE, EventScript_NoRematchTrainerBattle
 	msgbox TrainerBattle_Text_WouldYouLikeToRematch, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, EventScript_TryDoNormalTrainerBattleRematch
-EventScript_NoNormalTrainerBattle::
 	gotopostbattlescript
 
 EventScript_TryDoNormalTrainerBattleRematch::
 	setandcheckrematchable
-	goto_if_eq VAR_RESULT, TRUE, EventScript_NoNormalTrainerBattle
+	goto_if_eq VAR_RESULT, TRUE, EventScript_NoRematchTrainerBattle
 	goto EventScript_TryDoNormalTrainerBattleCont
 
 EventScript_TryDoDoubleTrainerBattle::
@@ -61,17 +60,16 @@ EventScript_NotEnoughMonsForDoubleBattle::
 EventScript_NoDoubleTrainerBattleCheckRematch::
 	callnative IsRematchAllowed
 	compare VAR_RESULT, TRUE
-	goto_if_ne EventScript_NoDoubleTrainerBattle
+	goto_if_ne EventScript_NoDoubleRematchTrainerBattle
 	checkbuttonheld B_BUTTON
-	goto_if_ne VAR_RESULT, TRUE, EventScript_NoDoubleTrainerBattle
+	goto_if_ne VAR_RESULT, TRUE, EventScript_NoDoubleRematchTrainerBattle
 	msgbox TrainerBattle_Text_WouldYouLikeToRematchUs, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, EventScript_TryDoDoubleTrainerBattleRematch
-EventScript_NoDoubleTrainerBattle::
 	gotopostbattlescript
 
 EventScript_TryDoDoubleTrainerBattleRematch::
 	setandcheckrematchable
-	goto_if_eq VAR_RESULT, TRUE, EventScript_NoDoubleTrainerBattle
+	goto_if_eq VAR_RESULT, TRUE, EventScript_NoDoubleRematchTrainerBattle
 	goto EventScript_TryDoDoubleTrainerBattleCont
 
 EventScript_DoNoIntroTrainerBattle::

@@ -4824,6 +4824,90 @@ const struct PokedexEntry gPokedexEntries[] =
         .trainerOffset = 1,
     },
 
+    [NATIONAL_DEX_ROSERADE] =
+    {
+        .categoryName = _("Bouquet"),
+        .height = 9,
+        .weight = 145,
+        .description = gRoseradePokedexText,
+        .pokemonScale = 338,
+        .pokemonOffset = 10,
+        .trainerScale = 256,
+        .trainerOffset = 0,
+    },
+
+    [NATIONAL_DEX_AMBIPOM] =
+    {
+        .categoryName = _("Long Tail"),
+        .height = 12,
+        .weight = 203,
+        .description = gAmbipomPokedexText,
+        .pokemonScale = 282,
+        .pokemonOffset = 3,
+        .trainerScale = 256,
+        .trainerOffset = 0,
+    },
+
+    [NATIONAL_DEX_MISMAGIUS] =
+    {
+        .categoryName = _("Magical"),
+        .height = 9,
+        .weight = 44,
+        .description = gMismagiusPokedexText,
+        .pokemonScale = 338,
+        .pokemonOffset = 8,
+        .trainerScale = 256,
+        .trainerOffset = 0,
+    },
+
+    [NATIONAL_DEX_HONCHKROW] =
+    {
+        .categoryName = _("Big Boss"),
+        .height = 9,
+        .weight = 273,
+        .description = gHonchkrowPokedexText,
+        .pokemonScale = 338,
+        .pokemonOffset = 8,
+        .trainerScale = 256,
+        .trainerOffset = 0,
+    },
+
+    [NATIONAL_DEX_FROSLASS] =
+    {
+        .categoryName = _("Snow Land"),
+        .height = 13,
+        .weight = 266,
+        .description = gFroslassPokedexText,
+        .pokemonScale = 272,
+        .pokemonOffset = 3,
+        .trainerScale = 256,
+        .trainerOffset = 0,
+    },
+
+    [NATIONAL_DEX_URSALUNA] =
+    {
+        .categoryName = _("Peat"),
+        .height = 24,
+        .weight = 2900,
+        .description = gUrsalunaPokedexText,
+        .pokemonScale = 256,
+        .pokemonOffset = 3,
+        .trainerScale = 369,
+        .trainerOffset = 7,
+    },
+
+    [NATIONAL_DEX_ANNIHILAPE] =
+    {
+        .categoryName = _("Rage Monkey"),
+        .height = 12,
+        .weight = 560,
+        .description = gAnnihilapePokedexText,
+        .pokemonScale = 356,
+        .pokemonOffset = 17,
+        .trainerScale = 256,
+        .trainerOffset = 0,
+    },
+
     [NATIONAL_DEX_LEAFEON] =
     {
         .categoryName = _("Verdant"),

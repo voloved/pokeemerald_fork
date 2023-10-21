@@ -307,7 +307,7 @@ static void HandleInputChooseAction(void)
     }
 
     if(sAckBallUseBtn){
-        if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_RIGHT)))
+        if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_RIGHT)))
         {
             bool8 sameBall = FALSE;
             u16 nextBall = GetNextBall(gBattleStruct->ballToDisplay);
@@ -320,7 +320,7 @@ static void HandleInputChooseAction(void)
             SwapBallToDisplay(sameBall);
             PlaySE(SE_SELECT);
         }
-        else if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT)))
+        else if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_LEFT)))
         {
             bool8 sameBall = FALSE;
             u16 prevBall = GetPrevBall(gBattleStruct->ballToDisplay);
@@ -1724,7 +1724,7 @@ static void MoveSelectionDisplayMoveDescription(void)
     u16 move = moveInfo->moves[gMoveSelectionCursor[gActiveBattler]];
     u16 pwr = gBattleMoves[move].power;
     u16 acc = gBattleMoves[move].accuracy;
-    u16 pri = gBattleMoves[move].priority;
+    s16 pri = gBattleMoves[move].priority;
     u8 pwr_num[3], acc_num[3], pri_num[3], i;
     u8 pwr_desc[7] = _("PWR: ");
     u8 acc_desc[7] = _("ACC: ");
@@ -1744,7 +1744,7 @@ static void MoveSelectionDisplayMoveDescription(void)
         StringCopy(acc_num, gText_BattleSwitchWhich5);
     else
         ConvertIntToDecimalStringN(acc_num, acc, STR_CONV_MODE_LEFT_ALIGN, 3);
-    ConvertIntToDecimalStringN(pri_num, pri, STR_CONV_MODE_LEFT_ALIGN, 3);
+    ConvertIntToDecimalStringN(pri_num, pri, STR_CONV_MODE_LEFT_ALIGN, 2);
     StringCopy(gDisplayedStringBattle, pwr_start);
     StringAppend(gDisplayedStringBattle, pwr_desc);
     StringAppend(gDisplayedStringBattle, pwr_num);

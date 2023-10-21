@@ -173,7 +173,8 @@
 #define MON_FEMALE     0xFE
 #define MON_GENDERLESS 0xFF
 
-#define HIDDEN_NATURE_NONE      26  // 25 natures. not 0xFF to conserve bits
+#define HIDDEN_NATURE_HARDY     NUM_NATURES  // Will likely never be used since there are no hardy nature mints.
+#define HIDDEN_NATURE_NONE      NUM_NATURES + 1
 
 // Constants for AdjustFriendship
 #define FRIENDSHIP_EVENT_GROW_LEVEL       0
@@ -254,7 +255,6 @@
 #define EVO_BEAUTY           15 // Pokémon levels up with beauty ≥ specified value
 
 #define EVOS_PER_MON 8
-#define NUM_EEVEELUTIONS EVOS_PER_MON
 
 // Evolution 'modes,' for GetEvolutionTargetSpecies
 #define EVO_MODE_NORMAL     0

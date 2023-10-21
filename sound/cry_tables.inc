@@ -403,6 +403,13 @@ gCryTable::
 	cry Cry_Gallade
 	cry Cry_Probopass
 	cry Cry_Dusknoir
+	cry Cry_Roserade
+	cry Cry_Ambipom
+	cry Cry_Mismagius
+	cry Cry_Honchkrow
+	cry Cry_Froslass
+	cry Cry_Ursaluna
+	cry Cry_Annihilape
 	cry Cry_Leafeon
 	cry Cry_Glaceon
 	cry Cry_Sylveon
@@ -813,6 +820,13 @@ gCryTable_Reverse::
 	cry_reverse Cry_Gallade
 	cry_reverse Cry_Probopass
 	cry_reverse Cry_Dusknoir
+	cry_reverse Cry_Roserade
+	cry_reverse Cry_Ambipom
+	cry_reverse Cry_Mismagius
+	cry_reverse Cry_Honchkrow
+	cry_reverse Cry_Froslass
+	cry_reverse Cry_Ursaluna
+	cry_reverse Cry_Annihilape
 	cry_reverse Cry_Leafeon
 	cry_reverse Cry_Glaceon
 	cry_reverse Cry_Sylveon

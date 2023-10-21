@@ -7,7 +7,7 @@
 
 #define POKE_ICON_BASE_PAL_TAG 56000
 
-#define INVALID_ICON_SPECIES SPECIES_OLD_UNOWN_N // Oddly specific, used when an icon should be a ?. Any of the 'old unown' would work
+#define INVALID_ICON_SPECIES SPECIES_OLD_UNOWN_I // Oddly specific, used when an icon should be a ?. Any of the 'old unown' would work
 
 struct MonIconSpriteTemplate
 {
@@ -279,13 +279,6 @@ const u8 *const gMonIconTable[] =
     [SPECIES_OLD_UNOWN_C] = gMonIcon_QuestionMark,
     [SPECIES_OLD_UNOWN_I] = gMonIcon_QuestionMark,
     [SPECIES_OLD_UNOWN_K] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_N] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_U] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_V] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_W] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_X] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_Y] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_Z] = gMonIcon_QuestionMark,
     [SPECIES_TREECKO] = gMonIcon_Treecko,
     [SPECIES_GROVYLE] = gMonIcon_Grovyle,
     [SPECIES_SCEPTILE] = gMonIcon_Sceptile,
@@ -436,6 +429,13 @@ const u8 *const gMonIconTable[] =
     [SPECIES_GALLADE] = gMonIcon_Gallade,
     [SPECIES_PROBOPASS] = gMonIcon_Probopass,
     [SPECIES_DUSKNOIR] = gMonIcon_Dusknoir,
+    [SPECIES_ROSERADE]   = gMonIcon_Roserade,
+    [SPECIES_AMBIPOM]    = gMonIcon_Ambipom,
+    [SPECIES_MISMAGIUS]  = gMonIcon_Mismagius,
+    [SPECIES_HONCHKROW]  = gMonIcon_Honchkrow,
+    [SPECIES_FROSLASS]   = gMonIcon_Froslass,
+    [SPECIES_URSALUNA]   = gMonIcon_Ursaluna,
+    [SPECIES_ANNIHILAPE] = gMonIcon_Annihilape,
     [SPECIES_LEAFEON] = gMonIcon_Leafeon,
     [SPECIES_GLACEON] = gMonIcon_Glaceon,
     [SPECIES_SYLVEON] = gMonIcon_Sylveon,
@@ -727,13 +727,6 @@ const u8 gMonIconPaletteIndices[] =
     [SPECIES_OLD_UNOWN_C] = 0,
     [SPECIES_OLD_UNOWN_I] = 0,
     [SPECIES_OLD_UNOWN_K] = 0,
-    [SPECIES_OLD_UNOWN_N] = 0,
-    [SPECIES_OLD_UNOWN_U] = 0,
-    [SPECIES_OLD_UNOWN_V] = 0,
-    [SPECIES_OLD_UNOWN_W] = 0,
-    [SPECIES_OLD_UNOWN_X] = 0,
-    [SPECIES_OLD_UNOWN_Y] = 0,
-    [SPECIES_OLD_UNOWN_Z] = 0,
     [SPECIES_TREECKO] = 1,
     [SPECIES_GROVYLE] = 0,
     [SPECIES_SCEPTILE] = 1,
@@ -884,6 +877,13 @@ const u8 gMonIconPaletteIndices[] =
     [SPECIES_GALLADE] = 1,
     [SPECIES_PROBOPASS] = 0,
     [SPECIES_DUSKNOIR] = 2,
+    [SPECIES_ROSERADE] = 0,
+    [SPECIES_AMBIPOM] = 2,
+    [SPECIES_MISMAGIUS] = 2,
+    [SPECIES_HONCHKROW] = 2,
+    [SPECIES_FROSLASS] = 0,
+    [SPECIES_URSALUNA] = 2,
+    [SPECIES_ANNIHILAPE] = 0,
     [SPECIES_LEAFEON] = 1,
     [SPECIES_GLACEON] = 0,
     [SPECIES_SYLVEON] = 0,

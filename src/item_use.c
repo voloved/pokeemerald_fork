@@ -1219,9 +1219,14 @@ static const u8 sText_PokeVial_Failure[] = _("PokéVial is drained.\nHeal at a P
 void ItemUseOutOfBattle_PokeVial(u8 taskId)
 {
     const u8 *Text_PokeVial_Success = NULL;
+    s16 vialUsagesLeft;
     u16 vialUsages = VarGet(VAR_POKEVIAL_USAGES);
     u16 vialUsagesMax = ItemId_GetHoldEffectParam(ITEM_POKEVIAL);
-    u16 vialUsagesLeft = vialUsagesMax - vialUsages;
+    if (FlagGet(FLAG_NUZLOCKE)) // Cut usages by half when using Nuzlocke challenge
+        vialUsagesMax = DIV_ROUND_UP(vialUsagesMax, 2);
+    vialUsagesLeft = vialUsagesMax - vialUsages;
+    if (vialUsagesLeft < 0)
+        vialUsagesLeft = 0;
     if(gMapHeader.allowPokevial == 0)
         DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
     else if (vialUsagesLeft == 0){

@@ -25,7 +25,6 @@
 #include "battle_setup.h"
 
 extern const struct Evolution gEvolutionTable[][EVOS_PER_MON];
-extern const u16 gEeveelutions[NUM_EEVEELUTIONS];
 
 static void ClearDaycareMonMail(struct DaycareMail *mail);
 static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *daycare);
@@ -393,8 +392,8 @@ static u16 GetEggSpecies(u16 species)
     if (species == SPECIES_EEVEE)
         return species;
     
-    for (i = 0; i < ARRAY_COUNT(gEeveelutions); i++){
-        if (species == gEeveelutions[i])
+    for (i = 0; i < EVOS_PER_MON; i++){
+        if (gEvolutionTable[SPECIES_EEVEE][i].targetSpecies == species)
                 return SPECIES_EEVEE;
     }
 

@@ -4408,7 +4408,7 @@ static void Task_BeginBattleEvolutionScene(u8 taskId)
         battlerPosition = gTasks[taskId].tBattlerPosition;
         SpeciesToEvolveInto = gTasks[taskId].tSpeciesToEvolveInto;
         DestroyTask(taskId);
-        EvolutionScene(&gPlayerParty[battlerPosition], SpeciesToEvolveInto, TRUE, battlerPosition);
+        EvolutionScene(&gPlayerParty[battlerPosition], SpeciesToEvolveInto, TRUE, battlerPosition, FALSE);
     }
 }
 
@@ -5568,7 +5568,7 @@ static void TryEvolvePokemon(void)
                 {
                     FreeAllWindowBuffers();
                     gBattleMainFunc = WaitForEvoSceneToFinish;
-                    EvolutionScene(&gPlayerParty[i], species, TRUE, i);
+                    EvolutionScene(&gPlayerParty[i], species, TRUE, i, FALSE);
                     return;
                 }
             }

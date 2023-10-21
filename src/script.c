@@ -480,10 +480,10 @@ void InitRamScript_NoObjectEvent(u8 *script, u16 scriptSize)
 
 void IsRematchAllowed(void)
 {
-    if (FlagGet(FLAG_IS_CHAMPION) && gMapHeader.allowRematchesAfterChampion) // allowRematchesAfterChampion does not include Trick House and Battle Frontier
+    if (FlagGet(FLAG_IS_CHAMPION) && gMapHeader.allowPokevial) // allowPokevial does not include the Battle Frontier
     {
         gSpecialVar_Result = TRUE;
         return;
     }
-    gSpecialVar_Result = gMapHeader.allowPokevial; // allowPokevial does not include Trick House, Battle Frontier, and Gyms
+    gSpecialVar_Result = gMapHeader.allowRematchesBeforeChampion; // allowRematchesBeforeChampion does not include Trick House, Battle Frontier, and Gyms
 }

@@ -1197,6 +1197,7 @@ void IsGrassTypeInParty(void)
     u8 i;
     u16 species;
     struct Pokemon *pokemon;
+    bool8 hasGrassType = FALSE;
     for (i = 0; i < PARTY_SIZE; i++)
     {
         pokemon = &gPlayerParty[i];
@@ -1205,12 +1206,16 @@ void IsGrassTypeInParty(void)
             species = GetMonData(pokemon, MON_DATA_SPECIES);
             if (gSpeciesInfo[species].type1 == TYPE_GRASS || gSpeciesInfo[species].type2 == TYPE_GRASS)
             {
-                gSpecialVar_Result = TRUE;
-                return;
+                hasGrassType = TRUE;
+                if (GetMonData(pokemon, MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE))
+                {
+                    gSpecialVar_Result = 2;
+                    return;
+                }
             }
         }
     }
-    gSpecialVar_Result = FALSE;
+    gSpecialVar_Result = hasGrassType;
 }
 
 void SpawnCameraObject(void)

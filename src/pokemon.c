@@ -353,13 +353,6 @@ static const u16 sSpeciesToHoennPokedexNum[NUM_SPECIES - 1] =
     SPECIES_TO_HOENN(OLD_UNOWN_C),
     SPECIES_TO_HOENN(OLD_UNOWN_I),
     SPECIES_TO_HOENN(OLD_UNOWN_K),
-    SPECIES_TO_HOENN(OLD_UNOWN_N),
-    SPECIES_TO_HOENN(OLD_UNOWN_U),
-    SPECIES_TO_HOENN(OLD_UNOWN_V),
-    SPECIES_TO_HOENN(OLD_UNOWN_W),
-    SPECIES_TO_HOENN(OLD_UNOWN_X),
-    SPECIES_TO_HOENN(OLD_UNOWN_Y),
-    SPECIES_TO_HOENN(OLD_UNOWN_Z),
     SPECIES_TO_HOENN(TREECKO),
     SPECIES_TO_HOENN(GROVYLE),
     SPECIES_TO_HOENN(SCEPTILE),
@@ -510,6 +503,13 @@ static const u16 sSpeciesToHoennPokedexNum[NUM_SPECIES - 1] =
     SPECIES_TO_HOENN(GALLADE),
     SPECIES_TO_HOENN(PROBOPASS),
     SPECIES_TO_HOENN(DUSKNOIR),
+    SPECIES_TO_HOENN(ROSERADE),
+    SPECIES_TO_HOENN(AMBIPOM),
+    SPECIES_TO_HOENN(MISMAGIUS),
+    SPECIES_TO_HOENN(HONCHKROW),
+    SPECIES_TO_HOENN(FROSLASS),
+    SPECIES_TO_HOENN(URSALUNA),
+    SPECIES_TO_HOENN(ANNIHILAPE),
     SPECIES_TO_HOENN(LEAFEON),
     SPECIES_TO_HOENN(GLACEON),
     SPECIES_TO_HOENN(SYLVEON),
@@ -773,13 +773,6 @@ static const u16 sSpeciesToNationalPokedexNum[NUM_SPECIES - 1] =
     SPECIES_TO_NATIONAL(OLD_UNOWN_C),
     SPECIES_TO_NATIONAL(OLD_UNOWN_I),
     SPECIES_TO_NATIONAL(OLD_UNOWN_K),
-    SPECIES_TO_NATIONAL(OLD_UNOWN_N),
-    SPECIES_TO_NATIONAL(OLD_UNOWN_U),
-    SPECIES_TO_NATIONAL(OLD_UNOWN_V),
-    SPECIES_TO_NATIONAL(OLD_UNOWN_W),
-    SPECIES_TO_NATIONAL(OLD_UNOWN_X),
-    SPECIES_TO_NATIONAL(OLD_UNOWN_Y),
-    SPECIES_TO_NATIONAL(OLD_UNOWN_Z),
     SPECIES_TO_NATIONAL(TREECKO),
     SPECIES_TO_NATIONAL(GROVYLE),
     SPECIES_TO_NATIONAL(SCEPTILE),
@@ -930,6 +923,13 @@ static const u16 sSpeciesToNationalPokedexNum[NUM_SPECIES - 1] =
     SPECIES_TO_NATIONAL(GALLADE),
     SPECIES_TO_NATIONAL(PROBOPASS),
     SPECIES_TO_NATIONAL(DUSKNOIR),
+    SPECIES_TO_NATIONAL(ROSERADE),
+    SPECIES_TO_NATIONAL(AMBIPOM),
+    SPECIES_TO_NATIONAL(MISMAGIUS),
+    SPECIES_TO_NATIONAL(HONCHKROW),
+    SPECIES_TO_NATIONAL(FROSLASS),
+    SPECIES_TO_NATIONAL(URSALUNA),
+    SPECIES_TO_NATIONAL(ANNIHILAPE),
     SPECIES_TO_NATIONAL(LEAFEON),
     SPECIES_TO_NATIONAL(GLACEON),
     SPECIES_TO_NATIONAL(SYLVEON),
@@ -1341,19 +1341,19 @@ static const u16 sHoennToNationalOrder[NUM_SPECIES - 1] =
     HOENN_TO_NATIONAL(GALLADE),
     HOENN_TO_NATIONAL(PROBOPASS),
     HOENN_TO_NATIONAL(DUSKNOIR),
+    HOENN_TO_NATIONAL(ROSERADE),
+    HOENN_TO_NATIONAL(AMBIPOM),
+    HOENN_TO_NATIONAL(MISMAGIUS),
+    HOENN_TO_NATIONAL(HONCHKROW),
+    HOENN_TO_NATIONAL(FROSLASS),
+    HOENN_TO_NATIONAL(URSALUNA),
+    HOENN_TO_NATIONAL(ANNIHILAPE),
     HOENN_TO_NATIONAL(LEAFEON),
     HOENN_TO_NATIONAL(GLACEON),
     HOENN_TO_NATIONAL(SYLVEON),
     HOENN_TO_NATIONAL(OLD_UNOWN_C),
     HOENN_TO_NATIONAL(OLD_UNOWN_I),
     HOENN_TO_NATIONAL(OLD_UNOWN_K),
-    HOENN_TO_NATIONAL(OLD_UNOWN_N),
-    HOENN_TO_NATIONAL(OLD_UNOWN_U),
-    HOENN_TO_NATIONAL(OLD_UNOWN_V),
-    HOENN_TO_NATIONAL(OLD_UNOWN_W),
-    HOENN_TO_NATIONAL(OLD_UNOWN_X),
-    HOENN_TO_NATIONAL(OLD_UNOWN_Y),
-    HOENN_TO_NATIONAL(OLD_UNOWN_Z),
 };
 
 const struct SpindaSpot gSpindaSpotGraphics[] =
@@ -1810,10 +1810,17 @@ static const u8 sMonFrontAnimIdsTable[NUM_SPECIES - 1] =
     [SPECIES_GALLADE - 1]       = ANIM_SHRINK_GROW,
     [SPECIES_PROBOPASS - 1]     = ANIM_SWING_CONVEX_FAST,
     [SPECIES_DUSKNOIR - 1]      = ANIM_GLOW_BLACK,
+    [SPECIES_ROSERADE - 1]      = ANIM_H_VIBRATE,
+    [SPECIES_AMBIPOM - 1]       = ANIM_BACK_AND_LUNGE,
+    [SPECIES_MISMAGIUS - 1]     = ANIM_H_SLIDE_WOBBLE,
+    [SPECIES_HONCHKROW - 1]     = ANIM_V_SQUISH_AND_BOUNCE_SLOW,
+    [SPECIES_FROSLASS - 1]      = ANIM_V_SLIDE_WOBBLE,
+    [SPECIES_URSALUNA - 1]      = ANIM_V_SQUISH_AND_BOUNCE,
+    [SPECIES_ANNIHILAPE - 1]    = ANIM_V_SQUISH_AND_BOUNCE,
     [SPECIES_LEAFEON - 1]       = ANIM_V_JUMPS_SMALL,
     [SPECIES_GLACEON - 1]       = ANIM_V_STRETCH,
     [SPECIES_SYLVEON - 1]       = ANIM_H_STRETCH,
-    [SPECIES_MISSINGNO - 1]    = ANIM_TWIST,
+    [SPECIES_MISSINGNO - 1]     = ANIM_TWIST,
 };
 
 static const u8 sMonAnimationDelayTable[NUM_SPECIES - 1] =
@@ -3188,6 +3195,9 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         defenderHoldEffectParam = ItemId_GetHoldEffectParam(defender->item);
     }
 
+    if (gBattleMoves[gCurrentMove].effect == EFFECT_ACROBATICS && attacker->item == ITEM_NONE)
+        gBattleMovePower *= 2;
+
     if (attacker->ability == ABILITY_HUGE_POWER || attacker->ability == ABILITY_PURE_POWER)
         attack *= 2;
 
@@ -4525,6 +4535,23 @@ u8 GiveMonToPlayer(struct Pokemon *mon)
         SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
         SetMonData(mon, MON_DATA_OT_ID, gSaveBlock2Ptr->playerTrainerId);
     }
+    else{ // Radomizes the IVs for the stolen Pokemon
+        u32 iv;
+        u16 value = Random();
+        iv = value & MAX_IV_MASK;
+        SetMonData(mon, MON_DATA_HP_IV, &iv);
+        iv = (value & (MAX_IV_MASK << 5)) >> 5;
+        SetMonData(mon, MON_DATA_ATK_IV, &iv);
+        iv = (value & (MAX_IV_MASK << 10)) >> 10;
+        SetMonData(mon, MON_DATA_DEF_IV, &iv);
+        value = Random();
+        iv = value & MAX_IV_MASK;
+        SetMonData(mon, MON_DATA_SPEED_IV, &iv);
+        iv = (value & (MAX_IV_MASK << 5)) >> 5;
+        SetMonData(mon, MON_DATA_SPATK_IV, &iv);
+        iv = (value & (MAX_IV_MASK << 10)) >> 10;
+        SetMonData(mon, MON_DATA_SPDEF_IV, &iv);
+    }
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -5286,11 +5313,12 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
 
                     case 7: // ITEM4_EVO_STONE
                         {
+                            bool8 devolving = (item == ITEM_EVERSTONE);
                             u16 targetSpecies = GetEvolutionTargetSpecies(mon, EVO_MODE_ITEM_USE, item);
 
                             if (targetSpecies != SPECIES_NONE)
                             {
-                                BeginEvolutionScene(mon, targetSpecies, FALSE, partyIndex);
+                                BeginEvolutionScene(mon, targetSpecies, FALSE, partyIndex, devolving);
                                 return FALSE;
                             }
                         }
@@ -5600,12 +5628,22 @@ u8 *UseStatIncreaseItem(u16 itemId)
     return gDisplayedStringBattle;
 }
 
+u8 SanitizeHiddenNature(u8 natureHidden)
+{
+    if (natureHidden > NUM_NATURES || natureHidden == 0)  // Sets a Hidden Nature of 0 to NONE to retain save compatability with older versions
+        return HIDDEN_NATURE_NONE;
+    if (natureHidden == HIDDEN_NATURE_HARDY)
+        return NATURE_HARDY;
+    return natureHidden;
+}
+
 u8 GetNature(struct Pokemon *mon, bool32 checkHidden)
 {
-    if (!checkHidden || GetMonData(mon, MON_DATA_HIDDEN_NATURE, 0) == HIDDEN_NATURE_NONE)
+    u32 natureHidden = SanitizeHiddenNature(GetMonData(mon, MON_DATA_HIDDEN_NATURE, 0));
+    if (!checkHidden || natureHidden == HIDDEN_NATURE_NONE)
         return GetNatureFromPersonality(GetMonData(mon, MON_DATA_PERSONALITY, 0));
     else
-        return GetMonData(mon, MON_DATA_HIDDEN_NATURE, 0);
+        return natureHidden;
 }
 
 u8 GetNatureFromPersonality(u32 personality)
@@ -5726,6 +5764,8 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem)
                 targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
             }
+            else if(evolutionItem == ITEM_EVERSTONE)
+                targetSpecies = GetPreEvolution(species);
         }
         break;
     }
@@ -6389,8 +6429,8 @@ static u16 GetPreEvolution(u16 species){
     if (species == SPECIES_EEVEE)
         return SPECIES_NONE;
     
-    for (i = 0; i < ARRAY_COUNT(gEeveelutions); i++){
-        if (species == gEeveelutions[i])
+    for (i = 0; i < EVOS_PER_MON; i++){
+        if (gEvolutionTable[SPECIES_EEVEE][i].targetSpecies == species)
                 return SPECIES_EEVEE;
     }
 
