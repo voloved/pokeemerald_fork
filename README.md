@@ -8,6 +8,9 @@ Link to [Patch File is Here](https://drive.google.com/drive/folders/1GFChFDEmOJH
 To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokémon Emerald (those devs who made the game 20 years ago gotta eat too).  
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
+## Not Yet Versioned
+ - [Lady at Lavaridge now gives a random rare baby Pokémon as an egg rather than Wynaut every time.](https://gitlab.com/devolov/pokeemerald_fork/-/commit/059c600a30506d1ce4fcfff844276c808ea764f3)
+ - Mints include the stats they change in their descriptions.
 
 ## v2.2.3
  - Added Roserade, Ambipom, Mismagius, Honchkrow, Froslass, Ursaluna, and Annihilape.
@@ -16,7 +19,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - PokéVial's usages gets cut to three when playing a Nuzlocke run.
  - Toggling running shoes by pressing B can now be turned off.
  - Removed Lucky Egg from player's PC.
- - Made Everstone Able to De-evolve Any Non-Basic Pokémon.
+ - [Made Everstone Able to De-evolve Any Non-Basic Pokémon.](https://gitlab.com/devolov/pokeemerald_fork/-/commit/1a000805cd6d771034af2a299f64570b62dccd10)
  - Dead Pokémon no longer count towards repelling, lottery, nor field moves.
  - Ditto evolves into Mew with Upgrade. Mew evolves into Mewtwo with Upgrade.
  - Added items into the PC after becoming champion, including an Inifinite Rare Candy.
