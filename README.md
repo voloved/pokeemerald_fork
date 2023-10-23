@@ -11,6 +11,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 ## Not Yet Versioned
  - [Lady at Lavaridge now gives a random rare baby Pokémon as an egg rather than Wynaut every time.](https://gitlab.com/devolov/pokeemerald_fork/-/commit/059c600a30506d1ce4fcfff844276c808ea764f3)
  - Mints include the stats they change in their descriptions.
+ - Added ability to see type chart and nature chart in Birch's books.
 
 ## v2.2.3
  - Added Roserade, Ambipom, Mismagius, Honchkrow, Froslass, Ursaluna, and Annihilape.

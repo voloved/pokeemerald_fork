@@ -659,6 +659,18 @@ LittlerootTown_ProfessorBirchsLab_EventScript_Book::
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_BookTooHardToRead, MSGBOX_SIGN
 	end
 
+LittlerootTown_ProfessorBirchsLab_EventScript_BookTypeChart::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_BookContainsTypeChart, MSGBOX_SIGN
+	setvar VAR_0x8000, MUGSHOT_TYPECHART
+	callnative DrawMugshot
+	waitbuttonpress
+	callnative ClearMugshot
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_BookNatureChart::
+	msgbox_mugshot LittlerootTown_ProfessorBirchsLab_Text_BookContainsNatureChart, MSGBOX_SIGN, MUGSHOT_NATURECHART
+	end
+
 LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall::
 	lockall
 	pokenavcall LittlerootTown_ProfessorBirchsLab_Text_ScottAboardSSTidalCall
@@ -1828,6 +1840,14 @@ LittlerootTown_ProfessorBirchsLab_Text_CrammedWithBooksOnPokemon:
 
 LittlerootTown_ProfessorBirchsLab_Text_BookTooHardToRead:
 	.string "It's a book that's too hard to read.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_BookContainsTypeChart:
+	.string "This book contains a\n"
+	.string "type chart in it.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_BookContainsNatureChart:
+	.string "This book contains a\n"
+	.string "nature chart in it.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_OtherRegionsUpgradeToNational:
 	.string "PROF. BIRCH: Now…\p"
