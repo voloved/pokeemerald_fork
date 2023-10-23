@@ -3,6 +3,5 @@
 
 #define MUGSHOT_TYPECHART 0
 #define MUGSHOT_NATURECHART 1
-#define MUGSHOT_NATURECHARTSMALL 2  // Unused
 
 #endif
