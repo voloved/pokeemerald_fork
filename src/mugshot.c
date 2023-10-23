@@ -25,10 +25,13 @@ static const u32 sMugshotImg_TypeChart[] = INCBIN_U32("graphics/mugshots/TypeCha
 static const u16 sMugshotPal_TypeChart[] = INCBIN_U16("graphics/mugshots/TypeChart.gbapal");
 static const u32 sMugshotImg_NatureChart[] = INCBIN_U32("graphics/mugshots/NatureChart.4bpp.lz");
 static const u16 sMugshotPal_NatureChart[] = INCBIN_U16("graphics/mugshots/NatureChart.gbapal");
+static const u32 sMugshotImg_NatureChartSmall[] = INCBIN_U32("graphics/mugshots/NatureChartSmall.4bpp.lz");
+static const u16 sMugshotPal_NatureChartSmall[] = INCBIN_U16("graphics/mugshots/NatureChartSmall.gbapal");
 
 static const struct Mugshot sMugshots[] = {
     [MUGSHOT_TYPECHART] = {.x = 5, .y = 0, .width = 160, .height = 160, .image = sMugshotImg_TypeChart, .palette = sMugshotPal_TypeChart},
     [MUGSHOT_NATURECHART] = {.x = 0, .y = 0, .width = 240, .height = 88, .image = sMugshotImg_NatureChart, .palette = sMugshotPal_NatureChart},
+    [MUGSHOT_NATURECHARTSMALL] = {.x = 0, .y = 0, .width = 128, .height = 88, .image = sMugshotImg_NatureChartSmall, .palette = sMugshotPal_NatureChartSmall},
 };
 
 
