@@ -13,6 +13,7 @@ struct Mugshot{
     u8 y;
     u8 width;
     u8 height;
+    u16 baseBlock;
     const u32* const image;
     const u16* const palette;
 };
@@ -25,10 +26,13 @@ static const u32 sMugshotImg_TypeChart[] = INCBIN_U32("graphics/mugshots/TypeCha
 static const u16 sMugshotPal_TypeChart[] = INCBIN_U16("graphics/mugshots/TypeChart.gbapal");
 static const u32 sMugshotImg_NatureChart[] = INCBIN_U32("graphics/mugshots/NatureChart.4bpp.lz");
 static const u16 sMugshotPal_NatureChart[] = INCBIN_U16("graphics/mugshots/NatureChart.gbapal");
+static const u32 sMugshotImg_NatureChartSmall[] = INCBIN_U32("graphics/mugshots/NatureChartSmall.4bpp.lz");
+static const u16 sMugshotPal_NatureChartSmall[] = INCBIN_U16("graphics/mugshots/NatureChartSmall.gbapal");
 
 static const struct Mugshot sMugshots[] = {
-    [MUGSHOT_TYPECHART] = {.x = 5, .y = 0, .width = 160, .height = 160, .image = sMugshotImg_TypeChart, .palette = sMugshotPal_TypeChart},
-    [MUGSHOT_NATURECHART] = {.x = 0, .y = 4, .width = 240, .height = 88, .image = sMugshotImg_NatureChart, .palette = sMugshotPal_NatureChart},
+    [MUGSHOT_TYPECHART] = {.x = 5, .y = 0, .width = 160, .height = 160, .baseBlock = BASEBLOCK_MUGSHOT, .image = sMugshotImg_TypeChart, .palette = sMugshotPal_TypeChart},
+    [MUGSHOT_NATURECHART] = {.x = 0, .y = 4, .width = 240, .height = 88, .baseBlock = BASEBLOCK_MUGSHOT, .image = sMugshotImg_NatureChart, .palette = sMugshotPal_NatureChart},
+    [MUGSHOT_NATURECHARTSMALL] = {.x = 0, .y = 0, .width = 128, .height = 88, .baseBlock = 0x24A, .image = sMugshotImg_NatureChartSmall, .palette = sMugshotPal_NatureChartSmall},
 };
 
 
@@ -51,11 +55,10 @@ static void DrawMugshotCore(const struct Mugshot* const mugshot, int x, int y){
     if(sMugshotWindow != 0){
         ClearMugshot();
     }
-    
     #if GAME_VERSION==VERSION_EMERALD
-    SetWindowTemplateFields(&t, 0, x, y, mugshot->width/8, mugshot->height/8, MUGSHOT_PALETTE_NUM, 0x40);
+    SetWindowTemplateFields(&t, 0, x, y, mugshot->width/8, mugshot->height/8, MUGSHOT_PALETTE_NUM, mugshot->baseBlock);
     #else
-    t = SetWindowTemplateFields(0, x, y, mugshot->width/8, mugshot->height/8, MUGSHOT_PALETTE_NUM, 0x40);
+    t = SetWindowTemplateFields(0, x, y, mugshot->width/8, mugshot->height/8, MUGSHOT_PALETTE_NUM, mugshot->baseBlock);
     #endif
     windowId = AddWindow(&t);
     sMugshotWindow = windowId + 1;

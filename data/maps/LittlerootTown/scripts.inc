@@ -270,6 +270,8 @@ LittlerootTown_EventScript_JaimeGiveMintsNotFirstTime::
 	goto_if_eq VAR_RESULT, NO, LittlerootTown_EventScript_MintEnd
 	message LittlerootTown_Text_JaimeWhichMint
 	waitmessage
+	setvar VAR_0x8000, MUGSHOT_NATURECHARTSMALL
+	callnative DrawMugshot
 	setvar VAR_0x8004, SCROLL_MULTI_NATURE_MINTS
 	special ShowScrollableMultichoice
 	waitstate
@@ -367,6 +369,7 @@ LittlerootTown_EventScript_MintGiveEnd::
 	callnative CanGetNatureMintFromJaime
 	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_JaimeGiveMintsNotFirstTime
 LittlerootTown_EventScript_MintEnd::
+	callnative ClearMugshot
 	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_DEFAULT
 	release
 	end
