@@ -28,7 +28,7 @@ static const u16 sMugshotPal_NatureChart[] = INCBIN_U16("graphics/mugshots/Natur
 
 static const struct Mugshot sMugshots[] = {
     [MUGSHOT_TYPECHART] = {.x = 5, .y = 0, .width = 160, .height = 160, .image = sMugshotImg_TypeChart, .palette = sMugshotPal_TypeChart},
-    [MUGSHOT_NATURECHART] = {.x = 0, .y = 2, .width = 240, .height = 88, .image = sMugshotImg_NatureChart, .palette = sMugshotPal_NatureChart},
+    [MUGSHOT_NATURECHART] = {.x = 0, .y = 4, .width = 240, .height = 88, .image = sMugshotImg_NatureChart, .palette = sMugshotPal_NatureChart},
 };
 
 

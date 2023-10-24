@@ -668,7 +668,11 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BookTypeChart::
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_BookNatureChart::
-	msgbox_mugshot LittlerootTown_ProfessorBirchsLab_Text_BookContainsNatureChart, MSGBOX_SIGN, MUGSHOT_NATURECHART
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_BookContainsNatureChart, MSGBOX_SIGN
+	setvar VAR_0x8000, MUGSHOT_NATURECHART
+	callnative DrawMugshot
+	waitbuttonpress
+	callnative ClearMugshot
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall::
