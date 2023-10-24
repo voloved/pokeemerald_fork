@@ -660,20 +660,15 @@ LittlerootTown_ProfessorBirchsLab_EventScript_Book::
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_BookTypeChart::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_BookContainsTypeChart, MSGBOX_SIGN
 	setvar VAR_0x8000, MUGSHOT_TYPECHART
-	goto LittlerootTown_DisplayChart
-	end
-
-LittlerootTown_ProfessorBirchsLab_EventScript_BookNatureChart::
-	setvar VAR_0x8000, MUGSHOT_NATURECHART
-	goto LittlerootTown_DisplayChart
-	end
-
-LittlerootTown_DisplayChart:
-	msgbox LittlerootTown_ProfessorBirchsLab_Text_BookContainsChart, MSGBOX_SIGN
 	callnative DrawMugshot
 	waitbuttonpress
 	callnative ClearMugshot
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_BookNatureChart::
+	msgbox_mugshot LittlerootTown_ProfessorBirchsLab_Text_BookContainsNatureChart, MSGBOX_SIGN, MUGSHOT_NATURECHART
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall::
@@ -1846,9 +1841,13 @@ LittlerootTown_ProfessorBirchsLab_Text_CrammedWithBooksOnPokemon:
 LittlerootTown_ProfessorBirchsLab_Text_BookTooHardToRead:
 	.string "It's a book that's too hard to read.$"
 
-LittlerootTown_ProfessorBirchsLab_Text_BookContainsChart:
+LittlerootTown_ProfessorBirchsLab_Text_BookContainsTypeChart:
 	.string "This book contains a\n"
-	.string "chart in it.$"
+	.string "type chart in it.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_BookContainsNatureChart:
+	.string "This book contains a\n"
+	.string "nature chart in it.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_OtherRegionsUpgradeToNational:
 	.string "PROF. BIRCH: Now…\p"
