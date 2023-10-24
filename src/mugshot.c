@@ -13,8 +13,8 @@ struct Mugshot{
     u8 y;
     u8 width;
     u8 height;
-    const u32* image;
-    const u16* palette;
+    const u32* const image;
+    const u16* const palette;
 };
 
 void DrawMugshot(void); //VAR_0x8000 = mugshot id
@@ -28,7 +28,7 @@ static const u16 sMugshotPal_NatureChart[] = INCBIN_U16("graphics/mugshots/Natur
 
 static const struct Mugshot sMugshots[] = {
     [MUGSHOT_TYPECHART] = {.x = 5, .y = 0, .width = 160, .height = 160, .image = sMugshotImg_TypeChart, .palette = sMugshotPal_TypeChart},
-    [MUGSHOT_NATURECHART] = {.x = 0, .y = 0, .width = 240, .height = 88, .image = sMugshotImg_NatureChart, .palette = sMugshotPal_NatureChart},
+    [MUGSHOT_NATURECHART] = {.x = 0, .y = 4, .width = 240, .height = 88, .image = sMugshotImg_NatureChart, .palette = sMugshotPal_NatureChart},
 };
 
 
