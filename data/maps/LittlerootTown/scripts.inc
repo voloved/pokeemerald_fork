@@ -271,10 +271,12 @@ LittlerootTown_EventScript_JaimeGiveMintsNotFirstTime::
 	message LittlerootTown_Text_JaimeWhichMint
 	waitmessage
 	setvar VAR_0x8000, MUGSHOT_NATURECHARTSMALL
-	callnative DrawMugshot
+	setvar VAR_0x8001, 0x24A  @ Does moves the baseblock for this image to not collide with the multichoice
+	callnative DrawMugshotAtBaseBlock
 	setvar VAR_0x8004, SCROLL_MULTI_NATURE_MINTS
 	special ShowScrollableMultichoice
 	waitstate
+	callnative ClearMugshot
 	switch VAR_RESULT
 	case 0, LittlerootTown_EventScript_GiveAdamant
 	case 1, LittlerootTown_EventScript_GiveBold
@@ -369,7 +371,6 @@ LittlerootTown_EventScript_MintGiveEnd::
 	callnative CanGetNatureMintFromJaime
 	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_JaimeGiveMintsNotFirstTime
 LittlerootTown_EventScript_MintEnd::
-	callnative ClearMugshot
 	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_DEFAULT
 	release
 	end

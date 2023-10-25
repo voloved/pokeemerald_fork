@@ -2321,7 +2321,7 @@ void ShowScrollableMultichoice(void)
     case SCROLL_MULTI_NATURE_MINTS:
         task->tMaxItemsOnScreen = MAX_SCROLL_MULTI_ON_SCREEN;
         task->tNumItems = 22;
-        task->tLeft = 17;
+        task->tLeft = 18;
         task->tTop = 1;
         task->tWidth = 12;
         task->tHeight = 12;
