@@ -12,11 +12,15 @@ EventScript_PkmnCenterNurse_Goodbye::
 	return
 
 @ VAR_0x8004 is 1 when player has Gold Card; jumps are identical
+@ VAR_0x8005 is 1 if party is already healed
 EventScript_PkmnCenterNurse_HealPkmn::
+	setvar VAR_POKEVIAL_USAGES, 0
+	callnative IsPartyHealed
+	copyvar VAR_0x8005, VAR_RESULT
+	goto_if_eq VAR_0x8005, TRUE, EventScript_PkmnCenterNurse_ReturnPkmn
 	incrementgamestat GAME_STAT_USED_POKECENTER
 	playfanfare MUS_HEAL
 	special HealPlayerParty
-	setvar VAR_POKEVIAL_USAGES, 0
 	goto_if_unset FLAG_POKERUS_EXPLAINED, EventScript_PkmnCenterNurse_CheckPokerus
 	goto EventScript_PkmnCenterNurse_CheckTrainerHillAndUnionRoom
 	end
@@ -56,10 +60,20 @@ EventScript_PkmnCenterNurse_ReturnPkmn::
 	goto_if_unset FLAG_NUZLOCKE_LEVEL_CAP, EventScript_PkmnCenterNurse_ReturnPkmnDefault
 	goto_if_set FLAG_IS_CHAMPION, EventScript_PkmnCenterNurse_ReturnPkmnDefault
 	callnative LevelCapToString
+	goto_if_eq VAR_0x8005, TRUE, EventScript_PkmnCenterNurse_ReturnPkmnNuzlockeAlreadyHealed
 	message gText_WeHopeToSeeYouAgain4
 	return
-EventScript_PkmnCenterNurse_ReturnPkmnDefault::	
+EventScript_PkmnCenterNurse_ReturnPkmnNuzlockeAlreadyHealed::
+	message gText_WeHopeToSeeYouAgain5
+	setvar VAR_0x8005, 0
+	return
+EventScript_PkmnCenterNurse_ReturnPkmnDefault::
+	goto_if_eq VAR_0x8005, TRUE, EventScript_PkmnCenterNurse_ReturnPkmnDefaultAlreadyHealed
 	message gText_WeHopeToSeeYouAgain3
+	return
+EventScript_PkmnCenterNurse_ReturnPkmnDefaultAlreadyHealed::
+	message gText_WeHopeToSeeYouAgain2
+	setvar VAR_0x8005, 0
 	return
 
 EventScript_PkmnCenterNurse_ReturnPkmn2::
