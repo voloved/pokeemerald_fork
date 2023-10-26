@@ -1216,6 +1216,7 @@ static const u8 sText_PokeVial_Success_Plural[] = _("PokéVial successfully heal
 static const u8 sText_PokeVial_Success_Singular[] = _("PokéVial successfully healed party.\p{STR_VAR_1} more use before needing\nto heal at a POKéMON Center.{PAUSE_UNTIL_PRESS}");
 static const u8 sText_PokeVial_Success_NoMoreUses[] = _("PokéVial successfully healed party.\pNo more use left. Heal at\nPOKéMON Center to replenish.{PAUSE_UNTIL_PRESS}");
 static const u8 sText_PokeVial_Failure[] = _("PokéVial is drained.\nHeal at a POKéMON Center to replenish.{PAUSE_UNTIL_PRESS}");
+static const u8 sText_PokeVial_NoEffect[] = _("PokéVial will have no effect.\nParty is already fully healed.{PAUSE_UNTIL_PRESS}");
 void ItemUseOutOfBattle_PokeVial(u8 taskId)
 {
     const u8 *Text_PokeVial_Success = NULL;
@@ -1239,6 +1240,15 @@ void ItemUseOutOfBattle_PokeVial(u8 taskId)
 
     }
     else{
+            if (CheckPlayerPartyHealed()){
+                if (gTasks[taskId].tUsingRegisteredKeyItem) // to account for pressing select in the overworld
+                    DisplayItemMessageOnField(taskId, sText_PokeVial_NoEffect, Task_CloseCantUseKeyItemMessage);
+                else if (!InBattlePyramid())
+                    DisplayItemMessage(taskId, FONT_NORMAL, sText_PokeVial_NoEffect, CloseItemMessage);
+                else
+                    DisplayItemMessageInBattlePyramid(taskId, sText_PokeVial_NoEffect, Task_CloseBattlePyramidBagMessage);
+                return;
+            }
         PlaySE(SE_RG_POKE_JUMP_SUCCESS);
         HealPlayerParty();
         vialUsages++;
