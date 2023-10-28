@@ -151,3 +151,4 @@
 	.include "src/debug.o"
 	.include "src/battle_controller_player.o"
 	.include "src/mugshot.o"
+	.include "src/tm_case.o"
