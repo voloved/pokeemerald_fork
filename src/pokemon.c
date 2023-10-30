@@ -2935,6 +2935,11 @@ void BoxMonToMon(const struct BoxPokemon *src, struct Pokemon *dest)
     value = MAIL_NONE;
     SetMonData(dest, MON_DATA_MAIL, &value);
     CalculateMonStats(dest);
+    if (GetMonData(dest, MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE))
+    {
+        value = 0;
+        SetMonData(dest, MON_DATA_HP, &value);
+    }
 }
 
 u8 GetLevelFromMonExp(struct Pokemon *mon)

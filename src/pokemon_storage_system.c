@@ -579,7 +579,6 @@ EWRAM_DATA static bool8 sAutoActionOn = 0;
 static void Task_InitPokeStorage(u8);
 static void Task_PlaceMon(u8);
 static void Task_ChangeScreen(u8);
-static void ZeroDeadPokemonHP(void);
 static void Task_ShowPokeStorage(u8);
 static void Task_OnBPressed(u8);
 static void Task_HandleBoxOptions(u8);
@@ -3713,7 +3712,6 @@ static void Task_OnBPressed(u8 taskId)
         case 1:
         case MENU_B_PRESSED:
             PlaySE(SE_PC_OFF);
-            ZeroDeadPokemonHP();
             ClearBottomWindow();
             sStorage->state++;
             break;
@@ -3732,17 +3730,6 @@ static void Task_OnBPressed(u8 taskId)
             SetPokeStorageTask(Task_ChangeScreen);
         }
         break;
-    }
-}
-
-static void ZeroDeadPokemonHP(void)
-{
-    u8 i;
-    u16 hpDead = 0;
-    for (i = 0; i < PARTY_SIZE; i++)
-    {
-        if (GetMonData(&gPlayerParty[i], MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE))
-            SetMonData(&gPlayerParty[i], MON_DATA_HP, &hpDead);
     }
 }
 
