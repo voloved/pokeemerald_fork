@@ -3713,6 +3713,9 @@ static void PrintMovePowerAndAccuracy(u16 moveIndex)
         }
 
         PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, text, 53, 17, 0, 0);
+
+        if (!isMoveStatus(moveIndex))
+            BlitMenuInfoIcon(PSS_LABEL_WINDOW_MOVES_POWER_ACC, isMoveSpecial(moveIndex) + MENU_INFO_ICON_PSS_PHYS, 36, 3);
     }
 }
 
