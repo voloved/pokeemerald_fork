@@ -97,6 +97,7 @@ enum {
     MON_DATA_DEAD,
     MON_DATA_NATURE,
     MON_DATA_HIDDEN_NATURE,
+    MON_DATA_BOX_HP,
 };
 
 struct PokemonSubstruct0
@@ -108,7 +109,7 @@ struct PokemonSubstruct0
     u8 friendship;
     u8 hiddenNature:5;  // 25 natures
     u8 free_sub0:3;
-    u8 filler;
+    u8 box_hp; //Set to zero unless pokemon is in the box, then it's set to currHP/maxHP * 255
 };
 
 struct PokemonSubstruct1

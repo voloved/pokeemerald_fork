@@ -4112,6 +4112,9 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_HIDDEN_NATURE:
         retVal = substruct0->hiddenNature;
         break;
+    case MON_DATA_BOX_HP:
+        retVal = substruct0->box_hp;
+        break;
     default:
         break;
     }
@@ -4514,6 +4517,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
     }
     case MON_DATA_HIDDEN_NATURE:
         SET8(substruct0->hiddenNature);
+        break;
+    case MON_DATA_BOX_HP:
+        SET8(substruct0->box_hp);
         break;
     default:
         break;
