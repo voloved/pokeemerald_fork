@@ -115,8 +115,10 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
             if (newKeys & B_BUTTON)
                 input->pressedBButton = TRUE;
 
-            if (gWokeUpFromSleepMode)
+            if (gWokeUpFromSleepMode){
                 sPlayerSelectHoldFrames = 0;
+                return;
+            }
             else if (sPlayerSelectHoldFrames == 60){
                 input->input_field_1_7 = TRUE;
             }
