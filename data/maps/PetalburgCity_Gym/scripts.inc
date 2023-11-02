@@ -1287,6 +1287,8 @@ PetalburgCity_Gym_Text_ExplainBalanceBadgeTakeThis:
 	.string "of all your POKéMON will increase.\p"
 	.string "POKéMON that know the HM move SURF\n"
 	.string "will be able to travel over water.\p"
+	.string "Also, your POKéNAV's reception to\n"
+	.string "access the PC has been bettered.\p"
 	.string "This is my gift to you. {PLAYER}, I'm\n"
 	.string "sure you can use it correctly.$"
 

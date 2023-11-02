@@ -375,6 +375,14 @@ static void Task_WaitFadeAccessPC(u8 taskId)
     }
 }
 
+static bool32 CanAccessPCFromNav(void)
+{
+    if (FlagGet(FLAG_BADGE05_GET))
+        return gMapHeader.allowPokevial;
+    else
+        return Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType);
+}
+
 static u32 HandleConditionMenuInput(struct Pokenav_Menu *menu)
 {
     if (UpdateMenuCursorPos(menu))
@@ -391,7 +399,8 @@ static u32 HandleConditionMenuInput(struct Pokenav_Menu *menu)
             menu->callback = HandleConditionSearchMenuInput;
             return POKENAV_MENU_FUNC_OPEN_CONDITION_SEARCH;
         case POKENAV_MENUITEM_CONDITION_ACCESS_PC:
-            if(Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType)){
+            if(CanAccessPCFromNav())
+            { 
                 gSysPcFromPokenav = TRUE;
                 // Reusing from debug menu to gracefully close PC when done.
                 CreateTask(Task_WaitFadeAccessPC, 0);
