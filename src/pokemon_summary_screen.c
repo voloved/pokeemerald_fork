@@ -3682,6 +3682,7 @@ static void PrintMoveNameAndPP(u8 moveIndex)
 static void PrintMovePowerAndAccuracy(u16 moveIndex)
 {
     const u8 *text;
+    u8 split_icon = isMoveStatus(moveIndex) ? 2 : isMoveSpecial(moveIndex);
     u8 monFriendship = GetMonData(&gPlayerParty[sMonSummaryScreen->curMonIndex], MON_DATA_FRIENDSHIP);
     if (moveIndex != 0)
     {
@@ -3719,9 +3720,7 @@ static void PrintMovePowerAndAccuracy(u16 moveIndex)
         }
 
         PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, text, 53, 17, 0, 0);
-
-        if (!isMoveStatus(moveIndex))
-            BlitMenuInfoIcon(PSS_LABEL_WINDOW_MOVES_POWER_ACC, isMoveSpecial(moveIndex) + MENU_INFO_ICON_PSS_PHYS, 36, 3);
+        BlitMenuInfoIcon(PSS_LABEL_WINDOW_MOVES_POWER_ACC, split_icon + MENU_INFO_ICON_PSS_PHYS, 35, 3);
     }
 }
 

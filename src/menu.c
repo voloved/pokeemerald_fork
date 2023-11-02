@@ -143,6 +143,7 @@ static const struct MenuInfoIcon sMenuInfoIcons[] =
     [MENU_INFO_ICON_STATUS]    = { 12, 12, 0x08 },
     [MENU_INFO_ICON_PSS_PHYS]  = { 12, 12, 0x0A },
     [MENU_INFO_ICON_PSS_SPEC]  = { 12, 12, 0x0C },
+    [MENU_INFO_ICON_PSS_BLANK] = { 12, 12, 0x0E },
 };
 
 void InitStandardTextBoxWindows(void)
