@@ -6442,10 +6442,13 @@ static void SetPlacedMonData(u8 boxId, u8 position)
     u32 status;
     if (boxId == TOTAL_BOXES_COUNT)
     {
-        hp = GetHPFromBoxHP(&sStorage->movingMon);
-        status = GetStatusFromBoxStatus(&sStorage->movingMon);
-        SetMonData(&sStorage->movingMon, MON_DATA_HP, &hp);      
-        SetMonData(&sStorage->movingMon, MON_DATA_STATUS, &status);    
+        if(gSysPcFromPokenav)
+        {
+            hp = GetHPFromBoxHP(&sStorage->movingMon);
+            status = GetStatusFromBoxStatus(&sStorage->movingMon);
+            SetMonData(&sStorage->movingMon, MON_DATA_HP, &hp);
+            SetMonData(&sStorage->movingMon, MON_DATA_STATUS, &status);
+        }
         hp = 0;
         SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_HP, &hp);
         SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_AILMENT, &hp);
@@ -6792,7 +6795,7 @@ static void InitSummaryScreenData(void)
     {
         SaveMovingMon();
         sStorage->summaryMon.mon = &sSavedMovingMon;
-        if (sMovingMonOrigBoxId != TOTAL_BOXES_COUNT)
+        if (gSysPcFromPokenav && sMovingMonOrigBoxId != TOTAL_BOXES_COUNT) // If it did not come from the party
         {
             hp = GetHPFromBoxHP(&sStorage->movingMon);
             status = GetStatusFromBoxStatus(&sStorage->movingMon);
