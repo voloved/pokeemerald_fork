@@ -6375,7 +6375,10 @@ static u8 GetBoxHPFromHP(struct Pokemon *mon)
     u8 hp_box;
     u16 hp_curr = GetMonData(mon, MON_DATA_HP);
     u16 hp_max = GetMonData(mon, MON_DATA_MAX_HP);
-    hp_box = DIV_ROUND(0xFF * hp_curr, hp_max);
+    if (hp_max <= 0xFF)  // If the HP is small enough to fully fit into a u8, put in the precise value
+        hp_box = hp_curr;
+    else  // Otherwise, round
+        hp_box = DIV_ROUND(0xFF * hp_curr, hp_max);
     if(hp_curr != 0 && hp_box == 0)  // to stop accidental fainting
         hp_box = 1;
     return hp_box;
@@ -6386,9 +6389,10 @@ u16 GetHPFromBoxHP(struct Pokemon *mon)
     u16 hp_curr;
     u8 hp_box = GetMonData(mon, MON_DATA_BOX_HP);
     u16 hp_max = GetMonData(mon, MON_DATA_MAX_HP);
-    if (hp_box == 0 && !GetBoxMonData(mon, MON_DATA_DEAD))
-        return hp_max;
-    hp_curr = DIV_ROUND(hp_max * hp_box, 0xFF);
+    if (hp_max <= 0xFF)
+        hp_curr = hp_box;
+    else
+        hp_curr = DIV_ROUND(hp_max * hp_box, 0xFF);
     return hp_curr; 
 }
 
