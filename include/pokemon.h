@@ -95,6 +95,7 @@ enum {
     MON_DATA_SPATK2,
     MON_DATA_SPDEF2,
     MON_DATA_DEAD,
+    MON_DATA_IN_PC,
     MON_DATA_NATURE,
     MON_DATA_HIDDEN_NATURE,
     MON_DATA_BOX_HP,
@@ -203,11 +204,12 @@ struct BoxPokemon
     u8 hasSpecies:1;
     u8 isEgg:1;
     u8 dead:1;
-    u8 unused:4;
+    u8 inPC:1;  //Used to retain save compatibility for Pokemon that have zero for their box HP
+    u8 unused:3;
     u8 otName[PLAYER_NAME_LENGTH];
     u8 markings;
     u16 checksum;
-    u16 unknown;
+    u16 unknown;  // Making this non-zero breaks PkHex compatibility
 
     union
     {

@@ -6381,7 +6381,6 @@ static u8 GetBoxHPFromHP(struct Pokemon *mon)
     return hp_box;
 }
 
-
 u16 GetHPFromBoxHP(struct Pokemon *mon)
 {
     u16 hp_curr;
@@ -6440,25 +6439,30 @@ static void SetPlacedMonData(u8 boxId, u8 position)
 {
     u32 hp;
     u32 status;
+    u8 value;
     if (boxId == TOTAL_BOXES_COUNT)
     {
-        if(gSysPcFromPokenav)
+        if(gSysPcFromPokenav && GetMonData(&sStorage->movingMon, MON_DATA_IN_PC))
         {
             hp = GetHPFromBoxHP(&sStorage->movingMon);
             status = GetStatusFromBoxStatus(&sStorage->movingMon);
             SetMonData(&sStorage->movingMon, MON_DATA_HP, &hp);
             SetMonData(&sStorage->movingMon, MON_DATA_STATUS, &status);
         }
-        hp = 0;
-        SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_HP, &hp);
-        SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_AILMENT, &hp);
+        else
+            MonRestorePP(&sStorage->movingMon);
+        value = 0;
+        SetBoxMonData(&sStorage->movingMon.box, MON_DATA_IN_PC, &value);
+        SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_HP, &value);
+        SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_AILMENT, &value);
         gPlayerParty[position] = sStorage->movingMon;
     }
     else
     {
-        BoxMonRestorePP(&sStorage->movingMon.box);
+        value = TRUE;
         hp = GetBoxHPFromHP(&sStorage->movingMon);
         status = GetBoxStatusFromStatus(&sStorage->movingMon);
+        SetBoxMonData(&sStorage->movingMon.box, MON_DATA_IN_PC, &value);
         SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_HP, &hp);
         SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_AILMENT, &status);
         SetBoxMonAt(boxId, position, &sStorage->movingMon.box);
@@ -6795,13 +6799,16 @@ static void InitSummaryScreenData(void)
     {
         SaveMovingMon();
         sStorage->summaryMon.mon = &sSavedMovingMon;
-        if (gSysPcFromPokenav && sMovingMonOrigBoxId != TOTAL_BOXES_COUNT) // If it did not come from the party
+        if (gSysPcFromPokenav && GetMonData(&sStorage->movingMon, MON_DATA_IN_PC) && sMovingMonOrigBoxId != TOTAL_BOXES_COUNT)
+        // If it did not come from the party
         {
             hp = GetHPFromBoxHP(&sStorage->movingMon);
             status = GetStatusFromBoxStatus(&sStorage->movingMon);
             SetMonData(sStorage->summaryMon.mon, MON_DATA_HP, &hp);
             SetMonData(sStorage->summaryMon.mon, MON_DATA_STATUS, &status);
         }
+        else
+            MonRestorePP(sStorage->summaryMon.mon);
         sStorage->summaryStartPos = 0;
         sStorage->summaryMaxPos = 0;
         sStorage->summaryScreenMode = SUMMARY_MODE_NORMAL;
