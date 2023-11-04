@@ -8,7 +8,7 @@ Link to [Patch File is Here](https://drive.google.com/drive/folders/1GFChFDEmOJH
 To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokémon Emerald (those devs who made the game 20 years ago gotta eat too).  
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
-## Not Yet Versioned
+## v2.3.1
  - Fly Will Only Be Displayed by Pokémon Who Cannot Learn iit If Flying Is Currently Allowed.
  - Bugfix where Dad giving SS Ticket causes him to not move.
 
