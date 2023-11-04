@@ -7166,3 +7166,15 @@ void ItemUseCB_BottleCaps(u8 taskId, TaskFunc task)
     gTasks[taskId].func = Task_BottleCaps;
 }
 
+void FieldUseInfiniteRareCandy(void)
+{
+    MainCallback callback = CB2_ReturnToField;
+    TaskFunc task = Task_HandleChooseMonInput;
+    u8 menuType = PARTY_MENU_TYPE_FIELD;
+    u8 partyLayout = PARTY_LAYOUT_SINGLE;
+    u8 msgId = PARTY_MSG_USE_ON_WHICH_MON;
+    gItemUseCB = ItemUseCB_RareCandy;
+    gSpecialVar_ItemId = ITEM_INF_RARE_CANDY;
+    InitPartyMenu(menuType, partyLayout, PARTY_ACTION_USE_ITEM, TRUE, msgId, task, callback);
+}
+

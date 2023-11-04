@@ -251,7 +251,29 @@ LittlerootTown_EventScript_Jaime::
 	goto_if_set FLAG_IS_CHAMPION, LittlerootTown_EventScript_Jaime_EliteFourWon
 	callnative CanGetNatureMintFromJaime
 	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_JaimeGiveMints
+	goto_if_unset FLAG_NUZLOCKE, LittlerootTown_EventScript_Jaime_Default
+	goto_if_unset FLAG_NUZLOCKE_LEVEL_CAP, LittlerootTown_EventScript_Jaime_Default
+	goto LittlerootTown_EventScript_Jaime_InfRareCandy
+	end
+
+LittlerootTown_EventScript_Jaime_Default::
 	msgbox LittlerootTown_Text_HeyJaime, MSGBOX_NPC
+	end
+
+LittlerootTown_EventScript_Jaime_InfRareCandy::
+	msgbox LittlerootTown_Text_JaimeNuzlockeOverlevel, MSGBOX_DEFAULT
+	msgbox LittlerootTown_Text_JaimeNuzlockeOverlevel_YesNo, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_EventScript_InfRareCandyEnd
+	callnative PartyIsFullyLevelCapped
+	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_Jaime_InfRareCandyNoEffect
+	callnative FieldUseInfiniteRareCandy
+	goto LittlerootTown_EventScript_InfRareCandyEnd
+	end
+LittlerootTown_EventScript_Jaime_InfRareCandyNoEffect::
+	msgbox LittlerootTown_Text_JaimeNuzlockeOverlevel_NoEffect
+	end
+LittlerootTown_EventScript_InfRareCandyEnd::
+	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_NPC
 	end
 
 LittlerootTown_EventScript_JaimeGiveMints::
@@ -1178,6 +1200,20 @@ LittlerootTown_Text_ComeHomeIfAnythingHappens:
 LittlerootTown_Text_HeyJaime:
 	.string "Hey.\n"
 	.string "  - Jaime$"
+
+LittlerootTown_Text_JaimeNuzlockeOverlevel:
+	.string "I see you're running a Nuzlocke where \n"
+	.string "you can't overlevel leaders.\p"
+	.string "That's impressive!\n"
+	.string "I have an INF. RARE CANDY.$"
+
+LittlerootTown_Text_JaimeNuzlockeOverlevel_YesNo:
+	.string "Do you want to use it on your\n"
+	.string "POKéMON right now?$"
+
+LittlerootTown_Text_JaimeNuzlockeOverlevel_NoEffect:
+	.string "All of your POKéMON are\n"
+	.string "already at their max. $"
 
 LittlerootTown_Text_JaimeFirstMints:
 	.string "Hey {PLAYER}, I see you have been\n"
