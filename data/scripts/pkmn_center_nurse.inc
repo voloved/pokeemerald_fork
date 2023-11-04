@@ -15,6 +15,7 @@ EventScript_PkmnCenterNurse_Goodbye::
 @ VAR_0x8005 is 1 if party is already healed
 EventScript_PkmnCenterNurse_HealPkmn::
 	setvar VAR_POKEVIAL_USAGES, 0
+	callnative ClearAllBoxMonStatus
 	callnative IsPartyHealed
 	copyvar VAR_0x8005, VAR_RESULT
 	goto_if_eq VAR_0x8005, TRUE, EventScript_PkmnCenterNurse_ReturnPkmn
@@ -41,7 +42,7 @@ EventScript_PkmnCenterNurse_TakeAndHealPkmn::
 	applymovement VAR_0x800B, Common_Movement_WalkInPlaceFasterDown
 	waitmovement 0
 	special HealPlayerParty
-  callnative UpdateFollowingPokemon
+  	callnative UpdateFollowingPokemon
 	return
 
 EventScript_PkmnCenterNurse_CheckTrainerHillAndUnionRoom::
