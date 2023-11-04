@@ -2021,3 +2021,15 @@
 	setvar VAR_0x8006, \item
 	special CreateEventLegalEnemyMon
 	.endm
+
+	@ Calls a msgbox with a desired mugshot, string and msgbox type.
+	CLEAR_MUGSHOT = TRUE
+	DONT_CLEAR_MUGSHOT = FALSE
+	.macro msgbox_mugshot msgText:req, msgType:req, mugshot:req, clear=CLEAR_MUGSHOT
+	setvar VAR_0x8000, \mugshot
+	callnative DrawMugshot
+	msgbox \msgText, \msgType
+	.if \clear == CLEAR_MUGSHOT
+		callnative ClearMugshot
+	.endif
+	.endm

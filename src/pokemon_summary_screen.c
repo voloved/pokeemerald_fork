@@ -1405,6 +1405,15 @@ static void CopyMonToSummaryStruct(struct Pokemon *mon)
     {
         struct BoxPokemon *boxMon = sMonSummaryScreen->monList.boxMons;
         BoxMonToMon(&boxMon[sMonSummaryScreen->curMonIndex], mon);
+        if (gSysPcFromPokenav && GetMonData(mon, MON_DATA_IN_PC))
+        {
+            u16 hp = GetHPFromBoxHP(mon);
+            u32 status = GetStatusFromBoxStatus(mon);
+            SetMonData(mon, MON_DATA_HP, &hp);
+            SetMonData(mon, MON_DATA_STATUS, &status);
+        }
+        else
+            MonRestorePP(mon);
     }
 }
 
@@ -3676,6 +3685,7 @@ static void PrintMoveNameAndPP(u8 moveIndex)
 static void PrintMovePowerAndAccuracy(u16 moveIndex)
 {
     const u8 *text;
+    u8 split_icon = isMoveStatus(moveIndex) ? 2 : isMoveSpecial(moveIndex);
     u8 monFriendship = GetMonData(&gPlayerParty[sMonSummaryScreen->curMonIndex], MON_DATA_FRIENDSHIP);
     if (moveIndex != 0)
     {
@@ -3713,6 +3723,7 @@ static void PrintMovePowerAndAccuracy(u16 moveIndex)
         }
 
         PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, text, 53, 17, 0, 0);
+        BlitMenuInfoIcon(PSS_LABEL_WINDOW_MOVES_POWER_ACC, split_icon + MENU_INFO_ICON_PSS_PHYS, 35, 3);
     }
 }
 

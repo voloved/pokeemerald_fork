@@ -37,6 +37,7 @@
 #include "string_util.h"
 #include "task.h"
 #include "text.h"
+#include "tm_case.h"
 #include "constants/event_bg.h"
 #include "constants/event_objects.h"
 #include "constants/item_effects.h"
@@ -820,6 +821,42 @@ static void UseTMHM(u8 taskId)
     SetUpItemUseCallback(taskId);
 }
 
+
+static void CB2_OpenTMCaseOnField(void)
+{
+    InitTMCase(0, CB2_BagMenuFromStartMenu, 0);
+}
+
+static void Task_InitTMCaseFromField(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        CleanupOverworldWindowsAndTilemaps();
+        // sub_80A1184();
+        InitTMCase(0, CB2_ReturnToField, 1);
+        DestroyTask(taskId);
+    }
+}
+
+void ItemUseOutOfBattle_TmCase(u8 taskId)
+{
+    if (MenuHelpers_IsLinkActive() == TRUE) // link func
+    {
+        DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
+    }
+    else if (gTasks[taskId].tUsingRegisteredKeyItem != TRUE)
+    {
+        gBagMenu->newScreenCallback = CB2_OpenTMCaseOnField;
+        Task_FadeAndCloseBagMenu(taskId);
+    }
+    else
+    {
+        gFieldCallback = FieldCB_ReturnToFieldNoScript; //FieldCB_ReturnToFieldNoScript
+        FadeScreen(FADE_TO_BLACK, 0);
+        gTasks[taskId].func = Task_InitTMCaseFromField;
+    }
+}
+
 static void RemoveUsedItem(void)
 {
     RemoveBagItem(gSpecialVar_ItemId, 1);
@@ -1216,6 +1253,7 @@ static const u8 sText_PokeVial_Success_Plural[] = _("PokéVial successfully heal
 static const u8 sText_PokeVial_Success_Singular[] = _("PokéVial successfully healed party.\p{STR_VAR_1} more use before needing\nto heal at a POKéMON Center.{PAUSE_UNTIL_PRESS}");
 static const u8 sText_PokeVial_Success_NoMoreUses[] = _("PokéVial successfully healed party.\pNo more use left. Heal at\nPOKéMON Center to replenish.{PAUSE_UNTIL_PRESS}");
 static const u8 sText_PokeVial_Failure[] = _("PokéVial is drained.\nHeal at a POKéMON Center to replenish.{PAUSE_UNTIL_PRESS}");
+static const u8 sText_PokeVial_NoEffect[] = _("PokéVial will have no effect.\nParty is already fully healed.{PAUSE_UNTIL_PRESS}");
 void ItemUseOutOfBattle_PokeVial(u8 taskId)
 {
     const u8 *Text_PokeVial_Success = NULL;
@@ -1239,6 +1277,15 @@ void ItemUseOutOfBattle_PokeVial(u8 taskId)
 
     }
     else{
+            if (CheckPlayerPartyHealed()){
+                if (gTasks[taskId].tUsingRegisteredKeyItem) // to account for pressing select in the overworld
+                    DisplayItemMessageOnField(taskId, sText_PokeVial_NoEffect, Task_CloseCantUseKeyItemMessage);
+                else if (!InBattlePyramid())
+                    DisplayItemMessage(taskId, FONT_NORMAL, sText_PokeVial_NoEffect, CloseItemMessage);
+                else
+                    DisplayItemMessageInBattlePyramid(taskId, sText_PokeVial_NoEffect, Task_CloseBattlePyramidBagMessage);
+                return;
+            }
         PlaySE(SE_RG_POKE_JUMP_SUCCESS);
         HealPlayerParty();
         vialUsages++;

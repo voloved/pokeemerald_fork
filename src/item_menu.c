@@ -1393,7 +1393,9 @@ static u8 GetSwitchBagPocketDirection(void)
 
 static void ChangeBagPocketId(u8 *bagPocketId, s8 deltaBagPocketId)
 {
-    if (deltaBagPocketId == MENU_CURSOR_DELTA_RIGHT && *bagPocketId == POCKETS_COUNT - 1)
+    if ((deltaBagPocketId == MENU_CURSOR_DELTA_RIGHT && *bagPocketId == BALLS_POCKET) || (deltaBagPocketId == MENU_CURSOR_DELTA_LEFT && *bagPocketId == BERRIES_POCKET))
+        *bagPocketId += deltaBagPocketId*2;
+    else if (deltaBagPocketId == MENU_CURSOR_DELTA_RIGHT && *bagPocketId == POCKETS_COUNT - 1)
         *bagPocketId = 0;
     else if (deltaBagPocketId == MENU_CURSOR_DELTA_LEFT && *bagPocketId == 0)
         *bagPocketId = POCKETS_COUNT - 1;
@@ -2769,6 +2771,9 @@ static void PrintTMHMMoveData(u16 itemId)
         moveId = ItemIdToBattleMoveId(itemId);
         BlitMenuInfoIcon(WIN_TMHM_INFO, gBattleMoves[moveId].type + 1, 0, 0);
 
+        if (!isMoveStatus(moveId))
+            BlitMenuInfoIcon(WIN_TMHM_INFO, isMoveSpecial(moveId) + MENU_INFO_ICON_PHYSICAL, 0, 13);
+
         // Print TMHM power
         if (gBattleMoves[moveId].power <= 1)
         {
@@ -2779,7 +2784,7 @@ static void PrintTMHMMoveData(u16 itemId)
             ConvertIntToDecimalStringN(gStringVar1, gBattleMoves[moveId].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
             text = gStringVar1;
         }
-        BagMenu_Print(WIN_TMHM_INFO, FONT_NORMAL, text, 7, 12, 0, 0, TEXT_SKIP_DRAW, COLORID_TMHM_INFO);
+        BagMenu_Print(WIN_TMHM_INFO, FONT_NORMAL, text, 14, 12, 0, 0, TEXT_SKIP_DRAW, COLORID_TMHM_INFO);
 
         // Print TMHM accuracy
         if (gBattleMoves[moveId].accuracy == 0)
@@ -2791,11 +2796,11 @@ static void PrintTMHMMoveData(u16 itemId)
             ConvertIntToDecimalStringN(gStringVar1, gBattleMoves[moveId].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
             text = gStringVar1;
         }
-        BagMenu_Print(WIN_TMHM_INFO, FONT_NORMAL, text, 7, 24, 0, 0, TEXT_SKIP_DRAW, COLORID_TMHM_INFO);
+        BagMenu_Print(WIN_TMHM_INFO, FONT_NORMAL, text, 14, 24, 0, 0, TEXT_SKIP_DRAW, COLORID_TMHM_INFO);
 
         // Print TMHM pp
         ConvertIntToDecimalStringN(gStringVar1, gBattleMoves[moveId].pp, STR_CONV_MODE_RIGHT_ALIGN, 3);
-        BagMenu_Print(WIN_TMHM_INFO, FONT_NORMAL, gStringVar1, 7, 36, 0, 0, TEXT_SKIP_DRAW, COLORID_TMHM_INFO);
+        BagMenu_Print(WIN_TMHM_INFO, FONT_NORMAL, gStringVar1, 14, 36, 0, 0, TEXT_SKIP_DRAW, COLORID_TMHM_INFO);
 
         CopyWindowToVram(WIN_TMHM_INFO, COPYWIN_GFX);
     }
@@ -3368,14 +3373,16 @@ static u8 GetKeyItemType(u16 itemId)
         return 1;
     else if (ItemId_GetFieldFunc(itemId) == ItemUseOutOfBattle_Itemfinder)
         return 2;
-    else if (ItemId_GetFieldFunc(itemId) == ItemUseOutOfBattle_Rod)
+    else if (ItemId_GetFieldFunc(itemId) == ItemUseOutOfBattle_TmCase)
         return 3;
-    else if (ItemId_GetFieldFunc(itemId) != ItemUseOutOfBattle_CannotUse)
+    else if (ItemId_GetFieldFunc(itemId) == ItemUseOutOfBattle_Rod)
         return 4;
-    else if (ItemId_GetBattleUsage(itemId) )
+    else if (ItemId_GetFieldFunc(itemId) != ItemUseOutOfBattle_CannotUse)
         return 5;
-    else   
+    else if (ItemId_GetBattleUsage(itemId) )
         return 6;
+    else   
+        return 7;
 }
 
 static s8 CompareItemsByType(struct ItemSlot* itemSlot1, struct ItemSlot* itemSlot2, u8 pocket)

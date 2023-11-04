@@ -5,6 +5,7 @@
 #include "field_specials.h"
 #include "item.h"
 #include "menu.h"
+#include "match_call.h"
 #include "palette.h"
 #include "script.h"
 #include "script_menu.h"
@@ -67,7 +68,6 @@ static void MultichoiceDynamicEventDebug_OnDestroy(struct DynamicListMenuEventAr
 static void MultichoiceDynamicEventShowItem_OnInit(struct DynamicListMenuEventArgs *eventArgs);
 static void MultichoiceDynamicEventShowItem_OnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs);
 static void MultichoiceDynamicEventShowItem_OnDestroy(struct DynamicListMenuEventArgs *eventArgs);
-static u32 getNumBadges(void);
 
 static const struct DynamicListMenuEventCollection sDynamicListMenuEventCollections[] =
 {
@@ -1155,28 +1155,16 @@ int ScriptMenu_AdjustLeftCoordFromWidth(int left, int width)
     return adjustedLeft;
 }
 
-static u32 getNumBadges(void)
-{
-    u32 i = 0;
-    u32 numBadges = 0;
-    for(i = 0; i < NUM_BADGES; i++)
-    {
-        if(FlagGet(FLAG_BADGE01_GET + i))
-            numBadges++;
-    }
-    return numBadges;
-}
-
 void CountBadges(void)
 {
-    gSpecialVar_Result = getNumBadges();
+    gSpecialVar_Result = GetNumOwnedBadges();
 }
 
 static const u8 sText_Mint[] = _("mint");
 static const u8 sText_Mints[] = _("mints");
 void CanGetNatureMintFromJaime(void)
 {
-    u32 numBadges = getNumBadges();
+    u32 numBadges = GetNumOwnedBadges();
     u16 mintsGiven = VarGet(VAR_JAIME_MINTS_GIVEN);
     u16 mintsLeftToGive = numBadges - mintsGiven;
     if (mintsGiven < numBadges)

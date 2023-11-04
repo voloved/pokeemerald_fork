@@ -137,7 +137,7 @@
       "y": 1,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "LittlerootTown_ProfessorBirchsLab_EventScript_Book"
+      "script": "LittlerootTown_ProfessorBirchsLab_EventScript_BookTypeChart"
     },
     {
       "type": "sign",
@@ -145,7 +145,7 @@
       "y": 1,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "LittlerootTown_ProfessorBirchsLab_EventScript_Book"
+      "script": "LittlerootTown_ProfessorBirchsLab_EventScript_BookNatureChart"
     },
     {
       "type": "sign",

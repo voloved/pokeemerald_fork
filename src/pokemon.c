@@ -2935,6 +2935,11 @@ void BoxMonToMon(const struct BoxPokemon *src, struct Pokemon *dest)
     value = MAIL_NONE;
     SetMonData(dest, MON_DATA_MAIL, &value);
     CalculateMonStats(dest);
+    if (GetMonData(dest, MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE))
+    {
+        value = 0;
+        SetMonData(dest, MON_DATA_HP, &value);
+    }
 }
 
 u8 GetLevelFromMonExp(struct Pokemon *mon)
@@ -3840,6 +3845,9 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_SANITY_IS_EGG:
         retVal = boxMon->isEgg;
         break;
+    case MON_DATA_IN_PC:
+        retVal = boxMon->inPC;
+        break;
     case MON_DATA_OT_NAME:
     {
         retVal = 0;
@@ -4107,6 +4115,12 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_HIDDEN_NATURE:
         retVal = substruct0->hiddenNature;
         break;
+    case MON_DATA_BOX_HP:
+        retVal = substruct0->box_hp;
+        break;
+    case MON_DATA_BOX_AILMENT:
+        retVal = substruct0->box_ailment;
+        break;
     default:
         break;
     }
@@ -4226,6 +4240,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     case MON_DATA_SANITY_IS_EGG:
         SET8(boxMon->isEgg);
+        break;
+    case MON_DATA_IN_PC:
+        SET8(boxMon->inPC);
         break;
     case MON_DATA_OT_NAME:
     {
@@ -4509,6 +4526,12 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
     }
     case MON_DATA_HIDDEN_NATURE:
         SET8(substruct0->hiddenNature);
+        break;
+    case MON_DATA_BOX_HP:
+        SET8(substruct0->box_hp);
+        break;
+    case MON_DATA_BOX_AILMENT:
+        SET8(substruct0->box_ailment);
         break;
     default:
         break;

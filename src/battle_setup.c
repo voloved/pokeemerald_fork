@@ -2018,6 +2018,31 @@ bool8 levelCappedNuzlocke(u8 level)
     return FALSE;
 }
 
+bool8 PartyIsFullyLevelCapped()
+{
+    u8 levelCap = getLevelCap();
+    u8 monLevel, i;
+    bool8 Result = TRUE;
+    for(i = 0; i < CalculatePlayerPartyCount(); i++)
+    {
+        //Ignore dead
+        if (GetMonData(&gPlayerParty[i], MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE) && FlagGet(FLAG_SYS_POKEDEX_GET))
+            continue;
+        //Ignore Egg or type none (though CalculatePlayerPartyCount should handle that)
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE || GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
+            continue;
+        
+        monLevel = GetMonData(&gPlayerParty[i], MON_DATA_LEVEL);
+        if (monLevel < levelCap)
+        {
+            Result = FALSE;
+            break;
+        }
+    }
+    gSpecialVar_Result = Result;
+    return Result;
+}
+
 void LevelCapToString(void)
 {
     u8 lvl_txt[3];

@@ -58,3 +58,7 @@ gText_WeHopeToSeeYouAgain4::
 	.string "Your POKéMON are healed, but cannot\n"
 	.string "level over {STR_VAR_1} due to Nuzlocke.$"
 
+gText_WeHopeToSeeYouAgain5::
+	.string "The level cap is {STR_VAR_1} due to Nuzlocke.\n"
+	.string "We hope to see you again!$"
+
