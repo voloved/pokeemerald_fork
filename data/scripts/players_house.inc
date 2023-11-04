@@ -422,7 +422,9 @@ PlayersHouse_1F_Movement_MovePlayerAwayFromDoor:
 
 PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV::
 	lockall
-	call PlayersHouse_1F_EventScript_SetUpObjectEventVars
+	checkplayergender
+	call_if_eq VAR_RESULT, MALE, PlayersHouse_1F_EventScript_SetUpObjectEventVarsMale
+	call_if_eq VAR_RESULT, FEMALE, PlayersHouse_1F_EventScript_SetUpObjectEventVarsFemale
 	call_if_eq VAR_0x8008, MALE, PlayersHouse_1F_EventScript_PlayerEnterRoomMale
 	call_if_eq VAR_0x8008, FEMALE, PlayersHouse_1F_EventScript_PlayerEnterRoomFemale
 	applymovement VAR_0x8009, Common_Movement_FacePlayer
@@ -437,7 +439,6 @@ PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV::
 	call_if_eq VAR_0x8008, FEMALE, PlayersHouse_1F_EventScript_DadApproachPlayerFemale
 	msgbox PlayersHouse_1F_Text_TicketFromBrineyCameForYou, MSGBOX_DEFAULT
 	giveitem ITEM_SS_TICKET
-	call PlayersHouse_1F_EventScript_SetUpObjectEventVars @ giveItem with description reset VAR_0x8009
 	msgbox PlayersHouse_1F_Text_PortsInSlateportLilycove, MSGBOX_DEFAULT
 	closemessage
 	delay 20
@@ -508,12 +509,6 @@ PlayersHouse_1F_EventScript_SetUpObjectEventVarsMale::
 	setvar VAR_0x8008, MALE
 	setvar VAR_0x8009, LOCALID_DAD
 	setvar VAR_0x800A, LOCALID_MOM
-	return
-
-PlayersHouse_1F_EventScript_SetUpObjectEventVars::
-	checkplayergender
-	call_if_eq VAR_RESULT, MALE, PlayersHouse_1F_EventScript_SetUpObjectEventVarsMale
-	call_if_eq VAR_RESULT, FEMALE, PlayersHouse_1F_EventScript_SetUpObjectEventVarsFemale
 	return
 
 PlayersHouse_1F_EventScript_SetUpObjectEventVarsFemale::

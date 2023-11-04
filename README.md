@@ -10,6 +10,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
 ## Not Yet Versioned
  - Fly Will Only Be Displayed by Pokémon Who Cannot Learn iit If Flying Is Currently Allowed.
+ - Bugfix where Dad giving SS Ticket causes him to not move.
 
 ## v2.3.0
  - Now Able to Access PC from PokéNav in caves, houses, and gyms after receiving Balance Badge.
