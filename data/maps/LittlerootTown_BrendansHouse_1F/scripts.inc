@@ -408,9 +408,11 @@ PlayersHouse_1F_Text_PortsInSlateportLilycove:
 PlayersHouse_1F_Text_BetterGetBackToGym:
 	.string "I'd better get back to PETALBURG GYM.\p"
 	.string "MOM, thanks for looking after the house\n"
-	.string "while I'm away.\p"
-	.string "Also, {PLAYER}, I left a\n"
-	.string "few gifts in your PC.$"
+	.string "while I'm away.$"
+
+PlayersHouse_1F_Text_AddedItemsToPC:
+	.string "Oh {PLAYER}, before I forget:\n"
+	.string "I left a few gifts in your PC.$"
 
 PlayersHouse_1F_Text_DadShouldStayLonger:
 	.string "MOM: That DAD of yours…\p"
