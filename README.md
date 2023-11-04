@@ -8,10 +8,14 @@ Link to [Patch File is Here](https://drive.google.com/drive/folders/1GFChFDEmOJH
 To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokémon Emerald (those devs who made the game 20 years ago gotta eat too).  
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
+## Not Yet Versioned
+ - Fly Will Only Be Displayed by Pokémon Who Cannot Learn iit If Flying Is Currently Allowed.
+
 ## v2.3.0
  - Now Able to Access PC from PokéNav in caves, houses, and gyms after receiving Balance Badge.
    - [Pokémon withdrawn from the PokéNav will not be healed from when they were put into the PC.](https://github.com/pret/pokeemerald/wiki/Make-Pokemon-Not-Heal-When-Going-into-PC)
  - Move Status is now displayed in summary screen, TM bag pocket, and TM Case.
+ - [Added TM Case that Displays Which Pokémon Can Learn the Move.](https://www.pokecommunity.com/showpost.php?p=10378278)
  - [Added Ability to Display Mugshots](https://www.pokecommunity.com/showpost.php?p=10593661&postcount=444) [Credit: Anon822]
    - Prof. Birch's lab now has a book that shows the Type Chart and one that shows the Nature Chart.
    - Nature Chart is shown when choosing mints from Jaime.
