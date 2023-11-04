@@ -8,10 +8,19 @@ Link to [Patch File is Here](https://drive.google.com/drive/folders/1GFChFDEmOJH
 To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokémon Emerald (those devs who made the game 20 years ago gotta eat too).  
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
-## Not Yet Versioned
- - [Lady at Lavaridge now gives a random rare baby Pokémon as an egg rather than Wynaut every time.](https://gitlab.com/devolov/pokeemerald_fork/-/commit/059c600a30506d1ce4fcfff844276c808ea764f3)
+## v2.3.0
+ - Now Able to Access PC from PokéNav in caves, houses, and gyms after receiving Balance Badge.
+   - [Pokémon withdrawn from the PokéNav will not be healed from when they were put into the PC.](https://github.com/pret/pokeemerald/wiki/Make-Pokemon-Not-Heal-When-Going-into-PC)
+ - Move Status is now displayed in summary screen, TM bag pocket, and TM Case.
+ - [Added Ability to Display Mugshots](https://www.pokecommunity.com/showpost.php?p=10593661&postcount=444) [Credit: Anon822]
+   - Prof. Birch's lab now has a book that shows the Type Chart and one that shows the Nature Chart.
+   - Nature Chart is shown when choosing mints from Jaime.
+ - PokéVial and Nurse Joy will only cause a heal to occur if party is not already healed.
  - Mints include the stats they change in their descriptions.
- - Added ability to see type chart and nature chart in Birch's books.
+ - [Lady at Lavaridge now gives a random rare baby Pokémon as an egg rather than Wynaut every time.](https://gitlab.com/devolov/pokeemerald_fork/-/commit/059c600a30506d1ce4fcfff844276c808ea764f3)
+ - BoxMon struct modified to allow for Pokémon Box Ruby & Sapphire compatibility.
+   - This change will cause previously dead Pokémon in a Nuzlocke run to no longer be dead.
+ - Mints include the stats they change in their descriptions.
 
 ## v2.2.3
  - Added Roserade, Ambipom, Mismagius, Honchkrow, Froslass, Ursaluna, and Annihilape.
