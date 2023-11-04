@@ -2664,7 +2664,7 @@ static u8 SlotToShowFly(void)
 // Returns the slot to display fly in if no one in the party can learn fly. Returns the party size otherwise
 {
     u8 i;
-    if (CanLearnFlyInParty())
+    if (CanLearnFlyInParty() || !Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType))
         return PARTY_SIZE;
     for (i = 0; i < PARTY_SIZE; i++)
     {

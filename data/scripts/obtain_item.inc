@@ -90,7 +90,9 @@ EventScript_ObtainedItemMessage:
 	message gText_ObtainedTheItem
 EventScript_ContinueObtainedItem:
 	delay 10
+	copyvar VAR_TEMP_B, VAR_0x8009
 	showitemdesc
+	copyvar VAR_0x8009, VAR_TEMP_B
 	waitfanfare
 	call EventScript_PutItemMsg
 	setvar VAR_RESULT, TRUE
@@ -176,7 +178,9 @@ EventScript_PickUpItemContinueAdd::
 	call_if_eq VAR_0x8008, TRUE, EventScript_FoundTMHM
 	call_if_eq VAR_0x8008, FALSE, EventScript_FoundItem
 	delay 10
+	copyvar VAR_TEMP_B, VAR_0x8009
 	showitemdesc
+	copyvar VAR_0x8009, VAR_TEMP_B
 	waitfanfare
 	waitmessage
 	bufferitemnameplural STR_VAR_2, VAR_0x8004, VAR_0x8005
@@ -249,7 +253,9 @@ EventScript_FoundHiddenItem::
 
 EventScript_PutHiddenItemInPocket::
 	delay 10
+	copyvar VAR_TEMP_B, VAR_0x8009
 	showitemdesc
+	copyvar VAR_0x8009, VAR_TEMP_B
 	waitmessage
 	waitfanfare
 	bufferitemnameplural STR_VAR_2, VAR_0x8004, 1
