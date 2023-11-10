@@ -261,19 +261,19 @@ LittlerootTown_EventScript_Jaime_Default::
 	end
 
 LittlerootTown_EventScript_Jaime_InfRareCandy::
+	lockall
+	applymovement LOCALID_JAIME, Common_Movement_FacePlayer
+	waitmovement 0
 	msgbox LittlerootTown_Text_JaimeNuzlockeOverlevel, MSGBOX_DEFAULT
 	msgbox LittlerootTown_Text_JaimeNuzlockeOverlevel_YesNo, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, LittlerootTown_EventScript_InfRareCandyEnd
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_EventScript_MintEnd
 	callnative PartyIsFullyLevelCapped
 	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_Jaime_InfRareCandyNoEffect
 	callnative FieldUseInfiniteRareCandy
-	goto LittlerootTown_EventScript_InfRareCandyEnd
+	goto LittlerootTown_EventScript_MintEnd
 	end
 LittlerootTown_EventScript_Jaime_InfRareCandyNoEffect::
 	msgbox LittlerootTown_Text_JaimeNuzlockeOverlevel_NoEffect
-	end
-LittlerootTown_EventScript_InfRareCandyEnd::
-	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_NPC
 	end
 
 LittlerootTown_EventScript_JaimeGiveMints::
@@ -413,9 +413,7 @@ LittlerootTown_EventScript_Jaime_EliteFourNotFirstTime:
 	setflag FLAG_TEMP_MEAN_ZIGZAGOON
 	pokemart LittlerootTown_EventScript_Jaime_Vitamins
 	clearflag FLAG_TEMP_MEAN_ZIGZAGOON
-	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_DEFAULT
-	release
-	end
+	goto LittlerootTown_EventScript_MintEnd
 
 	.align 2
 LittlerootTown_EventScript_Jaime_Vitamins:
