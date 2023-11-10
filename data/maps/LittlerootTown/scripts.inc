@@ -270,10 +270,13 @@ LittlerootTown_EventScript_Jaime_InfRareCandy::
 	callnative PartyIsFullyLevelCapped
 	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_Jaime_InfRareCandyNoEffect
 	callnative FieldUseInfiniteRareCandy
-	goto LittlerootTown_EventScript_MintEnd
+	goto LittlerootTown_EventScript_InfRareCandyEnd
 	end
 LittlerootTown_EventScript_Jaime_InfRareCandyNoEffect::
 	msgbox LittlerootTown_Text_JaimeNuzlockeOverlevel_NoEffect
+	end
+LittlerootTown_EventScript_InfRareCandyEnd::
+	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_SIGN
 	end
 
 LittlerootTown_EventScript_JaimeGiveMints::
@@ -394,7 +397,7 @@ LittlerootTown_EventScript_MintGiveEnd::
 	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_EventScript_JaimeGiveMintsNotFirstTime
 LittlerootTown_EventScript_MintEnd::
 	msgbox LittlerootTown_Text_JaimeSold, MSGBOX_DEFAULT
-	release
+	releaseall
 	end
 
 LittlerootTown_EventScript_Jaime_EliteFourWon::

@@ -5477,7 +5477,12 @@ static void PartyMenuTryEvolution(u8 taskId)
     {
         FreePartyPointers();
         if (gSpecialVar_ItemId == ITEM_INF_RARE_CANDY && gPartyMenu.menuType == PARTY_MENU_TYPE_FIELD)
-            gCB2_AfterEvolution = CB2_ReturnToPartyMenuUsingRareCandy;
+        {
+            if(gPartyMenu.exitCallback == CB2_ReturnToField)
+                gCB2_AfterEvolution = FieldUseInfiniteRareCandy;
+            else
+                gCB2_AfterEvolution = CB2_ReturnToPartyMenuUsingRareCandy;
+        } 
         else
             gCB2_AfterEvolution = gPartyMenu.exitCallback;
         BeginEvolutionScene(mon, targetSpecies, TRUE, gPartyMenu.slotId, FALSE);
