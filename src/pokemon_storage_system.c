@@ -6446,7 +6446,7 @@ static void SetPlacedMonData(u8 boxId, u8 position)
     u8 value;
     if (boxId == TOTAL_BOXES_COUNT)
     {
-        if(gSysPcFromPokenav && GetMonData(&sStorage->movingMon, MON_DATA_IN_PC))
+        if(gSysPcFromPokenav && GetMonData(&sStorage->movingMon, MON_DATA_RESTORE_STATS))
         {
             hp = GetHPFromBoxHP(&sStorage->movingMon);
             status = GetStatusFromBoxStatus(&sStorage->movingMon);
@@ -6456,7 +6456,7 @@ static void SetPlacedMonData(u8 boxId, u8 position)
         else
             MonRestorePP(&sStorage->movingMon);
         value = 0;
-        SetBoxMonData(&sStorage->movingMon.box, MON_DATA_IN_PC, &value);
+        SetBoxMonData(&sStorage->movingMon.box, MON_DATA_RESTORE_STATS, &value);
         SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_HP, &value);
         SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_AILMENT, &value);
         gPlayerParty[position] = sStorage->movingMon;
@@ -6466,7 +6466,7 @@ static void SetPlacedMonData(u8 boxId, u8 position)
         value = TRUE;
         hp = GetBoxHPFromHP(&sStorage->movingMon);
         status = GetBoxStatusFromStatus(&sStorage->movingMon);
-        SetBoxMonData(&sStorage->movingMon.box, MON_DATA_IN_PC, &value);
+        SetBoxMonData(&sStorage->movingMon.box, MON_DATA_RESTORE_STATS, &value);
         SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_HP, &hp);
         SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_AILMENT, &status);
         SetBoxMonAt(boxId, position, &sStorage->movingMon.box);
@@ -6803,7 +6803,7 @@ static void InitSummaryScreenData(void)
     {
         SaveMovingMon();
         sStorage->summaryMon.mon = &sSavedMovingMon;
-        if (gSysPcFromPokenav && GetMonData(&sStorage->movingMon, MON_DATA_IN_PC) && sMovingMonOrigBoxId != TOTAL_BOXES_COUNT)
+        if (gSysPcFromPokenav && GetMonData(&sStorage->movingMon, MON_DATA_RESTORE_STATS) && sMovingMonOrigBoxId != TOTAL_BOXES_COUNT)
         // If it did not come from the party
         {
             hp = GetHPFromBoxHP(&sStorage->movingMon);
@@ -9541,6 +9541,17 @@ void SetBoxMonDataAt(u8 boxId, u8 boxPosition, s32 request, const void *value)
 {
     if (boxId < TOTAL_BOXES_COUNT && boxPosition < IN_BOX_COUNT)
         SetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], request, value);
+}
+
+void ClearAllBoxMonStatus(void)
+{
+    int boxId, boxPosition;
+    bool8 stats = FALSE;
+    for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
+    {
+        for (boxPosition = 0; boxPosition < IN_BOX_COUNT; boxPosition++)
+            SetBoxMonDataAt(boxId, boxPosition, MON_DATA_RESTORE_STATS, &stats);
+    }
 }
 
 u32 GetCurrentBoxMonData(u8 boxPosition, s32 request)

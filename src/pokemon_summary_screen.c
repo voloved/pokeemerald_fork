@@ -1405,7 +1405,7 @@ static void CopyMonToSummaryStruct(struct Pokemon *mon)
     {
         struct BoxPokemon *boxMon = sMonSummaryScreen->monList.boxMons;
         BoxMonToMon(&boxMon[sMonSummaryScreen->curMonIndex], mon);
-        if (gSysPcFromPokenav && GetMonData(mon, MON_DATA_IN_PC))
+        if (gSysPcFromPokenav && GetMonData(mon, MON_DATA_RESTORE_STATS))
         {
             u16 hp = GetHPFromBoxHP(mon);
             u32 status = GetStatusFromBoxStatus(mon);

@@ -2390,6 +2390,8 @@ u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc)
     }
     else if (setVarForThisEnc){
         u16 species_enemy = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)]], MON_DATA_SPECIES2);
+        if (species_enemy == SPECIES_EGG || species_enemy == SPECIES_NONE)
+            return 0;  // This shouldn't happen, but don't penalize the player for it..
         if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species_enemy), FLAG_GET_CAUGHT) && !FlagGet(FLAG_NUZLOCKE_NO_DUPES_CLAUSE)){
             return 2;  // If it's a duplicate Pokemon
         }

@@ -51,7 +51,7 @@ Debug_Script_2::
 	end
 
 Debug_Script_3::
-	call PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
+	call LittlerootTown_ProfessorBirchsLab_EventScript_PC_Nuzlocke
 	end
 
 Debug_Script_4::
