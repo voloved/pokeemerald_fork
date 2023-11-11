@@ -7092,7 +7092,6 @@ static void Task_BottleCaps(u8 taskId)
         
         gPartyMenuUseExitCallback = TRUE;
         GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
-        StringCopy(gStringVar2, sStatNamePointers[tIVToSet]);
         if (tIVSetAmount == MAX_PER_STAT_IVS)
             StringCopy(gStringVar3, sText_TheMax);
         else
@@ -7100,7 +7099,10 @@ static void Task_BottleCaps(u8 taskId)
         if (tIVToSet == NUM_STATS)
             StringExpandPlaceholders(gStringVar4, sText_AskGoldenBottleCap);
         else
+        {
+            StringCopy(gStringVar2, sStatNamePointers[tIVToSet]);
             StringExpandPlaceholders(gStringVar4, sText_AskBottleCap);
+        }
         PlaySE(SE_SELECT);
         DisplayPartyMenuMessage(gStringVar4, 1);
         ScheduleBgCopyTilemapToVram(2);
