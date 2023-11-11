@@ -10,6 +10,10 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
  ## Not Yet Versioned
  - Using Pokémon Center restores all Pokémon in the PC.
+ - Infinite Rare Candy when running the No Overleveling Nuzlocke no longer is accessable through Jaime. instead, it can be found in the Marts from the lady next to the cashier.
+ - Back shelf in Mart now looks more cohesive.
+ - Bugfix on evolving with Inf. Rare Candy on field crashing the game.
+ - Bugfix where Battle Items pocket in bag never opens.
 
 ## v2.3.1
  - Fly Will Only Be Displayed by Pokémon Who Cannot Learn it If Flying Is Currently Allowed.

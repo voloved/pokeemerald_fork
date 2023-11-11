@@ -782,8 +782,13 @@ void ItemUseOutOfBattle_PPUp(u8 taskId)
 
 void ItemUseOutOfBattle_RareCandy(u8 taskId)
 {
-    gItemUseCB = ItemUseCB_RareCandy;
-    SetUpItemUseCallback(taskId);
+    if (gTasks[taskId].tUsingRegisteredKeyItem)
+        FieldUseInfiniteRareCandy();
+    else
+    {
+        gItemUseCB = ItemUseCB_RareCandy;
+        SetUpItemUseCallback(taskId);
+    }
 }
 
 void ItemUseOutOfBattle_TMHM(u8 taskId)
