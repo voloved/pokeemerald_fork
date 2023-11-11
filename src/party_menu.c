@@ -232,7 +232,7 @@ static EWRAM_DATA u16 *sSlot1TilemapBuffer = 0; // for switching party slots
 static EWRAM_DATA u16 *sSlot2TilemapBuffer = 0; //
 EWRAM_DATA u8 gSelectedOrderFromParty[MAX_FRONTIER_PARTY_SIZE] = {0};
 static EWRAM_DATA u16 sPartyMenuItemId = 0;
-static EWRAM_DATA u16 sUnused = 0;
+static EWRAM_DATA u16 sRareCandyField = 0;
 EWRAM_DATA u8 gBattlePartyCurrentOrder[PARTY_SIZE / 2] = {0}; // bits 0-3 are the current pos of Slot 1, 4-7 are Slot 2, and so on
 
 // IWRAM common
@@ -1414,6 +1414,7 @@ static void HandleChooseMonCancel(u8 taskId, s8 *slotPtr)
                 gSpecialVar_0x8004 = PARTY_SIZE + 1;
             gPartyMenuUseExitCallback = FALSE;
             *slotPtr = PARTY_SIZE + 1;
+            sRareCandyField = FALSE;
             Task_ClosePartyMenu(taskId);
         }
         break;
@@ -4492,12 +4493,17 @@ static void LoadPartyMenuAilmentGfx(void)
 
 void CB2_ShowPartyMenuForItemUse(void)
 {
-    MainCallback callback = CB2_ReturnToBagMenu;
+    MainCallback callback;
     u8 partyLayout;
     u8 menuType;
     u8 i;
     u8 msgId;
     TaskFunc task;
+
+    if (sRareCandyField)
+        callback = CB2_ReturnToField;
+    else
+        callback = CB2_ReturnToBagMenu;
 
     if (gMain.inBattle)
     {
@@ -5478,7 +5484,7 @@ static void PartyMenuTryEvolution(u8 taskId)
         FreePartyPointers();
         if (gSpecialVar_ItemId == ITEM_INF_RARE_CANDY && gPartyMenu.menuType == PARTY_MENU_TYPE_FIELD)
         {
-            if(gPartyMenu.exitCallback == CB2_ReturnToField)
+            if(sRareCandyField)
                 gCB2_AfterEvolution = FieldUseInfiniteRareCandy;
             else
                 gCB2_AfterEvolution = CB2_ReturnToPartyMenuUsingRareCandy;
@@ -7173,13 +7179,8 @@ void ItemUseCB_BottleCaps(u8 taskId, TaskFunc task)
 
 void FieldUseInfiniteRareCandy(void)
 {
-    MainCallback callback = CB2_ReturnToField;
-    TaskFunc task = Task_HandleChooseMonInput;
-    u8 menuType = PARTY_MENU_TYPE_FIELD;
-    u8 partyLayout = PARTY_LAYOUT_SINGLE;
-    u8 msgId = PARTY_MSG_USE_ON_WHICH_MON;
-    gItemUseCB = ItemUseCB_RareCandy;
+    sRareCandyField = TRUE;
     gSpecialVar_ItemId = ITEM_INF_RARE_CANDY;
-    InitPartyMenu(menuType, partyLayout, PARTY_ACTION_USE_ITEM, TRUE, msgId, task, callback);
+    SetMainCallback2(CB2_ReturnToPartyMenuUsingRareCandy);
 }
 
