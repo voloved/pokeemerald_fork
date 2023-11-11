@@ -1,6 +1,7 @@
 .set LOCALID_LOTTERY_CLERK, 2
 
 LilycoveCity_DepartmentStore_1F_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, Common_Mart_OnTransition
 	.byte 0
 
 LilycoveCity_DepartmentStore_1F_EventScript_Greeter::

@@ -1,4 +1,5 @@
 SootopolisCity_Mart_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, Common_Mart_OnTransition
 	.byte 0
 
 SootopolisCity_Mart_EventScript_Clerk::

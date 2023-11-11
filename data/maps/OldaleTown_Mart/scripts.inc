@@ -1,5 +1,15 @@
 OldaleTown_Mart_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, Common_Mart_OnTransition
 	.byte 0
+
+Common_Mart_OnTransition::
+	goto_if_unset FLAG_NUZLOCKE, Common_Mart_No_InfRare
+	goto_if_unset FLAG_NUZLOCKE_LEVEL_CAP, Common_Mart_No_InfRare
+	clearflag FLAG_HIDE_INF_RARE_CANDY_SAMPLES
+	end
+Common_Mart_No_InfRare::
+	setflag FLAG_HIDE_INF_RARE_CANDY_SAMPLES
+	end
 
 OldaleTown_Mart_EventScript_Clerk::
 	lock
@@ -55,6 +65,47 @@ OldaleTown_Mart_EventScript_PokeBallsInStock::
 OldaleTown_Mart_EventScript_Boy::
 	msgbox OldaleTown_Mart_Text_RestoreHPWithPotion, MSGBOX_NPC
 	end
+
+Common_Mart_EventScript_InfRareCandy::
+	lock
+	faceplayer
+	goto_if_unset FLAG_NUZLOCKE, Common_Mart_EventScript_NoSamples
+	goto_if_unset FLAG_NUZLOCKE_LEVEL_CAP, Common_Mart_EventScript_NoSamples
+	msgbox LittlerootTown_Text_MartNuzlockeOverlevel, MSGBOX_DEFAULT
+	msgbox LittlerootTown_Text_MartNuzlockeOverlevel_YesNo, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, Common_Mart_EventScript_InfRareCandyEnd
+	callnative PartyIsFullyLevelCapped
+	goto_if_eq VAR_RESULT, TRUE, Common_Mart_EventScript_InfRareCandyNoEffect
+	callnative FieldUseInfiniteRareCandy
+	goto Common_Mart_EventScript_InfRareCandyEnd
+	end
+Common_Mart_EventScript_NoSamples::
+	msgbox LittlerootTown_Text_MartNoSamples, MSGBOX_SIGN
+	end
+Common_Mart_EventScript_InfRareCandyNoEffect::
+	msgbox LittlerootTown_Text_MartNuzlockeOverlevel_NoEffect, MSGBOX_SIGN
+	end
+Common_Mart_EventScript_InfRareCandyEnd::
+	msgbox gText_PleaseComeAgain, MSGBOX_SIGN
+	end
+
+LittlerootTown_Text_MartNuzlockeOverlevel:
+	.string "I see you're running a Nuzlocke where \n"
+	.string "you can't overlevel leaders.\p"
+	.string "That's impressive! We have an item we're\n"
+	.string "sampling called the INF. RARE CANDY.$"
+
+LittlerootTown_Text_MartNuzlockeOverlevel_YesNo:
+	.string "Do you want to try it on your\n"
+	.string "POKéMON right?$"
+
+LittlerootTown_Text_MartNuzlockeOverlevel_NoEffect:
+	.string "All of your POKéMON are\n"
+	.string "already at their max. $"
+
+LittlerootTown_Text_MartNoSamples:
+	.string "Hello, I am all out\n"
+	.string "of samples. $"
 
 OldaleTown_Mart_Text_PokeBallsAreSoldOut:
 	.string "The clerk says they're all sold out.\n"
