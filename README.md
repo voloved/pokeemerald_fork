@@ -12,6 +12,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Razor Wind buffs Attack if using original damage catagories rather than always buffing Special Attack.
  - Leech Life is buffed to its Gen VII stats.
  - Using Infinite Rare Candy on field as registered item now fades into party menu.
+ - Bugfix where scripted encounters did not count toward the Nuzlocke.
  
  ## v2.3.2
  - Using Pokémon Center restores all Pokémon in the PC.
