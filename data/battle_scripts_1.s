@@ -792,7 +792,12 @@ BattleScript_EffectRazorWind::
 	jumpifword CMP_COMMON_BITS, gHitMarker, HITMARKER_NO_ATTACKSTRING, BattleScript_TwoTurnMovesSecondTurn
 	setbyte sTWOTURN_STRINGID, B_MSG_TURN1_RAZOR_WIND
 	call BattleScriptFirstChargingTurn
+	jumpifset FLAG_MOVE_SPLIT_USE_ORIGINAL, BattleScript_EffectRazorWind_OriginalSplit
 	setstatchanger STAT_SPATK, 1, FALSE
+	goto BattleScript_EffectRazorWind_Cont
+BattleScript_EffectRazorWind_OriginalSplit::
+	setstatchanger STAT_ATK, 1, FALSE
+BattleScript_EffectRazorWind_Cont::
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_RazorWindEnd
 	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_INCREASE, BattleScript_RazorWindEnd
 	setgraphicalstatchangevalues
