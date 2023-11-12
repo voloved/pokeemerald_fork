@@ -8,9 +8,14 @@ Link to [Patch File is Here](https://drive.google.com/drive/folders/1GFChFDEmOJH
 To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokémon Emerald (those devs who made the game 20 years ago gotta eat too).  
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
+ ## Not Yet Versioned
+ - Razor Wind buffs Attack if using original damage catagories rather than always buffing Special Attack.
+ - Using Infinite Rare Candy on field as registered item now fades into party menu.
+ 
  ## v2.3.2
  - Using Pokémon Center restores all Pokémon in the PC.
  - Infinite Rare Candy when running the No Overleveling Nuzlocke no longer is accessable through Jaime. instead, it can be found in the Marts from the lady next to the cashier.
+ - Pokémon that are at their level cap and level 100 Pokémon can still gain EVs from battles.
  - Back shelf in Mart now looks more cohesive.
  - Bugfix on evolving with Inf. Rare Candy on field crashing the game.
  - Bugfix where Battle Items pocket in bag never opens.

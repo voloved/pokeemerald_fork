@@ -780,10 +780,24 @@ void ItemUseOutOfBattle_PPUp(u8 taskId)
     SetUpItemUseCallback(taskId);
 }
 
+static void Task_InitRareCandyFromField(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        CleanupOverworldWindowsAndTilemaps();
+        DestroyTask(taskId);
+        FieldUseInfiniteRareCandy();
+    }
+}
+
 void ItemUseOutOfBattle_RareCandy(u8 taskId)
 {
     if (gTasks[taskId].tUsingRegisteredKeyItem)
-        FieldUseInfiniteRareCandy();
+    {
+        gFieldCallback = FieldCB_ReturnToFieldNoScript;
+        FadeScreen(FADE_TO_BLACK, 0);
+        gTasks[taskId].func = Task_InitRareCandyFromField;        
+    }
     else
     {
         gItemUseCB = ItemUseCB_RareCandy;
