@@ -10,6 +10,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
  ## Not Yet Versioned
  - Razor Wind buffs Attack if using original damage catagories rather than always buffing Special Attack.
+ - Leech Life is buffed to its Gen VII stats.
  - Using Infinite Rare Candy on field as registered item now fades into party menu.
  
  ## v2.3.2
