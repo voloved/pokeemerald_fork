@@ -2678,8 +2678,7 @@ void GenerateContestRand(void)
 
     if (gLinkContestFlags & LINK_CONTEST_FLAG_IS_LINK)
     {
-        gContestRngValue = ISO_RANDOMIZE1(gContestRngValue);
-        random = gContestRngValue >> 16;
+        random = Random16(&gContestRngValue);
         result = &gSpecialVar_Result;
     }
     else
@@ -2692,8 +2691,7 @@ void GenerateContestRand(void)
 
 u16 GetContestRand(void)
 {
-    gContestRngValue = ISO_RANDOMIZE1(gContestRngValue);
-    return gContestRngValue >> 16;
+    return Random16(&gContestRngValue);
 }
 
 bool8 LinkContestWaitForConnection(void)

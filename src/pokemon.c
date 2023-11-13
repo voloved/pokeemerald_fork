@@ -2246,7 +2246,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     if (hasFixedPersonality)
         personality = fixedPersonality;
     else
-        personality = Random32();
+        personality = Random32(&gPCGRng);
 
     SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);
 
@@ -2257,7 +2257,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         do
         {
             // Choose random OT IDs until one that results in a non-shiny Pokémon
-            value = Random32();
+            value = Random32(&gPCGRng);
             shinyValue = GET_SHINY_VALUE(value, personality);
         } while (shinyValue < SHINY_ODDS);
     }
@@ -2343,7 +2343,7 @@ void CreateMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV,
 
     do
     {
-        personality = Random32();
+        personality = Random32(&gPCGRng);
     }
     while (nature != GetNatureFromPersonality(personality));
 
@@ -2360,7 +2360,7 @@ void CreateMonWithGenderNatureLetter(struct Pokemon *mon, u16 species, u8 level,
 
         do
         {
-            personality = Random32();
+            personality = Random32(&gPCGRng);
             actualLetter = GET_UNOWN_LETTER(personality);
         }
         while (nature != GetNatureFromPersonality(personality)
@@ -2371,7 +2371,7 @@ void CreateMonWithGenderNatureLetter(struct Pokemon *mon, u16 species, u8 level,
     {
         do
         {
-            personality = Random32();
+            personality = Random32(&gPCGRng);
         }
         while (nature != GetNatureFromPersonality(personality)
             || gender != GetGenderFromSpeciesAndPersonality(species, personality));
@@ -2388,8 +2388,8 @@ void CreateMaleMon(struct Pokemon *mon, u16 species, u8 level)
 
     do
     {
-        otId = Random32();
-        personality = Random32();
+        otId = Random32(&gPCGRng);
+        personality = Random32(&gPCGRng);
     }
     while (GetGenderFromSpeciesAndPersonality(species, personality) != MON_MALE);
     CreateMon(mon, species, level, USE_RANDOM_IVS, TRUE, personality, OT_ID_PRESET, otId);
@@ -2604,7 +2604,7 @@ void CreateMonWithEVSpreadNatureOTID(struct Pokemon *mon, u16 species, u8 level,
     // i is reused as personality value
     do
     {
-        i = Random32();
+        i = Random32(&gPCGRng);
     } while (nature != GetNatureFromPersonality(i));
 
     CreateMon(mon, species, level, fixedIV, TRUE, i, OT_ID_PRESET, otId);

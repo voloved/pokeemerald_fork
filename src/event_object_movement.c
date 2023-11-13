@@ -4909,7 +4909,7 @@ static bool8 TryStartFollowerTransformEffect(struct ObjectEvent *objectEvent, st
         sprite->data[7] = TRANSFORM_TYPE_PERMANENT << 8;
         objectEvent->extra.mon.form = multi;
         return TRUE;
-    } else if ((gRngValue >> 16) < 18 && GetLocalWildMon(FALSE)
+    } else if ((Random16(&gPCGRng)) < 18 && GetLocalWildMon(FALSE)
             && (objectEvent->extra.mon.species == SPECIES_MEW || objectEvent->extra.mon.species == SPECIES_DITTO)) {
         sprite->data[7] = TRANSFORM_TYPE_RANDOM_WILD << 8;
         PlaySE(SE_M_MINIMIZE);

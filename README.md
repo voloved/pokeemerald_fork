@@ -9,6 +9,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
  ## Not Yet Versioned
+ - [New Random Number Generator Implimentation.](https://github.com/DizzyEggg/pokeemerald/commit/686bf3919816a1661c1652fe980dbe93c9920265) [Credit: Kurausukun]
  - Razor Wind buffs Attack if using original damage catagories rather than always buffing Special Attack.
  - Leech Life is buffed to its Gen VII stats.
  - Using Infinite Rare Candy on field as registered item now fades into party menu.
