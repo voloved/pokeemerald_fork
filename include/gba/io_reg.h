@@ -780,5 +780,8 @@
 
 #define GPIO_PORT_DATA        (*(vu16 *)0x80000C4)
 #define GPIO_PORT_DIRECTION   (*(vu16 *)0x80000C6)
+#define GPIO_PORT_READ_ENABLE (*(vu16 *)0x80000C8)
 
+typedef void (*fnptr)(void);
+#define REG_ISR_MAIN         *(fnptr*)(0x03007FFC)
 #endif // GUARD_GBA_IO_REG_H

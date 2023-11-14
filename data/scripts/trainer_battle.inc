@@ -1,4 +1,3 @@
-#include "gba/io_reg.h"
 
 EventScript_StartTrainerApproach::
 	selectapproachingtrainer
@@ -26,7 +25,7 @@ EventScript_NoNormalTrainerBattleCheckRematch::
 	callnative IsRematchAllowed
 	compare VAR_RESULT, TRUE
 	goto_if_ne EventScript_NoRematchTrainerBattle
-	checkbuttonheld B_BUTTON
+	checkbuttonheld 2 @ 2 is the B_BUTTON
 	goto_if_ne VAR_RESULT, TRUE, EventScript_NoRematchTrainerBattle
 	msgbox TrainerBattle_Text_WouldYouLikeToRematch, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, EventScript_TryDoNormalTrainerBattleRematch
@@ -61,7 +60,7 @@ EventScript_NoDoubleTrainerBattleCheckRematch::
 	callnative IsRematchAllowed
 	compare VAR_RESULT, TRUE
 	goto_if_ne EventScript_NoDoubleRematchTrainerBattle
-	checkbuttonheld B_BUTTON
+	checkbuttonheld 2 @ 2 is the B_BUTTON
 	goto_if_ne VAR_RESULT, TRUE, EventScript_NoDoubleRematchTrainerBattle
 	msgbox TrainerBattle_Text_WouldYouLikeToRematchUs, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, EventScript_TryDoDoubleTrainerBattleRematch
