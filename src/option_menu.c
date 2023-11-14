@@ -31,8 +31,8 @@ enum
     TD_FOLLOWER,
     TD_DIFFICULTY,
     TD_TYPEEFFECT,
+    TD_RUMBLE,
     TD_SUGGESTBALL,
-    TD_SUGGESTIONTYPE,
     TD_VSYNC,
 };
 
@@ -55,8 +55,8 @@ enum
     MENUITEM_FOLLOWER,
     MENUITEM_DIFFICULTY,
     MENUITEM_TYPEEFFECT,
+    MENUITEM_RUMBLE,
     MENUITEM_SUGGESTBALL,
-    MENUITEM_SUGGESTIONTYPE,
     MENUITEM_VSYNC,
     MENUITEM_CANCEL_PG2,
     MENUITEM_COUNT_PG2,
@@ -83,8 +83,8 @@ enum
 #define YPOS_FOLLOWER        (MENUITEM_FOLLOWER * 16)
 #define YPOS_DIFFICULTY      (MENUITEM_DIFFICULTY * 16)
 #define YPOS_TYPEEFFECT      (MENUITEM_TYPEEFFECT * 16)
+#define YPOS_RUMBLE          (MENUITEM_RUMBLE * 16)
 #define YPOS_SUGGESTBALL     (MENUITEM_SUGGESTBALL * 16)
-#define YPOS_SUGGESTIONTYPE  (MENUITEM_SUGGESTIONTYPE * 16)
 #define YPOS_VSYNC           (MENUITEM_VSYNC * 16)
 
 // this file's functions
@@ -107,10 +107,10 @@ static u8   Difficulty_ProcessInput(u8 selection);
 static void Difficulty_DrawChoices(u8 selection);
 static u8   TypeEffect_ProcessInput(u8 selection);
 static void TypeEffect_DrawChoices(u8 selection);
+static u8   Rumble_ProcessInput(u8 selection);
+static void Rumble_DrawChoices(u8 selection);
 static u8   SuggestBall_ProcessInput(u8 selection);
 static void SuggestBall_DrawChoices(u8 selection);
-static u8   SuggestionType_ProcessInput(u8 selection);
-static void SuggestionType_DrawChoices(u8 selection);
 static u8   VSync_ProcessInput(u8 selection);
 static void VSync_DrawChoices(u8 selection);
 static u8   Sound_ProcessInput(u8 selection);
@@ -148,8 +148,8 @@ static const u8 *const sOptionMenuItemsNames_Pg2[MENUITEM_COUNT_PG2] =
     [MENUITEM_FOLLOWER]        = gText_Follower,
     [MENUITEM_DIFFICULTY]      = gText_Difficulty,
     [MENUITEM_TYPEEFFECT]      = gText_TypeEffect,
+    [MENUITEM_RUMBLE]          = gText_Rumble,
     [MENUITEM_SUGGESTBALL]     = gText_SuggestBall,
-    [MENUITEM_SUGGESTIONTYPE]  = gText_SuggestionType,
     [MENUITEM_VSYNC]           = gText_VSync,
     [MENUITEM_CANCEL_PG2]      = gText_OptionMenuCancel,
 };
@@ -229,8 +229,15 @@ static void ReadAllCurrentSettings(u8 taskId)
     gTasks[taskId].data[TD_FOLLOWER] = FlagGet(FLAG_POKEMON_FOLLOWERS);
     gTasks[taskId].data[TD_DIFFICULTY] = GetDifficulty();
     gTasks[taskId].data[TD_TYPEEFFECT] = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
-    gTasks[taskId].data[TD_SUGGESTBALL] = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
-    gTasks[taskId].data[TD_SUGGESTIONTYPE] = FlagGet(FLAG_BALL_SUGGEST_COMPLEX) ? 2 : FlagGet(FLAG_BALL_SUGGEST_NOT_LAST);  // 0 = Last; 1 = Simple; 2 = Complex
+    gTasks[taskId].data[TD_RUMBLE] = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
+    if (!FlagGet(FLAG_SHOW_BALL_SUGGESTION))
+        gTasks[taskId].data[TD_SUGGESTBALL] = 0;
+    else if (FlagGet(FLAG_BALL_SUGGEST_COMPLEX))
+        gTasks[taskId].data[TD_SUGGESTBALL] = 3;
+    else if (FlagGet(FLAG_BALL_SUGGEST_NOT_LAST))
+        gTasks[taskId].data[TD_SUGGESTBALL] = 2;
+    else
+        gTasks[taskId].data[TD_SUGGESTBALL] = 1;
     gTasks[taskId].data[TD_VSYNC] = gSaveBlock2Ptr->vSyncOff;
 }
 
@@ -253,8 +260,8 @@ static void DrawOptionsPg2(u8 taskId)
     Follower_DrawChoices(gTasks[taskId].data[TD_FOLLOWER]);
     Difficulty_DrawChoices(gTasks[taskId].data[TD_DIFFICULTY]);
     TypeEffect_DrawChoices(gTasks[taskId].data[TD_TYPEEFFECT]);
+    Rumble_DrawChoices(gTasks[taskId].data[TD_RUMBLE]);
     SuggestBall_DrawChoices(gTasks[taskId].data[TD_SUGGESTBALL]);
-    SuggestionType_DrawChoices(gTasks[taskId].data[TD_SUGGESTIONTYPE]);
     VSync_DrawChoices(gTasks[taskId].data[TD_VSYNC]);
     HighlightOptionMenuItem(gTasks[taskId].data[TD_MENUSELECTION]);
     CopyWindowToVram(WIN_OPTIONS, COPYWIN_FULL);
@@ -400,19 +407,27 @@ static void MenuSavePg2(u8 taskId)
         FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     else
         FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
-    if (gTasks[taskId].data[TD_SUGGESTBALL] == 0)
-        FlagClear(FLAG_SHOW_BALL_SUGGESTION);
+    if (gTasks[taskId].data[TD_RUMBLE] == 0)
+        FlagClear(FLAG_RUMBLE);
     else
-        FlagSet(FLAG_SHOW_BALL_SUGGESTION);
-    if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 0){  // Last{
+        FlagSet(FLAG_RUMBLE);
+    if (gTasks[taskId].data[TD_SUGGESTBALL] == 0){  // None
+        FlagClear(FLAG_SHOW_BALL_SUGGESTION);
         FlagClear(FLAG_BALL_SUGGEST_NOT_LAST);
         FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
     }
-    else if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 1){  // Simple
+    if (gTasks[taskId].data[TD_SUGGESTBALL] == 1){  // Last
+        FlagSet(FLAG_SHOW_BALL_SUGGESTION);
+        FlagClear(FLAG_BALL_SUGGEST_NOT_LAST);
+        FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
+    }
+    else if (gTasks[taskId].data[TD_SUGGESTBALL] == 2){  // Simple
+        FlagSet(FLAG_SHOW_BALL_SUGGESTION);
         FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
         FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
     }
-    else if (gTasks[taskId].data[TD_SUGGESTIONTYPE] == 2){  // Simple
+    else if (gTasks[taskId].data[TD_SUGGESTBALL] == 3){  // Complex
+        FlagSet(FLAG_SHOW_BALL_SUGGESTION);
         FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
         FlagSet(FLAG_BALL_SUGGEST_COMPLEX);
     }
@@ -609,19 +624,19 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
             if (previousOption != gTasks[taskId].data[TD_TYPEEFFECT])
                 TypeEffect_DrawChoices(gTasks[taskId].data[TD_TYPEEFFECT]);
             break;
+        case MENUITEM_RUMBLE:
+            previousOption = gTasks[taskId].data[TD_RUMBLE];
+            gTasks[taskId].data[TD_RUMBLE] = Rumble_ProcessInput(gTasks[taskId].data[TD_RUMBLE]);
+
+            if (previousOption != gTasks[taskId].data[TD_RUMBLE])
+                Rumble_DrawChoices(gTasks[taskId].data[TD_RUMBLE]);
+            break;
         case MENUITEM_SUGGESTBALL:
             previousOption = gTasks[taskId].data[TD_SUGGESTBALL];
             gTasks[taskId].data[TD_SUGGESTBALL] = SuggestBall_ProcessInput(gTasks[taskId].data[TD_SUGGESTBALL]);
 
             if (previousOption != gTasks[taskId].data[TD_SUGGESTBALL])
                 SuggestBall_DrawChoices(gTasks[taskId].data[TD_SUGGESTBALL]);
-            break;
-        case MENUITEM_SUGGESTIONTYPE:
-            previousOption = gTasks[taskId].data[TD_SUGGESTIONTYPE];
-            gTasks[taskId].data[TD_SUGGESTIONTYPE] = SuggestionType_ProcessInput(gTasks[taskId].data[TD_SUGGESTIONTYPE]);
-
-            if (previousOption != gTasks[taskId].data[TD_SUGGESTIONTYPE])
-                SuggestionType_DrawChoices(gTasks[taskId].data[TD_SUGGESTIONTYPE]);
             break;
         case MENUITEM_VSYNC:
             previousOption = gTasks[taskId].data[TD_VSYNC];
@@ -870,7 +885,7 @@ static void TypeEffect_DrawChoices(u8 selection)
     DrawOptionMenuChoice(gText_TypeEffectOn, GetStringRightAlignXOffset(FONT_NORMAL, gText_TypeEffectOn, 198), YPOS_TYPEEFFECT, styles[1]);
 }
 
-static u8 SuggestBall_ProcessInput(u8 selection)
+static u8 Rumble_ProcessInput(u8 selection)
 {
     if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
     {
@@ -881,7 +896,7 @@ static u8 SuggestBall_ProcessInput(u8 selection)
     return selection;
 }
 
-static void SuggestBall_DrawChoices(u8 selection)
+static void Rumble_DrawChoices(u8 selection)
 {
     u8 styles[2];
 
@@ -889,15 +904,15 @@ static void SuggestBall_DrawChoices(u8 selection)
     styles[1] = 0;
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(gText_SuggestBallOff, 104, YPOS_SUGGESTBALL, styles[0]);
-    DrawOptionMenuChoice(gText_SuggestBallOn, GetStringRightAlignXOffset(FONT_NORMAL, gText_SuggestBallOn, 198), YPOS_SUGGESTBALL, styles[1]);
+    DrawOptionMenuChoice(gText_RumbleOff, 104, YPOS_RUMBLE, styles[0]);
+    DrawOptionMenuChoice(gText_RumbleOn, GetStringRightAlignXOffset(FONT_NORMAL, gText_RumbleOn, 198), YPOS_RUMBLE, styles[1]);
 }
 
-static u8 SuggestionType_ProcessInput(u8 selection)
+static u8 SuggestBall_ProcessInput(u8 selection)
 {
     if (JOY_NEW(DPAD_RIGHT))
     {
-        if (selection <= 1)
+        if (selection <= 2)
             selection++;
         else
             selection = 0;
@@ -909,31 +924,35 @@ static u8 SuggestionType_ProcessInput(u8 selection)
         if (selection != 0)
             selection--;
         else
-            selection = 2;
+            selection = 3;
 
         sArrowPressed = TRUE;
     }
     return selection;
 }
 
-static void SuggestionType_DrawChoices(u8 selection)
+static void SuggestBall_DrawChoices(u8 selection)
 {
-    u8 styles[3];
+    u8 styles[4];
     s32 widthLast, widthSimple, widthComplex, xMid;
 
     styles[0] = 0;
     styles[1] = 0;
     styles[2] = 0;
+    styles[3] = 0;
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(gText_SuggestionTypeLast, 104, YPOS_SUGGESTIONTYPE, styles[0]);
+    DrawOptionMenuChoice(gText_SuggestBallOff, 104, YPOS_SUGGESTBALL, styles[0]);
 
-    widthSimple = GetStringWidth(FONT_NORMAL, gText_SuggestionTypeSimple, 0);
-    xMid = (94 - widthSimple) / 2 + 104;
+    widthSimple = GetStringWidth(FONT_NORMAL, gText_SuggestBallLast, 0);
+    xMid = (94 - widthSimple) / 3 + 104;
+    DrawOptionMenuChoice(gText_SuggestBallLast, xMid, YPOS_SUGGESTBALL, styles[1]);
 
-    DrawOptionMenuChoice(gText_SuggestionTypeSimple, xMid, YPOS_SUGGESTIONTYPE, styles[1]);
+    widthSimple = GetStringWidth(FONT_NORMAL, gText_SuggestBallBasic, 0);
+    xMid = (94 - widthSimple) * 2 / 3 + 104;
+    DrawOptionMenuChoice(gText_SuggestBallBasic, xMid, YPOS_SUGGESTBALL, styles[2]);
 
-    DrawOptionMenuChoice(gText_SuggestionTypeComplex, GetStringRightAlignXOffset(FONT_NORMAL, gText_SuggestionTypeComplex, 198), YPOS_SUGGESTIONTYPE, styles[2]);
+    DrawOptionMenuChoice(gText_SuggestBallComplex, GetStringRightAlignXOffset(FONT_NORMAL, gText_SuggestBallComplex, 198), YPOS_SUGGESTBALL, styles[3]);
 }
 
 static u8 VSync_ProcessInput(u8 selection)
