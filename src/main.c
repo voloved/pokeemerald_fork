@@ -396,7 +396,7 @@ static void VBlankIntr(void)
     UpdateWirelessStatusIndicatorSprite();
 
     if (!IsSEPlaying())
-        SetRumbleState(RUMBLE_OFF);
+        SetContRumble(RUMBLE_OFF);
 
     INTR_CHECK |= INTR_FLAG_VBLANK;
     gMain.intrCheck |= INTR_FLAG_VBLANK;
@@ -429,8 +429,6 @@ static void VCountIntr(void)
 static void SerialIntr(void)
 {
     if (gMain.serialCallback)
-        GBPSerialInterrupt();
-    else
         gMain.serialCallback();
 
     INTR_CHECK |= INTR_FLAG_SERIAL;

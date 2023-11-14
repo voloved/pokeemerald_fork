@@ -4,9 +4,12 @@
 #include "sound.h"
 
 EWRAM_DATA struct GBPCommunication gGBPCommunication;
-EWRAM_DATA u32 gRumbleState = 0;
+static EWRAM_DATA u32 sRumbleState = 0;
+static EWRAM_DATA u8 sRumbleType = RUMBLE_TYPE_OFF;
+static EWRAM_DATA u32 stopRumbleVblankCounter = 0;
 
 static u16 const sNintendoHandshakeData[] = {0x494E, 0x544E, 0x4E45, 0x4F44, 0x8000};
+static void SetRumbleState(u32 state);
 
 void GBPSerialInterrupt()
 {
@@ -61,7 +64,7 @@ void GBPSerialInterrupt()
             break;
         case GBP_SERIAL_STATUS_RUMBLE:
             if (gGBPCommunication.input == 0x30000003)
-                response = gRumbleState;
+                response = sRumbleState;
             else
                 gGBPCommunication.state = GBP_SERIAL_STATUS_RESET;
             break;
@@ -86,14 +89,42 @@ void RumbleFrameUpdate()
         REG_SIOCNT &= ~1;
         REG_SIOCNT |= SIO_START;
     }
+    if(gMain.vblankCounter1 == stopRumbleVblankCounter && sRumbleType == RUMBLE_TYPE_TIMED)
+        SetRumbleState(RUMBLE_OFF);
 }
 
-void SetRumbleState(u32 state)
+static void SetRumbleState(u32 state)
 {
-    gRumbleState = state;
+    sRumbleState = state;
+    if (sRumbleState != RUMBLE_ON)
+        sRumbleType = RUMBLE_TYPE_OFF;
 
     if (gSaveBlock2Ptr->optionsRumble) {
         GPIO_PORT_DIRECTION = 1 << 3;
-        GPIO_PORT_DATA = (gRumbleState == RUMBLE_ON) << 3;
+        GPIO_PORT_DATA = (sRumbleState == RUMBLE_ON) << 3;
     }
+}
+
+bool32 SetContRumble(u32 state)  // Returns if the rumble request is accepted
+{
+    if (sRumbleType == RUMBLE_TYPE_TIMED)
+        return FALSE;
+    sRumbleType = RUMBLE_TYPE_CONT;
+    SetRumbleState(state);
+    return TRUE;
+}
+
+bool32 SetTimedRumble(u8 deciseconds)
+{
+    if (sRumbleType == RUMBLE_TYPE_CONT)
+        return FALSE;
+    sRumbleType = RUMBLE_TYPE_TIMED;
+    stopRumbleVblankCounter = gMain.vblankCounter1 + (6 * deciseconds);
+    SetRumbleState(RUMBLE_ON);
+    return TRUE;
+}
+
+u32 GetRumbleState(void)
+{
+    return sRumbleState;
 }

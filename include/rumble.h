@@ -7,6 +7,12 @@ enum {
     RUMBLE_HARD_STOP = 0x40000015
 };
 
+enum{
+    RUMBLE_TYPE_OFF,
+    RUMBLE_TYPE_CONT,
+    RUMBLE_TYPE_TIMED
+};
+
 enum {
     GBP_SERIAL_STATUS_NINTENDO_HANDSHAKE,
     GBP_SERIAL_STATUS_CHECK_MAGIC1,
@@ -25,9 +31,10 @@ struct GBPCommunication {
 
 void GBPSerialInterrupt();
 void RumbleFrameUpdate();
-void SetRumbleState(u32 state);
+bool32 SetTimedRumble(u8 deciseconds);
+bool32 SetContRumble(u32 state);
+u32 GetRumbleState(void);
 
 extern EWRAM_DATA struct GBPCommunication gGBPCommunication;
-extern EWRAM_DATA u32 gRumbleState;
 
 #endif // GUARD_RUMBLE_H

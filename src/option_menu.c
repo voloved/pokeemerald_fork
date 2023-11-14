@@ -17,6 +17,7 @@
 #include "constants/rgb.h"
 #include "event_data.h"
 #include "string_util.h"
+#include "rumble.h"
 
 // Task data
 enum
@@ -626,7 +627,13 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
             gTasks[taskId].data[TD_RUMBLE] = Rumble_ProcessInput(gTasks[taskId].data[TD_RUMBLE]);
 
             if (previousOption != gTasks[taskId].data[TD_RUMBLE])
+            {
+                if (gTasks[taskId].data[TD_RUMBLE]) // On rumble
+                    SetTimedRumble(2);
+                else
+                    SetContRumble(RUMBLE_OFF);
                 Rumble_DrawChoices(gTasks[taskId].data[TD_RUMBLE]);
+            }
             break;
         case MENUITEM_SUGGESTBALL:
             previousOption = gTasks[taskId].data[TD_SUGGESTBALL];
