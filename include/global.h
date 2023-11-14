@@ -500,7 +500,8 @@ struct SaveBlock2
              u16 regionMapZoom:1; // whether the map is zoomed in
     /*0x18*/ struct Pokedex pokedex;
     /*0x90*/ u16 lastUsedBall;
-    /*0x92*/ u8 filler_90[0x6];
+    /*0x92*/ u8 optionsRumble;
+    /*0x93*/ u8 filler_90[0x5];
     /*0x98*/ struct Time localTimeOffset;
     /*0xA0*/ struct Time lastBerryTreeUpdate;
     /*0xA8*/ u32 gcnLinkFlags; // Read by Pokemon Colosseum/XD

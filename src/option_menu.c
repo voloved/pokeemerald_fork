@@ -407,10 +407,7 @@ static void MenuSavePg2(u8 taskId)
         FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     else
         FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
-    if (gTasks[taskId].data[TD_RUMBLE] == 0)
-        FlagClear(FLAG_RUMBLE);
-    else
-        FlagSet(FLAG_RUMBLE);
+    gSaveBlock2Ptr->optionsRumble = gTasks[taskId].data[TD_RUMBLE];
     if (gTasks[taskId].data[TD_SUGGESTBALL] == 0){  // None
         FlagClear(FLAG_SHOW_BALL_SUGGESTION);
         FlagClear(FLAG_BALL_SUGGEST_NOT_LAST);
