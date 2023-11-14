@@ -1095,24 +1095,20 @@ static u8 SetUpCopyrightScreen(void)
                                    | BGCNT_SCREENBASE(7)
                                    | BGCNT_16COLOR
                                    | BGCNT_TXT256x256);
-        if (!(gGameBoyPlayerDetected && gSaveBlock2Ptr->optionsRumble))
-            EnableInterrupts(INTR_FLAG_VBLANK);
+        EnableInterrupts(INTR_FLAG_VBLANK);
         SetVBlankCallback(VBlankCB_Intro);
         REG_DISPCNT = DISPCNT_MODE_0 | DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON;
         SetSerialCallback(SerialCB_CopyrightScreen);
-        if (!(gGameBoyPlayerDetected && gSaveBlock2Ptr->optionsRumble))
-            GameCubeMultiBoot_Init(&gMultibootProgramStruct);
+        GameCubeMultiBoot_Init(&gMultibootProgramStruct);
     default:
         UpdatePaletteFade();
         gMain.state++;
-        if (!(gGameBoyPlayerDetected && gSaveBlock2Ptr->optionsRumble))
-            GameCubeMultiBoot_Main(&gMultibootProgramStruct);
+        GameCubeMultiBoot_Main(&gMultibootProgramStruct);
         if ((JOY_NEW(A_BUTTON)) || (JOY_NEW(START_BUTTON)))
             gMain.state = 140;
         break;
     case 140:
-        if (!(gGameBoyPlayerDetected && gSaveBlock2Ptr->optionsRumble))
-            GameCubeMultiBoot_Main(&gMultibootProgramStruct);
+        GameCubeMultiBoot_Main(&gMultibootProgramStruct);
         if (gMultibootProgramStruct.gcmb_field_2 != 1)
         {
             BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
@@ -1139,11 +1135,8 @@ static u8 SetUpCopyrightScreen(void)
         }
         else
         {
-            if (!(gGameBoyPlayerDetected && gSaveBlock2Ptr->optionsRumble))
-            {
-                GameCubeMultiBoot_Quit();
-                SetSerialCallback(SerialCB);
-            }
+            GameCubeMultiBoot_Quit();
+            SetSerialCallback(SerialCB);
         }
         return 0;
     }
@@ -1226,8 +1219,7 @@ static void Task_Scene1_FadeIn(u8 taskId)
     gTasks[taskId].func = Task_Scene1_WaterDrops;
     gIntroFrameCounter = 0;
     m4aSongNumStart(MUS_INTRO);
-    if (!(gGameBoyPlayerDetected && gSaveBlock2Ptr->optionsRumble))
-        ResetSerial();
+    ResetSerial();
 }
 
 // Task data for Task_Scene1_PanUp

@@ -229,7 +229,7 @@ static void ReadAllCurrentSettings(u8 taskId)
     gTasks[taskId].data[TD_FOLLOWER] = FlagGet(FLAG_POKEMON_FOLLOWERS);
     gTasks[taskId].data[TD_DIFFICULTY] = GetDifficulty();
     gTasks[taskId].data[TD_TYPEEFFECT] = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
-    gTasks[taskId].data[TD_RUMBLE] = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
+    gTasks[taskId].data[TD_RUMBLE] = gSaveBlock2Ptr->optionsRumble;
     if (!FlagGet(FLAG_SHOW_BALL_SUGGESTION))
         gTasks[taskId].data[TD_SUGGESTBALL] = 0;
     else if (FlagGet(FLAG_BALL_SUGGEST_COMPLEX))

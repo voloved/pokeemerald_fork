@@ -133,7 +133,7 @@ void AgbMain()
 #endif
     for (;;)
     {
-        if (gGameBoyPlayerDetected && gSaveBlock2Ptr->optionsRumble)
+        if (gSaveBlock2Ptr->optionsRumble)
             RumbleFrameUpdate();
 
         ReadKeys();
@@ -190,7 +190,7 @@ static void InitMainCallbacks(void)
     gTrainerHillVBlankCounter = NULL;
     gMain.vblankCounter2 = 0;
     gMain.callback1 = NULL;
-    SetMainCallback2(CB2_DetectGameBoyPlayer);
+    SetMainCallback2(CB2_InitCopyrightScreenAfterBootup);
     gSaveBlock2Ptr = &gSaveblock2.block;
     gPokemonStoragePtr = &gPokemonStorage.block;
 }
@@ -429,7 +429,7 @@ static void VCountIntr(void)
 
 static void SerialIntr(void)
 {
-    if (gGameBoyPlayerDetected && gSaveBlock2Ptr->optionsRumble)
+    if (gMain.serialCallback && gSaveBlock2Ptr->optionsRumble)
         GBPSerialInterrupt();
     else
         gMain.serialCallback();
