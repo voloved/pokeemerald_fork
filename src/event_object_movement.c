@@ -2211,15 +2211,11 @@ void UpdateLightSprite(struct Sprite *sprite) {
         if (gPaletteFade.active) { // if palette fade is active, don't flicker since the timer won't be updated
             Weather_SetBlendCoeffs(7, 12);
             sprite->invisible = FALSE;
-        } else if (gPlayerAvatar.tileTransitionState) {
+        } else {
             Weather_SetBlendCoeffs(7, 12); // As long as the second coefficient stays 12, shadows will not change
             sprite->invisible = FALSE;
             if (GetSpritePaletteTagByPaletteNum(sprite->oam.paletteNum) == OBJ_EVENT_PAL_TAG_LIGHT_2)
                 LoadSpritePaletteInSlot(&sObjectEventSpritePalettes[FindObjectEventPaletteIndexByTag(OBJ_EVENT_PAL_TAG_LIGHT)], sprite->oam.paletteNum);
-        } else if ((sprite->invisible = gTimeUpdateCounter & 1)) {
-            Weather_SetBlendCoeffs(12, 12);
-            if (GetSpritePaletteTagByPaletteNum(sprite->oam.paletteNum) == OBJ_EVENT_PAL_TAG_LIGHT)
-                LoadSpritePaletteInSlot(&sObjectEventSpritePalettes[FindObjectEventPaletteIndexByTag(OBJ_EVENT_PAL_TAG_LIGHT_2)], sprite->oam.paletteNum);
         }
         break;
     case 1 ... 2:
@@ -2259,7 +2255,7 @@ static void SpawnLightSprite(s16 x, s16 y, s16 camX, s16 camY, u32 lightType) {
         sprite->centerToCornerVecX = -(32 >> 1);
         sprite->centerToCornerVecY = -(32 >> 1);
         sprite->oam.priority = 1;
-        sprite->oam.objMode = 1; // BLEND
+        sprite->oam.objMode = ST_OAM_OBJ_BLEND;
         sprite->oam.affineMode = ST_OAM_AFFINE_NORMAL;
         sprite->x += 8;
         sprite->y += 22 + sprite->centerToCornerVecY;
@@ -2269,7 +2265,7 @@ static void SpawnLightSprite(s16 x, s16 y, s16 camX, s16 camY, u32 lightType) {
         sprite->centerToCornerVecY = -(16 >> 1);
         sprite->oam.priority = 2;
         sprite->subpriority = 0xFF;
-        sprite->oam.objMode = 1; // BLEND
+        sprite->oam.objMode = ST_OAM_OBJ_BLEND;
     }
 }
 
