@@ -28,7 +28,6 @@
 #include "main_menu.h"
 #include "event_data.h"
 #include "constants/flags.h"
-#include "rumble.h"
 
 /*
     The intro is grouped into the following scenes
@@ -3436,66 +3435,3 @@ static void SpriteCB_RayquazaOrb(struct Sprite *sprite)
     }
 }
 
-void CB2_DetectGameBoyPlayer(void)
-{
-    switch (gMain.state)
-    {
-        case 0:
-            SetVBlankCallback(NULL);
-            SetGpuReg(REG_OFFSET_BLDCNT, 0);
-            SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-            SetGpuReg(REG_OFFSET_BLDY, 0);
-            *(u16 *)PLTT = RGB_WHITE;
-            SetGpuReg(REG_OFFSET_DISPCNT, 0);
-            SetGpuReg(REG_OFFSET_BG0HOFS, 0);
-            SetGpuReg(REG_OFFSET_BG0VOFS, 0);
-            CpuFill32(0, (void *)VRAM, VRAM_SIZE);
-            CpuFill32(0, (void *)OAM, OAM_SIZE);
-            CpuFill16(0, (void *)(PLTT + 2), PLTT_SIZE - 2);
-            ResetPaletteFade();
-            REG_IE |= INTR_FLAG_VBLANK;
-            REG_DISPSTAT |= DISPSTAT_VBLANK_INTR;
-            REG_BLDCNT = BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL;
-            REG_BLDY = 0x10;
-            REG_DISPCNT = DISPCNT_OBJ_ON | DISPCNT_BG0_ON;
-            VBlankIntrWait();
-            DmaCopy16(3, gIntroGameBoyPlayer_Gfx, (void *)BG_CHAR_ADDR(2), BG_CHAR_SIZE);
-            DmaCopy16(3, gIntroGameBoyPlayer_Pal, (void *)BG_PLTT, BG_PLTT_SIZE);
-            DmaCopy16(3, gIntroGameBoyPlayer_Tilemap, (void *)BG_SCREEN_ADDR(0), BG_SCREEN_SIZE);
-            REG_BG0CNT = BGCNT_256COLOR | BGCNT_CHARBASE(2);
-            gRumbleState = RUMBLE_OFF;
-        case 1 ... 17:
-            VBlankIntrWait();
-            REG_BLDY = 17 - gMain.state;
-            gMain.state++;
-            break;
-        case 18 ... 48:
-            if (JOY_NEW(DPAD_UP | DPAD_RIGHT | DPAD_DOWN | DPAD_LEFT) && !gGameBoyPlayerDetected)
-            {
-                EnableInterrupts(INTR_FLAG_VBLANK | INTR_FLAG_SERIAL);
-                REG_RCNT = 0;
-                REG_SIOCNT = SIO_32BIT_MODE | SIO_MULTI_SD;
-                REG_SIOCNT |= SIO_INTR_ENABLE;
-                gGameBoyPlayerDetected = TRUE;
-                gGBPCommunication.input = 0;
-                gGBPCommunication.state = GBP_SERIAL_STATUS_NINTENDO_HANDSHAKE;
-                gGBPCommunication.handshakeIndex = 0;
-                gGBPCommunication.outputHigh = 0;
-                gGBPCommunication.outputLow = 0;
-            }
-            VBlankIntrWait();
-            gMain.state++;
-            break;
-        case 49 ... 65:
-            VBlankIntrWait();
-            REG_BLDY = gMain.state - 49;
-            gMain.state++;
-            break;
-        case 66:
-            gMain.state = 72;
-            break;
-        default:
-            SetMainCallback2(CB2_InitCopyrightScreenAfterBootup);
-            break;
-    }
-}

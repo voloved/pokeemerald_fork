@@ -948,7 +948,7 @@ static void Task_HighlightSelectedMainMenuItem(u8 taskId)
 
 static bool8 HandleMainMenuInput(u8 taskId)
 {
-    s16* data = gTasks[taskId].data;
+    s16 *data = gTasks[taskId].data;
 
     if (!gShowDebugMenu){
         if (ARRAY_COUNT(sDebugCode) <= sCurrDebugCodeEntered){
@@ -964,6 +964,7 @@ static bool8 HandleMainMenuInput(u8 taskId)
             sCurrDebugCodeEntered = 0;
         }
     }
+
     if (JOY_NEW(A_BUTTON))
     {
         PlaySE(SE_SELECT);
@@ -981,7 +982,7 @@ static bool8 HandleMainMenuInput(u8 taskId)
     }
     else if ((JOY_NEW(DPAD_UP)) && tCurrItem > 0)
     {
-        if (tIsScrolled == TRUE && tCurrItem == 1)
+        if (tMenuType == HAS_MYSTERY_EVENTS && tIsScrolled == TRUE && tCurrItem == 1)
         {
             ChangeBgY(0, 0x2000, BG_COORD_SUB);
             ChangeBgY(1, 0x2000, BG_COORD_SUB);
@@ -993,14 +994,7 @@ static bool8 HandleMainMenuInput(u8 taskId)
     }
     else if ((JOY_NEW(DPAD_DOWN)) && tCurrItem < tItemCount - 1)
     {
-        if (tIsScrolled == FALSE && tCurrItem == 3 && (tMenuType == HAS_MYSTERY_GIFT || tMenuType == HAS_MYSTERY_EVENTS))
-        {
-            ChangeBgY(0, 0x2000, BG_COORD_ADD);
-            ChangeBgY(1, 0x2000, BG_COORD_ADD);
-            gTasks[tScrollArrowTaskId].tArrowTaskIsScrolled = 2;
-            tIsScrolled = TRUE;
-        }
-        else if (tIsScrolled == FALSE && tCurrItem == 3)
+        if (tMenuType == HAS_MYSTERY_EVENTS && tCurrItem == 3 && tIsScrolled == FALSE)
         {
             ChangeBgY(0, 0x2000, BG_COORD_ADD);
             ChangeBgY(1, 0x2000, BG_COORD_ADD);

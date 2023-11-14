@@ -74,8 +74,6 @@ void GBPSerialInterrupt()
             return;
     }
 
-    //DebugPrintf("%x - %x", gGBPCommunication.input, response);
-
     REG_SIODATA32 = response;
     REG_SIOCNT |= SIO_START;
     REG_IF = INTR_FLAG_SERIAL;
@@ -94,7 +92,7 @@ void SetRumbleState(u32 state)
 {
     gRumbleState = state;
 
-    if (!gGameBoyPlayerDetected && gSaveBlock2Ptr->optionsRumble) {
+    if (gSaveBlock2Ptr->optionsRumble) {
         GPIO_PORT_DIRECTION = 1 << 3;
         GPIO_PORT_DATA = (gRumbleState == RUMBLE_ON) << 3;
     }

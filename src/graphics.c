@@ -1557,8 +1557,3 @@ const u32 gUnknown_8E84F20[] = INCBIN_U32("graphics/tm_case/unk_8E84F20.gbapal.l
 const u32 gUnknown_8E85068[] = INCBIN_U32("graphics/tm_case/unk_8E85068.gbapal.lz");
 const u8 gUnknown_8E99118[] = INCBIN_U8("graphics/tm_case/unk_8E99118.4bpp");
 const u16 gTMCaseMainWindowPalette[] = INCBIN_U16("graphics/tm_case/unk_841F408.gbapal");
-
-const u8 gIntroGameBoyPlayer_Pal[] = INCBIN_U8("graphics/intro/gbp_pal.bin");
-const u8 gIntroGameBoyPlayer_Gfx[] = INCBIN_U8("graphics/intro/gbp_gfx.bin");
-const u8 gIntroGameBoyPlayer_Tilemap[] = INCBIN_U8("graphics/intro/gbp_map.bin");
-

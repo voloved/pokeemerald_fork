@@ -1250,7 +1250,7 @@
 #define FLAG_USE_FROSTBITE                                          0x4B1
 #define FLAG_MID_BATTLE_EVOLUTION                                   0x4B2
 #define FLAG_GOT_MINT_FROM_JAIME                                    0x4B3
-#define FLAG_USED_GAME_BOY_PLAYER                                   0x4B4
+#define FLAG_UNUSED_0x4B4                                           0x4B4 // Unused Flag
 #define FLAG_UNUSED_0x4B5                                           0x4B5 // Unused Flag
 #define FLAG_UNUSED_0x4B6                                           0x4B6 // Unused Flag
 #define FLAG_UNUSED_0x4B7                                           0x4B7 // Unused Flag

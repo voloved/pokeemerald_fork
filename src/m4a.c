@@ -117,7 +117,6 @@ void m4aSongNumStart(u16 n)
     {
         case SE_LEDGE:
         case SE_BIKE_BELL:
-        case SE_FAINT:
         case SE_BIKE_HOP:
         case SE_ICE_BREAK:
         case SE_ICE_CRACK:

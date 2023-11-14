@@ -34,7 +34,6 @@ static void VCountIntr(void);
 static void SerialIntr(void);
 static void IntrDummy(void);
 extern void CB2_FlashNotDetectedScreen(void);
-EWRAM_DATA bool8 gGameBoyPlayerDetected = FALSE;
 
 const u8 gGameVersion = GAME_VERSION;
 
@@ -429,7 +428,7 @@ static void VCountIntr(void)
 
 static void SerialIntr(void)
 {
-    if (gMain.serialCallback && gSaveBlock2Ptr->optionsRumble)
+    if (gMain.serialCallback)
         GBPSerialInterrupt();
     else
         gMain.serialCallback();
