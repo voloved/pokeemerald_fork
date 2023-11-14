@@ -41,6 +41,7 @@
 #include "constants/flags.h"
 #include "clock.h"
 #include "roamer.h"
+#include "rumble.h"
 
 /*
  * Main menu state machine
@@ -953,6 +954,7 @@ static bool8 HandleMainMenuInput(u8 taskId)
     if (!gShowDebugMenu){
         if (ARRAY_COUNT(sDebugCode) <= sCurrDebugCodeEntered){
             PlaySE(SE_SUCCESS);
+            SetTimedRumble(2);
             gShowDebugMenu = TRUE;
         }
         else if (JOY_NEW(sDebugCode[sCurrDebugCodeEntered])){

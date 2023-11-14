@@ -631,7 +631,7 @@ static void Task_OptionMenuProcessInput_Pg2(u8 taskId)
                 if (gTasks[taskId].data[TD_RUMBLE]) // On rumble
                     SetTimedRumble(2);
                 else
-                    SetContRumble(RUMBLE_OFF);
+                    RumbleStop();
                 Rumble_DrawChoices(gTasks[taskId].data[TD_RUMBLE]);
             }
             break;
