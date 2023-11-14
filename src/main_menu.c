@@ -950,6 +950,20 @@ static bool8 HandleMainMenuInput(u8 taskId)
 {
     s16* data = gTasks[taskId].data;
 
+    if (!gShowDebugMenu){
+        if (ARRAY_COUNT(sDebugCode) <= sCurrDebugCodeEntered){
+            PlaySE(SE_SUCCESS);
+            gShowDebugMenu = TRUE;
+        }
+        else if (JOY_NEW(sDebugCode[sCurrDebugCodeEntered])){
+            sCurrDebugCodeEntered++;
+            if(JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
+                return FALSE;
+        }
+        else if (gMain.newKeys != 0){
+            sCurrDebugCodeEntered = 0;
+        }
+    }
     if (JOY_NEW(A_BUTTON))
     {
         PlaySE(SE_SELECT);
