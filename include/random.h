@@ -14,6 +14,7 @@ extern struct PCG32 gPCGRng2;
 //Returns a 16-bit pseudorandom number
 u16 Random(void);
 u16 Random2(void);
+u16 RandRange(u16, u16);
 
 //Returns a 32-bit pseudorandom number
 u32 Random32(struct PCG32 * PCGRng);

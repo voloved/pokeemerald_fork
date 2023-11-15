@@ -326,7 +326,8 @@ struct PlayerAvatar
     /*0x03*/ u8 runningState; // this is a static running state. 00 is not moving, 01 is turn direction, 02 is moving.
     /*0x04*/ u8 tileTransitionState; // this is a transition running state: 00 is not moving, 01 is transition between tiles, 02 means you are on the frame in which you have centered on a tile but are about to keep moving, even if changing directions. 2 is also used for a ledge hop, since you are transitioning.
     /*0x05*/ u8 spriteId;
-    /*0x06*/ u8 objectEventId;
+    /*0x06*/ u8 objectEventId:7;
+             u8 creeping:1;
     /*0x07*/ bool8 preventStep;
     /*0x08*/ u8 gender;
     /*0x09*/ u8 acroBikeState; // 00 is normal, 01 is turning, 02 is standing wheelie, 03 is hopping wheelie
@@ -339,8 +340,6 @@ struct PlayerAvatar
     // these two are timer history arrays which [0] is the active timer for acro bike. every element is backed up to the next element upon update.
     /*0x15*/ u8 dirTimerHistory[8];
     /*0x1D*/ u8 abStartSelectTimerHistory[8];
-    /*0x1E*/ u8 objectEventId:7;
-             u8 creeping:1;
 };
 
 struct Camera

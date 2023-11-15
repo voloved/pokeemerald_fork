@@ -950,6 +950,7 @@ static void Task_HighlightSelectedMainMenuItem(u8 taskId)
 static bool8 HandleMainMenuInput(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
+    FlagSet(FLAG_SYS_DEXNAV_GET);
 
     if (!gShowDebugMenu){
         if (ARRAY_COUNT(sDebugCode) <= sCurrDebugCodeEntered){
