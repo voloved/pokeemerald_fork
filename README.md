@@ -8,13 +8,15 @@ Link to [Patch File is Here](https://drive.google.com/drive/folders/1GFChFDEmOJH
 To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokémon Emerald (those devs who made the game 20 years ago gotta eat too).  
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
- ## Not Yet Versioned
+ ## v2.4.0
  - [Added Day-Night System](https://github.com/aarant/pokeemerald/tree/lighting-expanded-id) [Credit: aarant]
- - [Added Rumble Feature](https://github.com/evanbowman/gba-rumble) [Credit: Evan Bowman and Citrus Bolt]
+ - [Added Rumble Feature](https://github.com/pret/pokeemerald/wiki/Add-In%E2%80%90Cart-Rumble) [Credit: Evan Bowman and Citrus Bolt]
  - [New Random Number Generator Implimentation.](https://github.com/DizzyEggg/pokeemerald/commit/686bf3919816a1661c1652fe980dbe93c9920265) [Credit: Kurausukun]
  - Razor Wind buffs Attack if using original damage catagories rather than always buffing Special Attack.
  - Leech Life is buffed to its Gen VII stats.
  - Using Infinite Rare Candy on field as registered item now fades into party menu.
+ - Lowered Deoxys level in Steven and Wallace battle to lower Nuzlocke overlevel cap.
+ - Weavile uses Ice Punch instead of Ice Beam in Elite Four.
  - Bugfix where scripted encounters did not count toward the Nuzlocke.
  
  ## v2.3.2
