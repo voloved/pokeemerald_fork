@@ -5,7 +5,7 @@
 
 static EWRAM_DATA u32 sRumbleState = 0;
 static EWRAM_DATA u8 sRumbleType = RUMBLE_TYPE_OFF;
-static EWRAM_DATA u32 stopRumbleVblankCounter = 0;
+static EWRAM_DATA u32 stopRumbleCounter = 0;
 
 static u16 const sNintendoHandshakeData[] = {0x494E, 0x544E, 0x4E45, 0x4F44, 0x8000};
 static void SetRumbleState(u32 state);
@@ -20,8 +20,13 @@ void RumbleFrameUpdate()
 {
     REG_SIOCNT &= ~1;
     REG_SIOCNT |= SIO_START;
-    if(gMain.vblankCounter1 == stopRumbleVblankCounter && sRumbleType == RUMBLE_TYPE_TIMED)
-        SetRumbleState(RUMBLE_OFF);
+    if(sRumbleType == RUMBLE_TYPE_TIMED)
+    {
+        if(stopRumbleCounter == 0)
+            SetRumbleState(RUMBLE_OFF);
+        else
+            stopRumbleCounter--;
+    }
 }
 
 static void SetRumbleState(u32 state)
@@ -53,12 +58,12 @@ bool32 RumbleStop(void)
     return TRUE;
 }
 
-bool32 SetTimedRumble(u8 deciseconds)
+bool32 SetTimedRumble(u8 frames)
 {
     if (sRumbleType == RUMBLE_TYPE_CONT)
         return FALSE;
     sRumbleType = RUMBLE_TYPE_TIMED;
-    stopRumbleVblankCounter = gMain.vblankCounter1 + (6 * deciseconds);
+    stopRumbleCounter = 6 * frames;
     SetRumbleState(RUMBLE_ON);
     return TRUE;
 }

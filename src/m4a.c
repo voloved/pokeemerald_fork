@@ -120,18 +120,21 @@ void m4aSongNumStart(u16 n)
         case SE_BIKE_HOP:
         case SE_ICE_BREAK:
         case SE_ICE_CRACK:
+        case SE_BREAKABLE_DOOR:
+        case SE_FIELD_POISON:
+            SetTimedRumble(6);
+            break;
         case SE_TRUCK_MOVE:
         case SE_TRUCK_STOP:
         case SE_TRUCK_UNLOAD:
         case SE_TRUCK_DOOR:
         case SE_ITEMFINDER:
-        case SE_BREAKABLE_DOOR:
-        case SE_FIELD_POISON:
         case SE_M_SELF_DESTRUCT:
         case SE_M_EXPLOSION:
         case SE_RG_SS_ANNE_HORN:
         case SE_POKENAV_CALL:
             RumbleStart();
+            break;
     }
 
     MPlayStart(mplay->info, song->header);

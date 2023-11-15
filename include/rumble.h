@@ -9,7 +9,7 @@ enum{
 };
 
 void RumbleFrameUpdate();
-bool32 SetTimedRumble(u8 deciseconds);
+bool32 SetTimedRumble(u8 frames);
 bool32 RumbleStart(void);
 bool32 RumbleStop(void);
 u32 GetRumbleState(void);

@@ -15,6 +15,7 @@
 #include "sprite.h"
 #include "task.h"
 #include "window.h"
+#include "rumble.h"
 #include "constants/event_objects.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
@@ -387,6 +388,7 @@ static void StartScreenShake(u8 yShakeOffset, u8 xShakeOffset, u8 numShakes, u8 
     gTasks[taskId].tYShakeOffset = yShakeOffset;
     SetCameraPanningCallback(NULL);
     PlaySE(SE_M_STRENGTH);
+    RumbleStart();
 }
 
 static void DoScreenShake(u8 taskId)

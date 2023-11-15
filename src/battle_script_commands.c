@@ -3376,7 +3376,7 @@ static void Cmd_tryfaintmon(void)
                     bool8 dead = TRUE;
                     SetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEAD, &dead);
                 }
-                SetTimedRumble(10);
+                SetTimedRumble(60);
                 gHitMarker |= HITMARKER_PLAYER_FAINTED;
                 if (gBattleResults.playerFaintCounter < 255)
                     gBattleResults.playerFaintCounter++;
@@ -7861,7 +7861,7 @@ static void Cmd_tryKO(void)
 
     // Death Move just hits
     if (gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE){
-        SetTimedRumble(12);
+        SetTimedRumble(72);
         gBattleMoveDamage = gBattleMons[gBattlerTarget].hp;
         gMoveResultFlags |= MOVE_RESULT_ONE_HIT_KO;
         gBattlescriptCurrInstr += 5;

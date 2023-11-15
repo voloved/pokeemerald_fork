@@ -39,7 +39,6 @@
 #include "constants/rgb.h"
 #include "menu.h"
 #include "pokemon_summary_screen.h"
-#include "rumble.h"
 
 static void PlayerHandleGetMonData(void);
 static void PlayerHandleSetMonData(void);

@@ -954,7 +954,7 @@ static bool8 HandleMainMenuInput(u8 taskId)
     if (!gShowDebugMenu){
         if (ARRAY_COUNT(sDebugCode) <= sCurrDebugCodeEntered){
             PlaySE(SE_SUCCESS);
-            SetTimedRumble(2);
+            SetTimedRumble(12);
             gShowDebugMenu = TRUE;
         }
         else if (JOY_NEW(sDebugCode[sCurrDebugCodeEntered])){

@@ -1349,7 +1349,7 @@ static void SpriteCB_Ball_Capture_Step(struct Sprite *sprite)
     if (sprite->sTimer == 40)
     {
         PlaySE(SE_RG_BALL_CLICK);
-        SetTimedRumble(1);
+        SetTimedRumble(6);
         BlendPalettes(0x10000 << sprite->oam.paletteNum, 6, RGB(0, 0, 0));
         MakeCaptureStars(sprite);
     }

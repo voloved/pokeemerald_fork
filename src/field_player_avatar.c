@@ -1187,6 +1187,7 @@ static void PlayCollisionSoundIfNotFacingWarp(u8 direction)
                 return;
         }
         PlaySE(SE_WALL_HIT);
+        SetTimedRumble(3);
     }
 }
 
