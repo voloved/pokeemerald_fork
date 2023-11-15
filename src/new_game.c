@@ -48,6 +48,7 @@
 #include "constants/decorations.h"
 #include "constants/flags.h"
 #include "constants/items.h"
+#include "constants/map_groups.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 
@@ -220,6 +221,7 @@ void NewGameInitData(void)
     FlagSet(FLAG_RECEIVED_RUNNING_SHOES);  //Running is set at the beginning of the game now.
     FlagSet(FLAG_SYS_B_DASH);
     memset(&gSaveBlock2Ptr->itemFlags, 0, sizeof(gSaveBlock2Ptr->itemFlags));
+    gSaveBlock1Ptr->dexNavChain = 0;
 }
 
 static void ResetMiniGamesRecords(void)

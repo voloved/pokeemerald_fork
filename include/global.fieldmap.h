@@ -271,6 +271,8 @@ enum {
 #define PLAYER_AVATAR_FLAG_FISHING      (1 << 0)
 #define PLAYER_AVATAR_FLAG_WATERING     (1 << 1)
 
+#define PLAYER_AVATAR_FLAG_BIKE        (PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE)
+
 enum
 {
     ACRO_BIKE_NORMAL,
@@ -337,6 +339,8 @@ struct PlayerAvatar
     // these two are timer history arrays which [0] is the active timer for acro bike. every element is backed up to the next element upon update.
     /*0x15*/ u8 dirTimerHistory[8];
     /*0x1D*/ u8 abStartSelectTimerHistory[8];
+    /*0x1E*/ u8 objectEventId:7;
+             u8 creeping:1;
 };
 
 struct Camera
