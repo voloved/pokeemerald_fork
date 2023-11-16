@@ -181,9 +181,9 @@ static const struct SpritePalette sPokenavOptionsSpritePalettes[] =
 static const u16 sOptionsLabelGfx_RegionMap[] = {0x000, PALTAG_OPTIONS_DEFAULT - PALTAG_OPTIONS_START};
 static const u16 sOptionsLabelGfx_Condition[] = {0x020, PALTAG_OPTIONS_BLUE - PALTAG_OPTIONS_START};
 static const u16 sOptionsLabelGfx_MatchCall[] = {0x040, PALTAG_OPTIONS_RED - PALTAG_OPTIONS_START};
-static const u16 sOptionsLabelGfx_Ribbons[]   = {0x060, PALTAG_OPTIONS_PINK - PALTAG_OPTIONS_START};
+static const u16 sOptionsLabelGfx_Ribbons[]   = {0x060, PALTAG_OPTIONS_BLUE - PALTAG_OPTIONS_START};
 static const u16 sOptionsLabelGfx_SwitchOff[] = {0x080, PALTAG_OPTIONS_BEIGE - PALTAG_OPTIONS_START};
-static const u16 sOptionsLabelGfx_AccessPC[]  = {0x0A0, PALTAG_OPTIONS_BLUE - PALTAG_OPTIONS_START};
+static const u16 sOptionsLabelGfx_AccessPC[]  = {0x0A0, PALTAG_OPTIONS_PINK - PALTAG_OPTIONS_START};
 static const u16 sOptionsLabelGfx_Party[]     = {0x0C0, PALTAG_OPTIONS_BLUE - PALTAG_OPTIONS_START};
 static const u16 sOptionsLabelGfx_Search[]    = {0x0E0, PALTAG_OPTIONS_BLUE - PALTAG_OPTIONS_START};
 static const u16 sOptionsLabelGfx_Cool[]      = {0x100, PALTAG_OPTIONS_RED - PALTAG_OPTIONS_START};
@@ -206,6 +206,7 @@ struct
         .deltaY = 20,
         .gfx = {
             sOptionsLabelGfx_RegionMap,
+            sOptionsLabelGfx_AccessPC,
             sOptionsLabelGfx_Condition,
             sOptionsLabelGfx_SwitchOff
         }
@@ -216,6 +217,7 @@ struct
         .deltaY = 20,
         .gfx = {
             sOptionsLabelGfx_RegionMap,
+            sOptionsLabelGfx_AccessPC,
             sOptionsLabelGfx_Condition,
             sOptionsLabelGfx_MatchCall,
             sOptionsLabelGfx_SwitchOff
@@ -223,14 +225,13 @@ struct
     },
     [POKENAV_MENU_TYPE_UNLOCK_MC_RIBBONS] =
     {
-        .yStart = 42,
+        .yStart = 49,
         .deltaY = 20,
         .gfx = {
-            sOptionsLabelGfx_RegionMap,
-            sOptionsLabelGfx_Condition,
-            sOptionsLabelGfx_MatchCall,
+            sOptionsLabelGfx_Party,
+            sOptionsLabelGfx_Search,
             sOptionsLabelGfx_Ribbons,
-            sOptionsLabelGfx_SwitchOff
+            sOptionsLabelGfx_Cancel
         }
     },
     [POKENAV_MENU_TYPE_CONDITION] =
@@ -238,7 +239,6 @@ struct
         .yStart = 49,
         .deltaY = 20,
         .gfx = {
-            sOptionsLabelGfx_AccessPC,
             sOptionsLabelGfx_Party,
             sOptionsLabelGfx_Search,
             sOptionsLabelGfx_Cancel
@@ -273,11 +273,11 @@ static const struct WindowTemplate sOptionDescWindowTemplate =
 static const u8 *const sPageDescriptions[] =
 {
     [POKENAV_MENUITEM_MAP]                     = gText_CheckMapOfHoenn,
+    [POKENAV_MENUITEM_ACCESS_PC]               = gText_Pokenav_Access_PC,
     [POKENAV_MENUITEM_CONDITION]               = gText_CheckPokemonInDetail,
     [POKENAV_MENUITEM_MATCH_CALL]              = gText_CallRegisteredTrainer,
-    [POKENAV_MENUITEM_RIBBONS]                 = gText_CheckObtainedRibbons,
+    [POKENAV_MENUITEM_CONDITION_RIBBONS]        = gText_CheckObtainedRibbons,
     [POKENAV_MENUITEM_SWITCH_OFF]              = gText_PutAwayPokenav,
-    [POKENAV_MENUITEM_CONDITION_ACCESS_PC]     = gText_Pokenav_Access_PC,
     [POKENAV_MENUITEM_CONDITION_PARTY]         = gText_CheckPartyPokemonInDetail,
     [POKENAV_MENUITEM_CONDITION_SEARCH]        = gText_CheckAllPokemonInDetail,
     [POKENAV_MENUITEM_CONDITION_CANCEL]        = gText_ReturnToPokenavMenu,
@@ -484,7 +484,8 @@ static u32 LoopedTask_OpenMenu(s32 state)
         DecompressAndCopyTileDataToVram(3, sPokenavBgDotsTiles, 0, 0, 0);
         DecompressAndCopyTileDataToVram(3, sPokenavBgDotsTilemap, 0, 0, 1);
         CopyPaletteIntoBufferUnfaded(sPokenavBgDotsPal, 0x30, 0x20);
-        if (GetPokenavMenuType() == POKENAV_MENU_TYPE_CONDITION || GetPokenavMenuType() == POKENAV_MENU_TYPE_CONDITION_SEARCH)
+        if (GetPokenavMenuType() == POKENAV_MENU_TYPE_CONDITION || GetPokenavMenuType() == POKENAV_MENU_TYPE_UNLOCK_MC_RIBBONS
+            || GetPokenavMenuType() == POKENAV_MENU_TYPE_CONDITION_SEARCH)
             ChangeBgDotsColorToPurple();
         return LT_INC_AND_PAUSE;
     case 3:
