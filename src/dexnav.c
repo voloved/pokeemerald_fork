@@ -2519,7 +2519,16 @@ static void Task_DexNavMain(u8 taskId)
             PlaySE(SE_FAILURE);
         }
     }
-    else if (JOY_NEW(A_BUTTON))
+    else if (JOY_NEW(L_BUTTON))
+    {
+        if ((VarGet(VAR_DEXNAV_SPECIES) & MASK_SPECIES) != SPECIES_NONE)
+        {
+            PlaySE(SE_SELECT);
+            VarSet(VAR_DEXNAV_SPECIES, SPECIES_NONE);
+            PrintSearchableSpecies(SPECIES_NONE);
+        }
+    }
+     else if (JOY_NEW_RAW(A_BUTTON))
     {
         species = DexNavGetSpecies();
         if (species == SPECIES_NONE)
