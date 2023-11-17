@@ -152,7 +152,6 @@ static const LoopedTask sMenuHandlerLoopTaskFuncs[] =
     [POKENAV_MENU_FUNC_RESHOW_DESCRIPTION]    = LoopedTask_ReShowDescription,
     [POKENAV_MENU_FUNC_OPEN_FEATURE]          = LoopedTask_OpenPokenavFeature,
     [POKENAV_MENU_FUNC_CANNOT_ACCESS_PC]      = LoopedTask_CannotAccesPC,
-    [POKENAV_MENU_FUNC_OPEN_FEATURE]          = LoopedTask_OpenPokenavFeature,
     [POKENAV_MENU_FUNC_OPEN_DEXNAV]           = LoopedTask_OpenPokenavDexNav
 };
 
@@ -213,17 +212,19 @@ struct
         .gfx = {
             sOptionsLabelGfx_RegionMap,
             sOptionsLabelGfx_AccessPC,
+            sOptionsLabelGfx_DexNav,
             sOptionsLabelGfx_Condition,
             sOptionsLabelGfx_SwitchOff
         }
     },
     [POKENAV_MENU_TYPE_UNLOCK_MC] =
     {
-        .yStart = 42,
-        .deltaY = 20,
+        .yStart = 40,
+        .deltaY = 17,
         .gfx = {
             sOptionsLabelGfx_RegionMap,
             sOptionsLabelGfx_AccessPC,
+            sOptionsLabelGfx_DexNav,
             sOptionsLabelGfx_Condition,
             sOptionsLabelGfx_MatchCall,
             sOptionsLabelGfx_SwitchOff
@@ -263,18 +264,6 @@ struct
             sOptionsLabelGfx_Cancel
         }
     },
-    [POKENAV_MENU_TYPE_UNLOCK_DEXNAV] =
-    {
-        .yStart = 42,
-        .deltaY = 20,
-        .gfx = {
-            sOptionsLabelGfx_RegionMap,
-            sOptionsLabelGfx_AccessPC,
-            sOptionsLabelGfx_Condition,
-            sOptionsLabelGfx_MatchCall,
-            sOptionsLabelGfx_DexNav
-        }
-    },
 
 };
 
@@ -295,7 +284,7 @@ static const u8 *const sPageDescriptions[] =
     [POKENAV_MENUITEM_ACCESS_PC]               = gText_Pokenav_Access_PC,
     [POKENAV_MENUITEM_CONDITION]               = gText_CheckPokemonInDetail,
     [POKENAV_MENUITEM_MATCH_CALL]              = gText_CallRegisteredTrainer,
-    [POKENAV_MENUITEM_CONDITION_RIBBONS]        = gText_CheckObtainedRibbons,
+    [POKENAV_MENUITEM_CONDITION_RIBBONS]       = gText_CheckObtainedRibbons,
     [POKENAV_MENUITEM_SWITCH_OFF]              = gText_PutAwayPokenav,
     [POKENAV_MENUITEM_CONDITION_PARTY]         = gText_CheckPartyPokemonInDetail,
     [POKENAV_MENUITEM_CONDITION_SEARCH]        = gText_CheckAllPokemonInDetail,

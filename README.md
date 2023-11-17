@@ -11,6 +11,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ## v2.4.0
  - [Added Day-Night System](https://github.com/aarant/pokeemerald/tree/lighting-expanded-id) [Credit: aarant]
  - [Added Rumble Feature](https://github.com/pret/pokeemerald/wiki/Add-In%E2%80%90Cart-Rumble) [Credit: Evan Bowman and Citrus Bolt]
+ - [Added DexNav(https://github.com/ghoulslash/pokeemerald/tree/dexnav) [Credit: Ghouslash]]
+   - [Made DexNav live in PokéNav](https://github.com/Artrios/pokeemerald/commit/d25bfdcbafd26e1dec3058445074264c3bdbdef4) [Credit: Paccy]
  - [New Random Number Generator Implimentation.](https://github.com/DizzyEggg/pokeemerald/commit/686bf3919816a1661c1652fe980dbe93c9920265) [Credit: Kurausukun]
  - Razor Wind buffs Attack if using original damage catagories rather than always buffing Special Attack.
  - Leech Life is buffed to its Gen VII stats.
