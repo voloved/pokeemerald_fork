@@ -9,6 +9,7 @@
 #include "script.h"
 #include "overworld.h"
 #include "event_scripts.h"
+#include "dexnav.h"
 
 
 struct Pokenav_Menu
@@ -49,7 +50,8 @@ static const u8 sLastCursorPositions[] =
     [POKENAV_MENU_TYPE_UNLOCK_MC]         = 4,
     [POKENAV_MENU_TYPE_UNLOCK_MC_RIBBONS] = 3,
     [POKENAV_MENU_TYPE_CONDITION]         = 2,
-    [POKENAV_MENU_TYPE_CONDITION_SEARCH]  = 5
+    [POKENAV_MENU_TYPE_CONDITION_SEARCH]  = 5,
+    [POKENAV_MENU_TYPE_UNLOCK_DEXNAV]     = 4
 };
 
 static const u8 sMenuItems[][MAX_POKENAV_MENUITEMS] =
@@ -93,14 +95,27 @@ static const u8 sMenuItems[][MAX_POKENAV_MENUITEMS] =
         POKENAV_MENUITEM_CONDITION_SEARCH_TOUGH,
         POKENAV_MENUITEM_CONDITION_SEARCH_CANCEL
     },
+    [POKENAV_MENU_TYPE_UNLOCK_DEXNAV] =
+    {
+        POKENAV_MENUITEM_MAP,
+        POKENAV_MENUITEM_ACCESS_PC,
+        POKENAV_MENUITEM_CONDITION,
+        POKENAV_MENUITEM_MATCH_CALL,
+        POKENAV_MENUITEM_DEXNAV,
+        [5 ... MAX_POKENAV_MENUITEMS - 1] = POKENAV_MENUITEM_SWITCH_OFF
+    },
 };
 
 static u8 GetPokenavMainMenuType(void)
 {
     u8 menuType = POKENAV_MENU_TYPE_DEFAULT;
 
-    if (FlagGet(FLAG_ADDED_MATCH_CALL_TO_POKENAV)) 
+    if (FlagGet(FLAG_ADDED_MATCH_CALL_TO_POKENAV))
+    {
         menuType = POKENAV_MENU_TYPE_UNLOCK_MC;
+        if (TRUE || FlagGet(FLAG_SYS_DEXNAV_GET))
+            menuType = POKENAV_MENU_TYPE_UNLOCK_DEXNAV;
+    }
 
     return menuType;
 }
@@ -192,6 +207,7 @@ static void SetMenuInputHandler(struct Pokenav_Menu *menu)
         SetPokenavMode(POKENAV_MODE_NORMAL);
         // fallthrough
     case POKENAV_MENU_TYPE_UNLOCK_MC:
+    case POKENAV_MENU_TYPE_UNLOCK_DEXNAV:
         menu->callback = GetMainMenuInputHandler();
         break;
     case POKENAV_MENU_TYPE_CONDITION:
@@ -264,6 +280,9 @@ static u32 HandleMainMenuInput(struct Pokenav_Menu *menu)
             menu->helpBarIndex = HELPBAR_MC_TRAINER_LIST;
             SetMenuIdAndCB(menu, POKENAV_MATCH_CALL);
             return POKENAV_MENU_FUNC_OPEN_FEATURE;
+        case POKENAV_MENUITEM_DEXNAV:
+            CreateTask(Task_OpenDexNavFromStartMenu, 0);
+            return POKENAV_MENU_FUNC_EXIT; 
         case POKENAV_MENUITEM_SWITCH_OFF:
             return POKENAV_MENU_FUNC_EXIT;
         }

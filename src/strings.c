@@ -1016,6 +1016,7 @@ const u8 gText_CheckPokemonInDetail[] = _("Check POKéMON in detail.");
 const u8 gText_CallRegisteredTrainer[] = _("Call a registered TRAINER.");
 const u8 gText_CheckObtainedRibbons[] = _("Check obtained RIBBONS.");
 const u8 gText_Pokenav_Access_PC[] = _("Access the PC.");
+const u8 gText_Pokenav_DexNav[] = _("Open up the DexNav.");
 const u8 gText_PutAwayPokenav[] = _("Put away the POKéNAV.");
 const u8 gText_Pokenav_Cannot_Access_PC[] = _("Can't access PC. Go outside.");
 const u8 gText_NoRibbonWinners[] = _("There are no RIBBON winners.");

@@ -778,7 +778,12 @@ static bool8 TryStartHiddenMonFieldEffect(u8 environment, u8 xSize, u8 ySize, bo
 
 static u8 getSearchLevel(u16 species)
 {
-    return 5;
+    if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
+        return 10;
+    else if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_SEEN))
+       return 5;
+    else
+        return 0;
 }
 
 static void DrawDexNavSearchHeldItem(u8* dst)
@@ -810,7 +815,7 @@ static void Task_SetUpDexNavSearch(u8 taskId)
     
     u16 species = sDexNavSearchDataPtr->species;
     u8 environment = sDexNavSearchDataPtr->environment;
-    u8 searchLevel = getSearchLevel(SpeciesToNationalPokedexNum(species));
+    u8 searchLevel = getSearchLevel(species);
     
     // init sprites
     sDexNavSearchDataPtr->iconSpriteId = MAX_SPRITES;
@@ -2107,9 +2112,7 @@ static const u8 sMoveTypeToOamPaletteNum[NUMBER_OF_MON_TYPES] =
     [TYPE_ICE] = TYPE_ICON_PAL_NUM_1,
     [TYPE_DRAGON] = TYPE_ICON_PAL_NUM_2,
     [TYPE_DARK] = TYPE_ICON_PAL_NUM_0,
-    #ifdef TYPE_FAIRY
-    [TYPE_FAIRY] = TYPE_ICON_PAL_NUM_1, //based on battle_engine
-    #endif
+    [TYPE_FAIRY] = TYPE_ICON_PAL_NUM_1,
 };
 static void SetTypeIconPosAndPal(u8 typeId, u8 x, u8 y, u8 spriteArrayId)
 {
@@ -2167,7 +2170,7 @@ static void PrintCurrentSpeciesInfo(void)
     }
     else
     {
-        ConvertIntToDecimalStringN(gStringVar4, getSearchLevel(SpeciesToNationalPokedexNum(species)), 0, 4);
+        ConvertIntToDecimalStringN(gStringVar4, getSearchLevel(species), 0, 4);
         AddTextPrinterParameterized3(WINDOW_INFO, 0, 0, SEARCH_LEVEL_Y, sFontColor_Black, 0, gStringVar4);
     }
     
@@ -2354,7 +2357,7 @@ void Task_OpenDexNavFromStartMenu(u8 taskId)
     if (!gPaletteFade.active)
     {
         CleanupOverworldWindowsAndTilemaps();
-        DexNavGuiInit(CB2_ReturnToFieldWithOpenMenu);
+        DexNavGuiInit(CB2_ReturnToField);
         DestroyTask(taskId);
     }
 }
@@ -2372,8 +2375,8 @@ static void Task_DexNavMain(u8 taskId)
     
     if (IsSEPlaying())
         return;
-    
-    if (JOY_NEW(B_BUTTON))
+
+    if (JOY_NEW_RAW(B_BUTTON))
     {
         PlaySE(SE_POKENAV_OFF);
         BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
@@ -2477,16 +2480,25 @@ static void Task_DexNavMain(u8 taskId)
         species = DexNavGetSpecies();
         
         if (species != SPECIES_NONE)
-        {            
-            PrintSearchableSpecies(species);
-            //PlaySE(SE_DEX_SEARCH);
-            PlayCry_Script(species, 0);
-            
-            // create value to store in a var
-            VarSet(VAR_DEXNAV_SPECIES, ((sDexNavUiDataPtr->environment << 14) | species));
+        {
+            if ((VarGet(VAR_DEXNAV_SPECIES) & MASK_SPECIES) != species)
+            {
+                PlayCry_Script(species, 0);
+                // create value to store in a var
+                VarSet(VAR_DEXNAV_SPECIES, ((sDexNavUiDataPtr->environment << 14) | species));
+                PrintSearchableSpecies(species);
+            }         
+            else
+            {
+                PlaySE(SE_SELECT);
+                VarSet(VAR_DEXNAV_SPECIES, SPECIES_NONE);
+                PrintSearchableSpecies(SPECIES_NONE);
+            }
         }
         else
         {
+            VarSet(VAR_DEXNAV_SPECIES, SPECIES_NONE);
+            PrintSearchableSpecies(species);
             PlaySE(SE_FAILURE);
         }
     }
@@ -2726,6 +2738,7 @@ void ResetDexNavSearch(void)
 {
     gSaveBlock1Ptr->dexNavChain = 0;    //reset dex nav chaining on new map
     VarSet(VAR_DEXNAV_STEP_COUNTER, 0); //reset hidden pokemon step counter
+    VarSet(VAR_DEXNAV_SPECIES, 0);
     if (FlagGet(FLAG_SYS_DEXNAV_SEARCH))
         EndDexNavSearch(FindTaskIdByFunc(Task_DexNavSearch));   //moving to new map ends dexnav search
 }
