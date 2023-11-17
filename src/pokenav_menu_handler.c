@@ -144,6 +144,20 @@ bool32 PokenavCallback_Init_MainMenuCursorOnMap(void)
     return TRUE;
 }
 
+bool32 PokenavCallback_Init_MainMenuCursorOnDexNav(void)
+{
+    struct Pokenav_Menu *menu = AllocSubstruct(POKENAV_SUBSTRUCT_MAIN_MENU_HANDLER, sizeof(struct Pokenav_Menu));
+    if (!menu)
+        return FALSE;
+
+    menu->menuType = GetPokenavMainMenuType();
+    menu->cursorPos = POKENAV_MENUITEM_DEXNAV;
+    menu->currMenuItem = POKENAV_MENUITEM_DEXNAV;
+    menu->helpBarIndex = HELPBAR_NONE;
+    SetMenuInputHandler(menu);
+    return TRUE;
+}
+
 bool32 PokenavCallback_Init_MainMenuCursorOnMatchCall(void)
 {
     struct Pokenav_Menu *menu = AllocSubstruct(POKENAV_SUBSTRUCT_MAIN_MENU_HANDLER, sizeof(struct Pokenav_Menu));
@@ -281,8 +295,8 @@ static u32 HandleMainMenuInput(struct Pokenav_Menu *menu)
             SetMenuIdAndCB(menu, POKENAV_MATCH_CALL);
             return POKENAV_MENU_FUNC_OPEN_FEATURE;
         case POKENAV_MENUITEM_DEXNAV:
-            CreateTask(Task_OpenDexNavFromStartMenu, 0);
-            return POKENAV_MENU_FUNC_EXIT; 
+            SetMenuIdAndCB(menu, POKENAV_DEXNAV);
+            return POKENAV_MENU_FUNC_OPEN_DEXNAV;
         case POKENAV_MENUITEM_SWITCH_OFF:
             return POKENAV_MENU_FUNC_EXIT;
         }

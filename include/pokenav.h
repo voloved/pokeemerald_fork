@@ -119,6 +119,7 @@ enum
 {
     POKENAV_MAIN_MENU = POKENAV_MENU_IDS_START, // The main menu where the player selects Hoenn Map/Condition/Match Call/Ribbons
     POKENAV_MAIN_MENU_CURSOR_ON_MAP,
+    POKENAV_MAIN_MENU_CURSOR_ON_DEXNAV,
     POKENAV_CONDITION_MENU,                     // The first Condition screen where the player selects Party or Search
     POKENAV_CONDITION_SEARCH_MENU,              // The Condition search menu where the player selects a search parameter
     POKENAV_MAIN_MENU_CURSOR_ON_MATCH_CALL,
@@ -166,6 +167,7 @@ enum
     POKENAV_MENUITEM_CONDITION_SEARCH_TOUGH,
     POKENAV_MENUITEM_CONDITION_SEARCH_CANCEL,
     POKENAV_MENUITEM_DEXNAV,
+    POKENAV_MENU_FUNC_OPEN_DEXNAV,
 };
 
 // Max menu options (condition search uses 6)
@@ -390,6 +392,7 @@ void ShutdownPokenav(void);
 
 // pokenav_menu_handler.c
 bool32 PokenavCallback_Init_MainMenuCursorOnMap(void);
+bool32 PokenavCallback_Init_MainMenuCursorOnDexNav(void);
 bool32 PokenavCallback_Init_MainMenuCursorOnMatchCall(void);
 bool32 PokenavCallback_Init_MainMenuCursorOnRibbons(void);
 bool32 PokenavCallback_Init_ConditionMenu(void);
