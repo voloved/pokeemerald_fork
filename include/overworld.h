@@ -68,7 +68,7 @@ extern bool8 gSysPcFromPokenav;
 extern u8 gTimeOfDay;
 extern u16 gTimeUpdateCounter;
 
-extern struct TimeBlendSettings currentTimeBlend;
+extern struct TimeBlendSettings gCurrentTimeBlend;
 
 extern const struct UCoords32 gDirectionToVectors[];
 

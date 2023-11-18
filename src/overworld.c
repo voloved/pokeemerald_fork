@@ -198,7 +198,7 @@ u8 gLocalLinkPlayerId; // This is our player id in a multiplayer mode.
 u8 gFieldLinkPlayerCount;
 
 u8 gTimeOfDay;
-struct TimeBlendSettings currentTimeBlend;
+struct TimeBlendSettings gCurrentTimeBlend;
 u16 gTimeUpdateCounter; // playTimeVBlanks will eventually overflow, so this is used to update TOD
 
 // EWRAM vars
@@ -1482,40 +1482,45 @@ u8 UpdateTimeOfDay(void) {
     hours = gLocalTime.hours;
     minutes = gLocalTime.minutes;
     if (hours < 4) { // night
-        currentTimeBlend.weight = 256;
-        currentTimeBlend.altWeight = 0;
-        gTimeOfDay = currentTimeBlend.time0 = currentTimeBlend.time1 = TIME_OF_DAY_NIGHT;
+        gCurrentTimeBlend.weight = 256;
+        gCurrentTimeBlend.altWeight = 0;
+        gTimeOfDay = gCurrentTimeBlend.time0 = gCurrentTimeBlend.time1 = TIME_OF_DAY_NIGHT;
     } else if (hours < 7) { // night->twilight
-        currentTimeBlend.time0 = TIME_OF_DAY_NIGHT;
-        currentTimeBlend.time1 = TIME_OF_DAY_TWILIGHT;
-        currentTimeBlend.weight = 256 - 256 * ((hours - 4) * 60 + minutes) / ((7-4)*60);
-        currentTimeBlend.altWeight = (256 - currentTimeBlend.weight) / 2;
+        gCurrentTimeBlend.time0 = TIME_OF_DAY_NIGHT;
+        gCurrentTimeBlend.time1 = TIME_OF_DAY_TWILIGHT;
+        gCurrentTimeBlend.weight = 256 - 256 * ((hours - 4) * 60 + minutes) / ((7-4)*60);
+        gCurrentTimeBlend.altWeight = (256 - gCurrentTimeBlend.weight) / 2;
         gTimeOfDay = TIME_OF_DAY_DAY;
     } else if (hours < 10) { // twilight->day
-        currentTimeBlend.time0 = TIME_OF_DAY_TWILIGHT;
-        currentTimeBlend.time1 = TIME_OF_DAY_DAY;
-        currentTimeBlend.weight = 256 - 256 * ((hours - 7) * 60 + minutes) / ((10-7)*60);
-        currentTimeBlend.altWeight = (256 - currentTimeBlend.weight) / 2 + 128;
+        gCurrentTimeBlend.time0 = TIME_OF_DAY_TWILIGHT;
+        gCurrentTimeBlend.time1 = TIME_OF_DAY_DAY;
+        gCurrentTimeBlend.weight = 256 - 256 * ((hours - 7) * 60 + minutes) / ((10-7)*60);
+        gCurrentTimeBlend.altWeight = (256 - gCurrentTimeBlend.weight) / 2 + 128;
         gTimeOfDay = TIME_OF_DAY_DAY;
     } else if (hours < 18) { // day
-        currentTimeBlend.weight = currentTimeBlend.altWeight = 256;
-        gTimeOfDay = currentTimeBlend.time0 = currentTimeBlend.time1 = TIME_OF_DAY_DAY;
+        gCurrentTimeBlend.weight = gCurrentTimeBlend.altWeight = 256;
+        gTimeOfDay = gCurrentTimeBlend.time0 = gCurrentTimeBlend.time1 = TIME_OF_DAY_DAY;
     } else if (hours < 20) { // day->twilight
-        currentTimeBlend.time0 = TIME_OF_DAY_DAY;
-        currentTimeBlend.time1 = TIME_OF_DAY_TWILIGHT;
-        currentTimeBlend.weight = 256 - 256 * ((hours - 18) * 60 + minutes) / ((20-18)*60);
-        currentTimeBlend.altWeight = currentTimeBlend.weight / 2 + 128;
+        gCurrentTimeBlend.time0 = TIME_OF_DAY_DAY;
+        gCurrentTimeBlend.time1 = TIME_OF_DAY_TWILIGHT;
+        gCurrentTimeBlend.weight = 256 - 256 * ((hours - 18) * 60 + minutes) / ((20-18)*60);
+        gCurrentTimeBlend.altWeight = gCurrentTimeBlend.weight / 2 + 128;
         gTimeOfDay = TIME_OF_DAY_TWILIGHT;
     } else if (hours < 22) { // twilight->night
-        currentTimeBlend.time0 = TIME_OF_DAY_TWILIGHT;
-        currentTimeBlend.time1 = TIME_OF_DAY_NIGHT;
-        currentTimeBlend.weight = 256 - 256 * ((hours - 20) * 60 + minutes) / ((22-20)*60);
-        currentTimeBlend.altWeight = currentTimeBlend.weight / 2;
+        gCurrentTimeBlend.time0 = TIME_OF_DAY_TWILIGHT;
+        gCurrentTimeBlend.time1 = TIME_OF_DAY_NIGHT;
+        gCurrentTimeBlend.weight = 256 - 256 * ((hours - 20) * 60 + minutes) / ((22-20)*60);
+        gCurrentTimeBlend.altWeight = gCurrentTimeBlend.weight / 2;
         gTimeOfDay = TIME_OF_DAY_NIGHT;
     } else { // 22-24, night
-        currentTimeBlend.weight = 256;
-        currentTimeBlend.altWeight = 0;
-        gTimeOfDay = currentTimeBlend.time0 = currentTimeBlend.time1 = TIME_OF_DAY_NIGHT;
+        gCurrentTimeBlend.weight = 256;
+        gCurrentTimeBlend.altWeight = 0;
+        gTimeOfDay = gCurrentTimeBlend.time0 = gCurrentTimeBlend.time1 = TIME_OF_DAY_NIGHT;
+    }
+    if (!FlagGet(FLAG_SHOW_DAY_NIGHT))
+    {
+        gCurrentTimeBlend.weight = gCurrentTimeBlend.altWeight = 256;
+        gTimeOfDay = gCurrentTimeBlend.time0 = gCurrentTimeBlend.time1 = TIME_OF_DAY_DAY;
     }
     return gTimeOfDay;
 }
@@ -1541,9 +1546,9 @@ void UpdateAltBgPalettes(u16 palettes) {
     while (palettes) {
         if (palettes & 1) {
             if (i < NUM_PALS_IN_PRIMARY)
-                AvgPaletteWeighted(&((u16*)primary->palettes)[i*16], &((u16*)primary->palettes)[((i+9)%16)*16], gPlttBufferUnfaded + i * 16, currentTimeBlend.altWeight);
+                AvgPaletteWeighted(&((u16*)primary->palettes)[i*16], &((u16*)primary->palettes)[((i+9)%16)*16], gPlttBufferUnfaded + i * 16, gCurrentTimeBlend.altWeight);
             else
-                AvgPaletteWeighted(&((u16*)secondary->palettes)[i*16], &((u16*)secondary->palettes)[((i+9)%16)*16], gPlttBufferUnfaded + i * 16, currentTimeBlend.altWeight);
+                AvgPaletteWeighted(&((u16*)secondary->palettes)[i*16], &((u16*)secondary->palettes)[((i+9)%16)*16], gPlttBufferUnfaded + i * 16, gCurrentTimeBlend.altWeight);
         }
         i++;
         palettes >>= 1;
@@ -1565,9 +1570,9 @@ void UpdatePalettesWithTime(u32 palettes) {
     TimeMixPalettes(palettes,
       gPlttBufferUnfaded,
       gPlttBufferFaded,
-      (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
-      (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
-      currentTimeBlend.weight);
+      (struct BlendSettings *)&gTimeOfDayBlend[gCurrentTimeBlend.time0],
+      (struct BlendSettings *)&gTimeOfDayBlend[gCurrentTimeBlend.time1],
+      gCurrentTimeBlend.weight);
   }
 }
 
@@ -1580,9 +1585,9 @@ u8 UpdateSpritePaletteWithTime(u8 paletteNum) {
     TimeMixPalettes(1,
       gPlttBufferUnfaded + offset,
       gPlttBufferFaded + offset,
-      (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
-      (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
-      currentTimeBlend.weight);
+      (struct BlendSettings *)&gTimeOfDayBlend[gCurrentTimeBlend.time0],
+      (struct BlendSettings *)&gTimeOfDayBlend[gCurrentTimeBlend.time1],
+      gCurrentTimeBlend.weight);
   }
   return paletteNum;
 }
@@ -1601,15 +1606,15 @@ static void OverworldBasic(void)
     // Every minute if no palette fade is active, update TOD blending as needed
     if (!gPaletteFade.active && ++gTimeUpdateCounter >= 3600) {
       struct TimeBlendSettings cachedBlend = {
-        .time0 = currentTimeBlend.time0,
-        .time1 = currentTimeBlend.time1,
-        .weight = currentTimeBlend.weight,
+        .time0 = gCurrentTimeBlend.time0,
+        .time1 = gCurrentTimeBlend.time1,
+        .weight = gCurrentTimeBlend.weight,
       };
       gTimeUpdateCounter = 0;
       UpdateTimeOfDay();
-      if (cachedBlend.time0 != currentTimeBlend.time0
-       || cachedBlend.time1 != currentTimeBlend.time1
-       || cachedBlend.weight != currentTimeBlend.weight) {
+      if (cachedBlend.time0 != gCurrentTimeBlend.time0
+       || cachedBlend.time1 != gCurrentTimeBlend.time1
+       || cachedBlend.weight != gCurrentTimeBlend.weight) {
            UpdateAltBgPalettes(PALETTES_BG);
            UpdatePalettesWithTime(PALETTES_ALL);
        }

@@ -700,8 +700,9 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_FrostBite
 	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvo
 	case 8, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu
-	case 9, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
-	case 10, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case 9, LittlerootTown_ProfessorBirchsLab_EventScript_DayNight
+	case 10, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	case 11, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
 	return
@@ -731,9 +732,12 @@ EventScript_Multichoice_BirchPCOptions_19:
 EventScript_Multichoice_BirchPCOptions_15:
 	goto_if_set FLAG_RELEARN_IN_PARTY_MENU, EventScript_Multichoice_BirchPCOptions_16
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_14, 8
+EventScript_Multichoice_BirchPCOptions_25:
+	goto_if_set FLAG_SHOW_DAY_NIGHT, EventScript_Multichoice_BirchPCOptions_24
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_20, 9
 EventScript_Multichoice_BirchPCOptions_13:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 9
-	dynmultipush EventScript_Multichoice_Exit, 10
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 10
+	dynmultipush EventScript_Multichoice_Exit, 11
 	dynmultistack 0, 0, TRUE, 9, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	return
 
@@ -767,6 +771,10 @@ EventScript_Multichoice_BirchPCOptions_20: @ Mid-Battle Evolutions
 
 EventScript_Multichoice_BirchPCOptions_16: @ Relearn Move in Party Menu
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_13, 8
+	goto EventScript_Multichoice_BirchPCOptions_25
+
+EventScript_Multichoice_BirchPCOptions_24: @ Day Night
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_19, 9
 	goto EventScript_Multichoice_BirchPCOptions_13
 
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
@@ -939,6 +947,27 @@ LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu_Cont:
 LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenuNo::
 	clearflag FLAG_RELEARN_IN_PARTY_MENU
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_RelearnInMenuNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_DayNight::
+	message LittlerootTown_ProfessorBirchsLab_Text_DayNight
+	goto_if_set FLAG_SHOW_DAY_NIGHT, LittlerootTown_ProfessorBirchsLab_EventScript_DayNight_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_DayNight_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_DayNight_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_DayNight_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_DayNightNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	setflag FLAG_SHOW_DAY_NIGHT
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_DayNightYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_DayNightNo::
+	clearflag FLAG_SHOW_DAY_NIGHT
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_DayNightNo, MSGBOX_SIGN
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
@@ -1397,6 +1426,12 @@ EventScript_Multichoice_BirchPCOptions_Text_17:
 EventScript_Multichoice_BirchPCOptions_Text_18:
 	.string "{COLOR RED}MID-BATTLE EVOLUTION$"
 
+EventScript_Multichoice_BirchPCOptions_Text_19:
+	.string "{COLOR GREEN}SHOW DAY/NIGHT$"
+
+EventScript_Multichoice_BirchPCOptions_Text_20:
+	.string "{COLOR RED}SHOW DAY/NIGHT$"
+
 EventScript_Multichoice_Exit:
 	.string "EXIT$"
 
@@ -1617,6 +1652,18 @@ LittlerootTown_ProfessorBirchsLab_Text_MidBattleEvoYes:
 LittlerootTown_ProfessorBirchsLab_Text_MidBattleEvoNo:
 	.string "POKéMON not will evolve\n"
 	.string "during a battle.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_DayNight:
+	.string "Show the Day/Night\n"
+	.string "Cycle?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_DayNightYes:
+	.string "The graphics will show\n"
+	.string "day and night.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_DayNightNo:
+	.string "The graphics will show\n"
+	.string "only daytime.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_NoDupesClause:
 	.string "Would you like to not use the dupes\n"

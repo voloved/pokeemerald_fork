@@ -3,6 +3,7 @@
 #include "constants/weather.h"
 #include "constants/rgb.h"
 #include "util.h"
+#include "event_data.h"
 #include "event_object_movement.h"
 #include "field_weather.h"
 #include "main.h"
@@ -677,7 +678,7 @@ static void ApplyDroughtColorMapWithBlend(s8 colorMapIndex, u8 blendCoeff, u16 b
 static void ApplyFogBlend(u8 blendCoeff, u16 blendColor)
 {
     u32 curPalIndex;
-    u16 fogCoeff = min((gTimeOfDay + 1) * 4, 12);
+    u16 fogCoeff = FlagGet(FLAG_SHOW_DAY_NIGHT) ? min((gTimeOfDay + 1) * 4, 12) : 12;
 
     // First blend all palettes with time
     UpdateAltBgPalettes(PALETTES_BG);
@@ -806,9 +807,9 @@ void FadeScreen(u8 mode, s8 delay)
           if (MapHasNaturalLight(gMapHeader.mapType)) {
             UpdateAltBgPalettes(PALETTES_BG);
             BeginTimeOfDayPaletteFade(PALETTES_ALL, delay, 16, 0,
-              (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
-              (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
-              currentTimeBlend.weight, fadeColor);
+              (struct BlendSettings *)&gTimeOfDayBlend[gCurrentTimeBlend.time0],
+              (struct BlendSettings *)&gTimeOfDayBlend[gCurrentTimeBlend.time1],
+              gCurrentTimeBlend.weight, fadeColor);
           } else {
             BeginNormalPaletteFade(PALETTES_ALL, delay, 16, 0, fadeColor);
           }
@@ -858,7 +859,7 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex, bool8 allowFog)
                 UpdateSpritePaletteWithTime(spritePaletteIndex);
         } else { // In horizontal fog, only specific palettes should be fog-blended
             if (allowFog) {
-                i = min((gTimeOfDay + 1) * 4, 12); // fog coeff, highest in day and lowest at night
+                i = FlagGet(FLAG_SHOW_DAY_NIGHT) ? min((gTimeOfDay + 1) * 4, 12) : 12; // fog coeff, highest in day and lowest at night
                 paletteIndex *= 16;
                 // First blend with time
                 CpuFastCopy(gPlttBufferUnfaded + paletteIndex, gPlttBufferFaded + paletteIndex, 32);
