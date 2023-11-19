@@ -538,3 +538,4 @@ gSpecials::
 	def_special TrySetBattleTowerLinkType
 	def_special PostGameInitPCItems
 	def_special ChooseRandomEggSpecies
+	def_special CreateWonderTradePokemon
