@@ -1139,7 +1139,7 @@ static void SpriteCB_Ball_Wobble(struct Sprite *sprite)
         gBattleSpritesDataPtr->animationData->ballSubpx = 0;
         sprite->callback = SpriteCB_Ball_Wobble_Step;
         PlaySE(SE_BALL);
-        RumbleStart();
+        RumbleStartForSfx();
     }
 }
 
@@ -1302,7 +1302,7 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
                 StartSpriteAffineAnim(sprite, BALL_ROTATE_RIGHT);
 
             PlaySE(SE_BALL);
-            RumbleStart();
+            RumbleStartForSfx();
 
         }
         break;

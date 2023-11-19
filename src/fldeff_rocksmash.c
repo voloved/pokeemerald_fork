@@ -165,7 +165,7 @@ bool8 FldEff_UseRockSmash(void)
 static void FieldMove_RockSmash(void)
 {
     PlaySE(SE_M_ROCK_THROW);
-    RumbleStart();
+    RumbleStartForSfx();
     FieldEffectActiveListRemove(FLDEFF_USE_ROCK_SMASH);
     ScriptContext_Enable();
 }

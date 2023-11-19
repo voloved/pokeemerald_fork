@@ -1207,7 +1207,6 @@ static void PlayCollisionSoundIfNotFacingWarp(u8 direction)
                 return;
         }
         PlaySE(SE_WALL_HIT);
-        SetTimedRumble(3);
     }
 }
 
@@ -1589,7 +1588,7 @@ static bool8 PushBoulder_Move(struct Task *task, struct ObjectEvent *player, str
         gFieldEffectArguments[3] = gSprites[boulder->spriteId].oam.priority;
         FieldEffectStart(FLDEFF_DUST);
         PlaySE(SE_M_STRENGTH);
-        RumbleStart();
+        RumbleStartForSfx();
         task->tState++;
     }
     return FALSE;
@@ -1667,7 +1666,7 @@ static bool8 PlayerAvatar_SecretBaseMatSpinStep0(struct Task *task, struct Objec
     gPlayerAvatar.preventStep = TRUE;
     LockPlayerFieldControls();
     PlaySE(SE_WARP_IN);
-    RumbleStart();
+    RumbleStartForSfx();
     return TRUE;
 }
 

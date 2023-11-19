@@ -133,7 +133,7 @@ void m4aSongNumStart(u16 n)
         case SE_M_EXPLOSION:
         case SE_RG_SS_ANNE_HORN:
         case SE_POKENAV_CALL:
-            RumbleStart();
+            RumbleStartForSfx();
             break;
     }
 

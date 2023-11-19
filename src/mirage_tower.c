@@ -388,7 +388,7 @@ static void StartScreenShake(u8 yShakeOffset, u8 xShakeOffset, u8 numShakes, u8 
     gTasks[taskId].tYShakeOffset = yShakeOffset;
     SetCameraPanningCallback(NULL);
     PlaySE(SE_M_STRENGTH);
-    RumbleStart();
+    RumbleStartForSfx();
 }
 
 static void DoScreenShake(u8 taskId)

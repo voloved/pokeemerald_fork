@@ -395,9 +395,6 @@ static void VBlankIntr(void)
 
     UpdateWirelessStatusIndicatorSprite();
 
-    if (!IsSEPlaying())
-        RumbleStop();
-
     INTR_CHECK |= INTR_FLAG_VBLANK;
     gMain.intrCheck |= INTR_FLAG_VBLANK;
 }

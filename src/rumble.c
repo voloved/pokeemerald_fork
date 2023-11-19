@@ -20,7 +20,11 @@ void RumbleFrameUpdate()
 {
     REG_SIOCNT &= ~1;
     REG_SIOCNT |= SIO_START;
-    if(sRumbleType == RUMBLE_TYPE_TIMED)
+
+    if (sRumbleType == RUMBLE_TYPE_SFX && !IsSEPlaying())
+        SetRumbleState(RUMBLE_OFF);
+
+    else if(sRumbleType == RUMBLE_TYPE_TIMED)
     {
         if(stopRumbleCounter == 0)
             SetRumbleState(RUMBLE_OFF);
@@ -43,7 +47,7 @@ static void SetRumbleState(u32 state)
 
 bool32 RumbleStart(void)
 {
-    if (sRumbleType == RUMBLE_TYPE_TIMED)
+    if (sRumbleType != RUMBLE_TYPE_OFF)
         return FALSE;
     sRumbleType = RUMBLE_TYPE_CONT;
     SetRumbleState(RUMBLE_ON);
@@ -58,12 +62,21 @@ bool32 RumbleStop(void)
     return TRUE;
 }
 
+bool32 RumbleStartForSfx(void)
+{
+    if (sRumbleType != RUMBLE_TYPE_OFF)
+        return FALSE;
+    sRumbleType = RUMBLE_TYPE_SFX;
+    SetRumbleState(RUMBLE_ON);
+    return TRUE;
+}
+
 bool32 SetTimedRumble(u8 frames)
 {
-    if (sRumbleType == RUMBLE_TYPE_CONT)
+    if (sRumbleType != RUMBLE_TYPE_OFF)
         return FALSE;
     sRumbleType = RUMBLE_TYPE_TIMED;
-    stopRumbleCounter = 6 * frames;
+    stopRumbleCounter = frames;
     SetRumbleState(RUMBLE_ON);
     return TRUE;
 }
