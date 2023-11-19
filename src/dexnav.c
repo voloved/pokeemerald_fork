@@ -779,12 +779,49 @@ static bool8 TryStartHiddenMonFieldEffect(u8 environment, u8 xSize, u8 ySize, bo
 
 static u8 getSearchLevel(u16 species)
 {
-    if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
-        return 10;
-    else if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_SEEN))
-       return 5;
+    // TODO: make more interesting than just badge count. Maybe use these:
+    //   Badge Count
+    //   Elite 4 wins
+    //   Pokemon Caught
+    //   Pokemon in that route caught
+    u8 searchLevel;
+    if (FlagGet(FLAG_IS_CHAMPION))
+        searchLevel = 255;
     else
-        return 0;
+    {
+        switch (GetNumOwnedBadges())
+        {
+        case 0:
+            searchLevel = 0;
+            break;
+        case 1:
+            searchLevel = 1;
+            break;
+        case 2:
+            searchLevel = 2;
+            break;
+        case 3:
+            searchLevel = 5;
+            break;
+        case 4:
+            searchLevel = 10;
+            break;
+        case 5:
+            searchLevel = 15;
+            break;
+        case 6:
+            searchLevel = 25;
+            break;
+        case 7:
+            searchLevel = 50;
+            break;
+        case 8:
+        default:
+            searchLevel = 100;
+            break;
+        }
+    }
+    return searchLevel;
 }
 
 static void DrawDexNavSearchHeldItem(u8* dst)

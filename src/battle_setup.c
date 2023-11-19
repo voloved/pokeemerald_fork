@@ -2474,14 +2474,8 @@ u8 currLocConvertForNuzlocke(u8 currLocation)
 
 u8 GetScaledLevel(u8 lvl)
 {
-    u8 badgeCount = 0;
     u8 levelScaling = 0;
-    u32 i;
-    for (i = FLAG_BADGE01_GET; i < FLAG_BADGE01_GET + NUM_BADGES; i++)
-    {
-        if (FlagGet(i))
-            badgeCount++;
-    }
+    u8 badgeCount = GetNumOwnedBadges();
 
     if (FlagGet(FLAG_IS_CHAMPION))
         levelScaling = 5;

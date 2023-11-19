@@ -176,5 +176,6 @@ bool32 Overworld_RecvKeysFromLinkIsRunning(void);
 bool32 Overworld_SendKeysToLinkIsRunning(void);
 bool32 IsSendingKeysOverCable(void);
 void ClearLinkPlayerObjectEvents(void);
+int GetNumOwnedBadges(void);
 
 #endif // GUARD_OVERWORLD_H
