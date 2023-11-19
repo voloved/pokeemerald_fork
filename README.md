@@ -14,6 +14,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Added DexNav(https://github.com/ghoulslash/pokeemerald/tree/dexnav) [Credit: Ghouslash]]
    - [Made DexNav live in PokéNav](https://github.com/Artrios/pokeemerald/commit/d25bfdcbafd26e1dec3058445074264c3bdbdef4) [Credit: Paccy]
  - [New Random Number Generator Implimentation.](https://github.com/DizzyEggg/pokeemerald/commit/686bf3919816a1661c1652fe980dbe93c9920265) [Credit: Kurausukun]
+ - [Added Catch EXP.](https://github.com/pret/pokeemerald/wiki/Implementing-Catch-EXP) [Credit: cobb]
  - Razor Wind buffs Attack if using original damage catagories rather than always buffing Special Attack.
  - Leech Life is buffed to its Gen VII stats.
  - Using Infinite Rare Candy on field as registered item now fades into party menu.

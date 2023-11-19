@@ -989,7 +989,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd:
 	end
 
 EventScript_Multichoice_NuzlockeMenu::
-	goto_if_set FLAG_NUZLOCKE_NO_DUPES_CLAUSE, EventScript_Multichoice_NuzlockeMenu_2
+	goto_if_set FLAG_NUZLOCKE_DUPES_CLAUSE, EventScript_Multichoice_NuzlockeMenu_2
 	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_1, 0
 EventScript_Multichoice_NuzlockeMenu_1:
 	goto_if_set FLAG_NUZLOCKE_BATTLE_SET, EventScript_Multichoice_NuzlockeMenu_6
@@ -1195,7 +1195,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_SelectedFirstDupes:
 
 LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause::
 	message LittlerootTown_ProfessorBirchsLab_Text_NoDupesClause
-	goto_if_set FLAG_NUZLOCKE_NO_DUPES_CLAUSE, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Set
+	goto_if_set FLAG_NUZLOCKE_DUPES_CLAUSE, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Set
 	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Cont
 LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Set:
@@ -1203,7 +1203,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Set:
 LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Cont:
 	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClauseNo
 	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Nuzlocke_Menu
-	setflag FLAG_NUZLOCKE_NO_DUPES_CLAUSE
+	clearflag FLAG_NUZLOCKE_DUPES_CLAUSE
 	message LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseYes
 	waitmessage
 	waitbuttonpress
@@ -1211,7 +1211,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Cont:
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClauseNo::
-	clearflag FLAG_NUZLOCKE_NO_DUPES_CLAUSE
+	setflag FLAG_NUZLOCKE_DUPES_CLAUSE
 	message LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseNo
 	waitmessage
 	waitbuttonpress

@@ -3636,12 +3636,7 @@ static void Cmd_getexp(void)
     switch (gBattleScripting.getexpState)
     {
     case 0: // check if should receive exp at all
-        if (gUsingThiefBall == THIEF_BALL_CAUGHT)
-        {
-            gUsingThiefBall = THIEF_BALL_NOT_USING;
-            gBattleScripting.getexpState = 6; // goto last case
-        }
-        else if (GetBattlerSide(gBattlerFainted) != B_SIDE_OPPONENT || (gBattleTypeFlags &
+        if (GetBattlerSide(gBattlerFainted) != B_SIDE_OPPONENT || (gBattleTypeFlags &
              (BATTLE_TYPE_LINK
               | BATTLE_TYPE_RECORDED_LINK
               | BATTLE_TYPE_TRAINER_HILL
@@ -3745,7 +3740,8 @@ static void Cmd_getexp(void)
             else
             {
                 // music change in wild battle after fainting a poke
-                if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gBattleMons[0].hp != 0 && !gBattleStruct->wildVictorySong)
+                if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gBattleMons[0].hp != 0 && !gBattleStruct->wildVictorySong
+                && GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL) == ITEM_NONE)
                 {
                     BattleStopLowHpSound();
                     PlayBGM(MUS_VICTORY_WILD);
@@ -10365,12 +10361,15 @@ static void Cmd_givecaughtmon(void)
     gBattleResults.caughtMonBall = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_POKEBALL, NULL);
     if (gUsingThiefBall == THIEF_BALL_CAUGHT)
     {
+        u16 species = gBattleMons[gBattlerTarget].species;
         u16 partyIndex = gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]; 
-        checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species, partyIndex, TRUE);
+        checkStolenPokemon(gTrainerBattleOpponent_A, species, partyIndex, TRUE);
         gBattleMons[gBattlerTarget].hp = 0;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_HP, &gBattleMons[gBattlerTarget].hp);
         gBattlerFainted = gBattlerTarget;
+        HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, TRUE); // If stealing a Pokemon, count it towards the Nuzlocke
         SetHealthboxSpriteInvisible(gHealthboxSpriteIds[gBattlerTarget]);
+        gUsingThiefBall = THIEF_BALL_NOT_USING;
     }
 
     gBattlescriptCurrInstr++;
@@ -10410,6 +10409,14 @@ static void Cmd_displaydexinfo(void)
         if (!gPaletteFade.active)
         {
             FreeAllWindowBuffers();
+            gBattle_BG0_X = 0;
+            gBattle_BG0_Y = 0;
+            gBattle_BG1_X = 0;
+            gBattle_BG1_Y = 0;
+            gBattle_BG2_X = 0;
+            gBattle_BG2_Y = 0;
+            gBattle_BG3_X = 0;
+            gBattle_BG3_Y = 0;
             gBattleCommunication[TASK_ID] = DisplayCaughtMonDexPage(SpeciesToNationalPokedexNum(species),
                                                                         gBattleMons[gBattlerTarget].otId,
                                                                         gBattleMons[gBattlerTarget].personality);
@@ -10626,13 +10633,10 @@ static void Cmd_trainerslideout(void)
 static void Cmd_ballthrowend(void)
 {
     u8 shakes = gBallShakesBData.shakes;
-    u16 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_SPECIES);
-    HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, TRUE); // If stealing a Pokemon, count it towards the Nuzlocke
     if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
     {
-        if (gUsingThiefBall == THIEF_BALL_CATCHING){
+        if (gUsingThiefBall == THIEF_BALL_CATCHING)
             gUsingThiefBall = THIEF_BALL_CAUGHT;
-        }
         gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
 

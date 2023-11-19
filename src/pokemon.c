@@ -4582,7 +4582,7 @@ u8 GiveMonToPlayer(struct Pokemon *mon)
         SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
         SetMonData(mon, MON_DATA_OT_ID, gSaveBlock2Ptr->playerTrainerId);
     }
-    else{ // Radomizes the IVs for the stolen Pokemon
+    else{ // Randomizes the IVs for the stolen Pokemon
         u32 iv;
         u16 value = Random();
         iv = value & MAX_IV_MASK;

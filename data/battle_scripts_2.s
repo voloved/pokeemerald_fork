@@ -70,6 +70,8 @@ BattleScript_SuccessBallThrow::
 	jumpifbyte CMP_EQUAL, gUsingThiefBall, THIEF_BALL_CAUGHT, BattleScript_SuccessBallThrowThief
 BattleScript_PrintCaughtMonInfo::
 	printstring STRINGID_GOTCHAPKMNCAUGHT
+	setbyte sGIVEEXP_STATE, 0
+	getexp BS_TARGET
 	trysetcaughtmondexflags BattleScript_TryNicknameCaughtMon
 	printstring STRINGID_PKMNDATAADDEDTODEX
 	waitstate
@@ -91,6 +93,8 @@ BattleScript_SuccessBallThrowEnd::
 	finishturn
 BattleScript_SuccessBallThrowThief::
 	printstring STRINGID_GOTCHAPKMNCAUGHTNOBGM
+	setbyte sGIVEEXP_STATE, 0
+	getexp BS_TARGET
 	trysetcaughtmondexflags BattleScript_SuccessBallThrowEndThiefGive
 	printstring STRINGID_PKMNDATAADDEDTODEX
 	waitstate

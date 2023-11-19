@@ -2409,9 +2409,9 @@ u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, u16 enemySpecies, bool8 setV
     else if (setVarForThisEnc){
         if (enemySpecies == SPECIES_EGG || enemySpecies == SPECIES_NONE)
             return 0;  // This shouldn't happen, but don't penalize the player for it..
-        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(enemySpecies), FLAG_GET_CAUGHT) && !FlagGet(FLAG_NUZLOCKE_NO_DUPES_CLAUSE)){
+        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(enemySpecies), FLAG_GET_CAUGHT) && FlagGet(FLAG_NUZLOCKE_DUPES_CLAUSE)
+            && gUsingThiefBall != THIEF_BALL_CAUGHT)  // Don't count Thief Ball Pokemon towards dupes clause
             return 2;  // If it's a duplicate Pokemon
-        }
         VarSet(pkmnSeenVars[varToCheck], varValue | (1 << bitToCheck));
     }
     return 0;

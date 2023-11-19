@@ -1228,7 +1228,7 @@
 #define FLAG_ALLOW_RUNNING_TOGGLE                                   0x49B
 #define FLAG_GRINDRUN                                               0x49C
 #define FLAG_NO_LOW_HEALTH_BEEP                                     0x49D
-#define FLAG_NUZLOCKE_NO_DUPES_CLAUSE                               0x49E
+#define FLAG_NUZLOCKE_DUPES_CLAUSE                                  0x49E
 #define FLAG_KRABBY_WILD                                            0x49F
 #define FLAG_KRABBY_TRAINER                                         0x4A0
 #define FLAG_KRABBY_EVO                                             0x4A1
