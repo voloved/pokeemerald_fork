@@ -789,6 +789,13 @@ static const struct MenuAction MultichoiceList_ExpMult[] =
     {(const u8[])_("x4")},
 };
 
+static const struct MenuAction MultichoiceList_NuzlockeRandom[] =
+{
+    {(const u8[])_("NONE")},
+    {(const u8[])_("WILD")},
+    {(const u8[])_("CATCHABLE")},
+};
+
 static const struct MenuAction MultichoiceList_Exit[] =
 {
     {gText_Exit},
@@ -918,6 +925,7 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_TAG_MATCH_TYPE]             = MULTICHOICE(MultichoiceList_TagMatchType),
     [MULTI_TAG_CARCINISATION]          = MULTICHOICE(MultichoiceList_Carcinisation),
     [MULTI_TAG_EXP_MULT]               = MULTICHOICE(MultichoiceList_ExpMult),
+    [MULTI_TAG_NUZLOCKE_RANDOM]        = MULTICHOICE(MultichoiceList_NuzlockeRandom),
 
 };
 

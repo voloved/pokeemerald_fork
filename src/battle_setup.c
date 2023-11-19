@@ -860,7 +860,6 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
         }
         break;
     }
-    DebugPrintf("%d", startSpecies);
     gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), startSpecies, FALSE);
     return sum;
 }
