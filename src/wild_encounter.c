@@ -425,7 +425,7 @@ static u16 getRandomSpecies(u8 minCatchRate, bool8 allowEvolvedForms)
     u16 species;
     do
     {
-        species = Random2() % NUM_SPECIES;
+        species = Random() % NUM_SPECIES;
     } while (species == SPECIES_NONE || species == SPECIES_EGG
             || gSpeciesInfo[species].catchRate < minCatchRate
             || (!allowEvolvedForms && GetPreEvolution(species) != SPECIES_NONE));
