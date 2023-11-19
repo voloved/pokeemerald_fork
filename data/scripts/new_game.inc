@@ -277,6 +277,8 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_SHOW_BALL_SUGGESTION
 	setflag FLAG_USE_FROSTBITE
 	setflag FLAG_ALLOW_RUNNING_TOGGLE
+	setflag FLAG_POKEMON_FOLLOWERS
+	setflag FLAG_SHOW_DAY_NIGHT
 	setflag FLAG_NUZLOCKE_DUPES_CLAUSE
 	call EventScript_ResetAllBerries
 	end
