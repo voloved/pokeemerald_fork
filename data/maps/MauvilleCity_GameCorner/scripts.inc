@@ -626,6 +626,16 @@ MauvilleCity_GameCorner_EventScript_NoCoinCase::
 	releaseall
 	end
 
+MauvilleCity_GameCorner_EventScript_WonderTradeMachine::
+	msgbox MauvilleCity_GameCorner_Text_WouldYouLikeWonderTrade, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, MauvilleCity_GameCorner_EventScript_WonderTradeMachineNo
+	call EventScript_DoWonderTrade
+	end
+
+MauvilleCity_GameCorner_EventScript_WonderTradeMachineNo::
+	closemessage
+	end
+
 MauvilleCity_GameCorner_Text_ThisIsMauvilleGameCorner:
 	.string "This is MAUVILLE GAME CORNER.$"
 
@@ -690,6 +700,10 @@ MauvilleCity_GameCorner_Text_SoYourChoiceIsX:
 
 MauvilleCity_GameCorner_Text_HereYouGo:
 	.string "Here you go!$"
+
+MauvilleCity_GameCorner_Text_WouldYouLikeWonderTrade:
+	.string "Would you like to do\n"
+	.string "a Wonder Trade?$"
 
 @ Unused
 MauvilleCity_GameCorner_Text_CantCarryAnyMore:

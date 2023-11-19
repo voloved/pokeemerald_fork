@@ -67,6 +67,7 @@ Debug_Script_6::
 	end
 
 Debug_Script_7::
+	call EventScript_DoWonderTrade
 	end
 
 Debug_Script_8::

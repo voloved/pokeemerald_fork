@@ -5,7 +5,7 @@
 #include "field_specials.h"
 #include "item.h"
 #include "menu.h"
-#include "match_call.h"
+#include "overworld.h"
 #include "palette.h"
 #include "script.h"
 #include "script_menu.h"
