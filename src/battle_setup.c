@@ -423,6 +423,13 @@ static void CreateBattleStartTask_Debug(u8 transition, u16 song)
 #undef tState
 #undef tTransition
 
+static void SetNuzlockeCatchStatus(void)
+{
+    u16 enemySpecies = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES);
+    u8 currLocation = GetCurrentRegionMapSectionId();
+    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(currLocation, enemySpecies, TRUE);
+}
+
 void BattleSetup_StartWildBattle(void)
 {
     if (GetSafariZoneFlag())
@@ -449,7 +456,7 @@ static void DoStandardWildBattle(void)
         gBattleTypeFlags |= BATTLE_TYPE_PYRAMID;
     }
     CreateBattleStartTask(GetWildBattleTransition(), 0);
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE);
+    SetNuzlockeCatchStatus();
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -483,7 +490,7 @@ void BattleSetup_StartRoamerBattle(void)
     gMain.savedCallback = CB2_EndWildBattle;
     gBattleTypeFlags = BATTLE_TYPE_ROAMER;
     CreateBattleStartTask(GetWildBattleTransition(), 0);
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE);
+    SetNuzlockeCatchStatus();
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -497,7 +504,7 @@ static void DoSafariBattle(void)
     StopPlayerAvatar();
     gMain.savedCallback = CB2_EndSafariBattle;
     gBattleTypeFlags = BATTLE_TYPE_SAFARI;
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE);
+    SetNuzlockeCatchStatus();
     CreateBattleStartTask(GetWildBattleTransition(), 0);
 }
 
@@ -509,7 +516,7 @@ static void DoBattlePikeWildBattle(void)
     gMain.savedCallback = CB2_EndWildBattle;
     gBattleTypeFlags = BATTLE_TYPE_PIKE;
     CreateBattleStartTask(GetWildBattleTransition(), 0);
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE);
+    SetNuzlockeCatchStatus();
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -519,7 +526,6 @@ static void DoBattlePikeWildBattle(void)
 static void DoTrainerBattle(void)
 {
     CreateBattleStartTask(GetTrainerBattleTransition(), 0);
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), FALSE);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_TRAINER_BATTLES);
     TryUpdateGymLeaderRematchFromTrainer();
@@ -527,12 +533,12 @@ static void DoTrainerBattle(void)
 
 static void DoBattlePyramidTrainerHillBattle(void)
 {
+    u16 enemySpecies = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES);
     if (InBattlePyramid())
         CreateBattleStartTask(GetSpecialBattleTransition(B_TRANSITION_GROUP_B_PYRAMID), 0);
     else
         CreateBattleStartTask(GetSpecialBattleTransition(B_TRANSITION_GROUP_TRAINER_HILL), 0);
-
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), FALSE);
+    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), enemySpecies, FALSE);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_TRAINER_BATTLES);
     TryUpdateGymLeaderRematchFromTrainer();
@@ -554,7 +560,7 @@ void BattleSetup_StartScriptedWildBattle(void)
     gMain.savedCallback = CB2_EndScriptedWildBattle;
     gBattleTypeFlags = 0;
     CreateBattleStartTask(GetWildBattleTransition(), 0);
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE);
+    SetNuzlockeCatchStatus();
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -567,7 +573,7 @@ void BattleSetup_StartLatiBattle(void)
     gMain.savedCallback = CB2_EndScriptedWildBattle;
     gBattleTypeFlags = BATTLE_TYPE_LEGENDARY;
     CreateBattleStartTask(GetWildBattleTransition(), 0);
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE);
+    SetNuzlockeCatchStatus();
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -607,7 +613,7 @@ void BattleSetup_StartLegendaryBattle(void)
         break;
     }
 
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE);
+    SetNuzlockeCatchStatus();
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -658,7 +664,7 @@ void StartRegiBattle(void)
     }
     CreateBattleStartTask(transitionId, MUS_VS_REGI);
 
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE);
+    SetNuzlockeCatchStatus();
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -807,6 +813,7 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
 {
     u8 i;
     u8 sum;
+    u16 startSpecies;
     u32 count = numMons;
 
     if (gTrainers[opponentId].partySize < count)
@@ -820,6 +827,7 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
         {
             const struct TrainerMonNoItemDefaultMoves *party;
             party = gTrainers[opponentId].party.NoItemDefaultMoves;
+            startSpecies = party[0].species;
             for (i = 0; i < count; i++)
                 sum += GetScaledLevel(party[i].lvl);
         }
@@ -828,6 +836,7 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
         {
             const struct TrainerMonNoItemCustomMoves *party;
             party = gTrainers[opponentId].party.NoItemCustomMoves;
+            startSpecies = party[0].species;
             for (i = 0; i < count; i++)
                 sum += GetScaledLevel(party[i].lvl);
         }
@@ -836,6 +845,7 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
         {
             const struct TrainerMonItemDefaultMoves *party;
             party = gTrainers[opponentId].party.ItemDefaultMoves;
+            startSpecies = party[0].species;
             for (i = 0; i < count; i++)
                 sum += GetScaledLevel(party[i].lvl);
         }
@@ -844,12 +854,14 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
         {
             const struct TrainerMonItemCustomMoves *party;
             party = gTrainers[opponentId].party.ItemCustomMoves;
+            startSpecies = party[0].species;
             for (i = 0; i < count; i++)
                 sum += GetScaledLevel(party[i].lvl);
         }
         break;
     }
-
+    DebugPrintf("%d", startSpecies);
+    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), startSpecies, FALSE);
     return sum;
 }
 
@@ -2067,7 +2079,7 @@ bool32 CanCurrentTrainerWantRematch(void)
     return TrainerIdToRematchTableId(gRematchTable, gTrainerBattleOpponent_A) != -1;
 }
 
-u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc)
+u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, u16 enemySpecies, bool8 setVarForThisEnc)
 {
     u8 varToCheck, bitToCheck;
     u16 varValue;
@@ -2396,10 +2408,9 @@ u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, bool8 setVarForThisEnc)
         return 1;
     }
     else if (setVarForThisEnc){
-        u16 species_enemy = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)]], MON_DATA_SPECIES2);
-        if (species_enemy == SPECIES_EGG || species_enemy == SPECIES_NONE)
+        if (enemySpecies == SPECIES_EGG || enemySpecies == SPECIES_NONE)
             return 0;  // This shouldn't happen, but don't penalize the player for it..
-        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species_enemy), FLAG_GET_CAUGHT) && !FlagGet(FLAG_NUZLOCKE_NO_DUPES_CLAUSE)){
+        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(enemySpecies), FLAG_GET_CAUGHT) && !FlagGet(FLAG_NUZLOCKE_NO_DUPES_CLAUSE)){
             return 2;  // If it's a duplicate Pokemon
         }
         VarSet(pkmnSeenVars[varToCheck], varValue | (1 << bitToCheck));

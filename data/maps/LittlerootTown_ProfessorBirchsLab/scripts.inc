@@ -981,7 +981,8 @@ LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu::
 	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevel
 	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems
 	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect
-	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
+	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_Randomize
+	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd:
 	closemessage
@@ -1003,8 +1004,9 @@ EventScript_Multichoice_NuzlockeMenu_13:
 	goto_if_set FLAG_NUZLOCKE_NO_HELD_ITEMS, EventScript_Multichoice_NuzlockeMenu_18
 	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_9, 4
 EventScript_Multichoice_NuzlockeMenu_17:
-	dynmultipush EventScript_Multichoice_Exit, 5
-	dynmultistack 0, 0, TRUE, 8, FALSE, 0, DYN_MULTICHOICE_CB_NONE
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_Randomize, 5
+	dynmultipush EventScript_Multichoice_Exit, 6
+	dynmultistack 0, 0, TRUE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	return
 
 EventScript_Multichoice_NuzlockeMenu_2:
@@ -1145,6 +1147,49 @@ LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffectNo::
 	message LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectNo
 	waitmessage
 	waitbuttonpress
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_Randomize::
+	message LittlerootTown_ProfessorBirchsLab_Text_Randomize
+	goto_if_set FLAG_NUZLOCKE_RANDOMIZE_WILD, LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeWild
+	goto_if_set FLAG_NUZLOCKE_RANDOMIZE_FIRST, LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeFirstDupes
+	multichoicedefault 26, 2, MULTI_TAG_NUZLOCKE_RANDOM, 0, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeWild:
+	multichoicedefault 26, 2, MULTI_TAG_NUZLOCKE_RANDOM, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeFirstDupes:
+	multichoicedefault 26, 2, MULTI_TAG_NUZLOCKE_RANDOM, 2, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeSelect:
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedNoRandoms
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedRandomizeWild
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedFirstDupes
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedNoRandoms:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RandomizeNone, MSGBOX_DEFAULT
+	clearflag FLAG_NUZLOCKE_RANDOMIZE_WILD
+	clearflag FLAG_NUZLOCKE_RANDOMIZE_FIRST
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedRandomizeWild:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RandomizeWild, MSGBOX_DEFAULT
+	setflag FLAG_NUZLOCKE_RANDOMIZE_WILD
+	clearflag FLAG_NUZLOCKE_RANDOMIZE_FIRST
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedFirstDupes:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RandomizeDupes, MSGBOX_DEFAULT
+	clearflag FLAG_NUZLOCKE_RANDOMIZE_WILD
+	setflag FLAG_NUZLOCKE_RANDOMIZE_FIRST
+	closemessage
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
 	end
 
@@ -1465,6 +1510,9 @@ EventScript_Multichoice_NuzlockeMenu_Text_8:
 EventScript_Multichoice_NuzlockeMenu_Text_9:
 	.string "{COLOR RED}IGNORE HELD ITEMS$"
 
+EventScript_Multichoice_NuzlockeMenu_Text_Randomize:
+	.string "RANDOMIZE ENCOUNTERS$"
+
 EventScript_Multichoice_Carcinisation_Text_0:
 	.string "ALL KRABBY$"
 
@@ -1704,6 +1752,22 @@ LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectYes:
 LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectNo:
 	.string "Your held items\n"
 	.string "will still work.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_Randomize:
+	.string "How would you like to randomize\n"
+	.string "wild encounters?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RandomizeNone:
+	.string "No encounters will\n"
+	.string "be randomized.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RandomizeWild:
+	.string "All wild encounters will\n"
+	.string "be randomized.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RandomizeDupes:
+	.string "Wild encounters catchable by dupes\n"
+	.string "clause will be randomized.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_NoBattleItems:
 	.string "Disallow using items\n"

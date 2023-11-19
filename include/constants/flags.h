@@ -1251,8 +1251,8 @@
 #define FLAG_MID_BATTLE_EVOLUTION                                   0x4B2
 #define FLAG_GOT_MINT_FROM_JAIME                                    0x4B3
 #define FLAG_SHOW_DAY_NIGHT                                         0x4B4
-#define FLAG_UNUSED_0x4B5                                           0x4B5 // Unused Flag
-#define FLAG_UNUSED_0x4B6                                           0x4B6 // Unused Flag
+#define FLAG_NUZLOCKE_RANDOMIZE_WILD                                0x4B5
+#define FLAG_NUZLOCKE_RANDOMIZE_FIRST                               0x4B6
 #define FLAG_UNUSED_0x4B7                                           0x4B7 // Unused Flag
 #define FLAG_UNUSED_0x4B8                                           0x4B8 // Unused Flag
 #define FLAG_UNUSED_0x4B9                                           0x4B9 // Unused Flag

@@ -63,7 +63,6 @@ static void Task_PlayMapChosenOrBattleBGM(u8 taskId);
 static bool8 ShouldGetStatBadgeBoost(u16 flagId, u8 battlerId);
 static u16 GiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 static bool8 ShouldSkipFriendshipChange(void);
-static u16 GetPreEvolution(u16 species);
 
 EWRAM_DATA static u8 sLearningMoveTableID = 0;
 EWRAM_DATA u8 gPlayerPartyCount = 0;
@@ -6471,7 +6470,7 @@ u32 CanSpeciesLearnTMHM(u16 species, u8 tm)
     }
 }
 
-static u16 GetPreEvolution(u16 species){
+u16 GetPreEvolution(u16 species){
     int i, j;
 
     if (species == SPECIES_EEVEE)

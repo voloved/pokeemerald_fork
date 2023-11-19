@@ -5048,6 +5048,7 @@ static void Cmd_switchindataupdate(void)
     gBattleMons[gActiveBattler].type1 = gSpeciesInfo[gBattleMons[gActiveBattler].species].type1;
     gBattleMons[gActiveBattler].type2 = gSpeciesInfo[gBattleMons[gActiveBattler].species].type2;
     gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].abilityNum);
+    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), gBattleMons[gActiveBattler].species, FALSE);
 
     // check knocked off item
     i = GetBattlerSide(gActiveBattler);
@@ -10625,7 +10626,8 @@ static void Cmd_trainerslideout(void)
 static void Cmd_ballthrowend(void)
 {
     u8 shakes = gBallShakesBData.shakes;
-    HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE); // If stealing a Pokemon, count it towards the Nuzlocke
+    u16 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_SPECIES);
+    HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, TRUE); // If stealing a Pokemon, count it towards the Nuzlocke
     if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
     {
         if (gUsingThiefBall == THIEF_BALL_CATCHING){
