@@ -231,6 +231,17 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     if (input->input_field_1_6 && UseRegisteredKeyItemOnField(FALSE) == TRUE)
         return TRUE;
     
+    if (input->input_field_1_7 && UseRegisteredKeyItemOnField(TRUE) == TRUE)
+        return TRUE;
+    
+    if(TX_DEBUG_SYSTEM_ENABLE == TRUE && TX_DEBUG_SYSTEM_IN_MENU == FALSE && input->input_field_1_2)
+    {
+        PlaySE(SE_WIN_OPEN);
+        FreezeObjectEvents();
+        Debug_ShowMainMenu();
+        return TRUE;
+    }
+
     if (input->pressedRButton && TryStartDexnavSearch())
         return TRUE;
 
