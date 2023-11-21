@@ -7386,3 +7386,13 @@ u8 *MonSpritesGfxManager_GetSpritePtr(u8 managerId, u8 spriteNum)
         return gfx->spritePointers[spriteNum];
     }
 }
+
+u8 isTypingPhysical(u8 type)
+{
+    return type < TYPE_MYSTERY;
+}
+
+u8 isTypingSpecial(u8 type)
+{
+    return type > TYPE_MYSTERY;
+}

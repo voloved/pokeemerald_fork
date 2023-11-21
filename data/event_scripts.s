@@ -1021,6 +1021,7 @@ Common_EventScript_LegendaryFlewAway::
 	end
 
 EventScript_DoWonderTrade::
+	copyvar VAR_0x8006, VAR_0x8004
 	special ChoosePartyMon
 	waitstate
 	compare VAR_0x8004, PARTY_SIZE
@@ -1029,9 +1030,6 @@ EventScript_DoWonderTrade::
 	special CreateWonderTradePokemon
 	special DoInGameTradeScene
 	waitstate
-	msgbox EventScript_DoWonderTrade_Text_WannaDoAnotherWonderTrade, MSGBOX_YESNO
-	compare VAR_RESULT, YES
-	goto_if_eq EventScript_DoWonderTrade
 	msgbox EventScript_DoWonderTrade_Text_Done, MSGBOX_DEFAULT
 	closemessage
 EventScript_End:

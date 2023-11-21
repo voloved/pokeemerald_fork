@@ -557,7 +557,29 @@ u16 GetValidWonderTradeItem(u16 item);
 
 static u16 PickRandomSpecies() // picks only base forms
 {
-    u16 species = sIsValidSpecies[Random() % NELEMS(sIsValidSpecies)];
+    u16 species = sIsValidSpecies[Random() % NELEMS(sIsValidSpecies)];    
+    return species;
+}
+
+static u16 PickRandomSpeciesPhysical() // picks only base forms
+{
+    u16 species;
+    do
+    {
+        species = PickRandomSpecies();  
+    } while (!isTypingPhysical(gSpeciesInfo[species].type1));
+       
+    return species;
+}
+
+static u16 PickRandomSpeciesSpecial() // picks only base forms
+{
+    u16 species;
+    do
+    {
+        species = PickRandomSpecies();  
+    } while (!isTypingSpecial(gSpeciesInfo[species].type1));
+       
     return species;
 }
 
@@ -592,7 +614,7 @@ void CreateWonderTradePokemon(u8 whichPlayerMon)
 {
     struct InGameTrade *inGameTrade;
     struct Pokemon *pokemon = &gEnemyParty[0];
-    u16 species = PickRandomSpecies();
+    u16 species;
     u8 chanceToEvolve = Random() % 255;
     u8 name[POKEMON_NAME_LENGTH + 1];
     u8 nameOT[8];
@@ -620,6 +642,19 @@ void CreateWonderTradePokemon(u8 whichPlayerMon)
             playerSpecies
         }
     };
+
+    switch (gSpecialVar_0x8006)
+    {
+    case 1:
+        species = PickRandomSpeciesPhysical();
+        break;
+    case 2:
+        species = PickRandomSpeciesSpecial();
+        break;
+    default:
+        species = PickRandomSpecies();
+        break;
+    }
 
     genderOT = getWonderTradeOT(nameOT);
     inGameTrade = &gIngameTrades[0];

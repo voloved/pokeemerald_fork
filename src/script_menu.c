@@ -1160,12 +1160,38 @@ void CountBadges(void)
     gSpecialVar_Result = GetNumOwnedBadges();
 }
 
+static const u8 sText_Trade[] = _("trade");
+static const u8 sText_Trades[] = _("trades");
+void CanDoWonderTrade(void)
+{
+    u32 numBadges = GetNumOwnedBadges();
+    u16 WonderTradesDone = VarGet(VAR_JAIME_MINTS_GIVEN) >> 4;
+    s16 wonderTradesLeft = numBadges - WonderTradesDone;
+    if (FlagGet(FLAG_IS_CHAMPION))
+    {
+        gSpecialVar_Result = 0xFF;
+    }
+    if (wonderTradesLeft > 0)
+    {
+        gSpecialVar_Result = TRUE;
+        ConvertIntToDecimalStringN(gStringVar1, wonderTradesLeft, STR_CONV_MODE_LEFT_ALIGN, 1);
+        StringAppend(gStringVar1, gText_Space);
+        if (wonderTradesLeft == 1)
+            StringAppend(gStringVar1, sText_Trade);
+        else
+            StringAppend(gStringVar1, sText_Trades);
+    }
+    else
+       gSpecialVar_Result = FALSE;
+    return;
+}
+
 static const u8 sText_Mint[] = _("mint");
 static const u8 sText_Mints[] = _("mints");
 void CanGetNatureMintFromJaime(void)
 {
     u32 numBadges = GetNumOwnedBadges();
-    u16 mintsGiven = VarGet(VAR_JAIME_MINTS_GIVEN);
+    u16 mintsGiven = VarGet(VAR_JAIME_MINTS_GIVEN) & 0x0F;
     u16 mintsLeftToGive = numBadges - mintsGiven;
     if (mintsGiven < numBadges)
     {

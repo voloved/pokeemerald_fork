@@ -5645,11 +5645,11 @@ void RunBattleScriptCommands(void)
 }
 
 u8 isMovePhysical(u16 move){
-    return FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) ? gBattleMoves[move].type < TYPE_MYSTERY : gBattleMoves[move].category == MOVE_CATEGORY_PHYSICAL;
+    return FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) ? isTypingPhysical(gBattleMoves[move].type) : gBattleMoves[move].category == MOVE_CATEGORY_PHYSICAL;
 }
 
 u8 isMoveSpecial(u16 move){
-    return FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) ? gBattleMoves[move].type > TYPE_MYSTERY : gBattleMoves[move].category == MOVE_CATEGORY_SPECIAL;
+    return FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) ? isTypingSpecial(move) : gBattleMoves[move].category == MOVE_CATEGORY_SPECIAL;
 }
 
 u8 isMoveStatus(u16 move){

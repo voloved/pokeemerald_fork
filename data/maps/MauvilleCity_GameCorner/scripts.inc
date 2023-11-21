@@ -626,13 +626,42 @@ MauvilleCity_GameCorner_EventScript_NoCoinCase::
 	releaseall
 	end
 
+MauvilleCity_GameCorner_EventScript_WonderTradeMachinePhysical::
+	call MauvilleCity_GameCorner_EventScript_WonderTradeRequest
+	setvar VAR_0x8004, 1
+	goto MauvilleCity_GameCorner_EventScript_WonderTradeMachine
+	end
+
+MauvilleCity_GameCorner_EventScript_WonderTradeMachineSpecial::
+	call MauvilleCity_GameCorner_EventScript_WonderTradeRequest
+	setvar VAR_0x8004, 2
+	goto MauvilleCity_GameCorner_EventScript_WonderTradeMachine
+	end
+
 MauvilleCity_GameCorner_EventScript_WonderTradeMachine::
-	msgbox MauvilleCity_GameCorner_Text_WouldYouLikeWonderTrade, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, MauvilleCity_GameCorner_EventScript_WonderTradeMachineNo
 	call EventScript_DoWonderTrade
 	end
 
 MauvilleCity_GameCorner_EventScript_WonderTradeMachineNo::
+	closemessage
+	end
+
+MauvilleCity_GameCorner_EventScript_WonderTradeRequest::
+	callnative CanDoWonderTrade
+	goto_if_eq VAR_RESULT, 0, MauvilleCity_GameCorner_EventScript_WonderTradeMachineNoMoreTrades
+	goto_if_eq VAR_RESULT, 0xFF, MauvilleCity_GameCorner_EventScript_WonderTradeMachineRequestInfiniteUses
+	msgbox MauvilleCity_GameCorner_Text_WouldYouLikeWonderTradeLeft, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, MauvilleCity_GameCorner_EventScript_WonderTradeMachineNo
+	addvar VAR_JAIME_MINTS_GIVEN, 16
+	return
+MauvilleCity_GameCorner_EventScript_WonderTradeMachineRequestInfiniteUses:
+	msgbox MauvilleCity_GameCorner_Text_WouldYouLikeWonderTrade, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, MauvilleCity_GameCorner_EventScript_WonderTradeMachineNo
+	return
+
+MauvilleCity_GameCorner_EventScript_WonderTradeMachineNoMoreTrades::
+	msgbox MauvilleCity_GameCorner_Text_NoMoreWonderTrade, MSGBOX_DEFAULT
 	closemessage
 	end
 
@@ -704,6 +733,14 @@ MauvilleCity_GameCorner_Text_HereYouGo:
 MauvilleCity_GameCorner_Text_WouldYouLikeWonderTrade:
 	.string "Would you like to do\n"
 	.string "a Wonder Trade?$"
+
+MauvilleCity_GameCorner_Text_WouldYouLikeWonderTradeLeft:
+	.string "Would you like to Wonder Trade?\n"
+	.string "You have {STR_VAR_1} left.$"
+
+MauvilleCity_GameCorner_Text_NoMoreWonderTrade:
+	.string "You are out of Wonder Trades\n"
+	.string "right now.$"
 
 @ Unused
 MauvilleCity_GameCorner_Text_CantCarryAnyMore:
