@@ -23,6 +23,11 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Using Infinite Rare Candy on field as registered item now fades into party menu.
  - Lowered Deoxys level in Steven and Wallace battle to lower Nuzlocke overlevel cap.
  - Weavile uses Ice Punch instead of Ice Beam in Elite Four.
+ - Changed the garage's Secret Base to a less common on on the overworld.
+   - Garage base automatically opens at the start of a new game.
+   - Solid board automatically goes over the hole in the garage base.
+   -Removed Secret Power from PC.
+ - Cleaned up Infinite Rare Candy palette. [Credit: Viperio]
  - Bugfix where scripted encounters did not count toward the Nuzlocke.
  
  ## v2.3.2
