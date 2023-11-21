@@ -105,6 +105,11 @@
 #define THIEF_BALL_CAUGHT              2
 #define THIEF_BALL_CANNOT_USE          3
 
+// Nuzlocke result for HasWildPokmnOnThisRouteBeenSeen
+#define FIRST_ENCOUNTER_ON_ROUTE       0
+#define ALREADY_SEEN_ON_ROUTE          1
+#define DUPES_ENCOUNTER                2
+
 // Non-volatile status conditions
 // These persist remain outside of battle and after switching out
 #define STATUS1_NONE             0

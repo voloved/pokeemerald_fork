@@ -10276,7 +10276,7 @@ static void Cmd_handleballthrow(void)
     }
     if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER &&
     (gUsingThiefBall == THIEF_BALL_NOT_USING || gUsingThiefBall == THIEF_BALL_CANNOT_USE))
-    || (gBattleTypeFlags & BATTLE_TYPE_SAFARI && gNuzlockeCannotCatch)) 
+    || (gBattleTypeFlags & BATTLE_TYPE_SAFARI && gNuzlockeCannotCatch == ALREADY_SEEN_ON_ROUTE)) 
     {
         BtlController_EmitBallThrowAnim(BUFFER_A, BALL_TRAINER_BLOCK);
         MarkBattlerForControllerExec(gActiveBattler);
@@ -10361,13 +10361,11 @@ static void Cmd_givecaughtmon(void)
     gBattleResults.caughtMonBall = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_POKEBALL, NULL);
     if (gUsingThiefBall == THIEF_BALL_CAUGHT)
     {
-        u16 species = gBattleMons[gBattlerTarget].species;
         u16 partyIndex = gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]; 
-        checkStolenPokemon(gTrainerBattleOpponent_A, species, partyIndex, TRUE);
+        checkStolenPokemon(gTrainerBattleOpponent_A, gBattleMons[gBattlerTarget].species, partyIndex, TRUE);
         gBattleMons[gBattlerTarget].hp = 0;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_HP, &gBattleMons[gBattlerTarget].hp);
         gBattlerFainted = gBattlerTarget;
-        HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, TRUE); // If stealing a Pokemon, count it towards the Nuzlocke
         SetHealthboxSpriteInvisible(gHealthboxSpriteIds[gBattlerTarget]);
         gUsingThiefBall = THIEF_BALL_NOT_USING;
     }
@@ -10633,6 +10631,8 @@ static void Cmd_trainerslideout(void)
 static void Cmd_ballthrowend(void)
 {
     u8 shakes = gBallShakesBData.shakes;
+    u16 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_SPECIES);
+    HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, TRUE); // If stealing a Pokemon, count it towards the Nuzlocke
     if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
     {
         if (gUsingThiefBall == THIEF_BALL_CATCHING)

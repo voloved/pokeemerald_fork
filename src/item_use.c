@@ -1010,7 +1010,7 @@ u32 CannotThrowBall(void)
 {
     if ((TX_DEBUG_SYSTEM_ENABLE == TRUE || gShowDebugMenu) && FlagGet(FLAG_SYS_NO_CATCHING))
         return 1;   // Debug setting doesn't allow
-    else if (gNuzlockeCannotCatch == 1)
+    else if (gNuzlockeCannotCatch == ALREADY_SEEN_ON_ROUTE)
         return 2;   // Cannot catch due to Nuzlocke
     else if (IsPlayerPartyAndPokemonStorageFull() == TRUE)
         return 3;   // No room for mon

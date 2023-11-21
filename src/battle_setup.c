@@ -101,7 +101,7 @@ EWRAM_DATA static u16 sTrainerBattleMode = 0;
 EWRAM_DATA u16 gTrainerBattleOpponent_A = 0;
 EWRAM_DATA u16 gTrainerBattleOpponent_B = 0;
 EWRAM_DATA u16 gPartnerTrainerId = 0;
-EWRAM_DATA bool8 gNuzlockeCannotCatch = 0;
+EWRAM_DATA bool8 gNuzlockeCannotCatch = FIRST_ENCOUNTER_ON_ROUTE;
 EWRAM_DATA static u16 sTrainerObjectEventLocalId = 0;
 EWRAM_DATA static u8 *sTrainerAIntroSpeech = NULL;
 EWRAM_DATA static u8 *sTrainerBIntroSpeech = NULL;
@@ -2091,7 +2091,7 @@ u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, u16 enemySpecies, bool8 setV
     };
     currLocation = currLocConvertForNuzlocke(currLocation);
     if (!FlagGet(FLAG_NUZLOCKE) || !FlagGet(FLAG_SYS_POKEDEX_GET)){
-        return 0;
+        return FIRST_ENCOUNTER_ON_ROUTE;
     }
     switch (currLocation)
     {
@@ -2102,7 +2102,6 @@ u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, u16 enemySpecies, bool8 setV
     case MAPSEC_OLDALE_TOWN:
         varToCheck = 0;
         bitToCheck = 1;
-        break;
         break;
     case MAPSEC_DEWFORD_TOWN:
         varToCheck = 0;
@@ -2403,18 +2402,16 @@ u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, u16 enemySpecies, bool8 setV
         return 0;
     }
     varValue = VarGet(pkmnSeenVars[varToCheck]);
-    if ((varValue & (1 << bitToCheck)) != 0){
-        return 1;
-    }
+    if ((varValue & (1 << bitToCheck)) != 0)
+        return ALREADY_SEEN_ON_ROUTE;
     else if (setVarForThisEnc){
         if (enemySpecies == SPECIES_EGG || enemySpecies == SPECIES_NONE)
-            return 0;  // This shouldn't happen, but don't penalize the player for it..
-        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(enemySpecies), FLAG_GET_CAUGHT) && FlagGet(FLAG_NUZLOCKE_DUPES_CLAUSE)
-            && gUsingThiefBall != THIEF_BALL_CAUGHT)  // Don't count Thief Ball Pokemon towards dupes clause
-            return 2;  // If it's a duplicate Pokemon
+            return FIRST_ENCOUNTER_ON_ROUTE;  // This shouldn't happen, but don't penalize the player for it..
+        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(enemySpecies), FLAG_GET_CAUGHT) && FlagGet(FLAG_NUZLOCKE_DUPES_CLAUSE))
+            return DUPES_ENCOUNTER;  // If it's a duplicate Pokemon
         VarSet(pkmnSeenVars[varToCheck], varValue | (1 << bitToCheck));
     }
-    return 0;
+    return FIRST_ENCOUNTER_ON_ROUTE;
 }
 
 u8 currLocConvertForNuzlocke(u8 currLocation)

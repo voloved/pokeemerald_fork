@@ -3813,7 +3813,7 @@ static void BattleIntroNuzlockDups(void)
 {
     if (gBattleControllerExecFlags == 0)
     {
-        if (gNuzlockeCannotCatch == 2){  // If Pokemon was first in this route and was already caught
+        if (gNuzlockeCannotCatch == DUPES_ENCOUNTER){  // If Pokemon was first in this route and was already caught
             PrepareStringBattle(STRINGID_NUZLOCKEDUPS, 0);
         }
         gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
@@ -5469,7 +5469,7 @@ static void HandleEndTurn_MonFled(void)
 
 static void HandleEndTurn_FinishBattle(void)
 {
-    gNuzlockeCannotCatch = 0;  // While not necissary, resetting this is nice to stay deterministic
+    gNuzlockeCannotCatch = FIRST_ENCOUNTER_ON_ROUTE;  // While not necissary, resetting this is nice to stay deterministic
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
         if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK
