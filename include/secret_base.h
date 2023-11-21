@@ -28,6 +28,7 @@ void ToggleSecretBaseEntranceMetatile(void);
 void ScriptContext_Enable(void);
 void ReceiveSecretBasesData(void *records, size_t recordSize, u8 linkIdx);
 bool8 IsSecretBaseOwnedByAnotherPlayerFromIndex(u16 secretBaseIdx);
-void SetPlayerSecretBaseAtId(u8 secretBaseIdx);
+void SetPlayerSecretBaseAtId(u8 id);
+void addDecorationToBaseStart(u8 id, u8 decor, u8 pos);
 
 #endif //GUARD_SECRET_BASE_H

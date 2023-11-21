@@ -196,8 +196,8 @@ void NewGameInitData(void)
     NewGameInitPCItems();
     ClearPokeblocks();
     ClearDecorationInventories();
-    SetPlayerSecretBaseAtId(SECRET_BASE_GARAGE);
-    DecorationAdd(DECOR_SOLID_BOARD);
+    SetPlayerSecretBaseAtId(SECRET_BASE_GARAGE); 
+    addDecorationToBaseStart(SECRET_BASE_GARAGE, DECOR_SOLID_BOARD, 102);  // Places board on the garage's hole
     InitEasyChatPhrases();
     SetMauvilleOldMan();
     InitDewfordTrend();

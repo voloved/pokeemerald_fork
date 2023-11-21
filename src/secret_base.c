@@ -399,6 +399,14 @@ void SetPlayerSecretBaseAtId(u8 id)
     SetPlayerSecretBase();
 }
 
+void addDecorationToBaseStart(u8 id, u8 decor, u8 pos)
+{
+    u16 currSecretBaseIdx = GetSecretBaseIndexFromId(sCurSecretBaseId);
+    DecorationAdd(decor);
+    gSaveBlock1Ptr->secretBases[currSecretBaseIdx].decorations[0] = decor;
+    gSaveBlock1Ptr->secretBases[currSecretBaseIdx].decorationPositions[0] = pos;
+}
+
 // Set the 'open' entrance metatile for any occupied secret base on this map
 void SetOccupiedSecretBaseEntranceMetatiles(struct MapEvents const *events)
 {
