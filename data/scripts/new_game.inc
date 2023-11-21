@@ -280,5 +280,8 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_POKEMON_FOLLOWERS
 	setflag FLAG_SHOW_DAY_NIGHT
 	setflag FLAG_NUZLOCKE_DUPES_CLAUSE
+	setflag FLAG_RELEARN_IN_PARTY_MENU
+	setflag FLAG_RECEIVED_RUNNING_SHOES
+	setflag FLAG_SYS_B_DASH
 	call EventScript_ResetAllBerries
 	end

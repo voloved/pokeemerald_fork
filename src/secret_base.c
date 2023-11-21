@@ -393,6 +393,12 @@ void SetPlayerSecretBase(void)
     VarSet(VAR_SECRET_BASE_MAP, gMapHeader.regionMapSectionId);
 }
 
+void SetPlayerSecretBaseAtId(u8 id)
+{
+    sCurSecretBaseId = id;
+    SetPlayerSecretBase();
+}
+
 // Set the 'open' entrance metatile for any occupied secret base on this map
 void SetOccupiedSecretBaseEntranceMetatiles(struct MapEvents const *events)
 {

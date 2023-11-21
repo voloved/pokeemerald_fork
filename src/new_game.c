@@ -49,6 +49,7 @@
 #include "constants/flags.h"
 #include "constants/items.h"
 #include "constants/map_groups.h"
+#include "constants/secret_bases.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 
@@ -195,7 +196,7 @@ void NewGameInitData(void)
     NewGameInitPCItems();
     ClearPokeblocks();
     ClearDecorationInventories();
-    DecorationAdd(DECOR_SOLID_BOARD);
+    SetPlayerSecretBaseAtId(SECRET_BASE_GARAGE);
     DecorationAdd(DECOR_SOLID_BOARD);
     InitEasyChatPhrases();
     SetMauvilleOldMan();
@@ -217,9 +218,6 @@ void NewGameInitData(void)
     gSaveBlock2Ptr->lastUsedBall = ITEM_POKE_BALL;
     typeEffectPrev ? FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW) : FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     nuzlockePrev ? FlagSet(FLAG_NUZLOCKE) : FlagClear(FLAG_NUZLOCKE);
-    FlagSet(FLAG_RELEARN_IN_PARTY_MENU);  // Always allow relearning by default in a new game.
-    FlagSet(FLAG_RECEIVED_RUNNING_SHOES);  //Running is set at the beginning of the game now.
-    FlagSet(FLAG_SYS_B_DASH);
     memset(&gSaveBlock2Ptr->itemFlags, 0, sizeof(gSaveBlock2Ptr->itemFlags));
     gSaveBlock1Ptr->dexNavChain = 0;
 }
