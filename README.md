@@ -15,6 +15,9 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
    - [Made DexNav live in PokéNav](https://github.com/Artrios/pokeemerald/commit/d25bfdcbafd26e1dec3058445074264c3bdbdef4) [Credit: Paccy]
  - [New Random Number Generator Implimentation.](https://github.com/DizzyEggg/pokeemerald/commit/686bf3919816a1661c1652fe980dbe93c9920265) [Credit: Kurausukun]
  - [Added Catch EXP.](https://github.com/pret/pokeemerald/wiki/Implementing-Catch-EXP) [Credit: cobb]
+ - [Added Wonder Trading](https://www.pokecommunity.com/showpost.php?p=10357573) [Credit: Lunos and Deokishisu]
+   - Wonder Trading can happen once for each badge received in the back-left machines Mauville Game Corner. The left machine only gives Pokémon with their first type being a physical. The right machine gives special-typed.
+ - [Added ability to randomize wild encounters with the Nuzlocke settings](https://gitlab.com/devolov/pokeemerald_fork/-/commit/3018c82188f66ac2a212c0156ef18a52bb2a3cd1)
  - Razor Wind buffs Attack if using original damage catagories rather than always buffing Special Attack.
  - Leech Life is buffed to its Gen VII stats.
  - Using Infinite Rare Candy on field as registered item now fades into party menu.
