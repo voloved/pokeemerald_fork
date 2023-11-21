@@ -679,6 +679,13 @@ void CreateWonderTradePokemon(u8 whichPlayerMon)
     if ((Random() % 99) < 10)
         heldItem = GetValidWonderTradeItem(heldItem);
 
+    if(GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE))
+    {
+        bool8 dead = TRUE;
+        u16 hp = 0;
+        SetMonData(pokemon, MON_DATA_DEAD, &dead);
+        SetMonData(pokemon, MON_DATA_HP, &hp);
+    }
     if (currHeldItem == ITEM_NONE)
     {
         for (i = 0; i < EVOS_PER_MON; i++)
