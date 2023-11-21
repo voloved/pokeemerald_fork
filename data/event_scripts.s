@@ -1026,7 +1026,10 @@ EventScript_DoWonderTrade::
 	waitstate
 	compare VAR_0x8004, PARTY_SIZE
 	goto_if_ge EventScript_End
+	callnative CheckIfDead
+	goto_if_eq VAR_RESULT, TRUE, EventScript_CantTradeDead
 	copyvar VAR_0x8005, VAR_0x8004
+	addvar VAR_JAIME_MINTS_GIVEN, 16
 	special CreateWonderTradePokemon
 	special DoInGameTradeScene
 	waitstate
@@ -1034,12 +1037,19 @@ EventScript_DoWonderTrade::
 	closemessage
 EventScript_End:
 	end
+EventScript_CantTradeDead:
+	msgbox EventScript_DoWonderTrade_Text_Dead, MSGBOX_DEFAULT
+	closemessage
+	end
 
 EventScript_DoWonderTrade_Text_WannaDoAnotherWonderTrade:
 	.string "Do you want to do\nanother Wonder Trade?$"
 
 EventScript_DoWonderTrade_Text_Done:
 	.string "Enjoy your new Pokémon.$"
+
+EventScript_DoWonderTrade_Text_Dead:
+	.string "You can't trade dead Pokémon.$"
 
 	.include "data/scripts/pc_transfer.inc"
 	.include "data/scripts/questionnaire.inc"

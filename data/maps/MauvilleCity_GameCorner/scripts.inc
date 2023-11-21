@@ -653,7 +653,6 @@ MauvilleCity_GameCorner_EventScript_WonderTradeRequest::
 	goto_if_eq VAR_RESULT, 0xFF, MauvilleCity_GameCorner_EventScript_WonderTradeMachineRequestInfiniteUses
 	msgbox MauvilleCity_GameCorner_Text_WouldYouLikeWonderTradeLeft, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, MauvilleCity_GameCorner_EventScript_WonderTradeMachineNo
-	addvar VAR_JAIME_MINTS_GIVEN, 16
 	return
 MauvilleCity_GameCorner_EventScript_WonderTradeMachineRequestInfiniteUses:
 	msgbox MauvilleCity_GameCorner_Text_WouldYouLikeWonderTrade, MSGBOX_YESNO

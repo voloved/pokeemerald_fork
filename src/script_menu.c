@@ -1160,6 +1160,15 @@ void CountBadges(void)
     gSpecialVar_Result = GetNumOwnedBadges();
 }
 
+void CheckIfDead(void)
+{
+    if(GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE))
+        gSpecialVar_Result = TRUE;
+    else
+        gSpecialVar_Result = FALSE;
+    return;
+}
+
 static const u8 sText_Trade[] = _("trade");
 static const u8 sText_Trades[] = _("trades");
 void CanDoWonderTrade(void)
