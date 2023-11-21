@@ -37,7 +37,7 @@ gText_Birch_BoyOrGirl::
 
 gText_Birch_Nuzlocke::
 	.string "Will you be performing the\n"
-	.string "Nuzlocke challenge?$"
+	.string "Nuzlocke Challenge?$"
 
 gText_Birch_WhatsYourName::
 	.string "All right.\n"

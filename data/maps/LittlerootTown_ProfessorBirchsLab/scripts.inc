@@ -1715,7 +1715,7 @@ LittlerootTown_ProfessorBirchsLab_Text_DayNightNo:
 
 LittlerootTown_ProfessorBirchsLab_Text_DupesClause:
 	.string "Would you like to use the dupes\n"
-	.string "in your Nuzlocke challenge?$"
+	.string "in your Nuzlocke Challenge?$"
 
 LittlerootTown_ProfessorBirchsLab_Text_DupesClauseNo:
 	.string "You will not use the\n"

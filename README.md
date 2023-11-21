@@ -155,7 +155,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Animated Missingno follower sprite.
  - [Pressing Start in a Battle Will Show the Description of the Move.](https://github.com/pret/pokeemerald/wiki/Add-Description-Submenu)
  - [Allow Running From Trainer Battles](https://github.com/pret/pokeemerald/wiki/Allow-Running-From-Trainer-Battles)
-   - This will not work when running the Nuzlocke challenge.
+   - This will not work when running the Nuzlocke Challenge.
  - [Key Items With No Field Effect Will No Longer Be Register-able Nor Usable](https://github.com/pret/pokeemerald/wiki/Make-Key-Items-That-Cannot-Be-Used-In-The-Field-Not-Show-A-Use-or-Register-Option)
  - [Added BetterBag. This makes the bag be able to hold 78 more items.](https://github.com/pret/pokeemerald/wiki/Feature-Branches#BetterBag) [Credit: AsparagusEduardo]
    - This will keep compatability with an vanilla Emerald save file, but going back to the vanilla game saving in this game will cause battle items, treasures, and medicine to disappear.
@@ -209,7 +209,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Cleanse Tag can now be a use item as well as being held.](https://github.com/pret/pokeemerald/wiki/Make-Cleanse-Tag-Avoid-All-Wild-Encounters-and-Usable-If-Held-By-Anyone-in-Your-Party;-Make-PokeDoll-Do-the-Same-for-Trainers-Seeing-You#make-cleanse-tag-a-toggle-able-use-item)
  - Doubled shiny odds.
  - Buying more than 10 Poké Balls gives an extra.
- - Indicator shown in Nuzlocke challenge if Pokémon can be caught.
+ - Indicator shown in Nuzlocke Challenge if Pokémon can be caught.
  - Mareep is female 75% of the time.
 
 ## v1.4.0
@@ -267,7 +267,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Put more interesting Pokémon into the Safari Zone.
 - Added Surkit, Masquerain, Meditite, Roselia, Zangoose, and Lunatone.
 - Added ability to buy evolutionary stones and TMs from Mauville Game Corner in Lilycove Department Store.
-- Ability to restart Nuzlocke challenge after failing by talking to Hiker in House in Rustboro City.
+- Ability to restart Nuzlocke Challenge after failing by talking to Hiker in House in Rustboro City.
 - Nuzlocke now counts in Safari Zone as well.
 - Electrike and Manectric can now learn Flamethrower.
 - Psyduck and Golduck can learn Fly.
@@ -281,14 +281,14 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Fixed bug that causes duplicates of caught Pokémon if they were nicknamed after being caught.
 - Removed delay from leaving Pokémon Center by removing healing fanfare.
 - Made Missingno smaller to match its height.
-- Made dead Pokémon checking for the Nuzlocke challenge no longer occur during field poisoning and instead check and remove if needed when using a healing item.
+- Made dead Pokémon checking for the Nuzlocke Challenge no longer occur during field poisoning and instead check and remove if needed when using a healing item.
 
 ## v1.2.0
-- [Added Nuzlocke challenge setting.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge)
+- [Added Nuzlocke Challenge setting.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge)
 - [Pressing B as the ball shakes raises catching odds.](https://github.com/pret/pokeemerald/wiki/Raise-Odds-of-Catching-a-Pokemon-by-Pressing-B-When-the-Ball-Shakes)
 - Final Elite Four battle is now a double battle with Steven and Wallace.
 - Missingno. is now encounterable in the game after speaking to Wally's father and surfing in Pacifidlog Town.
-- The Old Sea Map to get Mew is receivable under an old truck in the Lilycove harbor if the Nuzlocke challenge is on.
+- The Old Sea Map to get Mew is receivable under an old truck in the Lilycove harbor if the Nuzlocke Challenge is on.
 - [Jumping over ledges when bunny-hopping on the Acro Bike is now possible.](https://github.com/pret/pokeemerald/wiki/Allow-Jumping-Over-Ledges-with-Acro-Bike)
 - [Can now quickly run from a battle by holding Right while the wild Pokémon's name appears.](https://github.com/pret/pokeemerald/wiki/Quickly-Run-from-a-Battle-by-Holding-Right-While-the-Wild-Pok%C3%A9mon's-Name-Appears)
 - [Make Pokémon that Require a Fateful Encounter to be Legal to Always Be Set to Legal](https://github.com/pret/pokeemerald/wiki/Make-Pokemon-that-Require-a-Fateful-Encounter-to-be-Legal-to-Always-Be-Set-to-Legal)

@@ -892,7 +892,7 @@ gText_PlayerWhitedOut::
 
 gText_PlayerNuzlockeFailed::
 	.string "{PLAYER} failed the\n"
-	.string "Nuzlocke challenge.\p"
+	.string "Nuzlocke Challenge.\p"
 	.string "The Nuzlocke setting\n"
 	.string "has been turned off.$"
 

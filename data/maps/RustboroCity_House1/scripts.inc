@@ -112,39 +112,39 @@ RustboroCity_House1_EventScript_QuitNuzlockeNo::
 
 RustboroCity_House1_Text_StartNuzlocke:
 	.string "It looks like you haven't started\n"
-	.string "the Nuzlocke challenge?\l"
+	.string "the Nuzlocke Challenge?\l"
 	.string "Would you like to?$"
 
 RustboroCity_House1_Text_StartNuzlockeYes:
-	.string "Nuzlocke challenge\n"
+	.string "Nuzlocke Challenge\n"
 	.string "is started.$"
 
 RustboroCity_House1_Text_StartNuzlockeNo:
-	.string "Nuzlocke challenge will\n"
+	.string "Nuzlocke Challenge will\n"
 	.string "not be started.$"
 
 RustboroCity_House1_Text_ContinueNuzlocke:
 	.string "Would you like to continue\n"
-	.string "the Nuzlocke challenge?$"
+	.string "the Nuzlocke Challenge?$"
 
 RustboroCity_House1_Text_ContinueNuzlockeYes:
-	.string "Nuzlocke challenge\n"
+	.string "Nuzlocke Challenge\n"
 	.string "is continued.$"
 
 RustboroCity_House1_Text_ContinueNuzlockeNo:
-	.string "Nuzlocke challenge will\n"
+	.string "Nuzlocke Challenge will\n"
 	.string "not be continued.$"
 
 RustboroCity_House1_Text_QuitNuzlocke:
 	.string "Quit the\n"
-	.string "Nuzlocke challenge?$"
+	.string "Nuzlocke Challenge?$"
 
 RustboroCity_House1_Text_QuitNuzlockeYes:
-	.string "Nuzlocke challenge\n"
+	.string "Nuzlocke Challenge\n"
 	.string "has been quit.$"
 
 RustboroCity_House1_Text_QuitNuzlockeNo:
-	.string "Nuzlocke challenge\n"
+	.string "Nuzlocke Challenge\n"
 	.string "will continue.$"
 
 RustboroCity_House1_Text_IllTradeIfYouWant:

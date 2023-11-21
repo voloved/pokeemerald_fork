@@ -1279,7 +1279,7 @@ void ItemUseOutOfBattle_PokeVial(u8 taskId)
     s16 vialUsagesLeft;
     u16 vialUsages = VarGet(VAR_POKEVIAL_USAGES);
     u16 vialUsagesMax = ItemId_GetHoldEffectParam(ITEM_POKEVIAL);
-    if (FlagGet(FLAG_NUZLOCKE)) // Cut usages by half when using Nuzlocke challenge
+    if (FlagGet(FLAG_NUZLOCKE)) // Cut usages by half when using Nuzlocke Challenge
         vialUsagesMax = DIV_ROUND_UP(vialUsagesMax, 2);
     vialUsagesLeft = vialUsagesMax - vialUsages;
     if (vialUsagesLeft < 0)
