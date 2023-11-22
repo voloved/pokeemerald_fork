@@ -155,6 +155,9 @@ void NewGameInitData(void)
 {
     bool8 typeEffectPrev = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     bool8 nuzlockePrev = FlagGet(FLAG_NUZLOCKE);
+    bool8 showBallSuggestPrev = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
+    bool8 showBallNotLastPrev = FlagGet(FLAG_BALL_SUGGEST_NOT_LAST);
+    bool8 showBallComplexPrev = FlagGet(FLAG_BALL_SUGGEST_COMPLEX);
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
         RtcReset();
 
@@ -217,6 +220,9 @@ void NewGameInitData(void)
     gSaveBlock2Ptr->lastUsedBall = ITEM_POKE_BALL;
     typeEffectPrev ? FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW) : FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     nuzlockePrev ? FlagSet(FLAG_NUZLOCKE) : FlagClear(FLAG_NUZLOCKE);
+    showBallSuggestPrev ? FlagSet(FLAG_SHOW_BALL_SUGGESTION) : FlagClear(FLAG_SHOW_BALL_SUGGESTION);
+    showBallNotLastPrev ? FlagSet(FLAG_BALL_SUGGEST_NOT_LAST) : FlagClear(FLAG_BALL_SUGGEST_NOT_LAST);
+    showBallComplexPrev ? FlagSet(FLAG_BALL_SUGGEST_COMPLEX) : FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
     memset(&gSaveBlock2Ptr->itemFlags, 0, sizeof(gSaveBlock2Ptr->itemFlags));
     gSaveBlock1Ptr->dexNavChain = 0;
 }
