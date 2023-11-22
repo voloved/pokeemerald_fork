@@ -1012,8 +1012,10 @@ u32 CannotThrowBall(void)
         return 1;   // Debug setting doesn't allow
     else if (gNuzlockeCannotCatch == ALREADY_SEEN_ON_ROUTE)
         return 2;   // Cannot catch due to Nuzlocke
+    else if (gNuzlockeCannotCatch == CANT_CATCH_YET)
+        return 3;   // Cannot catch yet due to Nuzlocke
     else if (IsPlayerPartyAndPokemonStorageFull() == TRUE)
-        return 3;   // No room for mon
+        return 4;   // No room for mon
     return 0;   // usable 
 }
 
@@ -1043,7 +1045,13 @@ void ItemUseInBattle_PokeBall(u8 taskId)
         else
             DisplayItemMessageInBattlePyramid(taskId, gText_BallsCannotBeUsedNuz, Task_CloseBattlePyramidBagMessage);
         break;
-    case 3: // No room for mon
+    case 3:
+        if (!InBattlePyramid())
+            DisplayItemMessage(taskId, FONT_NORMAL, gText_BallsCannotBeUsedYetNuz, CloseItemMessage);
+        else
+            DisplayItemMessageInBattlePyramid(taskId, gText_BallsCannotBeUsedYetNuz, Task_CloseBattlePyramidBagMessage);
+        break;
+    case 4: // No room for mon
         if (!InBattlePyramid())
             DisplayItemMessage(taskId, FONT_NORMAL, gText_BoxFull, CloseItemMessage);
         else

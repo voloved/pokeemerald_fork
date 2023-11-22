@@ -258,6 +258,7 @@ const u8 gText_UsedVar2WildRepelled[] = _("{PLAYER} used the\n{STR_VAR_2}.\pWild
 const u8 gText_BoxFull[] = _("The BOX is full.{PAUSE_UNTIL_PRESS}");
 const u8 gText_PowderQty[] = _("POWDER QTY: {STR_VAR_1}{PAUSE_UNTIL_PRESS}");
 const u8 gText_BallsCannotBeUsedNuz[] = _("You already saw a POKéMON\non {STR_VAR_1}!{PAUSE_UNTIL_PRESS}");
+const u8 gText_BallsCannotBeUsedYetNuz[] = _("No catching wild POKéMON before\nreceiving the POKéDEX!{PAUSE_UNTIL_PRESS}");
 const u8 gText_TheField[] = _("the field");
 const u8 gText_TheBattle[] = _("the battle");
 const u8 gText_ThePokemonList[] = _("the POKéMON LIST");

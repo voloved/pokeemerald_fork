@@ -109,6 +109,7 @@
 #define FIRST_ENCOUNTER_ON_ROUTE       0
 #define ALREADY_SEEN_ON_ROUTE          1
 #define DUPES_ENCOUNTER                2
+#define CANT_CATCH_YET                 3
 
 // Non-volatile status conditions
 // These persist remain outside of battle and after switching out

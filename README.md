@@ -21,6 +21,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Razor Wind buffs Attack if using original damage catagories rather than always buffing Special Attack.
  - Leech Life is buffed to its Gen VII stats.
  - Using Infinite Rare Candy on field as registered item now fades into party menu.
+ - Wild Pokémon can no longer be caught in the Nuzlocke Challenge before receiving the Pokédex.
  - Lowered Deoxys level in Steven and Wallace battle to lower Nuzlocke overlevel cap.
  - Weavile uses Ice Punch instead of Ice Beam in Elite Four.
  - Changed the garage's Secret Base to a less common on on the overworld.
@@ -294,7 +295,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 ## v1.2.0
 - [Added Nuzlocke Challenge setting.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge)
 - [Pressing B as the ball shakes raises catching odds.](https://github.com/pret/pokeemerald/wiki/Raise-Odds-of-Catching-a-Pokemon-by-Pressing-B-When-the-Ball-Shakes)
-- Final Elite Four battle is now a double battle with Steven and Wallace.
+- [Final Elite Four battle is now a double battle with Steven and Wallace.](https://gitlab.com/devolov/pokeemerald_fork/-/commit/b1e4d9456340f6ea91adabc0829aafb98527ecc9)
 - Missingno. is now encounterable in the game after speaking to Wally's father and surfing in Pacifidlog Town.
 - The Old Sea Map to get Mew is receivable under an old truck in the Lilycove harbor if the Nuzlocke Challenge is on.
 - [Jumping over ledges when bunny-hopping on the Acro Bike is now possible.](https://github.com/pret/pokeemerald/wiki/Allow-Jumping-Over-Ledges-with-Acro-Bike)

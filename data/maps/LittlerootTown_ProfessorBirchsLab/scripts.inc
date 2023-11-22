@@ -1481,10 +1481,10 @@ EventScript_Multichoice_Exit:
 	.string "EXIT$"
 
 EventScript_Multichoice_NuzlockeMenu_Text_0:
-	.string "{COLOR GREEN}TURN ON DUPES CLAUSE$"
+	.string "{COLOR GREEN}DUPES CLAUSE$"
 
 EventScript_Multichoice_NuzlockeMenu_Text_1:
-	.string "{COLOR RED}TURN ON DUPES CLAUSE$"
+	.string "{COLOR RED}DUPES CLAUSE$"
 
 EventScript_Multichoice_NuzlockeMenu_Text_2:
 	.string "{COLOR GREEN}DISALLOW SHIFT MODE$"

@@ -44,7 +44,6 @@
 #include "berry_powder.h"
 #include "mystery_gift.h"
 #include "union_room_chat.h"
-#include "decoration_inventory.h"
 #include "constants/decorations.h"
 #include "constants/flags.h"
 #include "constants/items.h"

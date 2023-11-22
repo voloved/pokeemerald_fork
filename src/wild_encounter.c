@@ -24,6 +24,7 @@
 #include "constants/flags.h"
 #include "pokedex.h"
 #include "item.h"
+#include "battle.h"
 
 extern const u8 EventScript_RepelWoreOff[];
 
@@ -472,6 +473,7 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
 
     species = wildMonInfo->wildPokemon[wildMonIndex].species;
     level = ChooseWildMonLevel(&wildMonInfo->wildPokemon[wildMonIndex]);
+    gBattleTypeFlags = 0;  // Needs to be cleared here before the Nuzlocke check in FLAG_NUZLOCKE_RANDOMIZE_FIRST is run
     if (flags & WILD_CHECK_REPEL && !IsWildLevelAllowedByRepel(level))
         return FALSE;
     if (gMapHeader.mapLayoutId != LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS && flags & WILD_CHECK_KEEN_EYE && !IsAbilityAllowingEncounter(level))
@@ -488,7 +490,7 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
         FlagClear(FLAG_MISSINGNO);  // This is unnecissary, as it gets cleared at the wild encounter, but better to be explicit
     }
     else if (FlagGet(FLAG_NUZLOCKE) && (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD) ||
-            (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST) && HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, FALSE) == 0)))
+            (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST) && HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, FALSE) == FIRST_ENCOUNTER_ON_ROUTE)))
             species = getRandomSpecies(30, FALSE);
     CreateWildMon(species, level);
     return TRUE;
