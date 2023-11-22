@@ -1017,6 +1017,7 @@ static void CB2_StartFirstBattle(void)
         SetMainCallback2(CB2_InitBattle);
         RestartWildEncounterImmunitySteps();
         ClearPoisonStepCounter();
+        SetNuzlockeCatchStatus();
         IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
         IncrementGameStat(GAME_STAT_WILD_BATTLES);
         IncrementDailyWildBattles();
