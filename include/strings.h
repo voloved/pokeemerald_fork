@@ -498,6 +498,7 @@ extern const u8 gText_PCMailboxFull[];
 extern const u8 gText_MailMessageWillBeLost[];
 extern const u8 gText_MailTakenFromPkmn[];
 extern const u8 gText_NoMoreThanVar1Pkmn[];
+extern const u8 gText_CantTradeDeadMon[];
 extern const u8 gText_PkmnCantBeTradedNow[];
 extern const u8 gText_EggCantBeTradedNow[];
 extern const u8 gText_OnlyPkmnForBattle[];

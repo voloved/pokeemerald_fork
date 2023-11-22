@@ -3,6 +3,7 @@
 #include "battle.h"
 #include "battle_setup.h"
 #include "decoration.h"
+#include "decoration_inventory.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "event_scripts.h"

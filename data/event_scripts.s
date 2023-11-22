@@ -1022,12 +1022,10 @@ Common_EventScript_LegendaryFlewAway::
 
 EventScript_DoWonderTrade::
 	copyvar VAR_0x8006, VAR_0x8004
-	special ChoosePartyMon
+	special ChoosePartyMonNoDead
 	waitstate
 	compare VAR_0x8004, PARTY_SIZE
 	goto_if_ge EventScript_End
-	callnative CheckIfDead
-	goto_if_eq VAR_RESULT, TRUE, EventScript_CantTradeDead
 	copyvar VAR_0x8005, VAR_0x8004
 	addvar VAR_JAIME_MINTS_GIVEN, 16
 	special CreateWonderTradePokemon

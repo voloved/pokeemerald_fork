@@ -1160,15 +1160,6 @@ void CountBadges(void)
     gSpecialVar_Result = GetNumOwnedBadges();
 }
 
-void CheckIfDead(void)
-{
-    if(GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_DEAD) && FlagGet(FLAG_NUZLOCKE))
-        gSpecialVar_Result = TRUE;
-    else
-        gSpecialVar_Result = FALSE;
-    return;
-}
-
 static const u8 sText_Trade[] = _("trade");
 static const u8 sText_Trades[] = _("trades");
 void CanDoWonderTrade(void)
@@ -1177,10 +1168,8 @@ void CanDoWonderTrade(void)
     u16 WonderTradesDone = VarGet(VAR_JAIME_MINTS_GIVEN) >> 4;
     s16 wonderTradesLeft = numBadges - WonderTradesDone;
     if (FlagGet(FLAG_IS_CHAMPION))
-    {
         gSpecialVar_Result = 0xFF;
-    }
-    if (wonderTradesLeft > 0)
+    else if (wonderTradesLeft > 0)
     {
         gSpecialVar_Result = TRUE;
         ConvertIntToDecimalStringN(gStringVar1, wonderTradesLeft, STR_CONV_MODE_LEFT_ALIGN, 1);

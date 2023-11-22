@@ -308,6 +308,7 @@ static void HandleChooseMonSelection(u8, s8 *);
 static u16 PartyMenuButtonHandler(s8 *);
 static s8 *GetCurrentPartySlotPtr(void);
 static bool8 IsSelectedMonNotEgg(u8 *);
+static bool8 IsSelectedMonDeadOrEgg(u8 *);
 static void PartyMenuRemoveWindow(u8 *);
 static void CB2_SetUpExitToBattleScreen(void);
 static void Task_ClosePartyMenuAfterText(u8);
@@ -1361,6 +1362,12 @@ static void HandleChooseMonSelection(u8 taskId, s8 *slotPtr)
             SwitchSelectedMons(taskId);
             break;
         case PARTY_ACTION_CHOOSE_AND_CLOSE:
+        case PARTY_MENU_TYPE_CHOOSE_NO_DEAD:
+            if (gPartyMenu.action == PARTY_MENU_TYPE_CHOOSE_NO_DEAD && IsSelectedMonDeadOrEgg((u8 *)slotPtr))
+            {
+                gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
+                break;
+            }
             PlaySE(SE_SELECT);
             Task_ClosePartyMenu(taskId);
             break;
@@ -1388,6 +1395,21 @@ static bool8 IsSelectedMonNotEgg(u8 *slotPtr)
         return FALSE;
     }
     return TRUE;
+}
+
+static bool8 IsSelectedMonDeadOrEgg(u8 *slotPtr)
+{
+    if (IsSelectedMonNotEgg((u8 *)slotPtr) == FALSE)
+        return TRUE;
+    if ((GetMonData(&gPlayerParty[*slotPtr], MON_DATA_DEAD) == TRUE) && FlagGet(FLAG_NUZLOCKE))
+    {
+        StringExpandPlaceholders(gStringVar4, gText_CantTradeDeadMon);
+        PlaySE(SE_FAILURE);
+        DisplayPartyMenuMessage(gStringVar4, FALSE);
+        ScheduleBgCopyTilemapToVram(2);
+        return TRUE;
+    }
+    return FALSE;
 }
 
 static void HandleChooseMonCancel(u8 taskId, s8 *slotPtr)
@@ -6656,9 +6678,21 @@ static void CB2_ChooseContestMon(void)
 // Used as a script special for showing a party mon to various npcs (e.g. in-game trades, move deleter)
 void ChoosePartyMon(void)
 {
+    u8 taskId;
     LockPlayerFieldControls();
     FadeScreen(FADE_TO_BLACK, 0);
-    CreateTask(Task_ChoosePartyMon, 10);
+    taskId = CreateTask(Task_ChoosePartyMon, 10);
+    gTasks[taskId].data[0] = PARTY_ACTION_CHOOSE_AND_CLOSE;
+}
+
+// Used as a script special for showing a party mon to various npcs (e.g. in-game trades, move deleter)
+void ChoosePartyMonNoDead(void)
+{
+    u8 taskId;
+    LockPlayerFieldControls();
+    FadeScreen(FADE_TO_BLACK, 0);
+    taskId = CreateTask(Task_ChoosePartyMon, 10);
+    gTasks[taskId].data[0] = PARTY_MENU_TYPE_CHOOSE_NO_DEAD;
 }
 
 static void Task_ChoosePartyMon(u8 taskId)
@@ -6666,7 +6700,7 @@ static void Task_ChoosePartyMon(u8 taskId)
     if (!gPaletteFade.active)
     {
         CleanupOverworldWindowsAndTilemaps();
-        InitPartyMenu(PARTY_MENU_TYPE_CHOOSE_MON, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_AND_CLOSE, FALSE, PARTY_MSG_CHOOSE_MON, Task_HandleChooseMonInput, BufferMonSelection);
+        InitPartyMenu(PARTY_MENU_TYPE_CHOOSE_MON, PARTY_LAYOUT_SINGLE, gTasks[taskId].data[0], FALSE, PARTY_MSG_CHOOSE_MON, Task_HandleChooseMonInput, BufferMonSelection);
         DestroyTask(taskId);
     }
 }
