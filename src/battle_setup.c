@@ -2091,10 +2091,10 @@ u8 HasWildPokmnOnThisRouteBeenSeen(u8 currLocation, u16 enemySpecies, bool8 setV
     VAR_WILD_PKMN_ROUTE_SEEN_4,
     };
     currLocation = currLocConvertForNuzlocke(currLocation);
-    if (!FlagGet(FLAG_NUZLOCKE) || gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+    if (!FlagGet(FLAG_NUZLOCKE))
         return FIRST_ENCOUNTER_ON_ROUTE;
-    if (!FlagGet(FLAG_SYS_POKEDEX_GET))
-        return CANT_CATCH_YET;
+    if (!(FlagGet(FLAG_SYS_POKEDEX_GET) || gBattleTypeFlags & BATTLE_TYPE_TRAINER))
+            return CANT_CATCH_YET;
     switch (currLocation)
     {
     case MAPSEC_LITTLEROOT_TOWN:
