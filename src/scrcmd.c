@@ -1965,6 +1965,10 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
             break;
         }
     }
+
+    if (!PlayerHasMove(moveId))
+        return FALSE;
+
     for (i = 0; i < PARTY_SIZE; i++)
     {
         // If not, then use a Pokemon in the party that can learn the move
@@ -1979,10 +1983,10 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
             break;
         }
     }
-    if (gSpecialVar_Result == PARTY_SIZE && PlayerHasMove(moveId)){ 
+    if (gSpecialVar_Result == PARTY_SIZE){ 
         // If no mon have the move, but the player has the HM in bag, use the actual player
-            gSpecialVar_Result = PARTY_SIZE + 1;  // A number larger than the party size is treated as using to player elsewhere in the code
-            gSpecialVar_0x8004 = SPECIES_NONE;
+        gSpecialVar_Result = PARTY_SIZE + 1;  // A number larger than the party size is treated as using to player elsewhere in the code
+        gSpecialVar_0x8004 = SPECIES_NONE;
     }
     return FALSE;
 }
