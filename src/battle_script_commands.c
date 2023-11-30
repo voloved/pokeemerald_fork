@@ -332,6 +332,7 @@ static void Cmd_finishaction(void);
 static void Cmd_finishturn(void);
 static void Cmd_trainerslideout(void);
 static void Cmd_ballthrowend(void);
+static void Cmd_helditemtodamagecalculation(void);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
 {
@@ -584,7 +585,8 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_finishaction,                            //0xF6
     Cmd_finishturn,                              //0xF7
     Cmd_trainerslideout,                         //0xF8
-    Cmd_ballthrowend                             //0xF9
+    Cmd_ballthrowend,                            //0xF9
+    Cmd_helditemtodamagecalculation              //0xFA
 };
 
 struct StatFractions
@@ -10655,6 +10657,15 @@ static void Cmd_ballthrowend(void)
     gBallShakesBData.odds = 0;
     gBallShakesBData.ballShakesArray = 0;
     gBallShakesBData.shakes = 0;
+}
+
+static void Cmd_helditemtodamagecalculation(void)
+{
+    gDynamicBasePower = gBattleMoves[gCurrentMove].power;
+    if (gBattleMons[gBattlerAttacker].item == ITEM_NONE)
+        gDynamicBasePower *= 2;
+
+    gBattlescriptCurrInstr++;
 }
 
 bool8 CalcNextShakeFromOdds(u32 odds)
