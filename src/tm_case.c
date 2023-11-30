@@ -1168,7 +1168,7 @@ static void TintPartyMonIcons(u8 tm)
         species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES);
         if (!CanSpeciesLearnTMHM(species, tm))
         {
-            gSprites[spriteIdData[i]].oam.paletteNum = 8;
+            gSprites[spriteIdData[i]].oam.paletteNum = 7 + spriteIdPalette[i];
         }
         else
         {
