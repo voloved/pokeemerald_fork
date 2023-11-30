@@ -1682,44 +1682,91 @@ u8 TypeEffectiveness(u8 targetId)
 
 static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev)
 {
-    u8 *txtPtr;
+    u8 *txtPtr = gDisplayedStringBattle;
 	struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct*)(&gBattleBufferA[gActiveBattler][4]);
+    u8 type = gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type;
+    u8 typeColor = TypeEffectiveness(targetId);
 
     // Don't update the image if the current and previous targets have the same type effectiveness
-    if(TypeEffectiveness(targetId) == TypeEffectiveness(targetIdPrev) && targetIdPrev < B_POSITION_NO_BATTLER)
+    if(typeColor == TypeEffectiveness(targetIdPrev) && targetIdPrev < B_POSITION_NO_BATTLER)
         return;
 
-	txtPtr = StringCopy(gDisplayedStringBattle, gText_MoveInterfaceType);
-	txtPtr[0] = EXT_CTRL_CODE_BEGIN;
-	txtPtr++;
-	txtPtr[0] = 6;
-	txtPtr++;
-	txtPtr[0] = 1;
-	txtPtr++;
+    if (!FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW))
+    {
+        txtPtr = StringCopy(txtPtr, gText_MoveInterfaceType);
+    }
+    else
+    {
+        switch (typeColor)
+        {
+        case B_WIN_TYPE_NO_EFF:
+        case B_WIN_TYPE_NOT_VERY_EFF:
+            txtPtr = StringCopy(txtPtr, gText_MoveInterfaceNotEff);
+            break;
+        case B_WIN_TYPE_SUPER_EFF:
+            txtPtr = StringCopy(txtPtr, gText_MoveInterfaceSupEff);
+            break;
+        case B_WIN_MOVE_TYPE:
+        default:
+            break;
+        }
+    }
 
-	StringCopy(txtPtr, gTypeNames[gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type]);
-	BattlePutTextOnWindow(gDisplayedStringBattle, TypeEffectiveness(targetId));
+    *(txtPtr)++ = EXT_CTRL_CODE_BEGIN;
+    *(txtPtr)++ = EXT_CTRL_CODE_FONT;
+    *(txtPtr)++ = FONT_NORMAL;
+
+	StringCopy(txtPtr, gTypeNames[type]);
+
+    if (FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW) && IS_BATTLER_OF_TYPE(gActiveBattler, type)) // Show for STAB
+        txtPtr = StringCopy(txtPtr, gText_MoveInterfaceSTAB);
+
+	BattlePutTextOnWindow(gDisplayedStringBattle, typeColor);
     MoveSelectionDisplaySplitIcon();
 }
 
 static void MoveSelectionDisplayMoveType(void)
 {
-    u8 *txtPtr;
+    u8 *txtPtr = gDisplayedStringBattle;
     u8 typeColor = IsDoubleBattle() ? B_WIN_MOVE_TYPE : TypeEffectiveness(GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerPosition(gActiveBattler))));
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleBufferA[gActiveBattler][4]);
+    u8 type = gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type;
 
-    txtPtr = StringCopy(gDisplayedStringBattle, gText_MoveInterfaceType);
+    if (!FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW))
+    {
+        txtPtr = StringCopy(txtPtr, gText_MoveInterfaceType);
+    }
+    else
+    {
+        switch (typeColor)
+        {
+        case B_WIN_TYPE_NO_EFF:
+        case B_WIN_TYPE_NOT_VERY_EFF:
+            txtPtr = StringCopy(txtPtr, gText_MoveInterfaceNotEff);
+            break;
+        case B_WIN_TYPE_SUPER_EFF:
+            txtPtr = StringCopy(txtPtr, gText_MoveInterfaceSupEff);
+            break;
+        case B_WIN_MOVE_TYPE:
+        default:
+            break;
+        }
+    }
     *(txtPtr)++ = EXT_CTRL_CODE_BEGIN;
     *(txtPtr)++ = EXT_CTRL_CODE_FONT;
     *(txtPtr)++ = FONT_NORMAL;
+    txtPtr = StringCopy(txtPtr, gTypeNames[type]);
 
-    StringCopy(txtPtr, gTypeNames[gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type]);
+    if (FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW) && IS_BATTLER_OF_TYPE(gActiveBattler, type)) // Show for STAB
+        txtPtr = StringCopy(txtPtr, gText_MoveInterfaceSTAB);
+
     BattlePutTextOnWindow(gDisplayedStringBattle, typeColor);
     MoveSelectionDisplaySplitIcon();
 }
 
 static void MoveSelectionDisplayMoveDescription(void)
 {
+    u8 *txtPtr = gDisplayedStringBattle;
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct*)(&gBattleBufferA[gActiveBattler][4]);
     u16 move = moveInfo->moves[gMoveSelectionCursor[gActiveBattler]];
     u16 pwr = gBattleMoves[move].power;
@@ -1745,17 +1792,17 @@ static void MoveSelectionDisplayMoveDescription(void)
     else
         ConvertIntToDecimalStringN(acc_num, acc, STR_CONV_MODE_LEFT_ALIGN, 3);
     ConvertIntToDecimalStringN(pri_num, pri, STR_CONV_MODE_LEFT_ALIGN, 2);
-    StringCopy(gDisplayedStringBattle, pwr_start);
-    StringAppend(gDisplayedStringBattle, pwr_desc);
-    StringAppend(gDisplayedStringBattle, pwr_num);
-    StringAppend(gDisplayedStringBattle, acc_start);
-    StringAppend(gDisplayedStringBattle, acc_desc);
-    StringAppend(gDisplayedStringBattle, acc_num);
-    StringAppend(gDisplayedStringBattle, pri_start);
-    StringAppend(gDisplayedStringBattle, pri_desc);
-    StringAppend(gDisplayedStringBattle, pri_num);
-    StringAppend(gDisplayedStringBattle, gText_NewLine);
-    StringAppend(gDisplayedStringBattle, gMoveDescriptionPointers[move -1]);
+    txtPtr = StringCopy(txtPtr, pwr_start);
+    txtPtr = StringCopy(txtPtr, pwr_desc);
+    txtPtr = StringCopy(txtPtr, pwr_num);
+    txtPtr = StringCopy(txtPtr, acc_start);
+    txtPtr = StringCopy(txtPtr, acc_desc);
+    txtPtr = StringCopy(txtPtr, acc_num);
+    txtPtr = StringCopy(txtPtr, pri_start);
+    txtPtr = StringCopy(txtPtr, pri_desc);
+    txtPtr = StringCopy(txtPtr, pri_num);
+    txtPtr = StringCopy(txtPtr, gText_NewLine);
+    txtPtr = StringCopy(txtPtr, gMoveDescriptionPointers[move -1]);
     BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_DESCRIPTION);
     CopyWindowToVram(B_WIN_MOVE_DESCRIPTION, COPYWIN_FULL);
 }

@@ -28,6 +28,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
    - Garage base automatically opens at the start of a new game.
    - Solid board automatically goes over the hole in the garage base.
    -Removed Secret Power from PC.
+ - The items in the PC at the beginning of the game will change based on if the Nuzlocke Challenge is run.
+ - Type Effectiveness option now shows a plus sign if a move is STAB and arrows if a move is effective or not.
  - Cleaned up Infinite Rare Candy palette. [Credit: Viperio]
  - Bugfix where scripted encounters did not count toward the Nuzlocke.
  
