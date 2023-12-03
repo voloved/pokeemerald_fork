@@ -429,6 +429,7 @@ static u16 getRandomSpecies(u8 minCatchRate, bool8 allowEvolvedForms)
         species = Random() % NUM_SPECIES;
     } while (species == SPECIES_NONE || species == SPECIES_EGG
             || gSpeciesInfo[species].catchRate < minCatchRate
+            || species == SPECIES_MISSINGNO
             || (!allowEvolvedForms && GetPreEvolution(species) != SPECIES_NONE));
     return species;
 }
@@ -491,7 +492,7 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
     }
     else if (FlagGet(FLAG_NUZLOCKE) && (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD) ||
             (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST) && HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, FALSE) == FIRST_ENCOUNTER_ON_ROUTE)))
-            species = getRandomSpecies(30, FALSE);
+            species = getRandomSpecies(gSpeciesInfo[SPECIES_BULBASAUR].catchRate + 1, FALSE);
     CreateWildMon(species, level);
     return TRUE;
 }
@@ -506,7 +507,7 @@ static u16 GenerateFishingWildMon(const struct WildPokemonInfo *wildMonInfo, u8 
         species = SPECIES_KRABBY;
     else if (FlagGet(FLAG_NUZLOCKE) && (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD) ||
             (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST) && HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, FALSE) == 0)))
-        species = getRandomWaterSpecies(30, FALSE);
+        species = getRandomWaterSpecies(gSpeciesInfo[SPECIES_BULBASAUR].catchRate + 1, FALSE);
     CreateWildMon(species, level);
     return species;
 }

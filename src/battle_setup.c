@@ -430,6 +430,41 @@ static void SetNuzlockeCatchStatus(void)
     gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(currLocation, enemySpecies, TRUE);
 }
 
+static void SetNuzlockeCatchStatusTrainer(u16 trainerId)
+{
+    u16 startSpecies;
+    u8 currLocation = GetCurrentRegionMapSectionId();  
+
+    switch (gTrainers[trainerId].partyFlags)
+    {
+    case 0:
+        {
+            const struct TrainerMonNoItemDefaultMoves *party = gTrainers[trainerId].party.NoItemDefaultMoves;
+            startSpecies = party[0].species;
+        }
+        break;
+    case F_TRAINER_PARTY_CUSTOM_MOVESET:
+        {
+            const struct TrainerMonNoItemCustomMoves *party = gTrainers[trainerId].party.NoItemCustomMoves;
+            startSpecies = party[0].species;
+        }
+        break;
+    case F_TRAINER_PARTY_HELD_ITEM:
+        {
+            const struct TrainerMonItemDefaultMoves *party = gTrainers[trainerId].party.ItemDefaultMoves;
+            startSpecies = party[0].species;
+        }
+        break;
+    case F_TRAINER_PARTY_CUSTOM_MOVESET | F_TRAINER_PARTY_HELD_ITEM:
+        {
+            const struct TrainerMonItemCustomMoves *party = gTrainers[trainerId].party.ItemCustomMoves;
+            startSpecies = party[0].species;
+        }
+        break;
+    }  
+    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(currLocation, startSpecies, TRUE);
+}
+
 void BattleSetup_StartWildBattle(void)
 {
     if (GetSafariZoneFlag())
@@ -525,6 +560,7 @@ static void DoBattlePikeWildBattle(void)
 
 static void DoTrainerBattle(void)
 {
+    SetNuzlockeCatchStatusTrainer(gTrainerBattleOpponent_A);
     CreateBattleStartTask(GetTrainerBattleTransition(), 0);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_TRAINER_BATTLES);
@@ -813,7 +849,6 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
 {
     u8 i;
     u8 sum;
-    u16 startSpecies;
     u32 count = numMons;
 
     if (gTrainers[opponentId].partySize < count)
@@ -827,7 +862,6 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
         {
             const struct TrainerMonNoItemDefaultMoves *party;
             party = gTrainers[opponentId].party.NoItemDefaultMoves;
-            startSpecies = party[0].species;
             for (i = 0; i < count; i++)
                 sum += GetScaledLevel(party[i].lvl);
         }
@@ -836,7 +870,6 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
         {
             const struct TrainerMonNoItemCustomMoves *party;
             party = gTrainers[opponentId].party.NoItemCustomMoves;
-            startSpecies = party[0].species;
             for (i = 0; i < count; i++)
                 sum += GetScaledLevel(party[i].lvl);
         }
@@ -845,7 +878,6 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
         {
             const struct TrainerMonItemDefaultMoves *party;
             party = gTrainers[opponentId].party.ItemDefaultMoves;
-            startSpecies = party[0].species;
             for (i = 0; i < count; i++)
                 sum += GetScaledLevel(party[i].lvl);
         }
@@ -854,13 +886,11 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
         {
             const struct TrainerMonItemCustomMoves *party;
             party = gTrainers[opponentId].party.ItemCustomMoves;
-            startSpecies = party[0].species;
             for (i = 0; i < count; i++)
                 sum += GetScaledLevel(party[i].lvl);
         }
         break;
     }
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), startSpecies, FALSE);
     return sum;
 }
 
