@@ -2027,8 +2027,8 @@ bool8 ScrFunc_getfolloweraction(struct ScriptContext *ctx) // Essentially a big 
     ScriptCall(ctx, EventScript_FollowerLovesYou);
     return FALSE;
   }
-  // If map is not flyable, set the script to jump past the fly check TODO: Should followers ask to fly?
-  if (TRUE || !Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType))
+  // If map is not flyable, set the script to jump past the fly check
+  if (!Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType))
     ScriptJump(ctx, EventScript_FollowerEnd);
   species = GetMonData(mon, MON_DATA_SPECIES);
   multi = GetMonData(mon, MON_DATA_FRIENDSHIP);

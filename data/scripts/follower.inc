@@ -41,6 +41,7 @@ EventScript_Follower::
   case MULTI_B_PRESSED, EventScript_FollowerEnd
 EventScript_FollowerFly::
   callfunc ScrFunc_followerfly
+  end
 EventScript_FollowerEnd::
   waitfieldeffect FLDEFF_EMOTE
   release
