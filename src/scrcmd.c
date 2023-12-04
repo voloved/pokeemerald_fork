@@ -2288,6 +2288,18 @@ bool8 ScrCmd_playmoncry(struct ScriptContext *ctx)
     return FALSE;
 }
 
+bool8 ScrFunc_checkfirstmonmove(struct ScriptContext *ctx)
+{
+    u8 partyIndex = GetLeadMonIndex();
+    u16 moveId = ScriptReadHalfword(ctx);
+    gSpecialVar_Result = FALSE;
+    if (MonKnowsMove(&gPlayerParty[partyIndex], moveId))
+        gSpecialVar_Result = TRUE;
+    else if(PlayerHasMove(moveId) && CanMonLearnTMHM(&gPlayerParty[partyIndex], MoveToHM(moveId) - ITEM_TM01))
+        gSpecialVar_Result = TRUE;
+    return FALSE;
+}
+
 bool8 ScrFunc_playfirstmoncry(struct ScriptContext *ctx)
 {
   u16 species = GetMonData(GetFirstLiveMon(), MON_DATA_SPECIES);
