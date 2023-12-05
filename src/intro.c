@@ -3434,3 +3434,4 @@ static void SpriteCB_RayquazaOrb(struct Sprite *sprite)
         break;
     }
 }
+

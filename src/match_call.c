@@ -1859,19 +1859,6 @@ const u16 sBadgeFlags[NUM_BADGES] =
         FLAG_BADGE08_GET,
 };
 
-int GetNumOwnedBadges(void)
-{
-    u32 i;
-
-    for (i = 0; i < NUM_BADGES; i++)
-    {
-        if (!FlagGet(sBadgeFlags[i]))
-            break;
-    }
-
-    return i;
-}
-
 // Whether or not a trainer calling the player from a different route should request a battle
 static bool32 ShouldTrainerRequestBattle(int matchCallId)
 {

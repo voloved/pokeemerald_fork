@@ -104,39 +104,41 @@ static void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct 
 
 // Apply a blue tint effect to a palette
 static void ApplyPondFilter(u8 paletteNum, u16 *dest) {
-  u8 i, val, r, g, b;
-  // CpuCopy16(gPlttBufferUnfaded + 0x100 + paletteNum * 16, dest, 32);
+  u8 i;
+  s32 r, g, b;
   u16 *src = gPlttBufferUnfaded + 0x100 + paletteNum * 16;
   for (i = 0; i < 16; i++) {
-    r = src[i] & 0x1F;
-    g = (src[i] >> 5) & 0x1F;
-    b = (src[i] >> 10) & 0x1F;
+    u32 color = *src++;
+    r = (color << 27) >> 27;
+    g = (color << 22) >> 27;
+    b = (color << 17) >> 27;
     b += 10;
     if (b > 31)
       b = 31;
-    *dest++ = (b << 10) | (g << 5) | r;
+    *dest++ = r | (g << 5) | (b << 10);
   }
 }
 
 // Apply a ice tint effect to a palette
 static void ApplyIceFilter(u8 paletteNum, u16 *dest) {
-  u8 i, val, r, g, b;
-  // CpuCopy16(gPlttBufferUnfaded + 0x100 + paletteNum * 16, dest, 32);
+  u8 i;
+  s32 r, g, b;
   u16 *src = gPlttBufferUnfaded + 0x100 + paletteNum * 16;
   for (i = 0; i < 16; i++) {
-    r = src[i] & 0x1F;
+    u32 color = *src++;
+    r = (color << 27) >> 27;
+    g = (color << 22) >> 27;
+    b = (color << 17) >> 27;
     r -= 5;
-    if (r > 31)
+    if (r < 0)
       r = 0;
-    g = (src[i] >> 5) & 0x1F;
     g += 3;
     if (g > 31)
       g = 31;
-    b = (src[i] >> 10) & 0x1F;
     b += 16;
     if (b > 31)
       b = 31;
-    *dest++ = (b << 10) | (g << 5) | r;
+    *dest++ = r | (g << 5) | (b << 10);
   }
 }
 
@@ -156,7 +158,7 @@ static void LoadObjectRegularReflectionPalette(struct ObjectEvent *objectEvent, 
         ApplyIceFilter(mainSprite->oam.paletteNum, filteredData);
       }
       paletteNum = LoadSpritePalette(&filteredPalette);
-      UpdateSpritePaletteWithWeather(paletteNum);
+      UpdateSpritePaletteWithWeather(paletteNum, TRUE);
     }
     sprite->oam.paletteNum = paletteNum;
     sprite->oam.objMode = 1; // Alpha blending
@@ -175,7 +177,7 @@ static void LoadObjectHighBridgeReflectionPalette(struct ObjectEvent *objectEven
       blueData[i] = 0x55c9;
     }
     sprite->oam.paletteNum = LoadSpritePalette(&bluePalette);
-    UpdateSpritePaletteWithWeather(sprite->oam.paletteNum);
+    UpdateSpritePaletteWithWeather(sprite->oam.paletteNum, TRUE);
 }
 
 static void UpdateObjectReflectionSprite(struct Sprite *reflectionSprite)
@@ -208,7 +210,7 @@ static void UpdateObjectReflectionSprite(struct Sprite *reflectionSprite)
           ApplyIceFilter(mainSprite->oam.paletteNum, filteredData);
         }
         paletteNum = LoadSpritePalette(&filteredPalette);
-        UpdateSpritePaletteWithWeather(paletteNum);
+        UpdateSpritePaletteWithWeather(paletteNum, TRUE);
       }
       reflectionSprite->oam.paletteNum = paletteNum;
     }
@@ -312,8 +314,8 @@ u32 FldEff_Shadow(void)
     u8 objectEventId;
     const struct ObjectEventGraphicsInfo *graphicsInfo;
     u8 spriteId;
-    u8 i;
-    for (i = 0; i < MAX_SPRITES; i++) {
+    s32 i;
+    for (i = MAX_SPRITES - 1; i > -1; i--) { // Search backwards, because of CreateSpriteAtEnd
       // Return early if a shadow sprite already exists
       if (gSprites[i].data[0] == gFieldEffectArguments[0] && gSprites[i].callback == UpdateShadowFieldEffect)
         return 0;
@@ -322,7 +324,8 @@ u32 FldEff_Shadow(void)
     graphicsInfo = GetObjectEventGraphicsInfo(gObjectEvents[objectEventId].graphicsId);
     if (graphicsInfo->shadowSize == SHADOW_SIZE_NONE) // don't create a shadow at all
       return 0;
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[sShadowEffectTemplateIds[graphicsInfo->shadowSize]], 0, 0, 0x94);
+    LoadSpriteSheetByTemplate(gFieldEffectObjectTemplatePointers[sShadowEffectTemplateIds[graphicsInfo->shadowSize]], 0);
+    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[sShadowEffectTemplateIds[graphicsInfo->shadowSize]], 0, 0, 0x94 + 1); // higher = farther back; shadows should be behind object events
     if (spriteId != MAX_SPRITES)
     {
         // SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(8, 12));
@@ -354,8 +357,13 @@ void UpdateShadowFieldEffect(struct Sprite *sprite)
         sprite->x = linkedSprite->x;
         sprite->y = linkedSprite->y + sprite->data[3];
         sprite->invisible = linkedSprite->invisible;
-        if (!objectEvent->active || !objectEvent->hasShadow
+        if (!objectEvent->active
+         || objectEvent->noShadow
+         || objectEvent->inHotSprings
+         || objectEvent->inSandPile
+         || gWeatherPtr->noShadows
          || MetatileBehavior_IsPokeGrass(objectEvent->currentMetatileBehavior)
+         || MetatileBehavior_IsPuddle(objectEvent->currentMetatileBehavior)
          || MetatileBehavior_IsSurfableWaterOrUnderwater(objectEvent->currentMetatileBehavior)
          || MetatileBehavior_IsSurfableWaterOrUnderwater(objectEvent->previousMetatileBehavior))
         {
@@ -987,7 +995,7 @@ void UpdateHotSpringsWaterFieldEffect(struct Sprite *sprite)
     }
 }
 
-u32 FldEff_UnusedGrass(void)
+u32 FldEff_ShakingGrass(void)
 {
     u8 spriteId;
     struct Sprite *sprite;
@@ -999,12 +1007,13 @@ u32 FldEff_UnusedGrass(void)
         sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = gFieldEffectArguments[3];
-        sprite->data[0] = FLDEFF_UNUSED_GRASS;
+        sprite->data[0] = FLDEFF_SHAKING_GRASS;
     }
-    return 0;
+    
+    return spriteId;
 }
 
-u32 FldEff_UnusedGrass2(void)
+u32 FldEff_ShakingGrass2(void)
 {
     u8 spriteId;
     struct Sprite *sprite;
@@ -1016,9 +1025,10 @@ u32 FldEff_UnusedGrass2(void)
         sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = gFieldEffectArguments[3];
-        sprite->data[0] = FLDEFF_UNUSED_GRASS_2;
+        sprite->data[0] = FLDEFF_SHAKING_LONG_GRASS;
     }
-    return 0;
+    
+    return spriteId;
 }
 
 u32 FldEff_UnusedSand(void)
@@ -1033,9 +1043,9 @@ u32 FldEff_UnusedSand(void)
         sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = gFieldEffectArguments[3];
-        sprite->data[0] = FLDEFF_UNUSED_SAND;
+        sprite->data[0] = FLDEFF_SAND_HOLE;
     }
-    return 0;
+    return spriteId;
 }
 
 u32 FldEff_WaterSurfacing(void)
@@ -1052,7 +1062,8 @@ u32 FldEff_WaterSurfacing(void)
         sprite->oam.priority = gFieldEffectArguments[3];
         sprite->data[0] = FLDEFF_WATER_SURFACING;
     }
-    return 0;
+    
+    return spriteId;
 }
 
 // Sprite data for FLDEFF_ASH
@@ -1443,7 +1454,7 @@ u32 FldEff_BerryTreeGrowthSparkle(void)
         UpdateSpritePaletteByTemplate(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_SPARKLE], sprite);
         sprite->data[0] = FLDEFF_BERRY_TREE_GROWTH_SPARKLE;
     }
-    return 0;
+    return spriteId;
 }
 
 // Sprite data for FLDEFF_TREE_DISGUISE / FLDEFF_MOUNTAIN_DISGUISE / FLDEFF_SAND_DISGUISE
@@ -1482,7 +1493,7 @@ static u32 ShowDisguiseFieldEffect(u8 fldEff, u8 fldEffObj, u8 paletteNum)
     if (spriteId != MAX_SPRITES)
     {
         sprite = &gSprites[spriteId];
-        UpdateSpritePaletteByTemplate(gFieldEffectObjectTemplatePointers[fldEffObj], sprite);
+        sprite->oam.paletteNum = LoadObjectEventPalette(gFieldEffectObjectTemplatePointers[fldEffObj]->paletteTag);
         sprite->coordOffsetEnabled ++;
         sprite->sFldEff = fldEff;
         sprite->sLocalId = gFieldEffectArguments[0];
@@ -1570,7 +1581,7 @@ u32 FldEff_Sparkle(void)
         gSprites[spriteId].oam.priority = gFieldEffectArguments[2];
         gSprites[spriteId].coordOffsetEnabled = TRUE;
     }
-    return 0;
+    return spriteId;
 }
 
 void UpdateSparkleFieldEffect(struct Sprite *sprite)
@@ -1830,27 +1841,3 @@ static void UpdateGrassFieldEffectSubpriority(struct Sprite *sprite, u8 elevatio
     }
 }
 
-// Unused, duplicates of data in event_object_movement.c
-static const s8 sFigure8XOffsets[FIGURE_8_LENGTH] = {
-    1, 2, 2, 2, 2, 2, 2, 2,
-    2, 2, 2, 1, 2, 2, 1, 2,
-    2, 1, 2, 2, 1, 2, 1, 1,
-    2, 1, 1, 2, 1, 1, 2, 1,
-    1, 2, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1,
-    0, 1, 1, 1, 0, 1, 1, 0,
-    1, 0, 1, 0, 1, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0,
-};
-
-static const s8 sFigure8YOffsets[FIGURE_8_LENGTH] = {
-     0,  0,  1,  0,  0,  1,  0,  0,
-     1,  0,  1,  1,  0,  1,  1,  0,
-     1,  1,  0,  1,  1,  0,  1,  1,
-     0,  0,  1,  0,  0,  1,  0,  0,
-     1,  0,  0,  0,  0,  0,  0,  0,
-     0,  0,  0,  0,  0,  0,  0,  0,
-     0,  0, -1,  0,  0, -1,  0,  0,
-    -1,  0, -1, -1,  0, -1, -1,  0,
-    -1, -1, -1, -1, -1, -1, -1, -2,
-};

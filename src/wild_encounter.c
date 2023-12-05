@@ -24,6 +24,7 @@
 #include "constants/flags.h"
 #include "pokedex.h"
 #include "item.h"
+#include "battle.h"
 
 extern const u8 EventScript_RepelWoreOff[];
 
@@ -184,7 +185,7 @@ static void FeebasSeedRng(u16 seed)
 }
 
 // LAND_WILD_COUNT
-static u8 ChooseWildMonIndex_Land(void)
+u8 ChooseWildMonIndex_Land(void)
 {
     u8 rand = Random() % ENCOUNTER_CHANCE_LAND_MONS_TOTAL;
 
@@ -215,7 +216,7 @@ static u8 ChooseWildMonIndex_Land(void)
 }
 
 // ROCK_WILD_COUNT / WATER_WILD_COUNT
-static u8 ChooseWildMonIndex_WaterRock(void)
+u8 ChooseWildMonIndex_WaterRock(void)
 {
     u8 rand = Random() % ENCOUNTER_CHANCE_WATER_MONS_TOTAL;
 
@@ -307,7 +308,7 @@ static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon)
     return min + rand;
 }
 
-static u16 GetCurrentMapWildMonHeaderId(void)
+u16 GetCurrentMapWildMonHeaderId(void)
 {
     u16 i;
 
@@ -381,7 +382,7 @@ static u8 PickWildMonNature(void)
     return Random() % NUM_NATURES;
 }
 
-static void CreateWildMon(u16 species, u8 level)
+void CreateWildMon(u16 species, u8 level)
 {
     bool32 checkCuteCharm;
 
@@ -419,10 +420,36 @@ static void CreateWildMon(u16 species, u8 level)
     CreateMonWithNature(&gEnemyParty[0], species, level, USE_RANDOM_IVS, PickWildMonNature());
 }
 
+
+static u16 getRandomSpecies(u8 minCatchRate, bool8 allowEvolvedForms)
+{
+    u16 species;
+    do
+    {
+        species = Random() % NUM_SPECIES;
+    } while (species == SPECIES_NONE || species == SPECIES_EGG
+            || gSpeciesInfo[species].catchRate < minCatchRate
+            || species == SPECIES_MISSINGNO
+            || (!allowEvolvedForms && GetPreEvolution(species) != SPECIES_NONE));
+    return species;
+}
+
+static u16 getRandomWaterSpecies(u8 minCatchRate, bool8 allowEvolvedForms)
+{
+    u16 species;
+    do
+    {
+        species = getRandomSpecies(minCatchRate,allowEvolvedForms);
+    } while (gSpeciesInfo[species].type1 != TYPE_WATER
+            && gSpeciesInfo[species].type2 != TYPE_WATER);
+    return species;
+}
+
 static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 area, u8 flags)
 {
     u8 wildMonIndex = 0;
     u8 level;
+    u16 species;
 
     switch (area)
     {
@@ -445,34 +472,44 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
         break;
     }
 
+    species = wildMonInfo->wildPokemon[wildMonIndex].species;
     level = ChooseWildMonLevel(&wildMonInfo->wildPokemon[wildMonIndex]);
+    gBattleTypeFlags = 0;  // Needs to be cleared here before the Nuzlocke check in FLAG_NUZLOCKE_RANDOMIZE_FIRST is run
     if (flags & WILD_CHECK_REPEL && !IsWildLevelAllowedByRepel(level))
         return FALSE;
     if (gMapHeader.mapLayoutId != LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS && flags & WILD_CHECK_KEEN_EYE && !IsAbilityAllowingEncounter(level))
         return FALSE;
 
     if (FlagGet(FLAG_KRABBY_WILD)){
-        CreateWildMon(SPECIES_KRABBY, level);
+        species = SPECIES_KRABBY;
     }
     else if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(PACIFIDLOG_TOWN) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(PACIFIDLOG_TOWN)
-    && FlagGet(FLAG_MISSINGNO)){
+    && FlagGet(FLAG_MISSINGNO))
+    {
         GiveItems_Missingno();
-        CreateWildMon(SPECIES_MISSINGNO, level);
+        species = SPECIES_MISSINGNO;
         FlagClear(FLAG_MISSINGNO);  // This is unnecissary, as it gets cleared at the wild encounter, but better to be explicit
     }
-    else{
-        CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
-    }
+    else if (FlagGet(FLAG_NUZLOCKE) && (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD) ||
+            (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST) && HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, FALSE) == FIRST_ENCOUNTER_ON_ROUTE)))
+            species = getRandomSpecies(gSpeciesInfo[SPECIES_BULBASAUR].catchRate + 1, FALSE);
+    CreateWildMon(species, level);
     return TRUE;
 }
 
 static u16 GenerateFishingWildMon(const struct WildPokemonInfo *wildMonInfo, u8 rod)
 {
     u8 wildMonIndex = ChooseWildMonIndex_Fishing(rod);
+    u16 species = wildMonInfo->wildPokemon[wildMonIndex].species;
     u8 level = ChooseWildMonLevel(&wildMonInfo->wildPokemon[wildMonIndex]);
 
-    CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
-    return wildMonInfo->wildPokemon[wildMonIndex].species;
+    if (FlagGet(FLAG_KRABBY_WILD))
+        species = SPECIES_KRABBY;
+    else if (FlagGet(FLAG_NUZLOCKE) && (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD) ||
+            (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST) && HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, FALSE) == 0)))
+        species = getRandomWaterSpecies(gSpeciesInfo[SPECIES_BULBASAUR].catchRate + 1, FALSE);
+    CreateWildMon(species, level);
+    return species;
 }
 
 static bool8 SetUpMassOutbreakEncounter(u8 flags)
@@ -991,3 +1028,25 @@ bool8 StandardWildEncounter_Debug(void)
 
     DoStandardWildBattle_Debug();
 }
+
+u8 ChooseHiddenMonIndex(void)
+{
+    #ifdef ENCOUNTER_CHANCE_HIDDEN_MONS_TOTAL
+        u8 rand = Random() % ENCOUNTER_CHANCE_HIDDEN_MONS_TOTAL;
+
+        if (rand < ENCOUNTER_CHANCE_HIDDEN_MONS_SLOT_0)
+            return 0;
+        else if (rand >= ENCOUNTER_CHANCE_HIDDEN_MONS_SLOT_0 && rand < ENCOUNTER_CHANCE_HIDDEN_MONS_SLOT_1)
+            return 1;
+        else
+            return 2;
+    #else
+        return 0xFF;
+    #endif
+}
+
+bool32 MapHasNoEncounterData(void)
+{
+    return (GetCurrentMapWildMonHeaderId() == HEADER_NONE);
+}
+

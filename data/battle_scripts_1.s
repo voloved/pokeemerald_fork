@@ -235,7 +235,7 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectCamouflage             @ EFFECT_CAMOUFLAGE
 	.4byte BattleScript_EffectOHKO                   @ EFFECT_DEATH_MOVE
 	.4byte BattleScript_EffectChillOWisp             @ EFFECT_CHILL_O_WISP
-	.4byte BattleScript_EffectHit                    @ EFFECT_ACROBATICS
+	.4byte BattleScript_EffectAcrobatics             @ EFFECT_ACROBATICS
 
 BattleScript_EffectHit::
 	jumpifnotmove MOVE_SURF, BattleScript_HitFromAtkCanceler
@@ -792,7 +792,12 @@ BattleScript_EffectRazorWind::
 	jumpifword CMP_COMMON_BITS, gHitMarker, HITMARKER_NO_ATTACKSTRING, BattleScript_TwoTurnMovesSecondTurn
 	setbyte sTWOTURN_STRINGID, B_MSG_TURN1_RAZOR_WIND
 	call BattleScriptFirstChargingTurn
+	jumpifset FLAG_MOVE_SPLIT_USE_ORIGINAL, BattleScript_EffectRazorWind_OriginalSplit
 	setstatchanger STAT_SPATK, 1, FALSE
+	goto BattleScript_EffectRazorWind_Cont
+BattleScript_EffectRazorWind_OriginalSplit::
+	setstatchanger STAT_ATK, 1, FALSE
+BattleScript_EffectRazorWind_Cont::
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_RazorWindEnd
 	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_INCREASE, BattleScript_RazorWindEnd
 	setgraphicalstatchangevalues
@@ -2853,6 +2858,10 @@ BattleScript_DragonDanceTrySpeed::
 	waitmessage B_WAIT_TIME_LONG
 BattleScript_DragonDanceEnd::
 	goto BattleScript_MoveEnd
+
+BattleScript_EffectAcrobatics::
+	helditemtodamagecalculation
+	goto BattleScript_EffectHit
 
 BattleScript_EffectCamouflage::
 	attackcanceler

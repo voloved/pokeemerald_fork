@@ -10,6 +10,7 @@
 #include "battle_setup.h"
 #include "battle_tower.h"
 #include "data.h"
+#include "dexnav.h"
 #include "event_data.h"
 #include "evolution_scene.h"
 #include "field_specials.h"
@@ -62,7 +63,6 @@ static void Task_PlayMapChosenOrBattleBGM(u8 taskId);
 static bool8 ShouldGetStatBadgeBoost(u16 flagId, u8 battlerId);
 static u16 GiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 static bool8 ShouldSkipFriendshipChange(void);
-static u16 GetPreEvolution(u16 species);
 
 EWRAM_DATA static u8 sLearningMoveTableID = 0;
 EWRAM_DATA u8 gPlayerPartyCount = 0;
@@ -2246,18 +2246,16 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     if (hasFixedPersonality)
         personality = fixedPersonality;
     else
-        personality = Random32();
-
-    SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);
+        personality = Random32(&gPCGRng);
 
     // Determine original trainer ID
-    if (otIdType == OT_ID_RANDOM_NO_SHINY)
+    if (otIdType == OT_ID_RANDOM_NO_SHINY) // Pokemon cannot be shiny
     {
         u32 shinyValue;
         do
         {
             // Choose random OT IDs until one that results in a non-shiny Pokémon
-            value = Random32();
+            value = Random32(&gPCGRng);
             shinyValue = GET_SHINY_VALUE(value, personality);
         } while (shinyValue < SHINY_ODDS);
     }
@@ -2267,12 +2265,38 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     }
     else // Player is the OT
     {
+        #ifdef ITEM_SHINY_CHARM
+        u32 shinyRolls = (CheckBagHasItem(ITEM_SHINY_CHARM, 1)) ? 3 : 1;
+        #else
+        u32 shinyRolls = 1;
+        #endif
+        u32 i;
+        
         value = gSaveBlock2Ptr->playerTrainerId[0]
-              | (gSaveBlock2Ptr->playerTrainerId[1] << 8)
-              | (gSaveBlock2Ptr->playerTrainerId[2] << 16)
-              | (gSaveBlock2Ptr->playerTrainerId[3] << 24);
-    }
+                  | (gSaveBlock2Ptr->playerTrainerId[1] << 8)
+                  | (gSaveBlock2Ptr->playerTrainerId[2] << 16)
+                  | (gSaveBlock2Ptr->playerTrainerId[3] << 24);
+                  
+        for (i = 0; i < shinyRolls; i++)
+        {
+            if (Random() < SHINY_ODDS)
+                FlagSet(FLAG_SHINY_CREATION);   // use a flag bc of CreateDexNavWildMon
+        }
 
+        if (FlagGet(FLAG_SHINY_CREATION))
+        {
+            u8 nature = personality % NUM_NATURES;  // keep current nature
+            do {
+                personality = Random32(&gPCGRng);
+                personality = ((((Random() % SHINY_ODDS) ^ (HIHALF(value) ^ LOHALF(value))) ^ LOHALF(personality)) << 16) | LOHALF(personality);
+            } while (nature != GetNatureFromPersonality(personality));
+            
+            // clear the flag after use
+            FlagClear(FLAG_SHINY_CREATION);
+        }
+    }
+    
+    SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);
     SetBoxMonData(boxMon, MON_DATA_OT_ID, &value);
 
     checksum = CalculateBoxMonChecksum(boxMon);
@@ -2343,7 +2367,7 @@ void CreateMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV,
 
     do
     {
-        personality = Random32();
+        personality = Random32(&gPCGRng);
     }
     while (nature != GetNatureFromPersonality(personality));
 
@@ -2360,7 +2384,7 @@ void CreateMonWithGenderNatureLetter(struct Pokemon *mon, u16 species, u8 level,
 
         do
         {
-            personality = Random32();
+            personality = Random32(&gPCGRng);
             actualLetter = GET_UNOWN_LETTER(personality);
         }
         while (nature != GetNatureFromPersonality(personality)
@@ -2371,7 +2395,7 @@ void CreateMonWithGenderNatureLetter(struct Pokemon *mon, u16 species, u8 level,
     {
         do
         {
-            personality = Random32();
+            personality = Random32(&gPCGRng);
         }
         while (nature != GetNatureFromPersonality(personality)
             || gender != GetGenderFromSpeciesAndPersonality(species, personality));
@@ -2388,8 +2412,8 @@ void CreateMaleMon(struct Pokemon *mon, u16 species, u8 level)
 
     do
     {
-        otId = Random32();
-        personality = Random32();
+        otId = Random32(&gPCGRng);
+        personality = Random32(&gPCGRng);
     }
     while (GetGenderFromSpeciesAndPersonality(species, personality) != MON_MALE);
     CreateMon(mon, species, level, USE_RANDOM_IVS, TRUE, personality, OT_ID_PRESET, otId);
@@ -2604,7 +2628,7 @@ void CreateMonWithEVSpreadNatureOTID(struct Pokemon *mon, u16 species, u8 level,
     // i is reused as personality value
     do
     {
-        i = Random32();
+        i = Random32(&gPCGRng);
     } while (nature != GetNatureFromPersonality(i));
 
     CreateMon(mon, species, level, fixedIV, TRUE, i, OT_ID_PRESET, otId);
@@ -2899,28 +2923,18 @@ void CalculateMonStats(struct Pokemon *mon)
     CALC_STAT(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
     CALC_STAT(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
 
-    if (species == SPECIES_SHEDINJA)
-    {
-        if (currentHP != 0 || oldMaxHP == 0)
+    if (currentHP == 0 && oldMaxHP == 0)
+        currentHP = newMaxHP;
+    else if (currentHP != 0) {
+        // BUG: currentHP is unintentionally able to become <= 0 after the instruction below. This causes the pomeg berry glitch.
+        currentHP += newMaxHP - oldMaxHP;
+        #ifdef BUGFIX
+        if (currentHP <= 0)
             currentHP = 1;
-        else
-            return;
+        #endif
     }
     else
-    {
-        if (currentHP == 0 && oldMaxHP == 0)
-            currentHP = newMaxHP;
-        else if (currentHP != 0) {
-            // BUG: currentHP is unintentionally able to become <= 0 after the instruction below. This causes the pomeg berry glitch.
-            currentHP += newMaxHP - oldMaxHP;
-            #ifdef BUGFIX
-            if (currentHP <= 0)
-                currentHP = 1;
-            #endif
-        }
-        else
-            return;
-    }
+        return;
 
     SetMonData(mon, MON_DATA_HP, &currentHP);
 }
@@ -3199,9 +3213,6 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         defenderHoldEffect = ItemId_GetHoldEffect(defender->item);
         defenderHoldEffectParam = ItemId_GetHoldEffectParam(defender->item);
     }
-
-    if (gBattleMoves[gCurrentMove].effect == EFFECT_ACROBATICS && attacker->item == ITEM_NONE)
-        gBattleMovePower *= 2;
 
     if (attacker->ability == ABILITY_HUGE_POWER || attacker->ability == ABILITY_PURE_POWER)
         attack *= 2;
@@ -4558,7 +4569,7 @@ u8 GiveMonToPlayer(struct Pokemon *mon)
         SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
         SetMonData(mon, MON_DATA_OT_ID, gSaveBlock2Ptr->playerTrainerId);
     }
-    else{ // Radomizes the IVs for the stolen Pokemon
+    else{ // Randomizes the IVs for the stolen Pokemon
         u32 iv;
         u16 value = Random();
         iv = value & MAX_IV_MASK;
@@ -5711,13 +5722,13 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem)
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
             case EVO_FRIENDSHIP_DAY:
-                RtcCalcLocalTime();
-                if (gLocalTime.hours >= 12 && gLocalTime.hours < 24 && friendship >= 220)
+                UpdateTimeOfDay();
+                if (gTimeOfDay != TIME_OF_DAY_NIGHT && friendship >= 220)
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
             case EVO_FRIENDSHIP_NIGHT:
-                RtcCalcLocalTime();
-                if (gLocalTime.hours >= 0 && gLocalTime.hours < 12 && friendship >= 220)
+                UpdateTimeOfDay();
+                if (gTimeOfDay == TIME_OF_DAY_NIGHT && friendship >= 220)
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
             case EVO_LEVEL:
@@ -6446,7 +6457,7 @@ u32 CanSpeciesLearnTMHM(u16 species, u8 tm)
     }
 }
 
-static u16 GetPreEvolution(u16 species){
+u16 GetPreEvolution(u16 species){
     int i, j;
 
     if (species == SPECIES_EEVEE)
@@ -6853,7 +6864,8 @@ static s32 GetWildMonTableIdInAlteringCave(u16 species)
 
 void SetWildMonHeldItem(void)
 {
-    if (!(gBattleTypeFlags & (BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_TRAINER | BATTLE_TYPE_PYRAMID | BATTLE_TYPE_PIKE)))
+    if (!(gBattleTypeFlags & (BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_TRAINER | BATTLE_TYPE_PYRAMID | BATTLE_TYPE_PIKE))
+      && !gDexnavBattle)
     {
         u16 rnd = Random() % 100;
         u16 species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, 0);
@@ -7360,4 +7372,14 @@ u8 *MonSpritesGfxManager_GetSpritePtr(u8 managerId, u8 spriteNum)
 
         return gfx->spritePointers[spriteNum];
     }
+}
+
+u8 isTypingPhysical(u8 type)
+{
+    return type < TYPE_MYSTERY;
+}
+
+u8 isTypingSpecial(u8 type)
+{
+    return type > TYPE_MYSTERY;
 }

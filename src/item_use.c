@@ -780,10 +780,24 @@ void ItemUseOutOfBattle_PPUp(u8 taskId)
     SetUpItemUseCallback(taskId);
 }
 
+static void Task_InitRareCandyFromField(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        CleanupOverworldWindowsAndTilemaps();
+        DestroyTask(taskId);
+        FieldUseInfiniteRareCandy();
+    }
+}
+
 void ItemUseOutOfBattle_RareCandy(u8 taskId)
 {
     if (gTasks[taskId].tUsingRegisteredKeyItem)
-        FieldUseInfiniteRareCandy();
+    {
+        gFieldCallback = FieldCB_ReturnToFieldNoScript;
+        FadeScreen(FADE_TO_BLACK, 0);
+        gTasks[taskId].func = Task_InitRareCandyFromField;        
+    }
     else
     {
         gItemUseCB = ItemUseCB_RareCandy;
@@ -996,10 +1010,12 @@ u32 CannotThrowBall(void)
 {
     if ((TX_DEBUG_SYSTEM_ENABLE == TRUE || gShowDebugMenu) && FlagGet(FLAG_SYS_NO_CATCHING))
         return 1;   // Debug setting doesn't allow
-    else if (gNuzlockeCannotCatch == 1)
+    else if (gNuzlockeCannotCatch == ALREADY_SEEN_ON_ROUTE)
         return 2;   // Cannot catch due to Nuzlocke
+    else if (gNuzlockeCannotCatch == CANT_CATCH_YET)
+        return 3;   // Cannot catch yet due to Nuzlocke
     else if (IsPlayerPartyAndPokemonStorageFull() == TRUE)
-        return 3;   // No room for mon
+        return 4;   // No room for mon
     return 0;   // usable 
 }
 
@@ -1029,7 +1045,13 @@ void ItemUseInBattle_PokeBall(u8 taskId)
         else
             DisplayItemMessageInBattlePyramid(taskId, gText_BallsCannotBeUsedNuz, Task_CloseBattlePyramidBagMessage);
         break;
-    case 3: // No room for mon
+    case 3:
+        if (!InBattlePyramid())
+            DisplayItemMessage(taskId, FONT_NORMAL, gText_BallsCannotBeUsedYetNuz, CloseItemMessage);
+        else
+            DisplayItemMessageInBattlePyramid(taskId, gText_BallsCannotBeUsedYetNuz, Task_CloseBattlePyramidBagMessage);
+        break;
+    case 4: // No room for mon
         if (!InBattlePyramid())
             DisplayItemMessage(taskId, FONT_NORMAL, gText_BoxFull, CloseItemMessage);
         else
@@ -1265,7 +1287,7 @@ void ItemUseOutOfBattle_PokeVial(u8 taskId)
     s16 vialUsagesLeft;
     u16 vialUsages = VarGet(VAR_POKEVIAL_USAGES);
     u16 vialUsagesMax = ItemId_GetHoldEffectParam(ITEM_POKEVIAL);
-    if (FlagGet(FLAG_NUZLOCKE)) // Cut usages by half when using Nuzlocke challenge
+    if (FlagGet(FLAG_NUZLOCKE)) // Cut usages by half when using Nuzlocke Challenge
         vialUsagesMax = DIV_ROUND_UP(vialUsagesMax, 2);
     vialUsagesLeft = vialUsagesMax - vialUsages;
     if (vialUsagesLeft < 0)

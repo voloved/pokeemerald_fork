@@ -3405,7 +3405,7 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
 
         do
         {
-            personality = Random32();
+            personality = Random32(&gPCGRng);
             personality = ((((Random() % 8) ^ (HIHALF(otid) ^ LOHALF(otid))) ^ LOHALF(personality)) << 16) | LOHALF(personality);
         } while (nature != GetNatureFromPersonality(personality));
 
@@ -3527,7 +3527,7 @@ static void DebugAction_Fill_PCBoxes_Fast(u8 taskId) //Credit: Sierraffinity
     u32 personality;
     struct BoxPokemon boxMon;
 
-    personality = Random32();
+    personality = Random32(&gPCGRng);
 
     CreateBoxMon(&boxMon,
                  SPECIES_BULBASAUR,
@@ -3559,7 +3559,7 @@ static void DebugAction_Fill_PCBoxes_Slow(u8 taskId)
     struct BoxPokemon boxMon;
     u32 i = 1;
 
-    personality = Random32();
+    personality = Random32(&gPCGRng);
 
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
     {

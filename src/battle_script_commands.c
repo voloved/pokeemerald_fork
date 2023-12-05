@@ -56,6 +56,7 @@
 #include "constants/flags.h"
 #include "constants/battle.h"
 #include "debug.h"
+#include "rumble.h"
 
 extern const u8 *const gBattleScriptsForMoveEffects[];
 
@@ -331,6 +332,7 @@ static void Cmd_finishaction(void);
 static void Cmd_finishturn(void);
 static void Cmd_trainerslideout(void);
 static void Cmd_ballthrowend(void);
+static void Cmd_helditemtodamagecalculation(void);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
 {
@@ -583,7 +585,8 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_finishaction,                            //0xF6
     Cmd_finishturn,                              //0xF7
     Cmd_trainerslideout,                         //0xF8
-    Cmd_ballthrowend                             //0xF9
+    Cmd_ballthrowend,                            //0xF9
+    Cmd_helditemtodamagecalculation              //0xFA
 };
 
 struct StatFractions
@@ -3375,6 +3378,7 @@ static void Cmd_tryfaintmon(void)
                     bool8 dead = TRUE;
                     SetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEAD, &dead);
                 }
+                SetTimedRumble(30);
                 gHitMarker |= HITMARKER_PLAYER_FAINTED;
                 if (gBattleResults.playerFaintCounter < 255)
                     gBattleResults.playerFaintCounter++;
@@ -3634,12 +3638,7 @@ static void Cmd_getexp(void)
     switch (gBattleScripting.getexpState)
     {
     case 0: // check if should receive exp at all
-        if (gUsingThiefBall == THIEF_BALL_CAUGHT)
-        {
-            gUsingThiefBall = THIEF_BALL_NOT_USING;
-            gBattleScripting.getexpState = 6; // goto last case
-        }
-        else if (GetBattlerSide(gBattlerFainted) != B_SIDE_OPPONENT || (gBattleTypeFlags &
+        if (GetBattlerSide(gBattlerFainted) != B_SIDE_OPPONENT || (gBattleTypeFlags &
              (BATTLE_TYPE_LINK
               | BATTLE_TYPE_RECORDED_LINK
               | BATTLE_TYPE_TRAINER_HILL
@@ -3743,7 +3742,8 @@ static void Cmd_getexp(void)
             else
             {
                 // music change in wild battle after fainting a poke
-                if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gBattleMons[0].hp != 0 && !gBattleStruct->wildVictorySong)
+                if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gBattleMons[0].hp != 0 && !gBattleStruct->wildVictorySong
+                && GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL) == ITEM_NONE)
                 {
                     BattleStopLowHpSound();
                     PlayBGM(MUS_VICTORY_WILD);
@@ -5046,6 +5046,7 @@ static void Cmd_switchindataupdate(void)
     gBattleMons[gActiveBattler].type1 = gSpeciesInfo[gBattleMons[gActiveBattler].species].type1;
     gBattleMons[gActiveBattler].type2 = gSpeciesInfo[gBattleMons[gActiveBattler].species].type2;
     gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].abilityNum);
+    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), gBattleMons[gActiveBattler].species, FALSE);
 
     // check knocked off item
     i = GetBattlerSide(gActiveBattler);
@@ -7859,6 +7860,7 @@ static void Cmd_tryKO(void)
 
     // Death Move just hits
     if (gBattleMoves[gCurrentMove].effect == EFFECT_DEATH_MOVE){
+        SetTimedRumble(72);
         gBattleMoveDamage = gBattleMons[gBattlerTarget].hp;
         gMoveResultFlags |= MOVE_RESULT_ONE_HIT_KO;
         gBattlescriptCurrInstr += 5;
@@ -10276,7 +10278,8 @@ static void Cmd_handleballthrow(void)
     }
     if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER &&
     (gUsingThiefBall == THIEF_BALL_NOT_USING || gUsingThiefBall == THIEF_BALL_CANNOT_USE))
-    || (gBattleTypeFlags & BATTLE_TYPE_SAFARI && gNuzlockeCannotCatch)) 
+    || (gBattleTypeFlags & BATTLE_TYPE_SAFARI && 
+    (gNuzlockeCannotCatch == ALREADY_SEEN_ON_ROUTE || gNuzlockeCannotCatch == CANT_CATCH_YET))) 
     {
         BtlController_EmitBallThrowAnim(BUFFER_A, BALL_TRAINER_BLOCK);
         MarkBattlerForControllerExec(gActiveBattler);
@@ -10367,6 +10370,7 @@ static void Cmd_givecaughtmon(void)
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_HP, &gBattleMons[gBattlerTarget].hp);
         gBattlerFainted = gBattlerTarget;
         SetHealthboxSpriteInvisible(gHealthboxSpriteIds[gBattlerTarget]);
+        gUsingThiefBall = THIEF_BALL_NOT_USING;
     }
 
     gBattlescriptCurrInstr++;
@@ -10406,6 +10410,14 @@ static void Cmd_displaydexinfo(void)
         if (!gPaletteFade.active)
         {
             FreeAllWindowBuffers();
+            gBattle_BG0_X = 0;
+            gBattle_BG0_Y = 0;
+            gBattle_BG1_X = 0;
+            gBattle_BG1_Y = 0;
+            gBattle_BG2_X = 0;
+            gBattle_BG2_Y = 0;
+            gBattle_BG3_X = 0;
+            gBattle_BG3_Y = 0;
             gBattleCommunication[TASK_ID] = DisplayCaughtMonDexPage(SpeciesToNationalPokedexNum(species),
                                                                         gBattleMons[gBattlerTarget].otId,
                                                                         gBattleMons[gBattlerTarget].personality);
@@ -10622,12 +10634,12 @@ static void Cmd_trainerslideout(void)
 static void Cmd_ballthrowend(void)
 {
     u8 shakes = gBallShakesBData.shakes;
-    HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), TRUE); // If stealing a Pokemon, count it towards the Nuzlocke
+    u16 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_SPECIES);
+    HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, TRUE); // If stealing a Pokemon, count it towards the Nuzlocke
     if (shakes == BALL_3_SHAKES_SUCCESS) // mon caught, copy of the code above
     {
-        if (gUsingThiefBall == THIEF_BALL_CATCHING){
+        if (gUsingThiefBall == THIEF_BALL_CATCHING)
             gUsingThiefBall = THIEF_BALL_CAUGHT;
-        }
         gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
 
@@ -10645,6 +10657,15 @@ static void Cmd_ballthrowend(void)
     gBallShakesBData.odds = 0;
     gBallShakesBData.ballShakesArray = 0;
     gBallShakesBData.shakes = 0;
+}
+
+static void Cmd_helditemtodamagecalculation(void)
+{
+    gDynamicBasePower = gBattleMoves[gCurrentMove].power;
+    if (gBattleMons[gBattlerAttacker].item == ITEM_NONE)
+        gDynamicBasePower *= 2;
+
+    gBattlescriptCurrInstr++;
 }
 
 bool8 CalcNextShakeFromOdds(u32 odds)

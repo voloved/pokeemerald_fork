@@ -21,6 +21,7 @@
 #include "task.h"
 #include "tv.h"
 #include "wild_encounter.h"
+#include "rumble.h"
 #include "constants/abilities.h"
 #include "constants/event_objects.h"
 #include "constants/event_object_movement.h"
@@ -146,6 +147,7 @@ static u8 TrySpinPlayerForWarp(struct ObjectEvent *, s16 *);
 static u8 GetGrindRunDirection(u8 direction);
 static u8 CheckForCollision(s16 x, s16 y, u8 direction);
 static u8 CheckDiagonalFreeSpaceLength(s16 x, s16 y, u8 sideDirection, u8 forwardDirection);
+static void PlayerGoSlow(u8 direction);
 
 static bool8 (*const sForcedMovementTestFuncs[NUM_FORCED_MOVEMENTS])(u8) =
 {
@@ -674,14 +676,22 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
             return;
         }
     }
-
+    
+    gPlayerAvatar.creeping = FALSE;
     if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_UNDERWATER))
     {
-        if ((heldKeys & B_BUTTON))
-            PlayerWalkFaster(direction);
+        if (FlagGet(FLAG_SYS_DEXNAV_SEARCH) && (heldKeys & A_BUTTON))
+        {
+            gPlayerAvatar.creeping = TRUE;
+            PlayerGoSlow(direction);
+        }
         else
-        // same speed as running
-            PlayerWalkFast(direction);
+        {
+            if ((heldKeys & B_BUTTON))
+                PlayerWalkFaster(direction);
+            else
+                PlayerWalkFast(direction);
+        }
         return;
     }
 
@@ -718,6 +728,11 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
         PlayerRun(direction);
         gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_DASH;
         return;
+    }
+    else if (FlagGet(FLAG_SYS_DEXNAV_SEARCH) && (heldKeys & A_BUTTON))
+    {
+        gPlayerAvatar.creeping = TRUE;
+        PlayerGoSlow(direction);
     }
     else
     {
@@ -1008,12 +1023,12 @@ static bool8 PlayerCheckIfAnimFinishedOrInactive(void)
 
 static void PlayerSetCopyableMovement(u8 movement)
 {
-    gObjectEvents[gPlayerAvatar.objectEventId].extra.playerCopyableMovement = movement;
+    gObjectEvents[gPlayerAvatar.objectEventId].playerCopyableMovement = movement;
 }
 
 u8 PlayerGetCopyableMovement(void)
 {
-    return gObjectEvents[gPlayerAvatar.objectEventId].extra.playerCopyableMovement;
+    return gObjectEvents[gPlayerAvatar.objectEventId].playerCopyableMovement;
 }
 
 static void PlayerForceSetHeldMovement(u8 movementActionId)
@@ -1028,6 +1043,12 @@ void PlayerSetAnimId(u8 movementActionId, u8 copyableMovement)
         PlayerSetCopyableMovement(copyableMovement);
         ObjectEventSetHeldMovement(&gObjectEvents[gPlayerAvatar.objectEventId], movementActionId);
     }
+}
+
+// slow
+static void PlayerGoSlow(u8 direction)
+{
+    PlayerSetAnimId(GetWalkSlowMovementAction(direction), 2);
 }
 
 void PlayerWalkNormal(u8 direction)
@@ -1301,50 +1322,32 @@ void StopPlayerAvatar(void)
     }
 }
 
-u8 GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
+u16 GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
 {
     return sRivalAvatarGfxIds[state][gender];
 }
 
-u8 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
+u16 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
 {
     return sPlayerAvatarGfxIds[state][gender];
 }
 
-u8 GetFRLGAvatarGraphicsIdByGender(u8 gender)
+u16 GetFRLGAvatarGraphicsIdByGender(u8 gender)
 {
     return sFRLGAvatarGfxIds[gender];
 }
 
-u8 GetRSAvatarGraphicsIdByGender(u8 gender)
+u16 GetRSAvatarGraphicsIdByGender(u8 gender)
 {
     return sRSAvatarGfxIds[gender];
 }
 
-u8 GetPlayerAvatarGraphicsIdByStateId(u8 state)
+u16 GetPlayerAvatarGraphicsIdByStateId(u8 state)
 {
     return GetPlayerAvatarGraphicsIdByStateIdAndGender(state, gPlayerAvatar.gender);
 }
 
-u8 unref_GetRivalAvatarGenderByGraphicsId(u8 gfxId)
-{
-    switch (gfxId)
-    {
-    case OBJ_EVENT_GFX_RIVAL_MAY_NORMAL:
-    case OBJ_EVENT_GFX_RIVAL_MAY_MACH_BIKE:
-    case OBJ_EVENT_GFX_RIVAL_MAY_ACRO_BIKE:
-    case OBJ_EVENT_GFX_RIVAL_MAY_SURFING:
-    case OBJ_EVENT_GFX_RIVAL_MAY_FIELD_MOVE:
-    case OBJ_EVENT_GFX_MAY_UNDERWATER:
-    case OBJ_EVENT_GFX_MAY_FISHING:
-    case OBJ_EVENT_GFX_MAY_WATERING:
-        return FEMALE;
-    default:
-        return MALE;
-    }
-}
-
-u8 GetPlayerAvatarGenderByGraphicsId(u8 gfxId)
+u16 GetPlayerAvatarGenderByGraphicsId(u16 gfxId)
 {
     switch (gfxId)
     {
@@ -1414,7 +1417,7 @@ void SetPlayerAvatarStateMask(u8 flags)
     gPlayerAvatar.flags |= flags;
 }
 
-static u8 GetPlayerAvatarStateTransitionByGraphicsId(u8 graphicsId, u8 gender)
+static u8 GetPlayerAvatarStateTransitionByGraphicsId(u16 graphicsId, u8 gender)
 {
     u8 i;
 
@@ -1426,7 +1429,7 @@ static u8 GetPlayerAvatarStateTransitionByGraphicsId(u8 graphicsId, u8 gender)
     return PLAYER_AVATAR_FLAG_ON_FOOT;
 }
 
-u8 GetPlayerAvatarGraphicsIdByCurrentState(void)
+u16 GetPlayerAvatarGraphicsIdByCurrentState(void)
 {
     u8 i;
     u8 flags = gPlayerAvatar.flags;
@@ -1439,7 +1442,7 @@ u8 GetPlayerAvatarGraphicsIdByCurrentState(void)
     return 0;
 }
 
-void SetPlayerAvatarExtraStateTransition(u8 graphicsId, u8 transitionFlag)
+void SetPlayerAvatarExtraStateTransition(u16 graphicsId, u8 transitionFlag)
 {
     u8 stateFlag = GetPlayerAvatarStateTransitionByGraphicsId(graphicsId, gPlayerAvatar.gender);
 
@@ -1585,6 +1588,7 @@ static bool8 PushBoulder_Move(struct Task *task, struct ObjectEvent *player, str
         gFieldEffectArguments[3] = gSprites[boulder->spriteId].oam.priority;
         FieldEffectStart(FLDEFF_DUST);
         PlaySE(SE_M_STRENGTH);
+        RumbleStartForSfx();
         task->tState++;
     }
     return FALSE;
@@ -1662,6 +1666,7 @@ static bool8 PlayerAvatar_SecretBaseMatSpinStep0(struct Task *task, struct Objec
     gPlayerAvatar.preventStep = TRUE;
     LockPlayerFieldControls();
     PlaySE(SE_WARP_IN);
+    RumbleStartForSfx();
     return TRUE;
 }
 

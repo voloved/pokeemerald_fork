@@ -1228,7 +1228,7 @@
 #define FLAG_ALLOW_RUNNING_TOGGLE                                   0x49B
 #define FLAG_GRINDRUN                                               0x49C
 #define FLAG_NO_LOW_HEALTH_BEEP                                     0x49D
-#define FLAG_NUZLOCKE_NO_DUPES_CLAUSE                               0x49E
+#define FLAG_NUZLOCKE_DUPES_CLAUSE                                  0x49E
 #define FLAG_KRABBY_WILD                                            0x49F
 #define FLAG_KRABBY_TRAINER                                         0x4A0
 #define FLAG_KRABBY_EVO                                             0x4A1
@@ -1250,9 +1250,9 @@
 #define FLAG_USE_FROSTBITE                                          0x4B1
 #define FLAG_MID_BATTLE_EVOLUTION                                   0x4B2
 #define FLAG_GOT_MINT_FROM_JAIME                                    0x4B3
-#define FLAG_UNUSED_0x4B4                                           0x4B4 // Unused Flag
-#define FLAG_UNUSED_0x4B5                                           0x4B5 // Unused Flag
-#define FLAG_UNUSED_0x4B6                                           0x4B6 // Unused Flag
+#define FLAG_SHOW_DAY_NIGHT                                         0x4B4
+#define FLAG_NUZLOCKE_RANDOMIZE_WILD                                0x4B5
+#define FLAG_NUZLOCKE_RANDOMIZE_FIRST                               0x4B6
 #define FLAG_UNUSED_0x4B7                                           0x4B7 // Unused Flag
 #define FLAG_UNUSED_0x4B8                                           0x4B8 // Unused Flag
 #define FLAG_UNUSED_0x4B9                                           0x4B9 // Unused Flag
@@ -1383,8 +1383,8 @@
 #define FLAG_NURSE_UNION_ROOM_REMINDER              (SYSTEM_FLAGS + 0x20)
 
 #define FLAG_RECEIVED_EON_FLUTE                     (SYSTEM_FLAGS + 0x21)
-#define FLAG_UNUSED_0x882                           (SYSTEM_FLAGS + 0x22) // Unused Flag
-#define FLAG_UNUSED_0x883                           (SYSTEM_FLAGS + 0x23) // Unused Flag
+#define FLAG_SYS_DEXNAV_SEARCH                      (SYSTEM_FLAGS + 0x22)
+#define FLAG_SHINY_CREATION                         (SYSTEM_FLAGS + 0x23)
 #define FLAG_UNUSED_0x884                           (SYSTEM_FLAGS + 0x24) // Unused Flag
 #define FLAG_UNUSED_0x885                           (SYSTEM_FLAGS + 0x25) // Unused Flag
 #define FLAG_UNUSED_0x886                           (SYSTEM_FLAGS + 0x26) // Unused Flag
@@ -1397,7 +1397,7 @@
 #define FLAG_SYS_SAFARI_MODE                        (SYSTEM_FLAGS + 0x2C)
 #define FLAG_SYS_CRUISE_MODE                        (SYSTEM_FLAGS + 0x2D)
 
-#define FLAG_UNUSED_0x88E                           (SYSTEM_FLAGS + 0x2E) // Unused Flag
+#define FLAG_SYS_DETECTOR_MODE                      (SYSTEM_FLAGS + 0x2E) // allow player to find hidden mons
 #define FLAG_UNUSED_0x88F                           (SYSTEM_FLAGS + 0x2F) // Unused Flag
 
 #define FLAG_SYS_TV_HOME                            (SYSTEM_FLAGS + 0x30)

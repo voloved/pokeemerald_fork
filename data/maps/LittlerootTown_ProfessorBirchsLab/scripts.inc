@@ -700,8 +700,9 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_FrostBite
 	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvo
 	case 8, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu
-	case 9, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
-	case 10, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case 9, LittlerootTown_ProfessorBirchsLab_EventScript_DayNight
+	case 10, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	case 11, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
 	return
@@ -731,9 +732,12 @@ EventScript_Multichoice_BirchPCOptions_19:
 EventScript_Multichoice_BirchPCOptions_15:
 	goto_if_set FLAG_RELEARN_IN_PARTY_MENU, EventScript_Multichoice_BirchPCOptions_16
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_14, 8
+EventScript_Multichoice_BirchPCOptions_25:
+	goto_if_set FLAG_SHOW_DAY_NIGHT, EventScript_Multichoice_BirchPCOptions_24
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_20, 9
 EventScript_Multichoice_BirchPCOptions_13:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 9
-	dynmultipush EventScript_Multichoice_Exit, 10
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 10
+	dynmultipush EventScript_Multichoice_Exit, 11
 	dynmultistack 0, 0, TRUE, 9, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	return
 
@@ -767,6 +771,10 @@ EventScript_Multichoice_BirchPCOptions_20: @ Mid-Battle Evolutions
 
 EventScript_Multichoice_BirchPCOptions_16: @ Relearn Move in Party Menu
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_13, 8
+	goto EventScript_Multichoice_BirchPCOptions_25
+
+EventScript_Multichoice_BirchPCOptions_24: @ Day Night
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_19, 9
 	goto EventScript_Multichoice_BirchPCOptions_13
 
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
@@ -942,24 +950,46 @@ LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenuNo::
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
+LittlerootTown_ProfessorBirchsLab_EventScript_DayNight::
+	message LittlerootTown_ProfessorBirchsLab_Text_DayNight
+	goto_if_set FLAG_SHOW_DAY_NIGHT, LittlerootTown_ProfessorBirchsLab_EventScript_DayNight_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_DayNight_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_DayNight_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_DayNight_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_DayNightNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	setflag FLAG_SHOW_DAY_NIGHT
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_DayNightYes, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_DayNightNo::
+	clearflag FLAG_SHOW_DAY_NIGHT
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_DayNightNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
 LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu::
 	waitmessage
 	message LittlerootTown_ProfessorBirchsLab_Text_NuzlockeOptions
 	call EventScript_Multichoice_NuzlockeMenu
 	switch VAR_RESULT
-	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_DupesClause
 	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_ShiftDisallow
 	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_NoOverlevel
 	case 3, LittlerootTown_ProfessorBirchsLab_EventScript_NoBattleItems
 	case 4, LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffect
-	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
+	case 5, LittlerootTown_ProfessorBirchsLab_EventScript_Randomize
+	case 6, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_MenuEnd:
 	closemessage
 	end
 
 EventScript_Multichoice_NuzlockeMenu::
-	goto_if_set FLAG_NUZLOCKE_NO_DUPES_CLAUSE, EventScript_Multichoice_NuzlockeMenu_2
+	goto_if_set FLAG_NUZLOCKE_DUPES_CLAUSE, EventScript_Multichoice_NuzlockeMenu_2
 	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_1, 0
 EventScript_Multichoice_NuzlockeMenu_1:
 	goto_if_set FLAG_NUZLOCKE_BATTLE_SET, EventScript_Multichoice_NuzlockeMenu_6
@@ -974,8 +1004,9 @@ EventScript_Multichoice_NuzlockeMenu_13:
 	goto_if_set FLAG_NUZLOCKE_NO_HELD_ITEMS, EventScript_Multichoice_NuzlockeMenu_18
 	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_9, 4
 EventScript_Multichoice_NuzlockeMenu_17:
-	dynmultipush EventScript_Multichoice_Exit, 5
-	dynmultistack 0, 0, TRUE, 8, FALSE, 0, DYN_MULTICHOICE_CB_NONE
+	dynmultipush EventScript_Multichoice_NuzlockeMenu_Text_Randomize, 5
+	dynmultipush EventScript_Multichoice_Exit, 6
+	dynmultistack 0, 0, TRUE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	return
 
 EventScript_Multichoice_NuzlockeMenu_2:
@@ -1119,26 +1150,69 @@ LittlerootTown_ProfessorBirchsLab_EventScript_NoHeldItemEffectNo::
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
 	end
 
-LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause::
-	message LittlerootTown_ProfessorBirchsLab_Text_NoDupesClause
-	goto_if_set FLAG_NUZLOCKE_NO_DUPES_CLAUSE, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Set
+LittlerootTown_ProfessorBirchsLab_EventScript_Randomize::
+	message LittlerootTown_ProfessorBirchsLab_Text_Randomize
+	goto_if_set FLAG_NUZLOCKE_RANDOMIZE_WILD, LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeWild
+	goto_if_set FLAG_NUZLOCKE_RANDOMIZE_FIRST, LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeFirstDupes
+	multichoicedefault 26, 2, MULTI_TAG_NUZLOCKE_RANDOM, 0, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeWild:
+	multichoicedefault 26, 2, MULTI_TAG_NUZLOCKE_RANDOM, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeSelect
+LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeFirstDupes:
+	multichoicedefault 26, 2, MULTI_TAG_NUZLOCKE_RANDOM, 2, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeSelect:
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedNoRandoms
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedRandomizeWild
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedFirstDupes
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedNoRandoms:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RandomizeNone, MSGBOX_DEFAULT
+	clearflag FLAG_NUZLOCKE_RANDOMIZE_WILD
+	clearflag FLAG_NUZLOCKE_RANDOMIZE_FIRST
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedRandomizeWild:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RandomizeWild, MSGBOX_DEFAULT
+	setflag FLAG_NUZLOCKE_RANDOMIZE_WILD
+	clearflag FLAG_NUZLOCKE_RANDOMIZE_FIRST
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedFirstDupes:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RandomizeDupes, MSGBOX_DEFAULT
+	clearflag FLAG_NUZLOCKE_RANDOMIZE_WILD
+	setflag FLAG_NUZLOCKE_RANDOMIZE_FIRST
+	closemessage
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_DupesClause::
+	message LittlerootTown_ProfessorBirchsLab_Text_DupesClause
+	goto_if_set FLAG_NUZLOCKE_DUPES_CLAUSE, LittlerootTown_ProfessorBirchsLab_EventScript_DupesClause_Set
 	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
-	goto LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Cont
-LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Set:
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_DupesClause_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_DupesClause_Set:
 	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
-LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClause_Cont:
-	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClauseNo
+LittlerootTown_ProfessorBirchsLab_EventScript_DupesClause_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_DupesClauseNo
 	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_Nuzlocke_Menu
-	setflag FLAG_NUZLOCKE_NO_DUPES_CLAUSE
-	message LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseYes
+	setflag FLAG_NUZLOCKE_DUPES_CLAUSE
+	message LittlerootTown_ProfessorBirchsLab_Text_DupesClauseYes
 	waitmessage
 	waitbuttonpress
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
 	end
 
-LittlerootTown_ProfessorBirchsLab_EventScript_NoDupesClauseNo::
-	clearflag FLAG_NUZLOCKE_NO_DUPES_CLAUSE
-	message LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseNo
+LittlerootTown_ProfessorBirchsLab_EventScript_DupesClauseNo::
+	clearflag FLAG_NUZLOCKE_DUPES_CLAUSE
+	message LittlerootTown_ProfessorBirchsLab_Text_DupesClauseNo
 	waitmessage
 	waitbuttonpress
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_Nuzlocke_Menu
@@ -1397,14 +1471,20 @@ EventScript_Multichoice_BirchPCOptions_Text_17:
 EventScript_Multichoice_BirchPCOptions_Text_18:
 	.string "{COLOR RED}MID-BATTLE EVOLUTION$"
 
+EventScript_Multichoice_BirchPCOptions_Text_19:
+	.string "{COLOR GREEN}SHOW DAY/NIGHT$"
+
+EventScript_Multichoice_BirchPCOptions_Text_20:
+	.string "{COLOR RED}SHOW DAY/NIGHT$"
+
 EventScript_Multichoice_Exit:
 	.string "EXIT$"
 
 EventScript_Multichoice_NuzlockeMenu_Text_0:
-	.string "{COLOR GREEN}TURN OFF DUPES CLAUSE$"
+	.string "{COLOR GREEN}DUPES CLAUSE$"
 
 EventScript_Multichoice_NuzlockeMenu_Text_1:
-	.string "{COLOR RED}TURN OFF DUPES CLAUSE$"
+	.string "{COLOR RED}DUPES CLAUSE$"
 
 EventScript_Multichoice_NuzlockeMenu_Text_2:
 	.string "{COLOR GREEN}DISALLOW SHIFT MODE$"
@@ -1429,6 +1509,9 @@ EventScript_Multichoice_NuzlockeMenu_Text_8:
 
 EventScript_Multichoice_NuzlockeMenu_Text_9:
 	.string "{COLOR RED}IGNORE HELD ITEMS$"
+
+EventScript_Multichoice_NuzlockeMenu_Text_Randomize:
+	.string "RANDOMIZE ENCOUNTERS$"
 
 EventScript_Multichoice_Carcinisation_Text_0:
 	.string "ALL KRABBY$"
@@ -1618,15 +1701,27 @@ LittlerootTown_ProfessorBirchsLab_Text_MidBattleEvoNo:
 	.string "POKéMON not will evolve\n"
 	.string "during a battle.$"
 
-LittlerootTown_ProfessorBirchsLab_Text_NoDupesClause:
-	.string "Would you like to not use the dupes\n"
-	.string "not in your Nuzlocke challenge?$"
+LittlerootTown_ProfessorBirchsLab_Text_DayNight:
+	.string "Show the Day/Night\n"
+	.string "Cycle?$"
 
-LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseYes:
+LittlerootTown_ProfessorBirchsLab_Text_DayNightYes:
+	.string "The graphics will show\n"
+	.string "day and night.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_DayNightNo:
+	.string "The graphics will show\n"
+	.string "only daytime.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_DupesClause:
+	.string "Would you like to use the dupes\n"
+	.string "in your Nuzlocke Challenge?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_DupesClauseNo:
 	.string "You will not use the\n"
 	.string "dupes clause.$"
 
-LittlerootTown_ProfessorBirchsLab_Text_NoDupesClauseNo:
+LittlerootTown_ProfessorBirchsLab_Text_DupesClauseYes:
 	.string "You will use the\n"
 	.string "dupes clause.$"
 
@@ -1657,6 +1752,22 @@ LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectYes:
 LittlerootTown_ProfessorBirchsLab_Text_NoHeldItemEffectNo:
 	.string "Your held items\n"
 	.string "will still work.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_Randomize:
+	.string "How would you like to randomize\n"
+	.string "wild encounters?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RandomizeNone:
+	.string "No encounters will\n"
+	.string "be randomized.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RandomizeWild:
+	.string "All wild encounters will\n"
+	.string "be randomized.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RandomizeDupes:
+	.string "Wild encounters catchable by dupes\n"
+	.string "clause will be randomized.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_NoBattleItems:
 	.string "Disallow using items\n"

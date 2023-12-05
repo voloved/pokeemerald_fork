@@ -1257,6 +1257,10 @@
 	.byte 0xf9
 	.endm
 
+	.macro helditemtodamagecalculation
+	.byte 0xfa
+	.endm
+
 @ various command changed to more readable macros
 	.macro cancelmultiturnmoves battler:req
 	various \battler, VARIOUS_CANCEL_MULTI_TURN_MOVES

@@ -720,7 +720,7 @@ LilycoveCity_Harbor_Text_OldTruck:
 
 LilycoveCity_Harbor_Text_NuzlockeRun::
 	.string "Congrats on not failing the\n"
-	.string "Nuzlocke challenge so far!$"
+	.string "Nuzlocke Challenge so far!$"
 
 LilycoveCity_Harbor_Text_MysteryGiftOldSeaMapUseAtPort::
 	.string "It appears to be for use at the\n"

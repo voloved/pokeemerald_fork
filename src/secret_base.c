@@ -3,6 +3,7 @@
 #include "battle.h"
 #include "battle_setup.h"
 #include "decoration.h"
+#include "decoration_inventory.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "event_scripts.h"
@@ -159,7 +160,7 @@ static const struct YesNoFuncTable sDeleteRegistryYesNoFuncs =
     .noFunc = DeleteRegistry_No,
 };
 
-static const u8 sSecretBaseOwnerGfxIds[10] =
+static const u16 sSecretBaseOwnerGfxIds[10] =
 {
     // Male
     OBJ_EVENT_GFX_YOUNGSTER,
@@ -391,6 +392,20 @@ void SetPlayerSecretBase(void)
     gSaveBlock1Ptr->secretBases[baseNumber].language = GAME_LANGUAGE;
     VarSet(VAR_LAST_MADE_SECRET_BASE, baseNumber);
     VarSet(VAR_SECRET_BASE_MAP, gMapHeader.regionMapSectionId);
+}
+
+void SetPlayerSecretBaseAtId(u8 id)
+{
+    sCurSecretBaseId = id;
+    SetPlayerSecretBase();
+}
+
+void addDecorationToBaseStart(u8 id, u8 decor, u8 pos)
+{
+    u16 currSecretBaseIdx = GetSecretBaseIndexFromId(sCurSecretBaseId);
+    DecorationAdd(decor);
+    gSaveBlock1Ptr->secretBases[currSecretBaseIdx].decorations[0] = decor;
+    gSaveBlock1Ptr->secretBases[currSecretBaseIdx].decorationPositions[0] = pos;
 }
 
 // Set the 'open' entrance metatile for any occupied secret base on this map

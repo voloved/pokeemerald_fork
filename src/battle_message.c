@@ -80,8 +80,8 @@ static const u8 sText_TargetFainted[] = _("{B_DEF_NAME_WITH_PREFIX}\nfainted!\p"
 static const u8 sText_PlayerGotMoney[] = _("{B_PLAYER_NAME} got ¥{B_BUFF1}\nfor winning!\p");
 static const u8 sText_PlayerWhiteout[] = _("{B_PLAYER_NAME} is out of\nusable POKéMON!\p");
 static const u8 sText_PlayerWhiteout2[] = _("{B_PLAYER_NAME} panicked and lost ¥{B_BUFF1}…\p{B_PLAYER_NAME} whited out!{PAUSE_UNTIL_PRESS}");
-static const u8 sText_PlayerFailedNuzlocke[] = _("{B_PLAYER_NAME} failed the\nNuzlocke challenge.\pThe Nuzlocke setting\nhas been turned off.\p");
-static const u8 sText_PlayerDuplicateMon[] = _("Since this type has already been\ncaught, it will not count towards\pthe Nuzlocke challenge.\p");
+static const u8 sText_PlayerFailedNuzlocke[] = _("{B_PLAYER_NAME} failed the\nNuzlocke Challenge.\pThe Nuzlocke setting\nhas been turned off.\p");
+static const u8 sText_PlayerDuplicateMon[] = _("Since this type has already been\ncaught, it will not count towards\pthe Nuzlocke Challenge.\p");
 static const u8 sText_PreventsEscape[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} prevents\nescape with {B_SCR_ACTIVE_ABILITY}!\p");
 static const u8 sText_CantEscape2[] = _("Can't escape!\p");
 static const u8 sText_AttackerCantEscape[] = _("{B_ATK_NAME_WITH_PREFIX} can't escape!");
@@ -341,7 +341,7 @@ static const u8 sText_PlayerBattledToDrawVsTwo[] = _("Player battled to a draw a
 static const u8 sText_WildFled[] = _("{PLAY_SE SE_FLEE}{B_LINK_OPPONENT1_NAME} fled!");
 static const u8 sText_TwoWildFled[] = _("{PLAY_SE SE_FLEE}{B_LINK_OPPONENT1_NAME} and\n{B_LINK_OPPONENT2_NAME} fled!");
 static const u8 sText_NoRunningFromTrainers[] = _("There's no running from\nthis TRAINER battle!\p");
-static const u8 sText_NoRunningNuzlocke[] = _("There's no running from TRAINER\nbattles during a Nuzlocke challenge!\p");
+static const u8 sText_NoRunningNuzlocke[] = _("There's no running from TRAINER\nbattles during a Nuzlocke Challenge!\p");
 static const u8 sText_CantEscape[] = _("Can't escape!\p");
 static const u8 sText_DontLeaveBirch[] = _("PROF. BIRCH: Don't leave me like this!\p");
 static const u8 sText_ButNothingHappened[] = _("But nothing happened!");
@@ -480,7 +480,7 @@ static const u8 sText_TrainerBlockedBall[] = _("The TRAINER blocked the BALL!");
 static const u8 sText_DontBeAThief[] = _("Don't be a thief!");
 static const u8 sText_CantWithThief[] = _("Thief balls don't work in\nthis kind of battle!");
 static const u8 sText_TooManyWitnesses[] = _("There's too many\nwitnesses...");
-static const u8 sText_CantWithNuzlocke[] = _("You already saw a POKéMON here\nand are in the Nuzlocke challenge!");
+static const u8 sText_CantWithNuzlocke[] = _("You already saw a POKéMON here\nand are in the Nuzlocke Challenge!");
 static const u8 sText_ItDodgedBall[] = _("It dodged the thrown BALL!\nThis POKéMON can't be caught!");
 static const u8 sText_YouMissedPkmn[] = _("You missed the POKéMON!");
 static const u8 sText_PkmnBrokeFree[] = _("Oh, no!\nThe POKéMON broke free!");
@@ -1326,6 +1326,10 @@ const u8 gText_BattleMenu[] = _("FIGHT{CLEAR_TO 56}BAG\nPOKéMON{CLEAR_TO 56}RUN
 const u8 gText_SafariZoneMenu[] = _("BALL{CLEAR_TO 56}{POKEBLOCK}\nGO NEAR{CLEAR_TO 56}RUN");
 const u8 gText_MoveInterfacePP[] = _("PP ");
 const u8 gText_MoveInterfaceType[] = _("TYPE/");
+const u8 gText_MoveInterfaceSTAB[] = _("+");
+const u8 gText_MoveInterfaceSupEff[] = _("{UP_ARROW}");
+const u8 gText_MoveInterfaceNotEff[] = _("{DOWN_ARROW}");
+const u8 gText_MoveInterfaceNoEff[] = _("-");
 const u8 gText_MoveInterfacePpType[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}PP\nTYPE/");
 const u8 gText_MoveInterfaceDynamicColors[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}");
 const u8 gText_WhichMoveToForget4[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}Which move should\nbe forgotten?");
@@ -1818,7 +1822,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_TYPE_SUPER_EFF] = { // 24 "type" super-effective
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NARROW,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1830,7 +1834,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_TYPE_NOT_VERY_EFF] = { // 25 "type" not very effective
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NARROW,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1842,7 +1846,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_TYPE_NO_EFF] = { // 26 "type" no effect
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NARROW,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1851,6 +1855,18 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
         .fgColor = 7,
         .bgColor = 14,
         .shadowColor = 15,
+    },
+    [B_WIN_MOVE_STAB] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .letterSpacing = 0,
+        .lineSpacing = 0,
+        .speed = 0,
+        .fgColor = TEXT_DYNAMIC_COLOR_3,
+        .bgColor = TEXT_DYNAMIC_COLOR_5,
+        .shadowColor = TEXT_DYNAMIC_COLOR_2,
     },
     [B_WIN_MOVE_DESCRIPTION] = {
         .fillValue = PIXEL_FILL(0xE),
@@ -2146,7 +2162,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_TYPE_SUPER_EFF] = { // 24 "type" super-effective
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -2158,7 +2174,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_TYPE_NOT_VERY_EFF] = { // 25 "type" not very effective
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -2170,7 +2186,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_TYPE_NO_EFF] = { // 26 "type" no effect
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -2179,6 +2195,18 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
         .fgColor = 7,
         .bgColor = 14,
         .shadowColor = 15,
+    },
+    [B_WIN_MOVE_STAB] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .letterSpacing = 0,
+        .lineSpacing = 0,
+        .speed = 0,
+        .fgColor = TEXT_DYNAMIC_COLOR_3,
+        .bgColor = TEXT_DYNAMIC_COLOR_5,
+        .shadowColor = TEXT_DYNAMIC_COLOR_2,
     },
     [B_WIN_MOVE_DESCRIPTION] = {
         .fillValue = PIXEL_FILL(0xE),
@@ -2365,7 +2393,6 @@ void BufferStringBattle(u16 stringID)
         }
         else
         {
-            gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), FALSE);
             if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
             {
                 if (gBattleTypeFlags & BATTLE_TYPE_TOWER_LINK_MULTI)

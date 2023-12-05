@@ -1256,11 +1256,11 @@ void SetEReaderTrainerGfxId(void)
     SetBattleFacilityTrainerGfxId(TRAINER_EREADER, 0);
 }
 
-u8 GetBattleFacilityTrainerGfxId(u16 trainerId)
+u16 GetBattleFacilityTrainerGfxId(u16 trainerId)
 {
     u32 i;
     u8 facilityClass;
-    u8 trainerObjectGfxId;
+    u16 trainerObjectGfxId;
 
     SetFacilityPtrsGetLevel();
     if (trainerId == TRAINER_EREADER)
@@ -1687,7 +1687,7 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
     for (bfMonCount = 0; monSet[bfMonCount] != 0xFFFF; bfMonCount++)
         ;
     i = 0;
-    otID = Random32();
+    otID = Random32(&gPCGRng);
     while (i != monCount)
     {
         u16 monId = monSet[Random() % bfMonCount];
@@ -2971,7 +2971,7 @@ static void FillPartnerParty(u16 trainerId)
         {
             do
             {
-                j = Random32();
+                j = Random32(&gPCGRng);
             } while (IsShinyOtIdPersonality(STEVEN_OTID, j) || sStevenMons[i].nature != GetNatureFromPersonality(j));
             CreateMon(&gPlayerParty[MULTI_PARTY_SIZE + i],
                       sStevenMons[i].species,
@@ -3003,7 +3003,7 @@ static void FillPartnerParty(u16 trainerId)
     {
         level = SetFacilityPtrsGetLevel();
         ivs = GetFrontierTrainerFixedIvs(trainerId);
-        otID = Random32();
+        otID = Random32(&gPCGRng);
         for (i = 0; i < FRONTIER_MULTI_PARTY_SIZE; i++)
         {
             monId = gSaveBlock2Ptr->frontier.trainerIds[i + 18];
@@ -3403,7 +3403,7 @@ static void FillTentTrainerParty_(u16 trainerId, u8 firstMonId, u8 monCount)
     }
 
     i = 0;
-    otID = Random32();
+    otID = Random32(&gPCGRng);
     while (i != monCount)
     {
         u16 monId = monSet[Random() % bfMonCount];
@@ -3466,7 +3466,7 @@ static void FillTentTrainerParty_(u16 trainerId, u8 firstMonId, u8 monCount)
     }
 }
 
-u8 FacilityClassToGraphicsId(u8 facilityClass)
+u16 FacilityClassToGraphicsId(u8 facilityClass)
 {
     u8 trainerObjectGfxId;
     u8 i;

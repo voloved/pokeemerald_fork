@@ -720,12 +720,12 @@ Common_EventScript_PlayGymBadgeFanfare::
 	return
 
 Common_EventScript_OutOfCenterPartyHeal::
-	fadescreen FADE_TO_BLACK
+	fadescreenswapbuffers FADE_TO_BLACK
 	playfanfare MUS_HEAL
 	waitfanfare
 	special HealPlayerParty
-  callnative UpdateFollowingPokemon
-	fadescreen FADE_FROM_BLACK
+	callnative UpdateFollowingPokemon
+	fadescreenswapbuffers FADE_FROM_BLACK
 	return
 
 EventScript_RegionMap::
@@ -892,7 +892,7 @@ gText_PlayerWhitedOut::
 
 gText_PlayerNuzlockeFailed::
 	.string "{PLAYER} failed the\n"
-	.string "Nuzlocke challenge.\p"
+	.string "Nuzlocke Challenge.\p"
 	.string "The Nuzlocke setting\n"
 	.string "has been turned off.$"
 
@@ -1020,6 +1020,35 @@ Common_EventScript_LegendaryFlewAway::
 	release
 	end
 
+EventScript_DoWonderTrade::
+	copyvar VAR_0x8006, VAR_0x8004
+	special ChoosePartyMonNoDead
+	waitstate
+	compare VAR_0x8004, PARTY_SIZE
+	goto_if_ge EventScript_End
+	copyvar VAR_0x8005, VAR_0x8004
+	addvar VAR_JAIME_MINTS_GIVEN, 16
+	special CreateWonderTradePokemon
+	special DoInGameTradeScene
+	waitstate
+	msgbox EventScript_DoWonderTrade_Text_Done, MSGBOX_DEFAULT
+	closemessage
+EventScript_End:
+	end
+EventScript_CantTradeDead:
+	msgbox EventScript_DoWonderTrade_Text_Dead, MSGBOX_DEFAULT
+	closemessage
+	end
+
+EventScript_DoWonderTrade_Text_WannaDoAnotherWonderTrade:
+	.string "Do you want to do\nanother Wonder Trade?$"
+
+EventScript_DoWonderTrade_Text_Done:
+	.string "Enjoy your new Pokémon.$"
+
+EventScript_DoWonderTrade_Text_Dead:
+	.string "You can't trade dead Pokémon.$"
+
 	.include "data/scripts/pc_transfer.inc"
 	.include "data/scripts/questionnaire.inc"
 	.include "data/scripts/abnormal_weather.inc"
@@ -1076,3 +1105,5 @@ Common_EventScript_LegendaryFlewAway::
 	.include "data/text/frontier_brain.inc"
 	.include "data/text/save.inc"
 	.include "data/text/birch_speech.inc"
+    .include "data/scripts/dexnav.inc"
+    

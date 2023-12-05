@@ -103,6 +103,7 @@ SECTIONS {
         src/battle_controller_link_opponent.o(.text);
         src/pokemon.o(.text);
         src/trig.o(.text);
+        src/random32.o(.text)
         src/random.o(.text);
         src/util.o(.text);
         src/daycare.o(.text);
@@ -345,6 +346,7 @@ SECTIONS {
 		src/soar.o(.text);
         src/mugshot.o(.text);
         src/tm_case.o(.text);
+		src/dexnav.o(.text);
     } =0
 
     script_data :
@@ -712,6 +714,7 @@ SECTIONS {
         src/m4a_tables.o(.rodata);
         data/sound_data.o(.rodata);
         src/tm_case.o(.rodata);
+		src/dexnav.o(.rodata);
     } =0
 
     song_data :

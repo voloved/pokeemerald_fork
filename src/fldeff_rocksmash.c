@@ -13,6 +13,7 @@
 #include "sound.h"
 #include "sprite.h"
 #include "task.h"
+#include "rumble.h"
 #include "constants/event_object_movement.h"
 #include "constants/event_objects.h"
 #include "constants/field_effects.h"
@@ -27,7 +28,7 @@ static void Task_DoFieldMove_RunFunc(u8 taskId);
 static void FieldCallback_RockSmash(void);
 static void FieldMove_RockSmash(void);
 
-bool8 CheckObjectGraphicsInFrontOfPlayer(u8 graphicsId)
+bool8 CheckObjectGraphicsInFrontOfPlayer(u16 graphicsId)
 {
     u8 objEventId;
 
@@ -164,6 +165,7 @@ bool8 FldEff_UseRockSmash(void)
 static void FieldMove_RockSmash(void)
 {
     PlaySE(SE_M_ROCK_THROW);
+    RumbleStartForSfx();
     FieldEffectActiveListRemove(FLDEFF_USE_ROCK_SMASH);
     ScriptContext_Enable();
 }

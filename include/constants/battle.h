@@ -105,6 +105,12 @@
 #define THIEF_BALL_CAUGHT              2
 #define THIEF_BALL_CANNOT_USE          3
 
+// Nuzlocke result for HasWildPokmnOnThisRouteBeenSeen
+#define FIRST_ENCOUNTER_ON_ROUTE       0
+#define ALREADY_SEEN_ON_ROUTE          1
+#define DUPES_ENCOUNTER                2
+#define CANT_CATCH_YET                 3
+
 // Non-volatile status conditions
 // These persist remain outside of battle and after switching out
 #define STATUS1_NONE             0
@@ -368,7 +374,8 @@
 #define B_WIN_TYPE_SUPER_EFF     24
 #define B_WIN_TYPE_NOT_VERY_EFF  25
 #define B_WIN_TYPE_NO_EFF        26
-#define B_WIN_MOVE_DESCRIPTION   27
+#define B_WIN_MOVE_STAB          27
+#define B_WIN_MOVE_DESCRIPTION   28
 
 // The following are duplicate id values for windows that Battle Arena uses differently.
 #define ARENA_WIN_PLAYER_NAME      15
@@ -392,5 +399,6 @@
 #define B_DESCRIPTION_SUBMENU         TRUE
 #define B_DESCRIPTION_SUBMENU_BUTTON  START_BUTTON
 #define LAST_BALL_MENU_SHOW_ARROWS    TRUE
+#define FOLLOWER_CAN_FLY              TRUE
 
 #endif // GUARD_CONSTANTS_BATTLE_H

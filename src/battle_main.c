@@ -17,6 +17,7 @@
 #include "data.h"
 #include "debug.h"
 #include "decompress.h"
+#include "dexnav.h"
 #include "dma3.h"
 #include "event_data.h"
 #include "evolution_scene.h"
@@ -1833,7 +1834,9 @@ static void CB2_HandleStartMultiBattle(void)
         {
             u32 *ptr = gBattleStruct->multiBuffer.battleVideo;
             ptr[0] = gBattleTypeFlags;
-            ptr[1] = gRecordedBattleRngSeed; // UB: overwrites berry data
+            ptr[1] = gRecordedBattleRngSeed.seed; // UB: overwrites berry data
+            ptr[2] = gRecordedBattleRngSeed.low;
+            ptr[3] = gRecordedBattleRngSeed.high;
             SendBlock(BitmaskAllOtherLinkPlayers(), ptr, sizeof(gBattleStruct->multiBuffer.battleVideo));
             gBattleCommunication[MULTIUSE_STATE]++;
         }
@@ -2143,7 +2146,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             monsCount = gTrainers[trainerNum].partySize;
         }
 
-        fixedOTID = Random32();
+        fixedOTID = Random32(&gPCGRng);
 
         for (i = 0; i < monsCount; i++)
         {
@@ -3810,7 +3813,7 @@ static void BattleIntroNuzlockDups(void)
 {
     if (gBattleControllerExecFlags == 0)
     {
-        if (gNuzlockeCannotCatch == 2){  // If Pokemon was first in this route and was already caught
+        if (gNuzlockeCannotCatch == DUPES_ENCOUNTER){  // If Pokemon was first in this route and was already caught
             PrepareStringBattle(STRINGID_NUZLOCKEDUPS, 0);
         }
         gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
@@ -4650,7 +4653,7 @@ static void HandleTurnActionSelectionState(void)
                     else if (gBattleTypeFlags & BATTLE_TYPE_PALACE
                              && gChosenActionByBattler[GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(gActiveBattler)))] == B_ACTION_USE_MOVE)
                     {
-                        gRngValue = gBattlePalaceMoveSelectionRngValue;
+                        gPCGRng = gBattlePalaceMoveSelectionRngValue;
                         RecordedBattle_ClearBattlerAction(GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(gActiveBattler))), 1);
                     }
                     else
@@ -5466,7 +5469,7 @@ static void HandleEndTurn_MonFled(void)
 
 static void HandleEndTurn_FinishBattle(void)
 {
-    gNuzlockeCannotCatch = 0;  // While not necissary, resetting this is nice to stay deterministic
+    gNuzlockeCannotCatch = FIRST_ENCOUNTER_ON_ROUTE;  // While not necissary, resetting this is nice to stay deterministic
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
         if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK
@@ -5526,6 +5529,11 @@ static void FreeResetData_ReturnToOvOrDoEvolutions(void)
 {
     if (!gPaletteFade.active)
     {
+        if (gDexnavBattle && (gBattleOutcome == B_OUTCOME_WON || gBattleOutcome == B_OUTCOME_CAUGHT))
+            IncrementDexNavChain();
+        else
+            gSaveBlock1Ptr->dexNavChain = 0;
+        
         ResetSpriteData();
         if (gLeveledUpInBattle == 0 || gBattleOutcome != B_OUTCOME_WON)
         {
@@ -5637,11 +5645,11 @@ void RunBattleScriptCommands(void)
 }
 
 u8 isMovePhysical(u16 move){
-    return FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) ? gBattleMoves[move].type < TYPE_MYSTERY : gBattleMoves[move].category == MOVE_CATEGORY_PHYSICAL;
+    return FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) ? isTypingPhysical(gBattleMoves[move].type) : gBattleMoves[move].category == MOVE_CATEGORY_PHYSICAL;
 }
 
 u8 isMoveSpecial(u16 move){
-    return FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) ? gBattleMoves[move].type > TYPE_MYSTERY : gBattleMoves[move].category == MOVE_CATEGORY_SPECIAL;
+    return FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) ? isTypingSpecial(move) : gBattleMoves[move].category == MOVE_CATEGORY_SPECIAL;
 }
 
 u8 isMoveStatus(u16 move){

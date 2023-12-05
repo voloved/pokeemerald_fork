@@ -234,7 +234,14 @@ static const struct ItemSlot sNewGamePCItems[] =
 	{ ITEM_THUNDER_STONE, 1 },
 	{ ITEM_SUN_STONE, 1 },
 	{ ITEM_MOON_STONE, 1 },
-    { ITEM_TM43, 1 },
+    { ITEM_NONE, 0 }
+};
+
+static const struct ItemSlot sNewGamePCItemsNuzlocke[] =
+{
+    { ITEM_POTION, 1 },
+    { ITEM_CLEANSE_TAG, 1 },
+    { ITEM_POKE_DOLL, 1 },
     { ITEM_NONE, 0 }
 };
 
@@ -375,24 +382,25 @@ static const struct WindowTemplate sWindowTemplates_ItemStorage[ITEMPC_WIN_COUNT
 
 static const u8 sSwapArrowTextColors[] = {TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY, TEXT_COLOR_DARK_GRAY};
 
-// Macro below is likely a fakematch, equivalent to sNewGamePCItems[i].quantity
-#define GET_QUANTITY(i) ((u16)((u16 *)sNewGamePCItems + 1)[i * 2])
-void NewGameInitPCItems(void)
+void NewGameInitPCItems(bool8 runningNuzlocke)
 {
+    const struct ItemSlot* itemArray;
     u8 i = 0;
+    if (runningNuzlocke)
+        itemArray = sNewGamePCItemsNuzlocke;
+    else
+        itemArray = sNewGamePCItems;
     ClearItemSlots(gSaveBlock1Ptr->pcItems, PC_ITEMS_COUNT);
-    for(; sNewGamePCItems[i].itemId != ITEM_NONE && GET_QUANTITY(i) &&
-        AddPCItem(sNewGamePCItems[i].itemId, GET_QUANTITY(i)) == TRUE; i++);
+    for(; itemArray[i].itemId != ITEM_NONE && itemArray[i].quantity != 0 &&
+        AddPCItem(itemArray[i].itemId, itemArray[i].quantity) == TRUE; i++);
 }
 
 void PostGameInitPCItems(void)
 {
     u8 i = 0;
-    for(; sPostGamePCItems[i].itemId != ITEM_NONE && GET_QUANTITY(i) &&
-        AddPCItem(sPostGamePCItems[i].itemId, GET_QUANTITY(i)) == TRUE; i++);
+    for(; sPostGamePCItems[i].itemId != ITEM_NONE && sPostGamePCItems[i].quantity != 0 &&
+        AddPCItem(sPostGamePCItems[i].itemId, sPostGamePCItems[i].quantity) == TRUE; i++);
 }
-
-#undef GET_QUANTITY
 
 void BedroomPC(void)
 {

@@ -14,6 +14,11 @@ gText_WantsToFly::
 callfunc ScrFunc_playfirstmoncry
 .endm
 
+.macro checkfirstmonmove move:req
+callfunc ScrFunc_checkfirstmonmove
+.2byte \move
+.endm
+
 .macro bufferlivemonnickname out:req
 callfunc ScrFunc_bufferlivemonnickname
 .byte \out
@@ -30,8 +35,8 @@ EventScript_Follower::
   bufferlivemonnickname 0
   playfirstmoncry
   callfunc ScrFunc_getfolloweraction
-  checkpartymove MOVE_FLY
-  compare VAR_RESULT 6
+  checkfirstmonmove MOVE_FLY
+  compare VAR_RESULT FALSE
   goto_if_eq EventScript_FollowerEnd
   bufferlivemonnickname 0
   msgbox gText_WantsToFly, MSGBOX_YESNO
@@ -41,6 +46,7 @@ EventScript_Follower::
   case MULTI_B_PRESSED, EventScript_FollowerEnd
 EventScript_FollowerFly::
   callfunc ScrFunc_followerfly
+  end
 EventScript_FollowerEnd::
   waitfieldeffect FLDEFF_EMOTE
   release

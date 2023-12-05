@@ -500,7 +500,9 @@ struct SaveBlock2
              u16 regionMapZoom:1; // whether the map is zoomed in
     /*0x18*/ struct Pokedex pokedex;
     /*0x90*/ u16 lastUsedBall;
-    /*0x92*/ u8 filler_90[0x6];
+    /*0x92*/ u8 optionsRumble:1;
+             u8 unused:7;
+    /*0x93*/ u8 filler_90[0x5];
     /*0x98*/ struct Time localTimeOffset;
     /*0xA0*/ struct Time lastBerryTreeUpdate;
     /*0xA8*/ u32 gcnLinkFlags; // Read by Pokemon Colosseum/XD
@@ -519,6 +521,7 @@ struct SaveBlock2
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
 
+extern u8 UpdateSpritePaletteWithTime(u8);
 extern bool8 IsAccurateGBA(void);
 
 struct SecretBaseParty
@@ -893,7 +896,7 @@ struct MysteryGiftSave
     struct WonderCardMetadata cardMetadata;
     u16 questionnaireWords[NUM_QUESTIONNAIRE_WORDS];
     struct WonderNewsMetadata newsMetadata;
-    u32 trainerIds[2][5]; // Saved ids for 10 trainers, 5 each for battles and trades
+    u32 trainerIds[2][5]; // Saved ids for 10 trainers, 5 each for battles and trades 
 }; // 0x36C 0x3598
 
 // For external event data storage. The majority of these may have never been used.
@@ -1032,9 +1035,11 @@ struct SaveBlock1
     /*0x3B58*/ LilycoveLady lilycoveLady;
     /*0x3B98*/ struct TrainerNameRecord trainerNameRecords[20];
     /*0x3C88*/ u8 registeredTexts[UNION_ROOM_KB_ROW_COUNT][21];
-    /*0x3D5A*/ u8 unused_3D5A[10];
+    /*0x3D5A*/ u8 unused_3D5A[9];
+    /*0x3D63*/ u8 dexNavChain;
     /*0x3D64*/ struct TrainerHillSave trainerHill;
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;
+    //           u8 dexNavSearchLevels[NUM_SPECIES];
     // sizeof: 0x3D88
 };
 

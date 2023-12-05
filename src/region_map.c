@@ -73,6 +73,7 @@ static EWRAM_DATA struct {
 } *sFlyMap = NULL;
 
 static bool32 sDrawFlyDestTextWindow;
+static bool32 sFlyFromFollower;
 
 static u8 ProcessRegionMapInput_Full(void);
 static u8 MoveRegionMapCursor_Full(void);
@@ -1712,7 +1713,7 @@ bool32 IsEventIslandMapSecId(u8 mapSecId)
     return FALSE;
 }
 
-void CB2_OpenFlyMap(void)
+static void _CB2_OpenFlyMap(void)
 {
     switch (gMain.state)
     {
@@ -1802,6 +1803,18 @@ void CB2_OpenFlyMap(void)
         gMain.state++;
         break;
     }
+}
+
+void CB2_OpenFlyMap(void)
+{
+    sFlyFromFollower = FALSE;
+    SetMainCallback2(_CB2_OpenFlyMap);
+}
+
+void CB2_OpenFlyMapFollower(void)
+{
+    sFlyFromFollower = TRUE;
+    SetMainCallback2(_CB2_OpenFlyMap);
 }
 
 static void VBlankCB_FlyMap(void)
@@ -2085,6 +2098,10 @@ static void CB_ExitFlyMap(void)
                             break;
                     }
                     ReturnToFieldFromFlyMapSelect();
+                }
+                else if(sFlyFromFollower)
+                {
+                    SetMainCallback2(CB2_ReturnToField);
                 }
                 else
                 {

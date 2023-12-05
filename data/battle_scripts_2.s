@@ -70,6 +70,8 @@ BattleScript_SuccessBallThrow::
 	jumpifbyte CMP_EQUAL, gUsingThiefBall, THIEF_BALL_CAUGHT, BattleScript_SuccessBallThrowThief
 BattleScript_PrintCaughtMonInfo::
 	printstring STRINGID_GOTCHAPKMNCAUGHT
+	setbyte sGIVEEXP_STATE, 0
+	getexp BS_TARGET
 	trysetcaughtmondexflags BattleScript_TryNicknameCaughtMon
 	printstring STRINGID_PKMNDATAADDEDTODEX
 	waitstate
@@ -91,6 +93,8 @@ BattleScript_SuccessBallThrowEnd::
 	finishturn
 BattleScript_SuccessBallThrowThief::
 	printstring STRINGID_GOTCHAPKMNCAUGHTNOBGM
+	setbyte sGIVEEXP_STATE, 0
+	getexp BS_TARGET
 	trysetcaughtmondexflags BattleScript_SuccessBallThrowEndThiefGive
 	printstring STRINGID_PKMNDATAADDEDTODEX
 	waitstate
@@ -125,7 +129,7 @@ BattleScript_ShakeBallThrowEnd::
 
 BattleScript_TrainerBallBlock::
 	waitmessage B_WAIT_TIME_LONG
-	jumpifbyte CMP_EQUAL, gNuzlockeCannotCatch, 1, BattleScript_TrainerBallBlockNuzlocke
+	jumpifbyte CMP_EQUAL, gNuzlockeCannotCatch, ALREADY_SEEN_ON_ROUTE, BattleScript_TrainerBallBlockNuzlocke
 	printstring STRINGID_TRAINERBLOCKEDBALL
 	waitmessage B_WAIT_TIME_LONG
 	jumpifbyte CMP_EQUAL, gUsingThiefBall, THIEF_BALL_CANNOT_USE, BattleScript_TrainerBallBlockThiefBall

@@ -19,6 +19,7 @@
 #include "trig.h"
 #include "util.h"
 #include "data.h"
+#include "rumble.h"
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/songs.h"
@@ -1138,6 +1139,7 @@ static void SpriteCB_Ball_Wobble(struct Sprite *sprite)
         gBattleSpritesDataPtr->animationData->ballSubpx = 0;
         sprite->callback = SpriteCB_Ball_Wobble_Step;
         PlaySE(SE_BALL);
+        RumbleStartForSfx();
     }
 }
 
@@ -1300,6 +1302,8 @@ static void SpriteCB_Ball_Wobble_Step(struct Sprite *sprite)
                 StartSpriteAffineAnim(sprite, BALL_ROTATE_RIGHT);
 
             PlaySE(SE_BALL);
+            RumbleStartForSfx();
+
         }
         break;
     }
@@ -1345,6 +1349,7 @@ static void SpriteCB_Ball_Capture_Step(struct Sprite *sprite)
     if (sprite->sTimer == 40)
     {
         PlaySE(SE_RG_BALL_CLICK);
+        SetTimedRumble(6);
         BlendPalettes(0x10000 << sprite->oam.paletteNum, 6, RGB(0, 0, 0));
         MakeCaptureStars(sprite);
     }

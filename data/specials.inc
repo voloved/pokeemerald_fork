@@ -172,6 +172,7 @@ gSpecials::
 	def_special StartWallyTutorialBattle
 	def_special ChangePokemonNickname
 	def_special ChoosePartyMon
+	def_special ChoosePartyMonNoDead
 	def_special GetFirstFreePokeblockSlot
 	def_special DoBerryBlending
 	def_special PlayRoulette
@@ -538,3 +539,4 @@ gSpecials::
 	def_special TrySetBattleTowerLinkType
 	def_special PostGameInitPCItems
 	def_special ChooseRandomEggSpecies
+	def_special CreateWonderTradePokemon

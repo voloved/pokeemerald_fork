@@ -44,10 +44,11 @@
 #include "berry_powder.h"
 #include "mystery_gift.h"
 #include "union_room_chat.h"
-#include "decoration_inventory.h"
 #include "constants/decorations.h"
 #include "constants/flags.h"
 #include "constants/items.h"
+#include "constants/map_groups.h"
+#include "constants/secret_bases.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 
@@ -86,7 +87,7 @@ void CopyTrainerId(u8 *dst, u8 *src)
 
 static void InitPlayerTrainerId(void)
 {
-    u32 trainerId = (Random() << 16) | GetGeneratedTrainerIdLower();
+    u32 trainerId = Random32(&gPCGRng);
     SetTrainerId(trainerId, gSaveBlock2Ptr->playerTrainerId);
 }
 
@@ -99,7 +100,20 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsBattleStyle = OPTIONS_BATTLE_STYLE_SHIFT;
     gSaveBlock2Ptr->optionsBattleSceneOff = FALSE;
     gSaveBlock2Ptr->regionMapZoom = FALSE;
+    gSaveBlock2Ptr->optionsRumble = FALSE;
+    gSaveBlock2Ptr->vSyncOff = FALSE;
+    gSaveBlock2Ptr->optionsRumble = FALSE;
     FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
+    FlagSet(FLAG_SHOW_BALL_SUGGESTION);
+    FlagSet(FLAG_BALL_SUGGEST_NOT_LAST);
+    FlagSet(FLAG_BALL_SUGGEST_COMPLEX);
+	FlagSet(FLAG_USE_FROSTBITE);
+	FlagSet(FLAG_ALLOW_RUNNING_TOGGLE);
+	FlagSet(FLAG_POKEMON_FOLLOWERS);
+	FlagSet(FLAG_SHOW_DAY_NIGHT);
+	FlagSet(FLAG_NUZLOCKE_DUPES_CLAUSE);
+	FlagSet(FLAG_RELEARN_IN_PARTY_MENU);
+    VarSet(VAR_DIFFICULTY, DIFFICULTY_NORMAL);
 }
 
 static void ClearPokedexFlags(void)
@@ -154,6 +168,26 @@ void NewGameInitData(void)
 {
     bool8 typeEffectPrev = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     bool8 nuzlockePrev = FlagGet(FLAG_NUZLOCKE);
+    bool8 showBallSuggestPrev = FlagGet(FLAG_SHOW_BALL_SUGGESTION);
+    bool8 showBallNotLastPrev = FlagGet(FLAG_BALL_SUGGEST_NOT_LAST);
+    bool8 showBallComplexPrev = FlagGet(FLAG_BALL_SUGGEST_COMPLEX);
+    bool8 useFrostbite = FlagGet(FLAG_USE_FROSTBITE);
+    bool8 runningShoesToggle = FlagGet(FLAG_ALLOW_RUNNING_TOGGLE);
+    bool8 showFollowers = FlagGet(FLAG_POKEMON_FOLLOWERS);
+    bool8 showDayNight = FlagGet(FLAG_SHOW_DAY_NIGHT);
+    bool8 nuzlockeDupes = FlagGet(FLAG_NUZLOCKE_DUPES_CLAUSE);
+    bool8 relearnMoveInPartyMenu = FlagGet(FLAG_RELEARN_IN_PARTY_MENU);
+    bool8 useOriginalSplit = FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL);
+    bool8 midBattleEvo = FlagGet(FLAG_MID_BATTLE_EVOLUTION);
+    bool8 noLowHealthBeep = FlagGet(FLAG_NO_LOW_HEALTH_BEEP);
+    bool8 nuzlockeSet = FlagGet(FLAG_NUZLOCKE_BATTLE_SET);
+    bool8 nuzlockeLevelCap = FlagGet(FLAG_NUZLOCKE_LEVEL_CAP);
+    bool8 nuzlockeHeldItems = FlagGet(FLAG_NUZLOCKE_NO_HELD_ITEMS);
+    bool8 nuzlockeNoBattleItems = FlagGet(FLAG_NUZLOCKE_NO_BATTLE_ITEMS);
+    bool8 nuzlockeRandomizeWild = FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD);
+    bool8 nuzlockeRandomizeFirst = FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST);
+    u16 difficulty = VarGet(VAR_DIFFICULTY);
+    u16 expMult = VarGet(VAR_EXP_MULT);
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
         RtcReset();
 
@@ -191,11 +225,11 @@ void NewGameInitData(void)
     gSaveBlock1Ptr->registeredItem = 0;
     gSaveBlock1Ptr->registeredLongItem = 0;
     ClearBag();
-    NewGameInitPCItems();
+    NewGameInitPCItems(nuzlockePrev);
     ClearPokeblocks();
     ClearDecorationInventories();
-    DecorationAdd(DECOR_SOLID_BOARD);
-    DecorationAdd(DECOR_SOLID_BOARD);
+    SetPlayerSecretBaseAtId(SECRET_BASE_GARAGE); 
+    addDecorationToBaseStart(SECRET_BASE_GARAGE, DECOR_SOLID_BOARD, 102);  // Places board on the garage's hole
     InitEasyChatPhrases();
     SetMauvilleOldMan();
     InitDewfordTrend();
@@ -216,10 +250,28 @@ void NewGameInitData(void)
     gSaveBlock2Ptr->lastUsedBall = ITEM_POKE_BALL;
     typeEffectPrev ? FlagSet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW) : FlagClear(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
     nuzlockePrev ? FlagSet(FLAG_NUZLOCKE) : FlagClear(FLAG_NUZLOCKE);
-    FlagSet(FLAG_RELEARN_IN_PARTY_MENU);  // Always allow relearning by default in a new game.
-    FlagSet(FLAG_RECEIVED_RUNNING_SHOES);  //Running is set at the beginning of the game now.
-    FlagSet(FLAG_SYS_B_DASH);
+    showBallSuggestPrev ? FlagSet(FLAG_SHOW_BALL_SUGGESTION) : FlagClear(FLAG_SHOW_BALL_SUGGESTION);
+    showBallNotLastPrev ? FlagSet(FLAG_BALL_SUGGEST_NOT_LAST) : FlagClear(FLAG_BALL_SUGGEST_NOT_LAST);
+    showBallComplexPrev ? FlagSet(FLAG_BALL_SUGGEST_COMPLEX) : FlagClear(FLAG_BALL_SUGGEST_COMPLEX);
+    useFrostbite ? FlagSet(FLAG_USE_FROSTBITE) : FlagClear(FLAG_USE_FROSTBITE);
+    runningShoesToggle ? FlagSet(FLAG_ALLOW_RUNNING_TOGGLE) : FlagClear(FLAG_ALLOW_RUNNING_TOGGLE);
+    showFollowers ? FlagSet(FLAG_POKEMON_FOLLOWERS) : FlagClear(FLAG_POKEMON_FOLLOWERS);
+    showDayNight ? FlagSet(FLAG_SHOW_DAY_NIGHT) : FlagClear(FLAG_SHOW_DAY_NIGHT);
+    nuzlockeDupes ? FlagSet(FLAG_NUZLOCKE_DUPES_CLAUSE) : FlagClear(FLAG_NUZLOCKE_DUPES_CLAUSE);
+    relearnMoveInPartyMenu ? FlagSet(FLAG_RELEARN_IN_PARTY_MENU) : FlagClear(FLAG_RELEARN_IN_PARTY_MENU);
+    useOriginalSplit ? FlagGet(FLAG_MOVE_SPLIT_USE_ORIGINAL) : FlagClear(FLAG_MOVE_SPLIT_USE_ORIGINAL);
+    midBattleEvo ? FlagGet(FLAG_MID_BATTLE_EVOLUTION) : FlagClear(FLAG_MID_BATTLE_EVOLUTION);
+    noLowHealthBeep ? FlagGet(FLAG_NO_LOW_HEALTH_BEEP) : FlagClear(FLAG_NO_LOW_HEALTH_BEEP);
+    nuzlockeSet ? FlagGet(FLAG_NUZLOCKE_BATTLE_SET) : FlagClear(FLAG_NUZLOCKE_BATTLE_SET);
+    nuzlockeLevelCap ? FlagGet(FLAG_NUZLOCKE_LEVEL_CAP) : FlagClear(FLAG_NUZLOCKE_LEVEL_CAP);
+    nuzlockeHeldItems ? FlagGet(FLAG_NUZLOCKE_NO_HELD_ITEMS) : FlagClear(FLAG_NUZLOCKE_NO_HELD_ITEMS);
+    nuzlockeNoBattleItems ? FlagGet(FLAG_NUZLOCKE_NO_BATTLE_ITEMS) : FlagClear(FLAG_NUZLOCKE_NO_BATTLE_ITEMS);
+    nuzlockeRandomizeWild ? FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD) : FlagClear(FLAG_NUZLOCKE_RANDOMIZE_WILD);
+    nuzlockeRandomizeFirst ? FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST) : FlagClear(FLAG_NUZLOCKE_RANDOMIZE_FIRST);
+    VarSet(VAR_DIFFICULTY, difficulty);
+    VarSet(VAR_EXP_MULT, expMult);
     memset(&gSaveBlock2Ptr->itemFlags, 0, sizeof(gSaveBlock2Ptr->itemFlags));
+    gSaveBlock1Ptr->dexNavChain = 0;
 }
 
 static void ResetMiniGamesRecords(void)

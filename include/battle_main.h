@@ -130,6 +130,8 @@ void RunBattleScriptCommands(void);
 bool8 TryRunFromBattle(u8 battlerId);
 void SpecialStatusesClear(void);
 u16 checkStolenPokemon(u16 trainerNum, u16 speciesType, u16 partyIndex, bool8 set);
+u8 isMovePhysicalTyping(u16);
+u8 isMovePhysicalTyping(u16);
 u8 isMovePhysical(u16);
 u8 isMoveSpecial(u16);
 u8 isMoveStatus(u16);

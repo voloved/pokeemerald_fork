@@ -1437,7 +1437,7 @@ const u32 gUnionRoomChat_Border_Gfx[] = INCBIN_U32("graphics/union_room_chat/bor
 const u32 gUnionRoomChat_Border_Tilemap[] = INCBIN_U32("graphics/union_room_chat/border.bin.lz");
 const u32 gUnionRoomChat_RButtonLabels[] = INCBIN_U32("graphics/union_room_chat/r_button_labels.4bpp.lz");
 
-const u16 gTilesetPalettes_General[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_General[][16] =
 {
     INCBIN_U16("data/tilesets/primary/general/palettes/00.gbapal"),
     INCBIN_U16("data/tilesets/primary/general/palettes/01.gbapal"),
@@ -1557,4 +1557,3 @@ const u32 gUnknown_8E84F20[] = INCBIN_U32("graphics/tm_case/unk_8E84F20.gbapal.l
 const u32 gUnknown_8E85068[] = INCBIN_U32("graphics/tm_case/unk_8E85068.gbapal.lz");
 const u8 gUnknown_8E99118[] = INCBIN_U8("graphics/tm_case/unk_8E99118.4bpp");
 const u16 gTMCaseMainWindowPalette[] = INCBIN_U16("graphics/tm_case/unk_841F408.gbapal");
-

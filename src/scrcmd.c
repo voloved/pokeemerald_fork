@@ -665,6 +665,12 @@ static bool8 IsPaletteNotActive(void)
         return FALSE;
 }
 
+// pauses script until palette fade inactive
+bool8 ScrFunc_WaitPaletteNotActive(struct ScriptContext *ctx) {
+    SetupNativeScript(ctx, IsPaletteNotActive);
+    return TRUE;
+}
+
 bool8 ScrCmd_fadescreen(struct ScriptContext *ctx)
 {
     FadeScreen(ScriptReadByte(ctx), 0);
@@ -685,6 +691,7 @@ bool8 ScrCmd_fadescreenspeed(struct ScriptContext *ctx)
 bool8 ScrCmd_fadescreenswapbuffers(struct ScriptContext *ctx)
 {
     u8 mode = ScriptReadByte(ctx);
+    u8 nowait = ScriptReadByte(ctx);
 
     switch (mode)
     {
@@ -701,6 +708,8 @@ bool8 ScrCmd_fadescreenswapbuffers(struct ScriptContext *ctx)
         break;
     }
 
+    if (nowait)
+        return FALSE;
     SetupNativeScript(ctx, IsPaletteNotActive);
     return TRUE;
 }
@@ -1246,7 +1255,7 @@ bool8 ScrCmd_setobjectmovementtype(struct ScriptContext *ctx)
 
 bool8 ScrCmd_createvobject(struct ScriptContext *ctx)
 {
-    u8 graphicsId = ScriptReadByte(ctx);
+    u16 graphicsId = ScriptReadByte(ctx); // Support u16 in createvobject
     u8 virtualObjId = ScriptReadByte(ctx);
     u16 x = VarGet(ScriptReadHalfword(ctx));
     u32 y = VarGet(ScriptReadHalfword(ctx));
@@ -1956,6 +1965,10 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
             break;
         }
     }
+
+    if (!PlayerHasMove(moveId))
+        return FALSE;
+
     for (i = 0; i < PARTY_SIZE; i++)
     {
         // If not, then use a Pokemon in the party that can learn the move
@@ -1970,10 +1983,10 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
             break;
         }
     }
-    if (gSpecialVar_Result == PARTY_SIZE && PlayerHasMove(moveId)){ 
+    if (gSpecialVar_Result == PARTY_SIZE){ 
         // If no mon have the move, but the player has the HM in bag, use the actual player
-            gSpecialVar_Result = PARTY_SIZE + 1;  // A number larger than the party size is treated as using to player elsewhere in the code
-            gSpecialVar_0x8004 = SPECIES_NONE;
+        gSpecialVar_Result = PARTY_SIZE + 1;  // A number larger than the party size is treated as using to player elsewhere in the code
+        gSpecialVar_0x8004 = SPECIES_NONE;
     }
     return FALSE;
 }
@@ -2272,6 +2285,18 @@ bool8 ScrCmd_playmoncry(struct ScriptContext *ctx)
     u16 mode = VarGet(ScriptReadHalfword(ctx));
 
     PlayCry_Script(species, mode);
+    return FALSE;
+}
+
+bool8 ScrFunc_checkfirstmonmove(struct ScriptContext *ctx)
+{
+    u8 partyIndex = GetLeadMonIndex();
+    u16 moveId = ScriptReadHalfword(ctx);
+    gSpecialVar_Result = FALSE;
+    if (MonKnowsMove(&gPlayerParty[partyIndex], moveId))
+        gSpecialVar_Result = TRUE;
+    else if(PlayerHasMove(moveId) && CanMonLearnTMHM(&gPlayerParty[partyIndex], MoveToHM(moveId) - ITEM_TM01))
+        gSpecialVar_Result = TRUE;
     return FALSE;
 }
 

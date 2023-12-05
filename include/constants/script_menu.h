@@ -124,6 +124,7 @@
 #define MULTI_TAG_MATCH_TYPE               113
 #define MULTI_TAG_CARCINISATION            114
 #define MULTI_TAG_EXP_MULT                 115
+#define MULTI_TAG_NUZLOCKE_RANDOM          116
 
 // Lilycove SS Tidal Multichoice Selections
 #define SSTIDAL_SELECTION_SLATEPORT        0

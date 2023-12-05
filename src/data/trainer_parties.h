@@ -3315,7 +3315,7 @@ static const struct TrainerMonItemCustomMoves sParty_Glacia[] = {
     .lvl = 52,
     .species = SPECIES_WEAVILE,
     .heldItem = ITEM_NONE,
-    .moves = {MOVE_LIGHT_SCREEN, MOVE_CRUNCH, MOVE_ICY_WIND, MOVE_ICE_BEAM}    
+    .moves = {MOVE_LIGHT_SCREEN, MOVE_CRUNCH, MOVE_ICY_WIND, MOVE_ICE_PUNCH}    
     },
     {
     .iv = 255,
@@ -4449,7 +4449,7 @@ static const struct TrainerMonItemCustomMoves sParty_Wallace[] = {
     },
     {
 	.iv = 255,
-	.lvl = 61,
+	.lvl = 58,
 	.species = SPECIES_DEOXYS,
     .heldItem = ITEM_WHITE_HERB,
     .moves = {MOVE_PSYCHO_BOOST, MOVE_FIRE_PUNCH, MOVE_SUPERPOWER, MOVE_EXTREME_SPEED}

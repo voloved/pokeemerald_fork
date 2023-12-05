@@ -871,27 +871,54 @@ static void ApplyGlobalTintToPaletteSlot(u8 slot, u8 count)
 
 }
 
-void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size)
+void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size, bool8 skipFaded)
 {
-    u16 black = RGB_BLACK;
+    u32 low = 0;
+    u32 high = 0;
 
     if (tileset)
     {
         if (tileset->isSecondary == FALSE)
         {
-            LoadPalette(&black, destOffset, 2);
-            LoadPalette(tileset->palettes[0] + 1, destOffset + 1, size - 2);
+            // LoadPalette(&black, destOffset, 2);
+            if (skipFaded)
+                CpuFastCopy(tileset->palettes, &gPlttBufferUnfaded[destOffset], size);
+            else
+                LoadPaletteFast(tileset->palettes, destOffset, size);
+            gPlttBufferFaded[destOffset] = gPlttBufferUnfaded[destOffset] = RGB_BLACK; // why does it have to be black?
             ApplyGlobalTintToPaletteEntries(destOffset + 1, (size - 2) >> 1);
+            low = 0;
+            high = NUM_PALS_IN_PRIMARY;
         }
         else if (tileset->isSecondary == TRUE)
         {
-            LoadPalette(tileset->palettes[NUM_PALS_IN_PRIMARY], destOffset, size);
-            ApplyGlobalTintToPaletteEntries(destOffset, size >> 1);
+            // (void*) is to silence 'source potentially unaligned' error
+            // All 'gTilesetPalettes_' arrays should have ALIGNED(4) in them
+            if (skipFaded)
+                CpuFastCopy((void*)tileset->palettes[NUM_PALS_IN_PRIMARY], &gPlttBufferUnfaded[destOffset], size);
+            else
+                LoadPaletteFast(tileset->palettes[NUM_PALS_IN_PRIMARY], destOffset, size);
+            low = NUM_PALS_IN_PRIMARY;
+            high = NUM_PALS_TOTAL;
         }
         else
         {
             LoadCompressedPalette((const u32 *)tileset->palettes, destOffset, size);
             ApplyGlobalTintToPaletteEntries(destOffset, size >> 1);
+        }
+        // convert legacy light palette system to current
+        if (tileset->lightPalettes) {
+            u32 i, j, color;
+            for (i = low; i < high; i++) {
+                if (tileset->lightPalettes & (1 << (i - low))) { // Mark light colors
+                    for (j = 1, color = gPlttBufferUnfaded[(i * 16)]; j < 16 && color; j++, color >>= 1) {
+                        if (color & 1)
+                            gPlttBufferFaded[(i * 16)+j] = gPlttBufferUnfaded[(i * 16)+j] |= RGB_ALPHA;
+                    }
+                    if (tileset->customLightColor & (1 << (i - low))) // Copy old custom light color to index 0
+                        gPlttBufferFaded[(i * 16)] = gPlttBufferUnfaded[(i * 16)] = gPlttBufferUnfaded[(i * 16)+15] | RGB_ALPHA;
+                }
+            }
         }
     }
 }
@@ -913,12 +940,12 @@ void CopySecondaryTilesetToVramUsingHeap(struct MapLayout const *mapLayout)
 
 static void LoadPrimaryTilesetPalette(struct MapLayout const *mapLayout)
 {
-    LoadTilesetPalette(mapLayout->primaryTileset, 0, NUM_PALS_IN_PRIMARY * 16 * 2);
+    LoadTilesetPalette(mapLayout->primaryTileset, 0, NUM_PALS_IN_PRIMARY * 16 * 2, FALSE);
 }
 
-void LoadSecondaryTilesetPalette(struct MapLayout const *mapLayout)
+void LoadSecondaryTilesetPalette(struct MapLayout const *mapLayout, bool8 skipFaded)
 {
-    LoadTilesetPalette(mapLayout->secondaryTileset, NUM_PALS_IN_PRIMARY * 16, (NUM_PALS_TOTAL - NUM_PALS_IN_PRIMARY) * 16 * 2);
+    LoadTilesetPalette(mapLayout->secondaryTileset, NUM_PALS_IN_PRIMARY * 16, (NUM_PALS_TOTAL - NUM_PALS_IN_PRIMARY) * 16 * 2, skipFaded);
 }
 
 void CopyMapTilesetsToVram(struct MapLayout const *mapLayout)
@@ -935,6 +962,6 @@ void LoadMapTilesetPalettes(struct MapLayout const *mapLayout)
     if (mapLayout)
     {
         LoadPrimaryTilesetPalette(mapLayout);
-        LoadSecondaryTilesetPalette(mapLayout);
+        LoadSecondaryTilesetPalette(mapLayout, FALSE);
     }
 }

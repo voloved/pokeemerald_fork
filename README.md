@@ -8,9 +8,36 @@ Link to [Patch File is Here](https://drive.google.com/drive/folders/1GFChFDEmOJH
 To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokémon Emerald (those devs who made the game 20 years ago gotta eat too).  
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
+ ## v2.4.0
+ - [Added Day-Night System](https://github.com/aarant/pokeemerald/tree/lighting-expanded-id) [Credit: aarant]
+ - [Added Rumble Feature](https://github.com/pret/pokeemerald/wiki/Add-In%E2%80%90Cart-Rumble) [Credit: Evan Bowman and Citrus Bolt]
+ - [Added DexNav(https://github.com/ghoulslash/pokeemerald/tree/dexnav) [Credit: Ghouslash]]
+   - [Made DexNav live in PokéNav](https://github.com/Artrios/pokeemerald/commit/d25bfdcbafd26e1dec3058445074264c3bdbdef4) [Credit: Paccy]
+ - [New Random Number Generator Implimentation.](https://github.com/DizzyEggg/pokeemerald/commit/686bf3919816a1661c1652fe980dbe93c9920265) [Credit: Kurausukun]
+ - [Added Catch EXP.](https://github.com/pret/pokeemerald/wiki/Implementing-Catch-EXP) [Credit: cobb]
+ - [Added Wonder Trading](https://www.pokecommunity.com/showpost.php?p=10357573) [Credit: Lunos and Deokishisu]
+   - Wonder Trading can happen once for each badge received in the back-left machines Mauville Game Corner. The left machine only gives Pokémon with their first type being a physical. The right machine gives special-typed.
+ - [Added ability to randomize wild encounters with the Nuzlocke settings](https://gitlab.com/devolov/pokeemerald_fork/-/commit/3018c82188f66ac2a212c0156ef18a52bb2a3cd1)
+ - Razor Wind buffs Attack if using original damage catagories rather than always buffing Special Attack.
+ - Leech Life is buffed to its Gen VII stats.
+ - Using Infinite Rare Candy on field as registered item now fades into party menu.
+ - Wild Pokémon can no longer be caught in the Nuzlocke Challenge before receiving the Pokédex.
+ - Lowered Deoxys level in Steven and Wallace battle to lower Nuzlocke overlevel cap.
+ - Weavile uses Ice Punch instead of Ice Beam in Elite Four.
+ - Changed the garage's Secret Base to a less common on on the overworld.
+   - Garage base automatically opens at the start of a new game.
+   - Solid board automatically goes over the hole in the garage base.
+   -Removed Secret Power from PC.
+ - The items in the PC at the beginning of the game will change based on if the Nuzlocke Challenge is run.
+ - Type Effectiveness option now shows a plus sign if a move is STAB and arrows if a move is effective or not.
+ - Cleaned up Infinite Rare Candy palette. [Credit: Viperio]
+ - If a follower can learn fly, then it would fly you if you talk with it.
+ - Bugfix where scripted encounters did not count toward the Nuzlocke.
+ 
  ## v2.3.2
  - Using Pokémon Center restores all Pokémon in the PC.
  - Infinite Rare Candy when running the No Overleveling Nuzlocke no longer is accessable through Jaime. instead, it can be found in the Marts from the lady next to the cashier.
+ - Pokémon that are at their level cap and level 100 Pokémon can still gain EVs from battles.
  - Back shelf in Mart now looks more cohesive.
  - Bugfix on evolving with Inf. Rare Candy on field crashing the game.
  - Bugfix where Battle Items pocket in bag never opens.
@@ -140,7 +167,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Animated Missingno follower sprite.
  - [Pressing Start in a Battle Will Show the Description of the Move.](https://github.com/pret/pokeemerald/wiki/Add-Description-Submenu)
  - [Allow Running From Trainer Battles](https://github.com/pret/pokeemerald/wiki/Allow-Running-From-Trainer-Battles)
-   - This will not work when running the Nuzlocke challenge.
+   - This will not work when running the Nuzlocke Challenge.
  - [Key Items With No Field Effect Will No Longer Be Register-able Nor Usable](https://github.com/pret/pokeemerald/wiki/Make-Key-Items-That-Cannot-Be-Used-In-The-Field-Not-Show-A-Use-or-Register-Option)
  - [Added BetterBag. This makes the bag be able to hold 78 more items.](https://github.com/pret/pokeemerald/wiki/Feature-Branches#BetterBag) [Credit: AsparagusEduardo]
    - This will keep compatability with an vanilla Emerald save file, but going back to the vanilla game saving in this game will cause battle items, treasures, and medicine to disappear.
@@ -194,7 +221,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - [Cleanse Tag can now be a use item as well as being held.](https://github.com/pret/pokeemerald/wiki/Make-Cleanse-Tag-Avoid-All-Wild-Encounters-and-Usable-If-Held-By-Anyone-in-Your-Party;-Make-PokeDoll-Do-the-Same-for-Trainers-Seeing-You#make-cleanse-tag-a-toggle-able-use-item)
  - Doubled shiny odds.
  - Buying more than 10 Poké Balls gives an extra.
- - Indicator shown in Nuzlocke challenge if Pokémon can be caught.
+ - Indicator shown in Nuzlocke Challenge if Pokémon can be caught.
  - Mareep is female 75% of the time.
 
 ## v1.4.0
@@ -252,7 +279,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Put more interesting Pokémon into the Safari Zone.
 - Added Surkit, Masquerain, Meditite, Roselia, Zangoose, and Lunatone.
 - Added ability to buy evolutionary stones and TMs from Mauville Game Corner in Lilycove Department Store.
-- Ability to restart Nuzlocke challenge after failing by talking to Hiker in House in Rustboro City.
+- Ability to restart Nuzlocke Challenge after failing by talking to Hiker in House in Rustboro City.
 - Nuzlocke now counts in Safari Zone as well.
 - Electrike and Manectric can now learn Flamethrower.
 - Psyduck and Golduck can learn Fly.
@@ -266,14 +293,14 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 - Fixed bug that causes duplicates of caught Pokémon if they were nicknamed after being caught.
 - Removed delay from leaving Pokémon Center by removing healing fanfare.
 - Made Missingno smaller to match its height.
-- Made dead Pokémon checking for the Nuzlocke challenge no longer occur during field poisoning and instead check and remove if needed when using a healing item.
+- Made dead Pokémon checking for the Nuzlocke Challenge no longer occur during field poisoning and instead check and remove if needed when using a healing item.
 
 ## v1.2.0
-- [Added Nuzlocke challenge setting.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge)
+- [Added Nuzlocke Challenge setting.](https://github.com/pret/pokeemerald/wiki/Add-Nuzlocke-Challenge)
 - [Pressing B as the ball shakes raises catching odds.](https://github.com/pret/pokeemerald/wiki/Raise-Odds-of-Catching-a-Pokemon-by-Pressing-B-When-the-Ball-Shakes)
-- Final Elite Four battle is now a double battle with Steven and Wallace.
+- [Final Elite Four battle is now a double battle with Steven and Wallace.](https://gitlab.com/devolov/pokeemerald_fork/-/commit/b1e4d9456340f6ea91adabc0829aafb98527ecc9)
 - Missingno. is now encounterable in the game after speaking to Wally's father and surfing in Pacifidlog Town.
-- The Old Sea Map to get Mew is receivable under an old truck in the Lilycove harbor if the Nuzlocke challenge is on.
+- The Old Sea Map to get Mew is receivable under an old truck in the Lilycove harbor if the Nuzlocke Challenge is on.
 - [Jumping over ledges when bunny-hopping on the Acro Bike is now possible.](https://github.com/pret/pokeemerald/wiki/Allow-Jumping-Over-Ledges-with-Acro-Bike)
 - [Can now quickly run from a battle by holding Right while the wild Pokémon's name appears.](https://github.com/pret/pokeemerald/wiki/Quickly-Run-from-a-Battle-by-Holding-Right-While-the-Wild-Pok%C3%A9mon's-Name-Appears)
 - [Make Pokémon that Require a Fateful Encounter to be Legal to Always Be Set to Legal](https://github.com/pret/pokeemerald/wiki/Make-Pokemon-that-Require-a-Fateful-Encounter-to-be-Legal-to-Always-Be-Set-to-Legal)
