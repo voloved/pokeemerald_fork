@@ -462,7 +462,7 @@ static void SetNuzlockeCatchStatusTrainer(u16 trainerId)
         }
         break;
     }  
-    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(currLocation, startSpecies, TRUE);
+    gNuzlockeCannotCatch = HasWildPokmnOnThisRouteBeenSeen(currLocation, startSpecies, FALSE);
 }
 
 void BattleSetup_StartWildBattle(void)

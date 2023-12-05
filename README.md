@@ -31,6 +31,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - The items in the PC at the beginning of the game will change based on if the Nuzlocke Challenge is run.
  - Type Effectiveness option now shows a plus sign if a move is STAB and arrows if a move is effective or not.
  - Cleaned up Infinite Rare Candy palette. [Credit: Viperio]
+ - If a follower can learn fly, then it would fly you if you talk with it.
  - Bugfix where scripted encounters did not count toward the Nuzlocke.
  
  ## v2.3.2
