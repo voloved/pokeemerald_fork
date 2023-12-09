@@ -1164,9 +1164,9 @@ static const u8 sText_Trade[] = _("trade");
 static const u8 sText_Trades[] = _("trades");
 void CanDoWonderTrade(void)
 {
-    u32 numBadges = GetNumOwnedBadges();
+    u32 wonderTradesAllowed = 2* GetNumOwnedBadges();
     u16 WonderTradesDone = VarGet(VAR_JAIME_MINTS_GIVEN) >> 4;
-    s16 wonderTradesLeft = numBadges - WonderTradesDone;
+    s16 wonderTradesLeft = wonderTradesAllowed - WonderTradesDone;
     if (FlagGet(FLAG_IS_CHAMPION))
         gSpecialVar_Result = 0xFF;
     else if (wonderTradesLeft > 0)
