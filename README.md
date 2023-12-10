@@ -10,7 +10,7 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  ![Example](https://i.imgur.com/KSMvc0h.png)  
  ## Not Yet Versioned
  - Wonder Trade amount doubled.
- - [POKéVIAL icon changed and shows the amount still left in the icon.](https://github.com/PokemonSanFran/pokeemerald/tree/pokevial) [Credit: PokemonSanFran]
+ - [POKéVIAL icon shows the amount still left in the icon.](https://github.com/PokemonSanFran/pokeemerald/tree/pokevial) [Credit: PokemonSanFran]
 
  ## v2.4.0
  - [Added Day-Night System](https://github.com/aarant/pokeemerald/tree/lighting-expanded-id) [Credit: aarant]

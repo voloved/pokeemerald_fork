@@ -563,4 +563,6 @@
 || (item) == ITEM_UP_GRADE || (item) == ITEM_DEEP_SEA_TOOTH || (item) == ITEM_DEEP_SEA_SCALE \
 || (item) == ITEM_NEVER_MELT_ICE || (item) == ITEM_EVERSTONE|| (item) == ITEM_STAR_PIECE)
 
+#define POKEVIAL_ICONS 6
+
 #endif  // GUARD_CONSTANTS_ITEMS_H

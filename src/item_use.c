@@ -1293,7 +1293,7 @@ static s16 PokevialGetUsesLeft(u16 vialUsages, u16 vialUsagesMax)
     return vialUsagesLeft;
 }
 
-u32 PokevialGetVialPercent(void)
+u32 PokevialGetVialIconIdx(void)
 {
     u32 vialPercent;
     u16 vialUsages = VarGet(VAR_POKEVIAL_USAGES);
@@ -1302,8 +1302,8 @@ u32 PokevialGetVialPercent(void)
     if (vialUsagesLeft == 0)
         return 0;
     if (vialUsagesLeft == vialUsagesMax)
-        return 10;
-    vialPercent = (vialUsagesLeft * 10 / vialUsagesMax);
+        return POKEVIAL_ICONS;
+    vialPercent = DIV_ROUND(vialUsagesLeft * POKEVIAL_ICONS, vialUsagesMax);
     return (vialPercent == 0 && vialUsagesLeft > 0) ? 1 : vialPercent;
 }
 

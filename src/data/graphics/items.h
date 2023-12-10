@@ -257,10 +257,6 @@ const u32 gItemIcon_PokeVial3[] = INCBIN_U32("graphics/items/icons/pokevial/poke
 const u32 gItemIcon_PokeVial4[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial4.4bpp.lz");
 const u32 gItemIcon_PokeVial5[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial5.4bpp.lz");
 const u32 gItemIcon_PokeVial6[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial6.4bpp.lz");
-const u32 gItemIcon_PokeVial7[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial7.4bpp.lz");
-const u32 gItemIcon_PokeVial8[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial8.4bpp.lz");
-const u32 gItemIcon_PokeVial9[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial9.4bpp.lz");
-const u32 gItemIcon_PokeVial[]  = INCBIN_U32("graphics/items/icons/pokevial/pokevial.4bpp.lz");
 const u32 gItemIconPalette_PokeVial[] = INCBIN_U32("graphics/items/icon_palettes/pokevial.gbapal.lz");
 
 const u32 gItemIcon_FabMail[] = INCBIN_U32("graphics/items/icons/fab_mail.4bpp.lz");
