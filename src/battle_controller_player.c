@@ -1739,6 +1739,7 @@ static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev)
     }
 
 	BattlePutTextOnWindow(gDisplayedStringBattle, typeColor);
+    MoveSelectionDisplayMoveStab();
     MoveSelectionDisplaySplitIcon();
 }
 
@@ -1794,7 +1795,6 @@ static void MoveSelectionDisplayMoveDescription(void)
     u8 pwr_desc[7] = _("PWR: ");
     u8 acc_desc[7] = _("ACC: ");
     u8 pri_desc[7] = _("PRI: ");
-    u8 pwr_start[] = _("{CLEAR_TO 0x03}");
     u8 acc_start[] = _("{CLEAR_TO 0x38}");
     u8 pri_start[] = _("{CLEAR_TO 0x6D}");
     if (move ==  MOVE_CHILL_O_WISP && !FlagGet(FLAG_USE_FROSTBITE))
@@ -1810,7 +1810,6 @@ static void MoveSelectionDisplayMoveDescription(void)
     else
         ConvertIntToDecimalStringN(acc_num, acc, STR_CONV_MODE_LEFT_ALIGN, 3);
     ConvertIntToDecimalStringN(pri_num, pri, STR_CONV_MODE_LEFT_ALIGN, 2);
-    txtPtr = StringCopy(txtPtr, pwr_start);
     txtPtr = StringCopy(txtPtr, pwr_desc);
     txtPtr = StringCopy(txtPtr, pwr_num);
     txtPtr = StringCopy(txtPtr, acc_start);
