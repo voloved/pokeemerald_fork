@@ -1677,15 +1677,13 @@ static void MoveSelectionDisplayMoveStab(void)
     BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_STAB);
 }
 
-u8 TypeEffectiveness(u8 targetId)
+static u8 TypeEffectiveness(u16 attackerMove, u8 targetId)
 {
     u8 moveFlags;
-    u16 move;
     if (FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW) == FALSE){
         return B_WIN_MOVE_TYPE;
     }
-    move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
-    moveFlags = AI_TypeCalc(move, gBattleMons[targetId].species, gBattleMons[targetId].ability);
+    moveFlags = AI_TypeCalc(attackerMove, gBattleMons[targetId].species, gBattleMons[targetId].ability);
     if (moveFlags & MOVE_RESULT_NO_EFFECT) {
         return B_WIN_TYPE_NO_EFF;  // 26 - no effect
     }
@@ -1702,13 +1700,13 @@ u8 TypeEffectiveness(u8 targetId)
 static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev)
 {
     u8 *txtPtr = gDisplayedStringBattle;
-	struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct*)(&gBattleBufferA[gActiveBattler][4]);
-    u8 type = gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type;
-    u8 typeColor = TypeEffectiveness(targetId);
+    u16 move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
+    u8 type = gBattleMoves[move].type;
     bool8 showEffectiveness = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
+    u8 typeColor = showEffectiveness? TypeEffectiveness(move, targetId) : B_WIN_MOVE_TYPE;
 
     // Don't update the image if the current and previous targets have the same type effectiveness
-    if(typeColor == TypeEffectiveness(targetIdPrev) && targetIdPrev < B_POSITION_NO_BATTLER)
+    if(typeColor == TypeEffectiveness(move, targetIdPrev) && targetIdPrev < B_POSITION_NO_BATTLER)
         return;
 
     if (!showEffectiveness)
@@ -1746,14 +1744,95 @@ static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev)
 static void MoveSelectionDisplayMoveType(void)
 {
     u8 *txtPtr = gDisplayedStringBattle;
-    u8 typeColor = IsDoubleBattle() ? B_WIN_MOVE_TYPE : TypeEffectiveness(GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerPosition(gActiveBattler))));
-    struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleBufferA[gActiveBattler][4]);
-    u8 type = gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type;
+    u16 move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
+    u8 type = gBattleMoves[move].type;
+    u8 typeColor;
     bool8 showEffectiveness = FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW);
 
     if (!showEffectiveness)
     {
+        typeColor = B_WIN_MOVE_TYPE;
         txtPtr = StringCopy(txtPtr, gText_MoveInterfaceType);
+    }   
+    else if (IsDoubleBattle() && gBattleMoves[move].target == (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY))
+    {
+        u8 effectivenessLeft = TypeEffectiveness(move, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT));
+        u8 effectivenessRight = TypeEffectiveness(move, GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT));
+        switch (effectivenessLeft)
+        {
+        case B_WIN_TYPE_NO_EFF:
+            switch (effectivenessRight)
+            {
+            case B_WIN_TYPE_NO_EFF:
+                typeColor = B_WIN_TYPE_NO_EFF;
+                break;
+            case B_WIN_TYPE_NOT_VERY_EFF:
+            case B_WIN_MOVE_TYPE:
+                typeColor = B_WIN_TYPE_NOT_VERY_EFF;
+                break;
+            case B_WIN_TYPE_SUPER_EFF:
+            default:
+                typeColor = B_WIN_MOVE_TYPE;
+                break;
+            }
+            break;
+        case B_WIN_TYPE_NOT_VERY_EFF:
+            switch (effectivenessRight)
+            {
+            case B_WIN_TYPE_NO_EFF:
+            case B_WIN_TYPE_NOT_VERY_EFF:
+            case B_WIN_MOVE_TYPE:
+                typeColor = B_WIN_TYPE_NOT_VERY_EFF;
+                break;
+            case B_WIN_TYPE_SUPER_EFF:
+            default:
+                typeColor = B_WIN_MOVE_TYPE;
+                break;
+            }
+            break;
+        case B_WIN_MOVE_TYPE:
+            switch (effectivenessRight)
+            {
+            case B_WIN_TYPE_NO_EFF:
+            case B_WIN_TYPE_NOT_VERY_EFF:
+                typeColor = B_WIN_TYPE_NOT_VERY_EFF;
+                break;
+            case B_WIN_MOVE_TYPE:
+            default:
+                typeColor = B_WIN_MOVE_TYPE;
+                break;
+            case B_WIN_TYPE_SUPER_EFF:
+                typeColor = B_WIN_TYPE_SUPER_EFF;
+                break;
+            }
+            break;
+        case B_WIN_TYPE_SUPER_EFF:
+            switch (effectivenessRight)
+            {
+            case B_WIN_TYPE_NO_EFF:
+            case B_WIN_TYPE_NOT_VERY_EFF:
+            default:
+                typeColor = B_WIN_MOVE_TYPE;
+                break;
+            case B_WIN_MOVE_TYPE:
+            case B_WIN_TYPE_SUPER_EFF:
+                typeColor = B_WIN_TYPE_SUPER_EFF;
+                break;
+            }
+            break;
+        default:
+            typeColor = B_WIN_MOVE_TYPE;
+            break;
+        }
+    }
+    else if(!IsDoubleBattle())
+    {
+       u16 targetSpecies = GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerPosition(gActiveBattler)));
+       typeColor = TypeEffectiveness(move, targetSpecies);
+    } 
+    else
+    {
+        typeColor = B_WIN_MOVE_TYPE;
     }
     
     *(txtPtr)++ = EXT_CTRL_CODE_BEGIN;
@@ -1786,8 +1865,7 @@ static void MoveSelectionDisplayMoveType(void)
 static void MoveSelectionDisplayMoveDescription(void)
 {
     u8 *txtPtr = gDisplayedStringBattle;
-    struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct*)(&gBattleBufferA[gActiveBattler][4]);
-    u16 move = moveInfo->moves[gMoveSelectionCursor[gActiveBattler]];
+    u16 move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
     u16 pwr = gBattleMoves[move].power;
     u16 acc = gBattleMoves[move].accuracy;
     s16 pri = gBattleMoves[move].priority;
