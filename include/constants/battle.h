@@ -375,7 +375,8 @@
 #define B_WIN_TYPE_NOT_VERY_EFF  25
 #define B_WIN_TYPE_NO_EFF        26
 #define B_WIN_MOVE_STAB          27
-#define B_WIN_MOVE_DESCRIPTION   28
+#define B_WIN_MOVE_DBL_BAT       28
+#define B_WIN_MOVE_DESCRIPTION   29
 
 // The following are duplicate id values for windows that Battle Arena uses differently.
 #define ARENA_WIN_PLAYER_NAME      15
