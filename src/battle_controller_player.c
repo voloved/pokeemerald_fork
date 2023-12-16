@@ -1697,6 +1697,105 @@ static u8 TypeEffectiveness(u16 attackerMove, u8 targetId)
         return B_WIN_MOVE_TYPE; // 10 - normal effectiveness
 }
 
+static void swapColorsForDoubleBattleIcon(u8 idxPos, u8 idxClr)
+{
+    struct PlttData *pltOut;
+    struct PlttData *pltIn;
+    u16 paletteNum = 5 * 0x10; //5 is the PaletteNum of B_WIN_MOVE_TYPE    
+    pltOut = (struct PlttData *)&gPlttBufferFaded[paletteNum + idxPos];
+    pltIn = (struct PlttData *)&gPlttBufferFaded[paletteNum + idxClr];
+    pltOut->r = pltIn->r; pltOut->g = pltIn->g; pltOut->b = pltIn->b;
+}
+
+static u8 effectivenessToColor(u8 effectiveness, u8 clrNoEff, u8 clrNotEff, u8 clrNormEff, u8 clrSupEff)
+{
+    u8 clr;
+    switch (effectiveness)
+    {
+    case B_WIN_TYPE_NO_EFF:
+    default:
+        clr = clrNoEff;
+        break;
+    case B_WIN_TYPE_NOT_VERY_EFF:
+        clr = clrNotEff;
+        break;
+    case B_WIN_MOVE_TYPE:
+        clr = clrNormEff;
+        break;
+    case B_WIN_TYPE_SUPER_EFF:
+        clr = clrSupEff;
+        break;
+    }
+    return clr;
+}
+
+static void MoveSelectionDisplayDoubleBattle(u16 move, u8 windowId)
+{
+    if (IsDoubleBattle() && FlagGet(FLAG_TYPE_EFFECTIVENESS_BATTLE_SHOW))
+    {
+	    u8 playerId = GetBattlerPosition(gActiveBattler);
+        u8 partnerId = GetBattlerAtPosition(BATTLE_PARTNER(playerId));
+        u8 oppLeftId = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+        u8 oppRightId = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
+        u8 effectivenessPartner = TypeEffectiveness(move, partnerId);        
+        u8 effectivenessLeft = TypeEffectiveness(move, oppLeftId);
+        u8 effectivenessRight = TypeEffectiveness(move, oppRightId);
+        bool8 showDoublesBox = FALSE;        
+        u8 idxBrn = 2, idxGrn = 6, idxRed = 1, idxWht = 14, idxGry = 7;
+        u8 idxOppLeft = 9, idxOppRight = 8, idxPlayLeft = 10, idxPlayRight = 4;
+        u8 idxPlayer = (playerId == B_POSITION_PLAYER_LEFT) ? idxPlayLeft : idxPlayRight;
+        u8 idxPartner = (partnerId == B_POSITION_PLAYER_LEFT) ? idxPlayLeft : idxPlayRight;
+        u8 clrPlayer, clrPartner, clrOppLeft, clrOppRight;
+        static const u8 sSplitIcons_Gfx[] = INCBIN_U8("graphics/interface/double_battle_eff.4bpp");
+
+        if(gBattleMoves[move].target & (MOVE_TARGET_USER))
+        {
+            showDoublesBox = TRUE;
+            clrPlayer = idxGrn;
+            clrPartner = clrOppLeft = clrOppRight = idxGry;
+        }
+        else if(gBattleMoves[move].target == MOVE_TARGET_SELECTED || gBattleMoves[move].target & MOVE_TARGET_FOES_AND_ALLY)
+        {
+            showDoublesBox = TRUE;
+            clrPlayer = idxGry;
+            clrPartner = effectivenessToColor(effectivenessPartner, idxBrn, idxRed, idxWht, idxGrn);
+            clrOppLeft = effectivenessToColor(effectivenessLeft, idxBrn, idxRed, idxWht, idxGrn);
+            clrOppRight = effectivenessToColor(effectivenessRight, idxBrn, idxRed, idxWht, idxGrn);
+        }
+        else if(gBattleMoves[move].target & (MOVE_TARGET_BOTH | MOVE_TARGET_RANDOM))
+        {
+            showDoublesBox = TRUE;
+            clrPlayer = clrPartner = idxGry;
+            clrOppLeft = effectivenessToColor(effectivenessLeft, idxBrn, idxRed, idxWht, idxGrn);
+            clrOppRight = effectivenessToColor(effectivenessRight, idxBrn, idxRed, idxWht, idxGrn);
+        }
+        else
+        {
+            clrPlayer = clrPartner = idxGry;
+            clrOppLeft = effectivenessToColor(effectivenessLeft, idxBrn, idxRed, idxWht, idxGrn);
+            clrOppRight = effectivenessToColor(effectivenessRight, idxBrn, idxRed, idxWht, idxGrn);
+        }
+
+        if (gAbsentBattlerFlags & gBitTable[partnerId] || partnerId == B_POSITION_NO_BATTLER)
+            clrPartner = idxGry;
+        if (gAbsentBattlerFlags & gBitTable[oppLeftId] || oppLeftId == B_POSITION_NO_BATTLER)
+            clrOppLeft = idxGry;
+        if (gAbsentBattlerFlags & gBitTable[oppRightId] || oppRightId == B_POSITION_NO_BATTLER)
+            clrOppRight = idxGry;
+
+        if (showDoublesBox)
+        {
+            swapColorsForDoubleBattleIcon(idxPlayer, clrPlayer);
+            swapColorsForDoubleBattleIcon(idxPartner, clrPartner);
+            swapColorsForDoubleBattleIcon(idxOppLeft, clrOppLeft);
+            swapColorsForDoubleBattleIcon(idxOppRight, clrOppRight);
+            BlitBitmapToWindow(windowId, sSplitIcons_Gfx, 43, 4, 12, 10);
+            PutWindowTilemap(windowId);
+            CopyWindowToVram(windowId, 3);
+        }
+    }
+}
+
 static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev)
 {
     u8 *txtPtr = gDisplayedStringBattle;
@@ -1707,6 +1806,11 @@ static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev)
 
     // Don't update the image if the current and previous targets have the same type effectiveness
     if(typeColor == TypeEffectiveness(move, targetIdPrev) && targetIdPrev < B_POSITION_NO_BATTLER)
+        return;
+
+    // Avoids a jitter when swapping past the player's pokemon or selecting an absent slot
+    if (targetId == GetBattlerPosition(gActiveBattler) && !(gBattleMoves[move].target & MOVE_TARGET_USER_OR_SELECTED)
+    || gAbsentBattlerFlags & gBitTable[targetId])
         return;
 
     if (!showEffectiveness)
@@ -1737,6 +1841,7 @@ static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId, u8 targetIdPrev)
     }
 
 	BattlePutTextOnWindow(gDisplayedStringBattle, typeColor);
+    MoveSelectionDisplayDoubleBattle(move, typeColor);
     MoveSelectionDisplayMoveStab();
     MoveSelectionDisplaySplitIcon();
 }
@@ -1754,10 +1859,17 @@ static void MoveSelectionDisplayMoveType(void)
         typeColor = B_WIN_MOVE_TYPE;
         txtPtr = StringCopy(txtPtr, gText_MoveInterfaceType);
     }   
-    else if (IsDoubleBattle() && gBattleMoves[move].target == (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY))
+    else if (IsDoubleBattle() && gBattleMoves[move].target & (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY))
     {
         u8 effectivenessLeft = TypeEffectiveness(move, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT));
         u8 effectivenessRight = TypeEffectiveness(move, GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT));
+
+        // Used to ignroe absent opponents
+        if (gAbsentBattlerFlags & gBitTable[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)])
+            effectivenessLeft = effectivenessRight;
+        else if (gAbsentBattlerFlags & gBitTable[GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT)])
+            effectivenessRight = effectivenessLeft;
+
         switch (effectivenessLeft)
         {
         case B_WIN_TYPE_NO_EFF:
@@ -1827,8 +1939,8 @@ static void MoveSelectionDisplayMoveType(void)
     }
     else if(!IsDoubleBattle())
     {
-       u16 targetSpecies = GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerPosition(gActiveBattler)));
-       typeColor = TypeEffectiveness(move, targetSpecies);
+       u16 targetId = GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerPosition(gActiveBattler)));
+       typeColor = TypeEffectiveness(move, targetId);
     } 
     else
     {
@@ -1859,6 +1971,7 @@ static void MoveSelectionDisplayMoveType(void)
     }
 
     BattlePutTextOnWindow(gDisplayedStringBattle, typeColor);
+    MoveSelectionDisplayDoubleBattle(move, typeColor);
     MoveSelectionDisplaySplitIcon();
 }
 
@@ -3565,7 +3678,7 @@ static void MoveSelectionDisplaySplitIcon(void){
     u8 icon = isMoveStatus(move) ? 2 : isMoveSpecial(move);
     // for icon: 0 = phys; 1= spec; 2 = status
 	LoadPalette(sSplitIcons_Pal, 10 * 0x10, 0x20);
-	BlitBitmapToWindow(B_WIN_DUMMY, sSplitIcons_Gfx + 0x80 * icon, 0, 0, 16, 16);
-	PutWindowTilemap(B_WIN_DUMMY);
-	CopyWindowToVram(B_WIN_DUMMY, 3);
+	BlitBitmapToWindow(B_WIN_SPLIT_ICON, sSplitIcons_Gfx + 0x80 * icon, 0, 0, 16, 16);
+	PutWindowTilemap(B_WIN_SPLIT_ICON);
+	CopyWindowToVram(B_WIN_SPLIT_ICON, 3);
 }
