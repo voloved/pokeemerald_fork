@@ -1722,7 +1722,7 @@ static void MoveSelectionDisplayDoubleBattle(u16 move)
     if(gBattleMoves[move].target & (MOVE_TARGET_USER))
     {
         showDoublesBox = TRUE;
-        clrPlayer = idxGrn;
+        clrPlayer = idxWht;
         clrPartner = clrOppLeft = clrOppRight = idxGry;
     }
     else if(gBattleMoves[move].target == MOVE_TARGET_SELECTED || gBattleMoves[move].target & MOVE_TARGET_FOES_AND_ALLY)
