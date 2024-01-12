@@ -3401,6 +3401,11 @@ static void Cmd_tryfaintmon(void)
                 gBattleMoveDamage = gBattleMons[battlerId].hp;
                 gBattlescriptCurrInstr = BattleScript_DestinyBondTakesLife;
             }
+            if (gCurrentMove == MOVE_HYPER_BEAM)
+            {
+                gBattleMons[gBattlerAttacker].status2 &= ~STATUS2_RECHARGE;
+                gDisableStructs[gBattlerAttacker].rechargeTimer = 0;
+            }
             if ((gStatuses3[gBattlerTarget] & STATUS3_GRUDGE)
              && !(gHitMarker & HITMARKER_GRUDGE)
              && GetBattlerSide(gBattlerAttacker) != GetBattlerSide(gBattlerTarget)
@@ -8949,7 +8954,7 @@ static void Cmd_furycuttercalc(void)
 {
     if (gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
     {
-        gDisableStructs[gBattlerAttacker].furyCutterCounter = 0;
+        //gDisableStructs[gBattlerAttacker].furyCutterCounter = 0;  Commented out to make fury cutter better
         gBattlescriptCurrInstr = BattleScript_MoveMissedPause;
     }
     else
