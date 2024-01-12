@@ -1819,4 +1819,5 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_CHILL_O_WISP - 1] = sChillOWispDescription,
     [MOVE_ENERGY_BALL - 1] = sEnergyBallDescription,
     [MOVE_ACROBATICS - 1] = sAcrobaticsDescription,
+    [MOVE_GIGA_IMPACT - 1] = sHyperBeamDescription,
 };

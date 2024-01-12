@@ -3401,7 +3401,7 @@ static void Cmd_tryfaintmon(void)
                 gBattleMoveDamage = gBattleMons[battlerId].hp;
                 gBattlescriptCurrInstr = BattleScript_DestinyBondTakesLife;
             }
-            if (gCurrentMove == MOVE_HYPER_BEAM)
+            if (gCurrentMove == MOVE_HYPER_BEAM || gCurrentMove == MOVE_GIGA_IMPACT)
             {
                 gBattleMons[gBattlerAttacker].status2 &= ~STATUS2_RECHARGE;
                 gDisableStructs[gBattlerAttacker].rechargeTimer = 0;

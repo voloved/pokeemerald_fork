@@ -380,6 +380,7 @@ gBattleAnims_Moves::
 	.4byte Move_CHILL_O_WISP
 	.4byte Move_ENERGY_BALL
 	.4byte Move_ACROBATICS
+	.4byte Move_GIGA_IMPACT
 	.4byte Move_COUNT
 
 	.align 2
@@ -1865,6 +1866,7 @@ Move_VICE_GRIP:
 	end
 
 Move_GUILLOTINE:
+Move_GIGA_IMPACT:
 	loadspritegfx ANIM_TAG_CUT
 	loadspritegfx ANIM_TAG_IMPACT
 	monbg ANIM_DEF_PARTNER
