@@ -9,12 +9,15 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
  ## Not Yet Versioned
+ - Surfing Occurs Without Asking After the First Time Surfing on a Map.
+   - Idea and some logic taken from [PokemonSanFran](https://github.com/PokemonSanFran/pokeemerald/wiki/QoL-Field-Moves).
  - Wonder Trade amount doubled.
  - [Type Effectiveness Icon for Double Battles Created.](https://gitlab.com/devolov/pokeemerald_fork/-/compare/3be058cd...fafe270d?from_project_id=41747019&straight=false)
  - STAB and Type Effectiveness Icons Display.
  - Able to Fly on Roof of Lilycove Dept Store.
+ - Added Giga Impact.
  - [POKéVIAL icon shows the amount still left in the icon.](https://github.com/PokemonSanFran/pokeemerald/tree/pokevial) [Credit: PokemonSanFran]
-  - All Wall Clocks in PokéMarts Display as Blue.
+ - All Wall Clocks in PokéMarts Display as Blue.
 
  ## v2.4.0
  - [Added Day-Night System](https://github.com/aarant/pokeemerald/tree/lighting-expanded-id) [Credit: aarant]

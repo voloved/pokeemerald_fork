@@ -188,11 +188,13 @@ static void SpriteCB_FieldMoveMonWaitAfterCry(struct Sprite *);
 static void SpriteCB_FieldMoveMonSlideOffscreen(struct Sprite *);
 
 static void Task_SurfFieldEffect(u8);
+static void Task_SurfFieldEffectNoIntro(u8);
 static void SurfFieldEffect_Init(struct Task *);
 static void SurfFieldEffect_FieldMovePose(struct Task *);
 static void SurfFieldEffect_ShowMon(struct Task *);
 static void SurfFieldEffect_JumpOnSurfBlob(struct Task *);
 static void SurfFieldEffect_End(struct Task *);
+static void SurfToolFieldEffect_CheckHeldMovementStatus(struct Task *);
 
 static void SpriteCB_NPCFlyOut(struct Sprite *);
 
@@ -3039,6 +3041,15 @@ u8 FldEff_UseSurf(void)
     return FALSE;
 }
 
+u8 FldEff_UseSurfNoIntro(void)
+{
+    u8 taskId = CreateTask(Task_SurfFieldEffectNoIntro, 0xff);
+    gTasks[taskId].tMonId = gFieldEffectArguments[0];
+    Overworld_ClearSavedMusic();
+    Overworld_ChangeMusicTo(MUS_SURF);
+    return FALSE;
+}
+
 static void (*const sSurfFieldEffectFuncs[])(struct Task *) = {
     SurfFieldEffect_Init,
     SurfFieldEffect_FieldMovePose,
@@ -3047,9 +3058,21 @@ static void (*const sSurfFieldEffectFuncs[])(struct Task *) = {
     SurfFieldEffect_End,
 };
 
+static void (*const sSurfFieldEffectFuncsNoIntro[])(struct Task *) = {
+    SurfFieldEffect_Init,
+    SurfToolFieldEffect_CheckHeldMovementStatus,
+    SurfFieldEffect_JumpOnSurfBlob,
+    SurfFieldEffect_End,
+};
+
 static void Task_SurfFieldEffect(u8 taskId)
 {
     sSurfFieldEffectFuncs[gTasks[taskId].tState](&gTasks[taskId]);
+}
+
+static void Task_SurfFieldEffectNoIntro(u8 taskId)
+{
+    sSurfFieldEffectFuncsNoIntro[gTasks[taskId].tState](&gTasks[taskId]);
 }
 
 static void SurfFieldEffect_Init(struct Task *task)
@@ -3124,9 +3147,25 @@ static void SurfFieldEffect_End(struct Task *task)
         SetSurfBlob_BobState(objectEvent->fieldEffectSpriteId, BOB_PLAYER_AND_MON);
         UnfreezeObjectEvents();
         UnlockPlayerFieldControls();
-        FieldEffectActiveListRemove(FLDEFF_USE_SURF);
-        DestroyTask(FindTaskIdByFunc(Task_SurfFieldEffect));
+        if (FieldEffectActiveListContains(FLDEFF_USE_SURF))
+        {
+            FieldEffectActiveListRemove(FLDEFF_USE_SURF);
+            DestroyTask(FindTaskIdByFunc(Task_SurfFieldEffect));
+        }
+        else if(FieldEffectActiveListContains(FLDEFF_USE_SURF_NO_INTRO))
+        {
+            FieldEffectActiveListRemove(FLDEFF_USE_SURF_NO_INTRO);
+            DestroyTask(FindTaskIdByFunc(Task_SurfFieldEffectNoIntro));
+        }
     }
+}
+
+static void SurfToolFieldEffect_CheckHeldMovementStatus(struct Task *task)
+{
+    struct ObjectEvent *objectEvent;
+    objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    if (ObjectEventCheckHeldMovementStatus(objectEvent))
+        task->tState++;
 }
 
 #undef tState

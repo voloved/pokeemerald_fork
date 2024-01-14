@@ -30,6 +30,7 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/trainer_types.h"
+#include "event_scripts.h"
 
 #define NUM_FORCED_MOVEMENTS 18
 #define NUM_ACRO_BIKE_COLLISIONS 5
@@ -768,6 +769,13 @@ u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u
     u8 collision = GetCollisionAtCoords(objectEvent, x, y, direction);
     if (collision == COLLISION_ELEVATION_MISMATCH && CanStopSurfing(x, y, direction))
         return COLLISION_STOP_SURFING;
+    if (IsPlayerFacingSurfableFishableWater() 
+        && (!TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
+        && GetObjectEventIdByPosition(x, y, 1) == OBJECT_EVENTS_COUNT)
+    {
+        ScriptContext_SetupScript(EventScript_UseSurfNoIntro);
+        return COLLISION_SURF_NO_INTRO;
+    }
 
     if (ShouldJumpLedge(x, y, direction))
     {
