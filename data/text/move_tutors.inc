@@ -235,3 +235,28 @@ MoveTutor_Text_ExplosionTaught:
 	.string "to ignite my own EXPLOSION…\p"
 	.string "Maybe it's because deep down,\n"
 	.string "I would rather stay here…$"
+
+MoveTutor_Text_DoubleTeamTeach:
+	.string "My SKITTY over there knows DOUBLE\n"
+	.string "TEAM. It boosts evasiveness.\p"
+	.string "If you'd like. I can teach it to\n"
+	.string "your POKéMON.$"
+
+MoveTutor_Text_DoubleTeamDeclined:
+	.string "Come back later if you\n"
+	.string "do want to learn it.$"
+
+MoveTutor_Text_DoubleTeamWhichMon:
+	.string "Cool! What POKéMON do you want!\n"
+	.string "want to learn DOUBLE TEAM?$"
+
+MoveTutor_Text_DoubleTeamTaught:
+	.string "I hope the POKéMON I taught DOUBLE\n"
+	.string "TEAM to is doing well.\p"
+	.string "Anyway, I'm having a hard time deciding\n"
+	.string "if I should make my SKITTY evolve or\p"
+	.string "not. I only have to use this MOON STONE,\n"
+	.string "but it's so hard to decide…\p"
+	.string "If I make it evolve, it will become\n"
+	.string "much stronger.\p"
+	.string "But it will look so different, too.$"

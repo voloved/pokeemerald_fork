@@ -258,6 +258,32 @@ MoveTutor_EventScript_ExplosionTaught::
 	release
 	end
 
+FallarborTown_Mart_EventScript_DoubleTeamTutor::
+	lock
+	faceplayer
+	goto_if_set FLAG_MOVE_TUTOR_TAUGHT_DOUBLE_TEAM, MoveTutor_EventScript_DoubleTeamTaught
+	msgbox MoveTutor_Text_DoubleTeamTeach, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, MoveTutor_EventScript_DoubleTeamDeclined
+	call MoveTutor_EventScript_CanOnlyBeLearnedOnce
+	goto_if_eq VAR_RESULT, NO, MoveTutor_EventScript_DoubleTeamDeclined
+	msgbox MoveTutor_Text_DoubleTeamWhichMon, MSGBOX_DEFAULT
+	setvar VAR_0x8005, TUTOR_MOVE_DOUBLE_TEAM
+	call MoveTutor_EventScript_OpenPartyMenu
+	goto_if_eq VAR_RESULT, 0, MoveTutor_EventScript_DoubleTeamDeclined
+	setflag FLAG_MOVE_TUTOR_TAUGHT_DOUBLE_TEAM
+	goto MoveTutor_EventScript_DoubleTeamTaught
+	end
+
+MoveTutor_EventScript_DoubleTeamDeclined::
+	msgbox MoveTutor_Text_DoubleTeamDeclined, MSGBOX_DEFAULT
+	release
+	end
+
+MoveTutor_EventScript_DoubleTeamTaught::
+	msgbox MoveTutor_Text_DoubleTeamTaught, MSGBOX_DEFAULT
+	release
+	end
+
 MoveTutor_EventScript_OpenPartyMenu::
 	special ChooseMonForMoveTutor
 	waitstate
