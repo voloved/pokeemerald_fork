@@ -2,7 +2,7 @@ MauvilleCity_GameCorner_MapScripts::
 	.byte 0
 
     @ Game Corner prices
-	.set TM32_COINS,  1500
+	.set TM30_COINS,  2000
 	.set TM29_COINS,  3500
 	.set TM35_COINS,  4000
 	.set TM24_COINS,  4000
@@ -236,7 +236,7 @@ MauvilleCity_GameCorner_EventScript_ReturnToChooseTMPrize::
 MauvilleCity_GameCorner_EventScript_ChooseTMPrize::
 	multichoice 12, 0, MULTI_GAME_CORNER_TMS, FALSE
 	switch VAR_RESULT
-	case 0, MauvilleCity_GameCorner_EventScript_TM32
+	case 0, MauvilleCity_GameCorner_EventScript_TM30
 	case 1, MauvilleCity_GameCorner_EventScript_TM29
 	case 2, MauvilleCity_GameCorner_EventScript_TM35
 	case 3, MauvilleCity_GameCorner_EventScript_TM24
@@ -245,10 +245,10 @@ MauvilleCity_GameCorner_EventScript_ChooseTMPrize::
 	goto MauvilleCity_GameCorner_EventScript_CancelTMSelect
 	end
 
-MauvilleCity_GameCorner_EventScript_TM32::
+MauvilleCity_GameCorner_EventScript_TM30::
 	setvar VAR_TEMP_1, 1
-	bufferitemname STR_VAR_1, ITEM_TM32
-	setvar VAR_0x8004, ITEM_TM32
+	bufferitemname STR_VAR_1, ITEM_TM30
+	setvar VAR_0x8004, ITEM_TM30
 	goto MauvilleCity_GameCorner_EventScript_ConfirmTMPrize
 
 MauvilleCity_GameCorner_EventScript_TM29::
@@ -280,20 +280,20 @@ MauvilleCity_GameCorner_EventScript_ConfirmTMPrize::
 	msgbox MauvilleCity_GameCorner_Text_SoYourChoiceIsTheTMX, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, MauvilleCity_GameCorner_EventScript_CancelTMSelect
 	switch VAR_TEMP_1
-	case 1, MauvilleCity_GameCorner_EventScript_BuyTM32
+	case 1, MauvilleCity_GameCorner_EventScript_BuyTM30
 	case 2, MauvilleCity_GameCorner_EventScript_BuyTM29
 	case 3, MauvilleCity_GameCorner_EventScript_BuyTM35
 	case 4, MauvilleCity_GameCorner_EventScript_BuyTM24
 	case 5, MauvilleCity_GameCorner_EventScript_BuyTM13
 	end
 
-MauvilleCity_GameCorner_EventScript_BuyTM32::
+MauvilleCity_GameCorner_EventScript_BuyTM30::
 	checkcoins VAR_TEMP_2
-	goto_if_lt VAR_TEMP_2, TM32_COINS, MauvilleCity_GameCorner_EventScript_NotEnoughCoinsForTM
-	checkitem ITEM_TM32
+	goto_if_lt VAR_TEMP_2, TM30_COINS, MauvilleCity_GameCorner_EventScript_NotEnoughCoinsForTM
+	checkitem ITEM_TM30
 	goto_if_eq VAR_RESULT, TRUE, MauvilleCity_GameCorner_EventScript_YouAlreadyHaveThis
-	removecoins TM32_COINS
-	additem ITEM_TM32
+	removecoins TM30_COINS
+	additem ITEM_TM30
 	updatecoinsbox 1, 1
 	playse SE_SHOP
 	msgbox MauvilleCity_GameCorner_Text_HereYouGo, MSGBOX_DEFAULT

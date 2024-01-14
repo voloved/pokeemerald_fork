@@ -10,8 +10,8 @@ Route103_EventScript_ItemPPUp::
 	finditem ITEM_PP_UP
 	end
 
-Route104_EventScript_ItemPPUp::
-	finditem ITEM_PP_UP
+Route104_EventScript_ItemTM32::
+	finditem ITEM_TM32
 	end
 
 Route104_EventScript_ItemPokeBall::

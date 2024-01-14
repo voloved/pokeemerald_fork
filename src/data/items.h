@@ -3888,12 +3888,12 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_TMHM,
     },
 
-    [ITEM_TM32_DOUBLE_TEAM] =
+    [ITEM_TM32_GIGA_IMPACT] =
     {
         .name = _("TM32"),
-        .itemId = ITEM_TM32_DOUBLE_TEAM,
-        .price = 2000,
-        .description = sTM32Desc,
+        .itemId = ITEM_TM32_GIGA_IMPACT,
+        .price = 7500,
+        .description = sTM15Desc,
         .pocket = POCKET_TM_HM,
         .type = ITEM_USE_PARTY_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_TMHM,
