@@ -438,8 +438,14 @@ static void IntrDummy(void)
 static void WaitForVBlank(void)
 {
     gMain.intrCheck &= ~INTR_FLAG_VBLANK;
+    if(!gWirelessCommType)
+    {
+        asm("swi 0x5");
+        return;
+    }
 
-    asm("swi 0x5");
+    while (!(gMain.intrCheck & INTR_FLAG_VBLANK))
+        ;
 }
 
 void SetTrainerHillVBlankCounter(u32 *counter)
