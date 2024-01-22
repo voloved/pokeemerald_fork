@@ -62,7 +62,7 @@ MossdeepCity_EventScript_Woman::
 
 MossdeepCity_EventScript_WhiteRock::
 	goto_if_set FLAG_HIDDEN_ITEM_MOSSDEEP_CITY_THIEF_BALL, MossdeepCity_EventScript_WhiteRock_NoNuzlocke
-	finditem ITEM_THIEF_BALL
+	finditem ITEM_EVIOLITE
 	setflag FLAG_HIDDEN_ITEM_MOSSDEEP_CITY_THIEF_BALL
 	end
 MossdeepCity_EventScript_WhiteRock_NoNuzlocke:

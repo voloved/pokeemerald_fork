@@ -952,6 +952,11 @@ static const u8 sStickDesc[] = _(
     "raises FARFETCH'D's\n"
     "critical-hit ratio.");
 
+static const u8 sEvioliteDesc[] = _(
+    "Raises the Def and\n"
+    "Sp. Def of Pokémon\n"
+    "that can evolve.");
+
 static const u8 sRedScarfDesc[] = _(
     "A hold item that\n"
     "raises COOL in\n"
