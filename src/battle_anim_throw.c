@@ -2271,13 +2271,9 @@ void TryShinyAnimation(u8 battler, struct Pokemon *mon)
         shinyValue = GET_SHINY_VALUE(otId, personality);
         if (shinyValue < SHINY_ODDS)
         {
-            if (FlagGet(FLAG_SYS_POKEDEX_GET))
+            CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
+            if (gBagPockets[BALLS_POCKET].itemSlots[0].itemId != ITEM_NONE)
                 isShiny = TRUE;
-            else{ // If the player did not yet get a Pokedex and has no balls, then don't let them know they're missing out on a shiny.
-                CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
-                if (gBagPockets[BALLS_POCKET].itemSlots[0].itemId != ITEM_NONE)
-                    isShiny = TRUE;
-            }
         }
 
         if (isShiny)
