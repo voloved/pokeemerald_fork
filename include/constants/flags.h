@@ -1253,7 +1253,7 @@
 #define FLAG_SHOW_DAY_NIGHT                                         0x4B4
 #define FLAG_NUZLOCKE_RANDOMIZE_WILD                                0x4B5
 #define FLAG_NUZLOCKE_RANDOMIZE_FIRST                               0x4B6
-#define FLAG_UNUSED_0x4B7                                           0x4B7 // Unused Flag
+#define FLAG_RANDOMIZE_WILD                                         0x4B7
 #define FLAG_UNUSED_0x4B8                                           0x4B8 // Unused Flag
 #define FLAG_UNUSED_0x4B9                                           0x4B9 // Unused Flag
 #define FLAG_UNUSED_0x4BA                                           0x4BA // Unused Flag

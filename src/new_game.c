@@ -186,6 +186,7 @@ void NewGameInitData(void)
     bool8 nuzlockeNoBattleItems = FlagGet(FLAG_NUZLOCKE_NO_BATTLE_ITEMS);
     bool8 nuzlockeRandomizeWild = FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD);
     bool8 nuzlockeRandomizeFirst = FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST);
+    bool8 randomizeWild = FlagGet(FLAG_RANDOMIZE_WILD);
     u16 difficulty = VarGet(VAR_DIFFICULTY);
     u16 expMult = VarGet(VAR_EXP_MULT);
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
@@ -268,6 +269,7 @@ void NewGameInitData(void)
     nuzlockeNoBattleItems ? FlagGet(FLAG_NUZLOCKE_NO_BATTLE_ITEMS) : FlagClear(FLAG_NUZLOCKE_NO_BATTLE_ITEMS);
     nuzlockeRandomizeWild ? FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD) : FlagClear(FLAG_NUZLOCKE_RANDOMIZE_WILD);
     nuzlockeRandomizeFirst ? FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST) : FlagClear(FLAG_NUZLOCKE_RANDOMIZE_FIRST);
+    randomizeWild ? FlagGet(FLAG_RANDOMIZE_WILD) : FlagClear(FLAG_RANDOMIZE_WILD);
     VarSet(VAR_DIFFICULTY, difficulty);
     VarSet(VAR_EXP_MULT, expMult);
     memset(&gSaveBlock2Ptr->itemFlags, 0, sizeof(gSaveBlock2Ptr->itemFlags));

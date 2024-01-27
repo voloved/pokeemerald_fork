@@ -490,9 +490,18 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
         species = SPECIES_MISSINGNO;
         FlagClear(FLAG_MISSINGNO);  // This is unnecissary, as it gets cleared at the wild encounter, but better to be explicit
     }
-    else if (FlagGet(FLAG_NUZLOCKE) && (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD) ||
-            (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST) && HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, FALSE) == FIRST_ENCOUNTER_ON_ROUTE)))
+    else if (FlagGet(FLAG_NUZLOCKE))
+    {
+        if (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD) ||
+        (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST) && HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, FALSE) == FIRST_ENCOUNTER_ON_ROUTE))
             species = getRandomSpecies(gSpeciesInfo[SPECIES_BULBASAUR].catchRate + 1, FALSE);
+    }
+    else if (FlagGet(FLAG_RANDOMIZE_WILD))
+    {
+        bool8 allowEvolved = GetPreEvolution(species) != SPECIES_NONE;
+        u8 minCatchRate = gSpeciesInfo[species].catchRate;
+        species = getRandomSpecies(minCatchRate, allowEvolved);  
+    }  
     CreateWildMon(species, level);
     return TRUE;
 }
