@@ -499,7 +499,11 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
     else if (FlagGet(FLAG_RANDOMIZE_WILD))
     {
         bool8 allowEvolved = GetPreEvolution(species) != SPECIES_NONE;
-        u8 minCatchRate = gSpeciesInfo[species].catchRate;
+        s16 minCatchRate = gSpeciesInfo[species].catchRate - 50;
+        if (minCatchRate <= 0)
+            minCatchRate = 0;
+        else if (minCatchRate > 255)
+            minCatchRate = 255;
         species = getRandomSpecies(minCatchRate, allowEvolved);  
     }  
     CreateWildMon(species, level);
