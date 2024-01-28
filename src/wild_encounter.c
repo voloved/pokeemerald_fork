@@ -421,26 +421,24 @@ void CreateWildMon(u16 species, u8 level)
 }
 
 
-static u16 getRandomSpecies(u8 minCatchRate, u8 maxCatchRate, bool8 allowEvolvedForms)
+static u16 getRandomSpecies(u8 minRarity, u8 maxRarity)
 {
     u16 species;
     do
     {
         species = Random() % NUM_SPECIES;
-    } while (species == SPECIES_NONE || species == SPECIES_EGG
-            || gSpeciesInfo[species].catchRate > maxCatchRate
-            || gSpeciesInfo[species].catchRate < minCatchRate
-            || species == SPECIES_MISSINGNO
-            || (!allowEvolvedForms && GetPreEvolution(species) != SPECIES_NONE));
+    } while (species == SPECIES_NONE || species == SPECIES_EGG || species == SPECIES_MISSINGNO
+            || gSpeciesInfo[species].rarity > maxRarity
+            || gSpeciesInfo[species].rarity < minRarity);
     return species;
 }
 
-static u16 getRandomWaterSpecies(u8 minCatchRate, u8 maxCatchRate, bool8 allowEvolvedForms)
+static u16 getRandomWaterSpecies(u8 minRarity, u8 maxRarity)
 {
     u16 species;
     do
     {
-        species = getRandomSpecies(minCatchRate, maxCatchRate, allowEvolvedForms);
+        species = getRandomSpecies(minRarity, maxRarity);
     } while (gSpeciesInfo[species].type1 != TYPE_WATER
             && gSpeciesInfo[species].type2 != TYPE_WATER);
     return species;
@@ -495,18 +493,17 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
     {
         if (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD) ||
         (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST) && HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, FALSE) == FIRST_ENCOUNTER_ON_ROUTE))
-            species = getRandomSpecies(gSpeciesInfo[SPECIES_BULBASAUR].catchRate + 1, 255, FALSE);
+            species = getRandomSpecies(RARITY_COMMON, RARITY_RARE);
     }
     else if (FlagGet(FLAG_RANDOMIZE_WILD))
     {
-        bool8 allowEvolved = GetPreEvolution(species) != SPECIES_NONE;
-        s16 minCatchRate = gSpeciesInfo[species].catchRate - 50;
-        s16 maxCatchRate = gSpeciesInfo[species].catchRate + 50;
-        if (minCatchRate <= 0)
-            minCatchRate = 0;
-        if (maxCatchRate > 255)
-            maxCatchRate = 255;
-        species = getRandomSpecies(minCatchRate, maxCatchRate, allowEvolved);  
+        s16 minRarity = gSpeciesInfo[species].rarity - 1;
+        s16 maxRarity = gSpeciesInfo[species].rarity + 1;
+        if (minRarity < RARITY_COMMON)
+            minRarity = RARITY_COMMON;
+        if (maxRarity > NUM_RARITIES)
+            maxRarity = NUM_RARITIES;
+        species = getRandomSpecies(minRarity, maxRarity);
     }  
     CreateWildMon(species, level);
     return TRUE;
@@ -524,18 +521,17 @@ static u16 GenerateFishingWildMon(const struct WildPokemonInfo *wildMonInfo, u8 
     {
         if (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_WILD) ||
             (FlagGet(FLAG_NUZLOCKE_RANDOMIZE_FIRST) && HasWildPokmnOnThisRouteBeenSeen(GetCurrentRegionMapSectionId(), species, FALSE) == 0))
-            species = getRandomWaterSpecies(gSpeciesInfo[SPECIES_BULBASAUR].catchRate + 1, 255, FALSE);        
+            species = getRandomWaterSpecies(RARITY_COMMON, RARITY_RARE);
     }
     else if (FlagGet(FLAG_RANDOMIZE_WILD))
     {
-        bool8 allowEvolved = GetPreEvolution(species) != SPECIES_NONE;
-        s16 minCatchRate = gSpeciesInfo[species].catchRate - 50;
-        s16 maxCatchRate = gSpeciesInfo[species].catchRate + 50;
-        if (minCatchRate <= 0)
-            minCatchRate = 0;
-        if (maxCatchRate > 255)
-            maxCatchRate = 255;
-        species = getRandomWaterSpecies(minCatchRate, maxCatchRate, allowEvolved);  
+        s16 minRarity = gSpeciesInfo[species].rarity - 1;
+        s16 maxRarity = gSpeciesInfo[species].rarity + 1;
+        if (minRarity <= RARITY_COMMON)
+            minRarity = RARITY_COMMON;
+        if (maxRarity > NUM_RARITIES)
+            maxRarity = NUM_RARITIES;
+        species = getRandomWaterSpecies(minRarity, maxRarity);
     }  
     CreateWildMon(species, level);
     return species;
