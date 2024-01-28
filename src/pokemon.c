@@ -6185,7 +6185,7 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
                 if (holdEffect == HOLD_EFFECT_FRIENDSHIP_UP)
                 {
                     if (EvolvesViaFriendship(GetMonData(mon, MON_DATA_SPECIES, NULL)))
-                        friendship = 5 * mod;
+                        friendship = 5 * friendship;
                     else
                         friendship = (150 * friendship) / 100;
                 }
