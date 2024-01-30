@@ -32,7 +32,7 @@
         .safariZoneFleeRate = 0,                    \
         .bodyColor = BODY_COLOR_BLACK,              \
         .noFlip = FALSE,                            \
-        .rarity = RARITY_COMMON                     \
+        .rarity = RARITY_VERY_RARE                  \
     }
 
 const struct SpeciesInfo gSpeciesInfo[] =
@@ -69,7 +69,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_IVYSAUR] =
@@ -102,7 +102,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_VENUSAUR] =
@@ -135,7 +135,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_CHARMANDER] =
@@ -168,7 +168,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_CHARMELEON] =
@@ -201,7 +201,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_CHARIZARD] =
@@ -234,7 +234,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_SQUIRTLE] =
@@ -267,7 +267,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_WARTORTLE] =
@@ -300,7 +300,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_BLASTOISE] =
@@ -333,7 +333,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_CATERPIE] =
@@ -432,7 +432,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_WEEDLE] =
@@ -531,7 +531,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_PIDGEY] =
@@ -630,7 +630,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_RATTATA] =
@@ -762,7 +762,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_EKANS] =
@@ -894,7 +894,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SANDSHREW] =
@@ -960,7 +960,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_NIDORAN_F] =
@@ -1026,7 +1026,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_NIDOQUEEN] =
@@ -1059,7 +1059,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_NIDORAN_M] =
@@ -1125,7 +1125,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_NIDOKING] =
@@ -1158,7 +1158,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_CLEFAIRY] =
@@ -1224,7 +1224,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_VULPIX] =
@@ -1290,7 +1290,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_JIGGLYPUFF] =
@@ -1356,7 +1356,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_ZUBAT] =
@@ -1422,7 +1422,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_ODDISH] =
@@ -1488,7 +1488,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 6,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_VILEPLUME] =
@@ -1521,7 +1521,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_PARAS] =
@@ -1587,7 +1587,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_VENONAT] =
@@ -1653,7 +1653,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_DIGLETT] =
@@ -1719,7 +1719,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_MEOWTH] =
@@ -1785,7 +1785,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_PSYDUCK] =
@@ -1851,7 +1851,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 8,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_MANKEY] =
@@ -1917,7 +1917,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_GROWLITHE] =
@@ -1983,7 +1983,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_POLIWAG] =
@@ -2049,7 +2049,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_POLIWRATH] =
@@ -2082,7 +2082,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_ABRA] =
@@ -2148,7 +2148,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_ALAKAZAM] =
@@ -2181,7 +2181,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_MACHOP] =
@@ -2247,7 +2247,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_MACHAMP] =
@@ -2280,7 +2280,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_BELLSPROUT] =
@@ -2346,7 +2346,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_VICTREEBEL] =
@@ -2379,7 +2379,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_TENTACOOL] =
@@ -2445,7 +2445,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_GEODUDE] =
@@ -2511,7 +2511,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_GOLEM] =
@@ -2544,7 +2544,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_PONYTA] =
@@ -2610,7 +2610,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_SLOWPOKE] =
@@ -2676,7 +2676,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_MAGNEMITE] =
@@ -2742,7 +2742,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_FARFETCHD] =
@@ -2775,7 +2775,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_DODUO] =
@@ -2841,7 +2841,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 10,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SEEL] =
@@ -2907,7 +2907,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_GRIMER] =
@@ -2973,7 +2973,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SHELLDER] =
@@ -3039,7 +3039,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_GASTLY] =
@@ -3105,7 +3105,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_GENGAR] =
@@ -3138,7 +3138,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_ONIX] =
@@ -3237,7 +3237,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_KRABBY] =
@@ -3303,7 +3303,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_VOLTORB] =
@@ -3369,7 +3369,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_EXEGGCUTE] =
@@ -3435,7 +3435,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_CUBONE] =
@@ -3501,7 +3501,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_HITMONLEE] =
@@ -3534,7 +3534,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_HITMONCHAN] =
@@ -3567,7 +3567,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_LICKITUNG] =
@@ -3600,7 +3600,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_KOFFING] =
@@ -3666,7 +3666,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_RHYHORN] =
@@ -3732,7 +3732,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_CHANSEY] =
@@ -3765,7 +3765,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_TANGELA] =
@@ -3798,7 +3798,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_KANGASKHAN] =
@@ -3831,7 +3831,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_HORSEA] =
@@ -3897,7 +3897,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_GOLDEEN] =
@@ -3963,7 +3963,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 6,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_STARYU] =
@@ -4029,7 +4029,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_MR_MIME] =
@@ -4062,7 +4062,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_SCYTHER] =
@@ -4095,7 +4095,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_JYNX] =
@@ -4128,7 +4128,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_ELECTABUZZ] =
@@ -4161,7 +4161,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_MAGMAR] =
@@ -4194,7 +4194,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_PINSIR] =
@@ -4227,7 +4227,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 8,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_TAUROS] =
@@ -4260,7 +4260,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_MAGIKARP] =
@@ -4326,7 +4326,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_LAPRAS] =
@@ -4359,7 +4359,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_DITTO] =
@@ -4392,7 +4392,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_EEVEE] =
@@ -4425,7 +4425,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_VAPOREON] =
@@ -4458,7 +4458,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_JOLTEON] =
@@ -4491,7 +4491,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_FLAREON] =
@@ -4524,7 +4524,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_PORYGON] =
@@ -4557,7 +4557,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_OMANYTE] =
@@ -4590,7 +4590,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_OMASTAR] =
@@ -4623,7 +4623,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_KABUTO] =
@@ -4656,7 +4656,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_KABUTOPS] =
@@ -4689,7 +4689,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_AERODACTYL] =
@@ -4722,7 +4722,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_SNORLAX] =
@@ -4755,7 +4755,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_ARTICUNO] =
@@ -4788,7 +4788,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_ZAPDOS] =
@@ -4821,7 +4821,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_MOLTRES] =
@@ -4854,7 +4854,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_DRATINI] =
@@ -4887,7 +4887,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_DRAGONAIR] =
@@ -4920,7 +4920,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_DRAGONITE] =
@@ -4953,7 +4953,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_MEWTWO] =
@@ -4986,7 +4986,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_MEW] =
@@ -5019,7 +5019,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_CHIKORITA] =
@@ -5052,7 +5052,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_BAYLEEF] =
@@ -5085,7 +5085,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_MEGANIUM] =
@@ -5118,7 +5118,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_CYNDAQUIL] =
@@ -5151,7 +5151,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_QUILAVA] =
@@ -5184,7 +5184,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_TYPHLOSION] =
@@ -5217,7 +5217,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_TOTODILE] =
@@ -5250,7 +5250,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_CROCONAW] =
@@ -5283,7 +5283,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_FERALIGATR] =
@@ -5316,7 +5316,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_SENTRET] =
@@ -5382,7 +5382,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_HOOTHOOT] =
@@ -5448,7 +5448,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_LEDYBA] =
@@ -5514,7 +5514,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SPINARAK] =
@@ -5580,7 +5580,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_CROBAT] =
@@ -5613,7 +5613,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_CHINCHOU] =
@@ -5646,7 +5646,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_LANTURN] =
@@ -5679,7 +5679,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_PICHU] =
@@ -5712,7 +5712,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_CLEFFA] =
@@ -5745,7 +5745,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_IGGLYBUFF] =
@@ -5778,7 +5778,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_TOGEPI] =
@@ -5811,7 +5811,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_TOGETIC] =
@@ -5844,7 +5844,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_NATU] =
@@ -5910,7 +5910,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 8,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_MAREEP] =
@@ -5976,7 +5976,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_AMPHAROS] =
@@ -6009,7 +6009,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_BELLOSSOM] =
@@ -6042,7 +6042,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_MARILL] =
@@ -6108,7 +6108,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SUDOWOODO] =
@@ -6141,7 +6141,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_POLITOED] =
@@ -6174,7 +6174,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_HOPPIP] =
@@ -6240,7 +6240,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_JUMPLUFF] =
@@ -6273,7 +6273,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_AIPOM] =
@@ -6306,7 +6306,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SUNKERN] =
@@ -6372,7 +6372,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_YANMA] =
@@ -6471,7 +6471,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_ESPEON] =
@@ -6504,7 +6504,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_UMBREON] =
@@ -6537,7 +6537,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_MURKROW] =
@@ -6570,7 +6570,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SLOWKING] =
@@ -6603,7 +6603,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_MISDREAVUS] =
@@ -6636,7 +6636,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_UNOWN] =
@@ -6669,7 +6669,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_WOBBUFFET] =
@@ -6702,7 +6702,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 4,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_GIRAFARIG] =
@@ -6735,7 +6735,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 4,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_PINECO] =
@@ -6801,7 +6801,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_DUNSPARCE] =
@@ -6867,7 +6867,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_STEELIX] =
@@ -6900,7 +6900,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_SNUBBULL] =
@@ -6966,7 +6966,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_QWILFISH] =
@@ -7032,7 +7032,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_SHUCKLE] =
@@ -7065,7 +7065,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_HERACROSS] =
@@ -7098,7 +7098,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 8,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_SNEASEL] =
@@ -7131,7 +7131,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_TEDDIURSA] =
@@ -7197,7 +7197,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SLUGMA] =
@@ -7263,7 +7263,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SWINUB] =
@@ -7329,7 +7329,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_CORSOLA] =
@@ -7362,7 +7362,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_REMORAID] =
@@ -7428,7 +7428,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_DELIBIRD] =
@@ -7461,7 +7461,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_MANTINE] =
@@ -7494,7 +7494,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_SKARMORY] =
@@ -7527,7 +7527,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_HOUNDOUR] =
@@ -7560,7 +7560,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_HOUNDOOM] =
@@ -7593,7 +7593,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_KINGDRA] =
@@ -7626,7 +7626,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_PHANPY] =
@@ -7692,7 +7692,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_PORYGON2] =
@@ -7725,7 +7725,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_STANTLER] =
@@ -7758,7 +7758,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_SMEARGLE] =
@@ -7791,7 +7791,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_TYROGUE] =
@@ -7824,7 +7824,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_HITMONTOP] =
@@ -7857,7 +7857,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_SMOOCHUM] =
@@ -7890,7 +7890,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_ELEKID] =
@@ -7923,7 +7923,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_MAGBY] =
@@ -7956,7 +7956,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_MILTANK] =
@@ -7989,7 +7989,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_BLISSEY] =
@@ -8022,7 +8022,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_RAIKOU] =
@@ -8055,7 +8055,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_ENTEI] =
@@ -8088,7 +8088,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_SUICUNE] =
@@ -8121,7 +8121,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_LARVITAR] =
@@ -8154,7 +8154,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_PUPITAR] =
@@ -8187,7 +8187,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_TYRANITAR] =
@@ -8220,7 +8220,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_LUGIA] =
@@ -8253,7 +8253,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_HO_OH] =
@@ -8286,7 +8286,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_CELEBI] =
@@ -8319,7 +8319,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_OLD_UNOWN_C] = OLD_UNOWN_SPECIES_INFO,
@@ -8358,7 +8358,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_GROVYLE] =
@@ -8391,7 +8391,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_SCEPTILE] =
@@ -8424,7 +8424,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_TORCHIC] =
@@ -8457,7 +8457,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_COMBUSKEN] =
@@ -8490,7 +8490,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_BLAZIKEN] =
@@ -8523,7 +8523,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_MUDKIP] =
@@ -8556,7 +8556,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_MARSHTOMP] =
@@ -8589,7 +8589,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_SWAMPERT] =
@@ -8622,7 +8622,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_POOCHYENA] =
@@ -8688,7 +8688,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_ZIGZAGOON] =
@@ -8754,7 +8754,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_WURMPLE] =
@@ -8853,7 +8853,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_CASCOON] =
@@ -8919,7 +8919,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_LOTAD] =
@@ -8985,7 +8985,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_LUDICOLO] =
@@ -9018,7 +9018,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_SEEDOT] =
@@ -9084,7 +9084,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SHIFTRY] =
@@ -9117,7 +9117,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_NINCADA] =
@@ -9183,7 +9183,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SHEDINJA] =
@@ -9216,7 +9216,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_TAILLOW] =
@@ -9282,7 +9282,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SHROOMISH] =
@@ -9348,7 +9348,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SPINDA] =
@@ -9381,7 +9381,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_WINGULL] =
@@ -9447,7 +9447,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SURSKIT] =
@@ -9513,7 +9513,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_WAILMER] =
@@ -9546,7 +9546,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_WAILORD] =
@@ -9579,7 +9579,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_SKITTY] =
@@ -9645,7 +9645,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_KECLEON] =
@@ -9678,7 +9678,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_BALTOY] =
@@ -9744,7 +9744,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_NOSEPASS] =
@@ -9777,7 +9777,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_TORKOAL] =
@@ -9810,7 +9810,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SABLEYE] =
@@ -9843,7 +9843,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_BARBOACH] =
@@ -9909,7 +9909,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_LUVDISC] =
@@ -10008,7 +10008,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_FEEBAS] =
@@ -10041,7 +10041,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_MILOTIC] =
@@ -10074,7 +10074,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_CARVANHA] =
@@ -10140,7 +10140,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_TRAPINCH] =
@@ -10173,7 +10173,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_VIBRAVA] =
@@ -10206,7 +10206,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_FLYGON] =
@@ -10239,7 +10239,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_MAKUHITA] =
@@ -10305,7 +10305,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_ELECTRIKE] =
@@ -10371,7 +10371,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_NUMEL] =
@@ -10437,7 +10437,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SPHEAL] =
@@ -10503,7 +10503,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_WALREIN] =
@@ -10536,7 +10536,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_CACNEA] =
@@ -10602,7 +10602,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SNORUNT] =
@@ -10668,7 +10668,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_LUNATONE] =
@@ -10701,7 +10701,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_SOLROCK] =
@@ -10734,7 +10734,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_AZURILL] =
@@ -10767,7 +10767,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_SPOINK] =
@@ -10833,7 +10833,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_PLUSLE] =
@@ -10866,7 +10866,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_MINUN] =
@@ -10899,7 +10899,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_MAWILE] =
@@ -10932,7 +10932,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_MEDITITE] =
@@ -10998,7 +10998,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SWABLU] =
@@ -11031,7 +11031,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_ALTARIA] =
@@ -11064,7 +11064,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_WYNAUT] =
@@ -11097,7 +11097,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_DUSKULL] =
@@ -11163,7 +11163,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_ROSELIA] =
@@ -11196,7 +11196,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SLAKOTH] =
@@ -11262,7 +11262,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SLAKING] =
@@ -11295,7 +11295,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_GULPIN] =
@@ -11361,7 +11361,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_TROPIUS] =
@@ -11394,7 +11394,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_WHISMUR] =
@@ -11460,7 +11460,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_EXPLOUD] =
@@ -11493,7 +11493,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_CLAMPERL] =
@@ -11559,7 +11559,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_GOREBYSS] =
@@ -11592,7 +11592,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_ABSOL] =
@@ -11625,7 +11625,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_SHUPPET] =
@@ -11691,7 +11691,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_SEVIPER] =
@@ -11724,7 +11724,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_ZANGOOSE] =
@@ -11757,7 +11757,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_RELICANTH] =
@@ -11790,7 +11790,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_ARON] =
@@ -11823,7 +11823,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_LAIRON] =
@@ -11856,7 +11856,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_AGGRON] =
@@ -11889,7 +11889,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_CASTFORM] =
@@ -11922,7 +11922,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_VOLBEAT] =
@@ -11955,7 +11955,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_ILLUMISE] =
@@ -11988,7 +11988,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_LILEEP] =
@@ -12054,7 +12054,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_ANORITH] =
@@ -12120,7 +12120,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_UNCOMMON,
     },
 
     [SPECIES_RALTS] =
@@ -12153,7 +12153,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_KIRLIA] =
@@ -12186,7 +12186,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_GARDEVOIR] =
@@ -12219,7 +12219,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_BAGON] =
@@ -12252,7 +12252,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_SHELGON] =
@@ -12285,7 +12285,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_SALAMENCE] =
@@ -12318,7 +12318,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_BELDUM] =
@@ -12351,7 +12351,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_RARE,
     },
 
     [SPECIES_METANG] =
@@ -12384,7 +12384,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_METAGROSS] =
@@ -12417,7 +12417,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_REGIROCK] =
@@ -12450,7 +12450,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_REGICE] =
@@ -12483,7 +12483,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_REGISTEEL] =
@@ -12516,7 +12516,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_KYOGRE] =
@@ -12549,7 +12549,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_GROUDON] =
@@ -12582,7 +12582,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_RAYQUAZA] =
@@ -12615,7 +12615,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_LATIAS] =
@@ -12648,7 +12648,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_LATIOS] =
@@ -12681,7 +12681,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_JIRACHI] =
@@ -12714,7 +12714,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_DEOXYS] =
@@ -12747,7 +12747,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_LEGENDARY,
     },
 
     [SPECIES_CHIMECHO] =
@@ -12780,7 +12780,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
 [SPECIES_WEAVILE] =
@@ -12807,7 +12807,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_PRESSURE, ABILITY_NONE},
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_MAGNEZONE] =
@@ -12833,7 +12833,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_MAGNET_PULL, ABILITY_STURDY},
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_LICKILICKY] =
@@ -12858,7 +12858,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_OWN_TEMPO, ABILITY_OBLIVIOUS},
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_RHYPERIOR] =
@@ -12883,7 +12883,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_LIGHTNING_ROD, ABILITY_ROCK_HEAD},
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_TANGROWTH] =
@@ -12908,7 +12908,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_CHLOROPHYLL, ABILITY_NONE},
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_ELECTIVIRE] =
@@ -12933,7 +12933,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_STATIC, ABILITY_VITAL_SPIRIT},
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_MAGMORTAR] =
@@ -12958,7 +12958,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_FLAME_BODY, ABILITY_NONE},
         .bodyColor = BODY_COLOR_RED,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_TOGEKISS] =
@@ -12984,7 +12984,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_HUSTLE, ABILITY_SERENE_GRACE},
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_YANMEGA] =
@@ -13009,7 +13009,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_SPEED_BOOST, ABILITY_COMPOUND_EYES},
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_GLISCOR] =
@@ -13034,7 +13034,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_HYPER_CUTTER, ABILITY_SAND_VEIL},
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_MAMOSWINE] =
@@ -13059,7 +13059,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_OBLIVIOUS, ABILITY_THICK_FAT},
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_PORYGON_Z] =
@@ -13084,7 +13084,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_TRACE, ABILITY_NONE},
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_GALLADE] =
@@ -13108,7 +13108,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_SYNCHRONIZE, ABILITY_TRACE},
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_PROBOPASS] =
@@ -13135,7 +13135,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_STURDY, ABILITY_MAGNET_PULL},
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_DUSKNOIR] =
@@ -13162,7 +13162,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_PRESSURE, ABILITY_NONE},
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_ROSERADE] =
@@ -13188,7 +13188,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_NATURAL_CURE, ABILITY_POISON_POINT},
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_AMBIPOM] =
@@ -13214,7 +13214,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_MISMAGIUS] =
@@ -13241,7 +13241,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_HONCHKROW] =
@@ -13267,7 +13267,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_VERY_RARE,
     },
 
     [SPECIES_FROSLASS] =
@@ -13292,7 +13292,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_INNER_FOCUS, ABILITY_NONE},
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_URSALUNA] =
@@ -13317,7 +13317,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_GUTS, ABILITY_NONE},
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_ANNIHILAPE] =
@@ -13342,7 +13342,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_VITAL_SPIRIT, ABILITY_INNER_FOCUS},
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_LEAFEON] =
@@ -13367,7 +13367,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_CHLOROPHYLL, ABILITY_NONE},
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_GLACEON] =
@@ -13392,7 +13392,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_THICK_FAT, ABILITY_NONE},
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_SYLVEON] =
@@ -13417,7 +13417,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = {ABILITY_CUTE_CHARM, ABILITY_NONE},
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = TRUE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_SUPER_RARE,
     },
 
     [SPECIES_MISSINGNO] =
@@ -13450,6 +13450,6 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
-        .rarity = RARITY_COMMON,
+        .rarity = RARITY_GLITCH,
     }, 
 };

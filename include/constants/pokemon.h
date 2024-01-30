@@ -79,7 +79,8 @@
 #define RARITY_VERY_RARE  3
 #define RARITY_SUPER_RARE 4
 #define RARITY_LEGENDARY  5
-#define NUM_RARITIES      6
+#define RARITY_GLITCH     6
+#define NUM_RARITIES      7
 
 // Pokemon Stats
 #define STAT_HP      0
