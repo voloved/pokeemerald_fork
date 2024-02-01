@@ -12783,7 +12783,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .rarity = RARITY_VERY_RARE,
     },
 
-[SPECIES_WEAVILE] =
+    [SPECIES_WEAVILE] =
     {
         .baseHP        = 70,
         .baseAttack    = 120,

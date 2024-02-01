@@ -4917,9 +4917,9 @@ bool8 ExecuteTableBasedItemEffect(struct Pokemon *mon, u16 item, u8 partyIndex, 
             if (holdEffect == HOLD_EFFECT_FRIENDSHIP_UP)                                                \
             {                                                                                           \
                 if (EvolvesViaFriendship(GetMonData(mon, MON_DATA_SPECIES, NULL)))                      \
-                    friendship = 5 * friendship;                                                                   \
+                    friendship = 5 * friendship;                                                        \
                 else                                                                                    \
-                    friendship = (150 * friendship) / 100;                                                             \
+                    friendship = (150 * friendship) / 100;                                              \
             }                                                                                           \
         }                                                                                               \
         if (friendship < 0)                                                                             \
