@@ -253,7 +253,7 @@
 #define ITEM_METAL_POWDER 223
 #define ITEM_THICK_CLUB 224
 #define ITEM_STICK 225
-#define ITEM_0E2 226
+#define ITEM_EVIOLITE 226
 #define ITEM_0E3 227
 #define ITEM_0E4 228
 #define ITEM_0E5 229
@@ -412,7 +412,7 @@
 #define ITEM_TM29_PSYCHIC ITEM_TM29
 #define ITEM_TM30_SHADOW_BALL ITEM_TM30
 #define ITEM_TM31_BRICK_BREAK ITEM_TM31
-#define ITEM_TM32_DOUBLE_TEAM ITEM_TM32
+#define ITEM_TM32_GIGA_IMPACT ITEM_TM32
 #define ITEM_TM33_REFLECT ITEM_TM33
 #define ITEM_TM34_SHOCK_WAVE ITEM_TM34
 #define ITEM_TM35_FLAMETHROWER ITEM_TM35
@@ -557,10 +557,14 @@
 #define ITEM_B_USE_MEDICINE 1
 #define ITEM_B_USE_OTHER    2
 
+#define DEVOLUTION_ITEM ITEM_EVERSTONE
+
 // Check if the item is one that can be used on a Pokemon.
 #define ITEM_HAS_EFFECT(item) (((item) >= ITEM_POTION && (item) <= MAX_BERRY_INDEX) \
 || (item) == ITEM_KINGS_ROCK || (item) == ITEM_DRAGON_SCALE || (item) == ITEM_METAL_COAT \
 || (item) == ITEM_UP_GRADE || (item) == ITEM_DEEP_SEA_TOOTH || (item) == ITEM_DEEP_SEA_SCALE \
-|| (item) == ITEM_NEVER_MELT_ICE || (item) == ITEM_EVERSTONE|| (item) == ITEM_STAR_PIECE)
+|| (item) == ITEM_NEVER_MELT_ICE || (item) == ITEM_STAR_PIECE || (item) == DEVOLUTION_ITEM)
+
+#define POKEVIAL_ICONS 6
 
 #endif  // GUARD_CONSTANTS_ITEMS_H

@@ -59,6 +59,7 @@ LilycoveCity_DepartmentStore_4F_Pokemart_DefenseTMs:
 	.2byte ITEM_THUNDER_STONE
 	.2byte ITEM_SUN_STONE
 	.2byte ITEM_MOON_STONE
+	.2byte DEVOLUTION_ITEM
 	.2byte ITEM_NONE
 	release
 	end

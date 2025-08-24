@@ -5,6 +5,7 @@
 #include "malloc.h"
 #include "sprite.h"
 #include "constants/items.h"
+#include "item_use.h"
 
 // EWRAM vars
 EWRAM_DATA u8 *gItemIconDecompressionBuffer = NULL;
@@ -157,12 +158,30 @@ u8 AddCustomItemIconSprite(const struct SpriteTemplate *customSpriteTemplate, u1
     }
 }
 
+const u32 *const pokevialIconIndex[POKEVIAL_ICONS + 1] =
+{
+    gItemIcon_PokeVial0,
+    gItemIcon_PokeVial1,
+    gItemIcon_PokeVial2,
+    gItemIcon_PokeVial3,
+    gItemIcon_PokeVial4,
+    gItemIcon_PokeVial5,
+    gItemIcon_PokeVial6
+};
+
+static const void *PokevialGetDoseIcon(void)
+{
+    return pokevialIconIndex[PokevialGetVialIconIdx()]; 
+}
+
 const void *GetItemIconPicOrPalette(u16 itemId, u8 which)
 {
     if (itemId == ITEM_LIST_END)
         itemId = ITEMS_COUNT; // Use last icon, the "return to field" arrow
     else if (itemId >= ITEMS_COUNT)
         itemId = 0;
+    if (itemId == ITEM_POKEVIAL && which == 0)
+        return PokevialGetDoseIcon();
 
     return gItemIconTable[itemId][which];
 }

@@ -1309,7 +1309,6 @@ static void Task_BagMenu_HandleInput(u8 taskId)
             {
                 if ((gBagMenu->numItemStacks[gBagPosition.pocket] - 1) <= 1) //can't sort with 0 or 1 item in bag
                 {
-                    static const u8 sText_NothingToSort[] = _("There's nothing to sort!");
                     PlaySE(SE_FAILURE);
                     DisplayItemMessage(taskId, 1, sText_NothingToSort, HandleErrorMessage);
                     break;
@@ -2867,32 +2866,32 @@ static const u8 *const sSortTypeStrings[] =
 
 static const u8 sBagMenuSortItems[] =
 {
-    ACTION_BY_NAME,
     ACTION_BY_TYPE,
+    ACTION_BY_NAME,
     ACTION_BY_AMOUNT,
     ACTION_CANCEL,
 };
 
 static const u8 sBagMenuSortKeyItems[] =
 {
-    ACTION_BY_NAME,
     ACTION_BY_TYPE,
+    ACTION_BY_NAME,
     ACTION_DUMMY,
     ACTION_CANCEL,
 };
 
 static const u8 sBagMenuSortBerries[] =
 {
-    ACTION_BY_NAME,
     ACTION_BY_NUMBER,
+    ACTION_BY_NAME,
     ACTION_BY_AMOUNT,
     ACTION_CANCEL,
 };
 
 static const u8 sBagMenuSortTMHM[] =
 {
-    ACTION_BY_NAME,
     ACTION_BY_NUMBER,
+    ACTION_BY_NAME,
     ACTION_BY_AMOUNT,
     ACTION_CANCEL,
 };
@@ -3041,6 +3040,7 @@ static const u16 sItemsByType[ITEMS_COUNT] =
     [ITEM_METAL_POWDER] = ITEM_TYPE_HELD_ITEM,
     [ITEM_THICK_CLUB] = ITEM_TYPE_HELD_ITEM,
     [ITEM_STICK] = ITEM_TYPE_HELD_ITEM,
+    [ITEM_EVIOLITE] = ITEM_TYPE_HELD_ITEM,
     
     [ITEM_SEA_INCENSE] = ITEM_TYPE_INCENSE,
     [ITEM_LAX_INCENSE] = ITEM_TYPE_INCENSE,

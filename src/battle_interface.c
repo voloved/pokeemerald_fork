@@ -2795,17 +2795,6 @@ bool32 CanThrowLastUsedBall(void)
     return TRUE;
 }
 
-static bool8 EvolvesViaFriendship(u16 species){
-    int i;
-    for (i = 0; i < EVOS_PER_MON; i++){
-        if (gEvolutionTable[species][i].method == EVO_FRIENDSHIP
-         || gEvolutionTable[species][i].method == EVO_FRIENDSHIP_DAY
-         || gEvolutionTable[species][i].method == EVO_FRIENDSHIP_NIGHT)
-         return TRUE;
-    }
-    return FALSE;
-}
-
 u8 OddsToPercentCatchRate(u8 odds)
 {
     u32 i;

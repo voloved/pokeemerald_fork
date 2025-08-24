@@ -3156,6 +3156,18 @@ void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move)
     SetBoxMonData(boxMon, MON_DATA_PP_BONUSES, &ppBonuses);
 }
 
+bool32 CanEvolve(u16 species)
+{
+    u32 i;
+
+    for (i = 0; i < EVOS_PER_MON; i++)
+    {
+        if (gEvolutionTable[species][i].method)
+            return TRUE;
+    }
+    return FALSE;
+}
+
 #define APPLY_STAT_MOD(var, mon, stat, statIndex)                                   \
 {                                                                                   \
     (var) = (stat) * (gStatStageRatios)[(mon)->statStages[(statIndex)]][0];         \
@@ -3257,6 +3269,11 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         defense *= 2;
     if (attackerHoldEffect == HOLD_EFFECT_THICK_CLUB && (attacker->species == SPECIES_CUBONE || attacker->species == SPECIES_MAROWAK))
         attack *= 2;
+    if (defenderHoldEffect == HOLD_EFFECT_EVIOLITE && CanEvolve(defender->species))
+    {
+        defense = (150 * defense) / 100;
+        spDefense = (150 * spDefense) / 100;
+    }
 
     // Apply abilities / field sports
     if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
@@ -4890,16 +4907,20 @@ bool8 ExecuteTableBasedItemEffect(struct Pokemon *mon, u16 item, u8 partyIndex, 
     {                                                                                                   \
         friendshipChange = itemEffect[itemEffectParam];                                                 \
         friendship = GetMonData(mon, MON_DATA_FRIENDSHIP, NULL);                                        \
-        if (friendshipChange > 0 && holdEffect == HOLD_EFFECT_FRIENDSHIP_UP)                            \
-            friendship += 150 * friendshipChange / 100;                                                 \
-        else                                                                                            \
-            friendship += friendshipChange;                                                             \
+        friendship += friendshipChange;                                                                 \
         if (friendshipChange > 0)                                                                       \
         {                                                                                               \
             if (GetMonData(mon, MON_DATA_POKEBALL, NULL) == ITEM_LUXURY_BALL)                           \
                 friendship++;                                                                           \
             if (GetMonData(mon, MON_DATA_MET_LOCATION, NULL) == GetCurrentRegionMapSectionId())         \
                 friendship++;                                                                           \
+            if (holdEffect == HOLD_EFFECT_FRIENDSHIP_UP)                                                \
+            {                                                                                           \
+                if (EvolvesViaFriendship(GetMonData(mon, MON_DATA_SPECIES, NULL)))                      \
+                    friendship = 5 * friendship;                                                        \
+                else                                                                                    \
+                    friendship = (150 * friendship) / 100;                                              \
+            }                                                                                           \
         }                                                                                               \
         if (friendship < 0)                                                                             \
             friendship = 0;                                                                             \
@@ -5347,7 +5368,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
 
                     case 7: // ITEM4_EVO_STONE
                         {
-                            bool8 devolving = (item == ITEM_EVERSTONE);
+                            bool8 devolving = (item == DEVOLUTION_ITEM);
                             u16 targetSpecies = GetEvolutionTargetSpecies(mon, EVO_MODE_ITEM_USE, item);
 
                             if (targetSpecies != SPECIES_NONE)
@@ -5792,14 +5813,17 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem)
     case EVO_MODE_ITEM_CHECK:
         for (i = 0; i < EVOS_PER_MON; i++)
         {
-            if (gEvolutionTable[species][i].method == EVO_ITEM
+            if(evolutionItem == DEVOLUTION_ITEM)
+            {
+                targetSpecies = GetPreEvolution(species);
+                break;
+            }           
+            else if (gEvolutionTable[species][i].method == EVO_ITEM
              && gEvolutionTable[species][i].param == evolutionItem)
             {
                 targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
-            }
-            else if(evolutionItem == ITEM_EVERSTONE)
-                targetSpecies = GetPreEvolution(species);
+            }                
         }
         break;
     }
@@ -6103,6 +6127,17 @@ u16 ModifyStatByNature(u8 nature, u16 stat, u8 statIndex)
      || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_LEADER        \
      || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION))    \
 
+bool8 EvolvesViaFriendship(u16 species){
+    int i;
+    for (i = 0; i < EVOS_PER_MON; i++){
+        if (gEvolutionTable[species][i].method == EVO_FRIENDSHIP
+         || gEvolutionTable[species][i].method == EVO_FRIENDSHIP_DAY
+         || gEvolutionTable[species][i].method == EVO_FRIENDSHIP_NIGHT)
+         return TRUE;
+    }
+    return FALSE;
+}
+
 void AdjustFriendship(struct Pokemon *mon, u8 event)
 {
     u16 species, heldItem;
@@ -6140,8 +6175,6 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
          && (event != FRIENDSHIP_EVENT_LEAGUE_BATTLE || IS_LEAGUE_BATTLE))
         {
             s8 mod = sFriendshipEventModifiers[event][friendshipLevel];
-            if (mod > 0 && holdEffect == HOLD_EFFECT_FRIENDSHIP_UP)
-                mod = (150 * mod) / 100;
             friendship += mod;
             if (mod > 0)
             {
@@ -6149,6 +6182,13 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
                     friendship++;
                 if (GetMonData(mon, MON_DATA_MET_LOCATION, 0) == GetCurrentRegionMapSectionId())
                     friendship++;
+                if (holdEffect == HOLD_EFFECT_FRIENDSHIP_UP)
+                {
+                    if (EvolvesViaFriendship(GetMonData(mon, MON_DATA_SPECIES, NULL)))
+                        friendship = 5 * friendship;
+                    else
+                        friendship = (150 * friendship) / 100;
+                }
             }
             if (friendship < 0)
                 friendship = 0;

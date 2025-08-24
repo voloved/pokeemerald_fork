@@ -701,8 +701,9 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions::
 	case 7, LittlerootTown_ProfessorBirchsLab_EventScript_MidBattleEvo
 	case 8, LittlerootTown_ProfessorBirchsLab_EventScript_RelearnInMenu
 	case 9, LittlerootTown_ProfessorBirchsLab_EventScript_DayNight
-	case 10, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
-	case 11, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
+	case 10, LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeWildNoNuz
+	case 11, LittlerootTown_ProfessorBirchsLab_EventScript_Carcinisation
+	case 12, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd
 LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptionsEnd:
 	return
@@ -735,9 +736,13 @@ EventScript_Multichoice_BirchPCOptions_15:
 EventScript_Multichoice_BirchPCOptions_25:
 	goto_if_set FLAG_SHOW_DAY_NIGHT, EventScript_Multichoice_BirchPCOptions_24
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_20, 9
+EventScript_Multichoice_BirchPCOptions_27:
+	goto_if_set FLAG_NUZLOCKE, EventScript_Multichoice_BirchPCOptions_13
+	goto_if_set FLAG_RANDOMIZE_WILD, EventScript_Multichoice_BirchPCOptions_26
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_22, 10
 EventScript_Multichoice_BirchPCOptions_13:
-	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 10
-	dynmultipush EventScript_Multichoice_Exit, 11
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_10, 11
+	dynmultipush EventScript_Multichoice_Exit, 12
 	dynmultistack 0, 0, TRUE, 9, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	return
 
@@ -775,6 +780,10 @@ EventScript_Multichoice_BirchPCOptions_16: @ Relearn Move in Party Menu
 
 EventScript_Multichoice_BirchPCOptions_24: @ Day Night
 	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_19, 9
+	goto EventScript_Multichoice_BirchPCOptions_27
+
+EventScript_Multichoice_BirchPCOptions_26: @ Randomize Wild Encounters
+	dynmultipush EventScript_Multichoice_BirchPCOptions_Text_21, 10
 	goto EventScript_Multichoice_BirchPCOptions_13
 
 LittlerootTown_ProfessorBirchsLab_EventScript_SkipIntro::
@@ -968,6 +977,27 @@ LittlerootTown_ProfessorBirchsLab_EventScript_DayNight_Cont:
 LittlerootTown_ProfessorBirchsLab_EventScript_DayNightNo::
 	clearflag FLAG_SHOW_DAY_NIGHT
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_DayNightNo, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeWildNoNuz::
+	message LittlerootTown_ProfessorBirchsLab_Text_RandomizeNoNuz
+	goto_if_set FLAG_RANDOMIZE_WILD, LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeWildNoNuz_Set
+	multichoicedefault 20, 8, MULTI_YESNO, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeWildNoNuz_Cont
+LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeWildNoNuz_Set:
+	multichoicedefault 20, 8, MULTI_YESNO, 0, FALSE
+LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeWildNoNuz_Cont:
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeWildNoNuzNo
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_NoChanges_BirchPCOptions
+	setflag FLAG_RANDOMIZE_WILD
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RandomizeWild, MSGBOX_SIGN
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_RandomizeWildNoNuzNo::
+	clearflag FLAG_RANDOMIZE_WILD
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RandomizeNone, MSGBOX_SIGN
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_BirchPCOptions
 	end
 
@@ -1477,6 +1507,12 @@ EventScript_Multichoice_BirchPCOptions_Text_19:
 EventScript_Multichoice_BirchPCOptions_Text_20:
 	.string "{COLOR RED}SHOW DAY/NIGHT$"
 
+EventScript_Multichoice_BirchPCOptions_Text_21:
+	.string "{COLOR GREEN}RANDOMIZE WILD MON$"
+
+EventScript_Multichoice_BirchPCOptions_Text_22:
+	.string "{COLOR RED}RANDOMIZE WILD MON$"
+
 EventScript_Multichoice_Exit:
 	.string "EXIT$"
 
@@ -1712,6 +1748,10 @@ LittlerootTown_ProfessorBirchsLab_Text_DayNightYes:
 LittlerootTown_ProfessorBirchsLab_Text_DayNightNo:
 	.string "The graphics will show\n"
 	.string "only daytime.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_RandomizeNoNuz:
+	.string "Randomize all wild\n"
+	.string "encounters?$"
 
 LittlerootTown_ProfessorBirchsLab_Text_DupesClause:
 	.string "Would you like to use the dupes\n"

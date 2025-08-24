@@ -36,6 +36,7 @@
 #include "data.h"
 #include "battle.h" // to get rid of later
 #include "constants/rgb.h"
+#include "starter_choose.h"
 
 #define GFXTAG_EGG       12345
 #define GFXTAG_EGG_SHARD 23456
@@ -947,7 +948,19 @@ u16 CountPartyAliveNonEggMons(void)
 
 u16 ChooseRandomEggSpecies(void)
 {
-    static const u16 baby_species[] = { SPECIES_WYNAUT, SPECIES_SMOOCHUM, SPECIES_ELEKID, SPECIES_MAGBY };  // Excluding non-rare
-    u16 randomSpeciesidx = Random() % ARRAY_COUNT(baby_species);
-    return baby_species[randomSpeciesidx];
+    static const u16 baby_species[] = { SPECIES_WYNAUT, SPECIES_SMOOCHUM, SPECIES_ELEKID, 
+                                        SPECIES_MAGBY, SPECIES_CLEFFA, SPECIES_TYROGUE };  // Excluding non-rare
+    u16 randomSpeciesidx, randomSpecies;
+    u16 starter = GetStarterPokemon(VarGet(VAR_STARTER_MON));
+    u8 starterType1 = gSpeciesInfo[starter].type1;
+    u8 starterType2 = gSpeciesInfo[starter].type2;
+    u8 randomType1, randomType2;
+    do
+    {
+        randomSpeciesidx = Random() % ARRAY_COUNT(baby_species);
+        randomSpecies = baby_species[randomSpeciesidx];
+        randomType1 = gSpeciesInfo[randomSpecies].type1;
+        randomType2 = gSpeciesInfo[randomSpecies].type2;
+    } while (starterType1 == randomType1 || starterType1 == randomType2 || starterType2 == randomType1 || starterType2 == randomType2);
+    return randomSpecies;
 }

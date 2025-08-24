@@ -5358,9 +5358,9 @@ void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
     s16 *arrayPtr = ptr->data;
     u16 *itemPtr = &gSpecialVar_ItemId;
     bool8 cannotUseEffect;
+    bool8 monLevelMaxed = GetMonData(mon, MON_DATA_LEVEL) == MAX_LEVEL;
 
-    if (GetMonData(mon, MON_DATA_LEVEL) != MAX_LEVEL
-    && !levelCappedNuzlocke(GetMonData(mon, MON_DATA_LEVEL)))
+    if (!monLevelMaxed && !levelCappedNuzlocke(GetMonData(mon, MON_DATA_LEVEL)))
     {
         BufferMonStatsToTaskData(mon, arrayPtr);
         cannotUseEffect = ExecuteTableBasedItemEffect_(gPartyMenu.slotId, *itemPtr, 0);
@@ -5373,6 +5373,17 @@ void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
     PlaySE(SE_SELECT);
     if (cannotUseEffect)
     {
+        u16 targetSpecies = GetEvolutionTargetSpecies(mon, EVO_MODE_NORMAL, ITEM_NONE);
+        if (targetSpecies != SPECIES_NONE && monLevelMaxed)
+        {
+            if (gSpecialVar_ItemId != ITEM_INF_RARE_CANDY)
+                RemoveBagItem(gSpecialVar_ItemId, 1);
+            FreePartyPointers();
+            gCB2_AfterEvolution = gPartyMenu.exitCallback;
+            BeginEvolutionScene(mon, targetSpecies, TRUE, gPartyMenu.slotId, FALSE);
+            DestroyTask(taskId);
+            return;
+        }
         gPartyMenuUseExitCallback = FALSE;
         DisplayPartyMenuMessage(gText_WontHaveEffect, TRUE);
         ScheduleBgCopyTilemapToVram(2);

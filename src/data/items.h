@@ -2805,12 +2805,13 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
-    [ITEM_0E2] =
+    [ITEM_EVIOLITE] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("EVIOLITE"),
+        .itemId = ITEM_EVIOLITE,
+        .price = 4000,
+        .holdEffect = HOLD_EFFECT_EVIOLITE,
+        .description = sEvioliteDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
@@ -3888,12 +3889,12 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_TMHM,
     },
 
-    [ITEM_TM32_DOUBLE_TEAM] =
+    [ITEM_TM32_GIGA_IMPACT] =
     {
         .name = _("TM32"),
-        .itemId = ITEM_TM32_DOUBLE_TEAM,
-        .price = 2000,
-        .description = sTM32Desc,
+        .itemId = ITEM_TM32_GIGA_IMPACT,
+        .price = 7500,
+        .description = sTM15Desc,
         .pocket = POCKET_TM_HM,
         .type = ITEM_USE_PARTY_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_TMHM,

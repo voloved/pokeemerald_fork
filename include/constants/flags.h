@@ -511,7 +511,7 @@
 #define FLAG_DEFEATED_HO_OH                  0x1DC
 #define FLAG_DEFEATED_LUGIA                  0x1DD
 
-#define FLAG_UNUSED_0x1DE                    0x1DE // Unused Flag
+#define FLAG_MOVE_TUTOR_TAUGHT_DOUBLE_TEAM   0x1DE
 #define FLAG_UNUSED_0x1DF                    0x1DF // Unused Flag
 #define FLAG_UNUSED_0x1E0                    0x1E0 // Unused Flag
 #define FLAG_UNUSED_0x1E1                    0x1E1 // Unused Flag
@@ -568,7 +568,7 @@
 #define FLAG_HIDDEN_ITEM_LILYCOVE_CITY_HEART_SCALE           (FLAG_HIDDEN_ITEMS_START + 0x1B)
 #define FLAG_HIDDEN_ITEM_FALLARBOR_TOWN_NUGGET               (FLAG_HIDDEN_ITEMS_START + 0x1C)
 #define FLAG_HIDDEN_ITEM_MT_PYRE_EXTERIOR_ULTRA_BALL         (FLAG_HIDDEN_ITEMS_START + 0x1D)
-#define FLAG_HIDDEN_ITEM_ROUTE_113_TM32                      (FLAG_HIDDEN_ITEMS_START + 0x1E)
+#define FLAG_HIDDEN_ITEM_ROUTE_113_PP_UP                      (FLAG_HIDDEN_ITEMS_START + 0x1E)
 #define FLAG_HIDDEN_ITEM_ABANDONED_SHIP_RM_1_KEY             (FLAG_HIDDEN_ITEMS_START + 0x1F)
 #define FLAG_HIDDEN_ITEM_ABANDONED_SHIP_RM_2_KEY             (FLAG_HIDDEN_ITEMS_START + 0x20)
 #define FLAG_HIDDEN_ITEM_ABANDONED_SHIP_RM_4_KEY             (FLAG_HIDDEN_ITEMS_START + 0x21)
@@ -651,8 +651,8 @@
 #define FLAG_HIDDEN_ITEM_ROUTE_123_RARE_CANDY                (FLAG_HIDDEN_ITEMS_START + 0x6E)
 #define FLAG_HIDDEN_ITEM_ROUTE_105_BIG_PEARL                 (FLAG_HIDDEN_ITEMS_START + 0x6F)
 #define FLAG_HIDDEN_ITEM_RIVALS_HOUSE_2F_THIEF_BALL          (FLAG_HIDDEN_ITEMS_START + 0x70)
+#define FLAG_HIDDEN_ITEM_MOSSDEEP_CITY_THIEF_BALL            (FLAG_HIDDEN_ITEMS_START + 0x71)
 
-#define FLAG_UNUSED_0x265  0x265 // Unused Flag
 #define FLAG_UNUSED_0x266  0x266 // Unused Flag
 #define FLAG_UNUSED_0x267  0x267 // Unused Flag
 #define FLAG_UNUSED_0x268  0x268 // Unused Flag
@@ -1047,7 +1047,7 @@
 // Item Ball Flags
 #define FLAG_ITEM_ROUTE_102_POTION                                  0x3E8
 #define FLAG_ITEM_ROUTE_116_X_SPECIAL                               0x3E9
-#define FLAG_ITEM_ROUTE_104_PP_UP                                   0x3EA
+#define FLAG_ITEM_ROUTE_104_TM32                                   0x3EA
 #define FLAG_ITEM_ROUTE_105_IRON                                    0x3EB
 #define FLAG_ITEM_ROUTE_106_PROTEIN                                 0x3EC
 #define FLAG_ITEM_ROUTE_109_PP_UP                                   0x3ED
@@ -1253,7 +1253,7 @@
 #define FLAG_SHOW_DAY_NIGHT                                         0x4B4
 #define FLAG_NUZLOCKE_RANDOMIZE_WILD                                0x4B5
 #define FLAG_NUZLOCKE_RANDOMIZE_FIRST                               0x4B6
-#define FLAG_UNUSED_0x4B7                                           0x4B7 // Unused Flag
+#define FLAG_RANDOMIZE_WILD                                         0x4B7
 #define FLAG_UNUSED_0x4B8                                           0x4B8 // Unused Flag
 #define FLAG_UNUSED_0x4B9                                           0x4B9 // Unused Flag
 #define FLAG_UNUSED_0x4BA                                           0x4BA // Unused Flag
@@ -1643,6 +1643,7 @@
 #define FLAG_SPECIAL_FLAG_UNUSED_0x4003         (SPECIAL_FLAGS_START + 0x3) // Unused Flag
 #define FLAG_STORING_ITEMS_IN_PYRAMID_BAG       (SPECIAL_FLAGS_START + 0x4)
 #define FLAG_SAFE_FOLLOWER_MOVEMENT             (SPECIAL_FLAGS_START + 0x5) // When set, applymovement does not put the follower inside a pokeball
+#define FLAG_SURF_SKIP_INTRO                    (SPECIAL_FLAGS_START + 0x6) // When set, surf occurs when walking into water without intro
 // FLAG_SPECIAL_FLAG_0x4005 - 0x407F also exist and are unused
 #define SPECIAL_FLAGS_END                       (SPECIAL_FLAGS_START + 0x7F)
 

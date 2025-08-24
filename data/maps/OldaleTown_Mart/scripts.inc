@@ -11,6 +11,12 @@ Common_Mart_No_InfRare::
 	setflag FLAG_HIDE_INF_RARE_CANDY_SAMPLES
 	end
 
+Common_Mart_WallClock::
+	lockall
+	setvar VAR_0x8004, MALE
+	goto PlayersHouse_2F_EventScript_CheckWallClock
+	end
+
 OldaleTown_Mart_EventScript_Clerk::
 	lock
 	faceplayer

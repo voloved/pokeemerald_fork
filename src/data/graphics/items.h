@@ -250,7 +250,13 @@ const u32 gItemIconPalette_ShadowMail[] = INCBIN_U32("graphics/items/icon_palett
 const u32 gItemIcon_TropicMail[] = INCBIN_U32("graphics/items/icons/tropic_mail.4bpp.lz");
 const u32 gItemIconPalette_TropicMail[] = INCBIN_U32("graphics/items/icon_palettes/tropic_mail.gbapal.lz");
 
-const u32 gItemIcon_PokeVial[] = INCBIN_U32("graphics/items/icons/pokevial.4bpp.lz");
+const u32 gItemIcon_PokeVial0[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial0.4bpp.lz");
+const u32 gItemIcon_PokeVial1[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial1.4bpp.lz");
+const u32 gItemIcon_PokeVial2[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial2.4bpp.lz");
+const u32 gItemIcon_PokeVial3[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial3.4bpp.lz");
+const u32 gItemIcon_PokeVial4[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial4.4bpp.lz");
+const u32 gItemIcon_PokeVial5[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial5.4bpp.lz");
+const u32 gItemIcon_PokeVial6[] = INCBIN_U32("graphics/items/icons/pokevial/pokevial6.4bpp.lz");
 const u32 gItemIconPalette_PokeVial[] = INCBIN_U32("graphics/items/icon_palettes/pokevial.gbapal.lz");
 
 const u32 gItemIcon_FabMail[] = INCBIN_U32("graphics/items/icons/fab_mail.4bpp.lz");
@@ -529,6 +535,9 @@ const u32 gItemIconPalette_ThickClub[] = INCBIN_U32("graphics/items/icon_palette
 
 const u32 gItemIcon_Stick[] = INCBIN_U32("graphics/items/icons/stick.4bpp.lz");
 const u32 gItemIconPalette_Stick[] = INCBIN_U32("graphics/items/icon_palettes/stick.gbapal.lz");
+
+const u32 gItemIcon_Eviolite[] = INCBIN_U32("graphics/items/icons/eviolite.4bpp.lz");
+const u32 gItemIconPalette_Eviolite[] = INCBIN_U32("graphics/items/icon_palettes/eviolite.gbapal.lz");
 
 const u32 gItemIcon_Scarf[] = INCBIN_U32("graphics/items/icons/scarf.4bpp.lz");
 const u32 gItemIconPalette_RedScarf[] = INCBIN_U32("graphics/items/icon_palettes/red_scarf.gbapal.lz");

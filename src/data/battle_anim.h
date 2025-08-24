@@ -1624,4 +1624,7 @@ const struct BattleAnimBackground gBattleAnimBackgroundTable[] =
     [BG_SOLAR_BEAM_OPPONENT] = {gBattleAnimBgImage_Impact,     gBattleAnimBgPalette_SolarBeam,  gBattleAnimBgTilemap_ImpactOpponent},
     [BG_SOLAR_BEAM_PLAYER]   = {gBattleAnimBgImage_Impact,     gBattleAnimBgPalette_SolarBeam,  gBattleAnimBgTilemap_ImpactPlayer},
     [BG_SOLAR_BEAM_CONTESTS] = {gBattleAnimBgImage_Impact,     gBattleAnimBgPalette_SolarBeam,  gBattleAnimBgTilemap_ImpactContests},
+    [BG_GIGA_IMPACT_OPPONENT]= {gBattleAnimBgImage_GigaImpact, gBattleAnimBgPalette_GigaImpact, gBattleAnimBgTilemap_GigaImpactOpponent},
+    [BG_GIGA_IMPACT_PLAYER]  = {gBattleAnimBgImage_GigaImpact, gBattleAnimBgPalette_GigaImpact, gBattleAnimBgTilemap_GigaImpactPlayer},
+    [BG_GIGA_IMPACT_CONTEST] = {gBattleAnimBgImage_GigaImpactContest, gBattleAnimBgPalette_GigaImpact, gBattleAnimBgTilemap_GigaImpactContest},
 };

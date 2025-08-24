@@ -70,7 +70,6 @@ static const u16 sIsInvalidItem[] = {
     [ITEM_UNUSED_BERRY_1] = 1,
     [ITEM_UNUSED_BERRY_2] = 1,
     [ITEM_UNUSED_BERRY_3] = 1,
-    [ITEM_0E2] = 1,
     [ITEM_0E3] = 1,
     [ITEM_0E4] = 1,
     [ITEM_0E5] = 1,
@@ -1287,6 +1286,9 @@ u16 GetValidWonderTradeItem(u16 item)
     else if (item == ITEM_METAL_POWDER
          && (GET_BASE_SPECIES_ID(species) != SPECIES_DITTO))
         goto ROLL;
+    else if (item == ITEM_EVIOLITE
+         && (!CanEvolve(GET_BASE_SPECIES_ID(species))))
+        goto ROLL;
     else if ((item == ITEM_RED_NECTAR || item == ITEM_YELLOW_NECTAR
            || item == ITEM_PINK_NECTAR || item == ITEM_PURPLE_NECTAR)
            && (GET_BASE_SPECIES_ID(species) != SPECIES_ORICORIO))
@@ -1325,6 +1327,8 @@ u16 GetValidWonderTradeItem(u16 item)
     else if ((item == ITEM_DEEP_SEA_SCALE || item == ITEM_DEEP_SEA_TOOTH) && species != SPECIES_CLAMPERL)
         goto ROLL;
     else if (item == ITEM_METAL_POWDER && species != SPECIES_DITTO)
+        goto ROLL;
+    else if (item == ITEM_EVIOLITE && !CanEvolve(species))
         goto ROLL;
     else if (sIsInvalidItem[item])
         goto ROLL;
