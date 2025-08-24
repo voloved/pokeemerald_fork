@@ -4,11 +4,12 @@ This is a fork of the [decompilation of Pokémon Emerald](https://github.com/pre
 Made as a 2022 Christmas gift for a friend, where the character sprites are made to look like him.  
 To set up the repository, see [INSTALL.md](INSTALL.md).
 
-Link to [Patch File is Here](https://drive.google.com/drive/folders/1GFChFDEmOJHn6WBoZAN-GRA9a2UXGeu_?usp=sharing).  
+Link to [Patch File is Here](https://github.com/voloved/pokeemerald_fork/releases).  
 To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your legally obtained copy of Pokémon Emerald (those devs who made the game 20 years ago gotta eat too).  
 
  ![Example](https://i.imgur.com/KSMvc0h.png)  
- ## Not Yet Versioned
+ ## v2.5.0
+ - No Longer Need to Talk to the Guy in the Shipyard Who Will Reject the Devon's Goods Before Enterring the Oceanic Museum.
  - Surfing Occurs Without Asking After the First Time Surfing on a Map.
    - Idea and some logic taken from [PokemonSanFran](https://github.com/PokemonSanFran/pokeemerald/wiki/QoL-Field-Moves).
  - Wonder Trade amount doubled.
@@ -16,8 +17,24 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - STAB and Type Effectiveness Icons Display.
  - Able to Fly on Roof of Lilycove Dept Store.
  - Added Giga Impact.
+   - The TM Double Team was replaced for this. But Double Team is now a tutor-able move to all Pokémon that can learn it.
+ - Rare Candy Evolves Pokemon who are are level 100.
  - [POKéVIAL icon shows the amount still left in the icon.](https://github.com/PokemonSanFran/pokeemerald/tree/pokevial) [Credit: PokemonSanFran]
+ - [Preserved the Wireless Adapter functionality vblank.](https://github.com/pret/pokeemerald/wiki/Improving-the-WaitForVBlank-function) [Credit: Deokishisu]
+ - Added Overworld Daycare Pokémon. [Credit: aarant]
+ - Randomizing Wild Pokémon Works Outside of Nuzlocke.
+ - Random Encounters Are Based On How Rare The Pokémon Is.
+   - Random encounters on Land are Never Mono-Water
+   - Evolutions Only Appear If the Orignal Pokémon That Would Have Been Shown is Evolved.
+ - Soothe Bell Makes Pokémon That Can Evolve Via Friendship Go Up By Five Times Rather Than 1.5 Times.
+ - Shinies Don't Appear Until The Pokédex is Received.
  - All Wall Clocks in PokéMarts Display as Blue.
+ - Sorting bag options re-ordered.
+ - Hyper Beam no longer needs to recharge.
+ - Fury Cutter count doesn't reset when missing.
+ - Doubled Beldom's Catch Rate.
+ - [De-cheeked Feraligatr.](https://github.com/voloved/pokeemerald_fork/commit/9e4408847f2de043456ff69a397bac52dc7122cb)
+
 
  ## v2.4.0
  - [Added Day-Night System](https://github.com/aarant/pokeemerald/tree/lighting-expanded-id) [Credit: aarant]
