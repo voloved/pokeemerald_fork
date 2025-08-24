@@ -3,6 +3,7 @@
 #include "battle_pyramid.h"
 #include "battle_script_commands.h"
 #include "berry.h"
+#include "constants/layouts.h"
 #include "debug.h"
 #include "data.h"
 #include "decoration.h"
@@ -1922,6 +1923,7 @@ static bool8 IsFollowerVisible(void) { // Determine whether follower *should* be
   || MetatileBehavior_IsSurfableWaterOrUnderwater(gObjectEvents[gPlayerAvatar.objectEventId].previousMetatileBehavior)
   || MetatileBehavior_IsForcedMovementTile(gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior)
   || MetatileBehavior_IsForcedMovementTile(gObjectEvents[gPlayerAvatar.objectEventId].previousMetatileBehavior)
+  || gMapHeader.mapLayoutId == LAYOUT_POKEMON_CENTER_1F
   || gWeatherPtr->currWeather == WEATHER_UNDERWATER
   || gWeatherPtr->currWeather == WEATHER_UNDERWATER_BUBBLES);
 }

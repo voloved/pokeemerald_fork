@@ -26,6 +26,8 @@ To build it, use [LunarIPS](https://fusoya.eludevisibility.org/lips/) and your l
  - Random Encounters Are Based On How Rare The Pokémon Is.
    - Random encounters on Land are Never Mono-Water
    - Evolutions Only Appear If the Orignal Pokémon That Would Have Been Shown is Evolved.
+ - Player Turns Around After Talking to Nurse Joy.
+   - Followers No Longer Display on First Floor of Pokémon Center To Avoid Odd Movement When Turning Around.
  - Soothe Bell Makes Pokémon That Can Evolve Via Friendship Go Up By Five Times Rather Than 1.5 Times.
  - Shinies Don't Appear Until The Pokédex is Received.
  - All Wall Clocks in PokéMarts Display as Blue.
