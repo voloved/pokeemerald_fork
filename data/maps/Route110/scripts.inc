@@ -39,6 +39,7 @@ Route110_EventScript_AquaGrunt1::
 	applymovement VAR_LAST_TALKED, Common_Movement_FaceOriginalDirection
 	waitmovement 0
 	release
+	setflag FLAG_HIDE_SLATEPORT_CITY_TEAM_AQUA
 	end
 
 Route110_EventScript_AquaGrunt2::
@@ -48,6 +49,7 @@ Route110_EventScript_AquaGrunt2::
 	applymovement VAR_LAST_TALKED, Common_Movement_FaceOriginalDirection
 	waitmovement 0
 	release
+	setflag FLAG_HIDE_SLATEPORT_CITY_TEAM_AQUA
 	end
 
 Route110_EventScript_AquaGrunt3::
@@ -57,6 +59,7 @@ Route110_EventScript_AquaGrunt3::
 	applymovement VAR_LAST_TALKED, Common_Movement_FaceOriginalDirection
 	waitmovement 0
 	release
+	setflag FLAG_HIDE_SLATEPORT_CITY_TEAM_AQUA
 	end
 
 Route110_EventScript_AquaGrunt4::
@@ -66,6 +69,7 @@ Route110_EventScript_AquaGrunt4::
 	applymovement VAR_LAST_TALKED, Common_Movement_FaceOriginalDirection
 	waitmovement 0
 	release
+	setflag FLAG_HIDE_SLATEPORT_CITY_TEAM_AQUA
 	end
 
 Route110_EventScript_Boy1::

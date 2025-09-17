@@ -276,7 +276,5 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_ITEM_LILYCOVE_HARBOR_THIEF_BALL
 	setflag FLAG_RECEIVED_RUNNING_SHOES
 	setflag FLAG_SYS_B_DASH
-	@ I hate the Slateport section where I gotta randomly talk to one dude.
-	setflag FLAG_HIDE_SLATEPORT_CITY_TEAM_AQUA
 	call EventScript_ResetAllBerries
 	end
